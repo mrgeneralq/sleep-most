@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
 import me.qintinator.sleepmost.Main;
 
@@ -16,7 +17,7 @@ public class OnMobTarget implements Listener{
 	}
 	
 	@EventHandler
-	public void onMobTarget(EntityTargetEvent event) {
+	public void onMobTarget(EntityTargetLivingEntityEvent event) {
 		
 		if(!(event.getTarget() instanceof Player))
 			return;
