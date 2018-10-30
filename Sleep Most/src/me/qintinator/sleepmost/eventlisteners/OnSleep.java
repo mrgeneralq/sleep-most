@@ -1,4 +1,4 @@
-package me.qintinator.sleepmost;
+package me.qintinator.sleepmost.eventlisteners;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 
+import me.qintinator.sleepmost.Main;
 import me.qintinator.sleepmost.statics.ConfigMessageMapper;
 import me.qintinator.sleepmost.statics.ConfigMessageMapper.ConfigMessage;
 
