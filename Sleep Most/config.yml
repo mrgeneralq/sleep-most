@@ -1,5 +1,10 @@
 sleep:
   percentage-required: 50
+  
+  // prevents mob from targetting and attacking you
+  mob-no-target: true
+
+  
 messages:
   prefix: '&f[&csleep-most&f]'
   night-skipped: '&bThe night was skipped!'
