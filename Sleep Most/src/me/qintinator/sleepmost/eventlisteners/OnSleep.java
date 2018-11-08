@@ -28,6 +28,12 @@ public class OnSleep implements Listener {
 		
 		if(main.getConfig().get("sleep.percentage-required") == null)
 			return;
+		
+		if(Bukkit.getWorlds().get(0).getTime() < 12300)
+			return;
+		
+		if(Bukkit.getWorlds().get(0).getTime() > 23850)
+			return;
 				
 		float percentageRequired = main.getConfig().getInt("sleep.percentage-required");
 		float onlinePlayers = Bukkit.getOnlinePlayers().size();
