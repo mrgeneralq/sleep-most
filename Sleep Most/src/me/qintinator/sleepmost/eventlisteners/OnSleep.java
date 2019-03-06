@@ -46,6 +46,13 @@ public class OnSleep implements Listener {
 	
 		if(!(percentageSleeping  >= percentageRequired))
 			return;
+		
+		if(Bukkit.getWorlds().get(0).getTime() > 12300 && Bukkit.getWorlds().get(0).getTime() < 23850) {
+			//It is night. Do nothing.
+		} else {
+			//It is day. Event gets cancelled.
+			return;
+		}
 			
 		Bukkit.getWorlds().get(0).setTime(0);
 
