@@ -54,8 +54,8 @@ public class OnSleep implements Listener {
 	for(Player player: Bukkit.getOnlinePlayers()) {
 		player.sendMessage(messageMapper.getMessage(ConfigMessage.PLAYERS_LEFT_TO_SKIP_NIGHT, true)
 				.replaceFirst("%sleeping%", Integer.toString(sleepingPlayers))
-				.replaceAll("%required%", Integer.toString(Math.round(playersSleepRequired))
-						.replaceAll("%player%", player.getName())));	
+				.replaceAll("%required%", Integer.toString(Math.round(playersSleepRequired)))
+						.replaceAll("%player%", pl.getName()));	
 		}
 	
 		if(!(percentageSleeping  >= percentageRequired))
