@@ -6,4 +6,4 @@ sleep:
 messages:
   prefix: '&f[&csleep-most&f]'
   night-skipped: '&bThe night was skipped!'
-  players-left: '&bSleeping to skip night &f[&c%sleeping%/%required%&f]&b!'
+  players-left: '&6%player% &bwent to sleep! &f[&c%sleeping%/%required%&f]&b!'
