@@ -27,32 +27,41 @@ public class OnSleep implements Listener {
 	public void onPlayerSleep(PlayerBedEnterEvent e) {
 		
 		if(main.getConfig().get("sleep.percentage-required") == null)
-			return;
-				
-		float percentageRequired = main.getConfig().getInt("sleep.percentage-required");
-		float onlinePlayers = Bukkit.getOnlinePlayers().size();
-		float playersSleepRequired = (int) Math.ceil(((onlinePlayers /100) * percentageRequired));
+		return;
+	
+	
+	Player pl = e.getPlayer();
+	
+	// do nothing if player is not in main world
+	if(pl.getWorld() != Bukkit.getWorlds().get(0))
+		return;
+		
+	
+	// do nothing when it is day
+	if(!(Bukkit.getWorlds().get(0).getTime() > 12300 && Bukkit.getWorlds().get(0).getTime() < 23850))
+		return;
+	
+			
+	float percentageRequired = main.getConfig().getInt("sleep.percentage-required");
+	float onlinePlayers = Bukkit.getOnlinePlayers().size();
+	float playersSleepRequired = (int) Math.ceil(((onlinePlayers /100) * percentageRequired));
 
-		
-		int sleepingPlayers = Bukkit.getOnlinePlayers().stream().filter(p -> p.isSleeping()).collect(Collectors.toList()).size() +1;
-		float percentageSleeping = ((sleepingPlayers / onlinePlayers) * 100 );
-		
-		
-		for(Player player: Bukkit.getOnlinePlayers()) {
-			
-			player.sendMessage(messageMapper.getMessage(ConfigMessage.PLAYERS_LEFT_TO_SKIP_NIGHT, true).replaceFirst("%sleeping%", Integer.toString(sleepingPlayers)).replaceAll("%required%", Integer.toString(Math.round(playersSleepRequired))));
-			
+	
+	int sleepingPlayers = Bukkit.getOnlinePlayers().stream().filter(p -> p.isSleeping()).collect(Collectors.toList()).size() +1;
+	float percentageSleeping = ((sleepingPlayers / onlinePlayers) * 100 );
+	
+	
+	for(Player player: Bukkit.getOnlinePlayers()) {
+		player.sendMessage(messageMapper.getMessage(ConfigMessage.PLAYERS_LEFT_TO_SKIP_NIGHT, true)
+				.replaceFirst("%sleeping%", Integer.toString(sleepingPlayers))
+				.replaceAll("%required%", Integer.toString(Math.round(playersSleepRequired))
+						.replaceAll("%player%", player.getName())));	
 		}
 	
 		if(!(percentageSleeping  >= percentageRequired))
 			return;
 		
-		if(Bukkit.getWorlds().get(0).getTime() > 12300 && Bukkit.getWorlds().get(0).getTime() < 23850) {
-			//It is night. Do nothing.
-		} else {
-			//It is day. Event gets cancelled.
-			return;
-		}
+
 			
 		Bukkit.getWorlds().get(0).setTime(0);
 
