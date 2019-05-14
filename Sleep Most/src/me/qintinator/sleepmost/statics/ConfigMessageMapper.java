@@ -8,7 +8,7 @@ import me.qintinator.sleepmost.Main;
 
 public class ConfigMessageMapper {
 	
-	public enum ConfigMessage {PREFIX, NIGHT_SKIPPED, PLAYERS_LEFT_TO_SKIP_NIGHT}
+	public enum ConfigMessage {PREFIX, NIGHT_SKIPPED, STORM_SKIPPED, PLAYERS_LEFT_TO_SKIP_NIGHT, PLAYERS_LEFT_TO_SKIP_STORM}
 	private final Main main;
 	HashMap<ConfigMessage, String> configMessages = new HashMap<>();	
 	
@@ -19,7 +19,9 @@ public class ConfigMessageMapper {
 			
 		configMessages.put(ConfigMessage.PREFIX, "messages.prefix");
 		configMessages.put(ConfigMessage.NIGHT_SKIPPED, "messages.night-skipped");
-		configMessages.put(ConfigMessage.PLAYERS_LEFT_TO_SKIP_NIGHT, "messages.players-left");
+		configMessages.put(ConfigMessage.STORM_SKIPPED, "messages.storm-skipped");
+		configMessages.put(ConfigMessage.PLAYERS_LEFT_TO_SKIP_NIGHT, "messages.players-left-night");
+		configMessages.put(ConfigMessage.PLAYERS_LEFT_TO_SKIP_STORM, "messages.players-left-storm");
 		
 	}
 	
