@@ -1,0 +1,30 @@
+# WELCOME TO THE OFFICAL SLEEP-MOST PLUGIN
+# CREATED BY MrGeneralQ aka qintinator
+# VERSION: 3.1.1
+
+sleep:
+  # for each world, you can create different configurations
+  world:
+    percentage-required: 0.70
+    mob-no-target: true
+
+  world_the_end:
+    percentage-required: 0.70
+    mob-no-target: true
+
+messages:
+  prefix: '&f[&csleep-most&f]'
+
+  #time in seconds for message cooldown when a player goes to sleep
+  #default 10 seconds
+  cooldown: 10
+
+  #message when the night got skipped
+  night-skipped: '&bThe night was skipped!'
+
+  #message when the storm got skipped
+  storm-skipped: '&bThe storm was skipped!'
+
+  #message format to show how many players are required to sleep
+  players-left-night: '&bSleeping to skip night &f[&c%sleeping%/%required%&f]&b!'
+  players-left-storm: '&bSleeping to skip the storm &f[&c%sleeping%/%required%&f]&b!'
