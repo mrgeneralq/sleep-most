@@ -5,6 +5,8 @@ import me.qintinator.sleepmost.interfaces.IConfigRepository;
 import me.qintinator.sleepmost.interfaces.ISleepService;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+
 import java.util.stream.Collectors;
 
 public class SleepService implements ISleepService {
@@ -22,7 +24,8 @@ public class SleepService implements ISleepService {
 
     @Override
     public boolean sleepPercentageReached(World world) {
-        return this.getSleepingPlayerPercentage(world) >= this.getPercentageRequired(world);
+
+        return this.getPlayersSleepingCount(world) >= this.getRequiredPlayersSleepingCount(world);
     }
 
     @Override

@@ -32,6 +32,7 @@ public class OnSleep implements Listener {
 		Player player = e.getPlayer();
 		World world = player.getWorld();
 
+
 		if (!sleepService.enabledForWorld(world)){
 			return;
 		}
@@ -44,9 +45,11 @@ public class OnSleep implements Listener {
 		// check if player is cooling down, if not send message to world and start cooldown of player
 		if(cooldownService.cooldownEnabled() && !cooldownService.isCoolingDown(player)){
 
+
 			messageService.sendPlayerLeftMessage(player, sleepService.getSleepSkipCause(world));
 			cooldownService.startCooldown(player);
 		}
+
 
 		if (!sleepService.sleepPercentageReached(world))
 			return;

@@ -20,7 +20,7 @@ public class ConfigRepository implements IConfigRepository {
 
     @Override
     public boolean containsWorld(World world) {
-        return main.getConfig().contains(String.format("sleep.%s", world.getName()));
+        return main.getConfig().isConfigurationSection(String.format("sleep.%s", world.getName()));
     }
 
     @Override
