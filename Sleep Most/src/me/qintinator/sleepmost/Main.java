@@ -17,12 +17,10 @@ public class Main extends JavaPlugin{
 	public void onEnable() {
 
 
+		saveDefaultConfig();
 		Bootstrapper bootstrapper = Bootstrapper.getBootstrapper();
 		bootstrapper.initialize(this);
 
-
-		//test
-		saveDefaultConfig();
 		Bukkit.getPluginManager().registerEvents(new OnSleep(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService()), this);
 		Bukkit.getPluginManager().registerEvents(new OnLeave(bootstrapper.getCooldownService()), this);
 		Bukkit.getPluginManager().registerEvents(new OnSleepSkip(bootstrapper.getSleepService(), bootstrapper.getMessageService()), this);
