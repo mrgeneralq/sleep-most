@@ -16,4 +16,8 @@ public interface ISleepService {
     public boolean resetRequired(World world);
     public boolean isNight(World world);
     public SleepSkipCause getSleepSkipCause(World world);
+    public void reloadConfig();
+    public void enableForWorld(World world);
+    public void disableForWorld(World world);
+    public void setFlag(World world, ISleepFlag flag, String value);
 }

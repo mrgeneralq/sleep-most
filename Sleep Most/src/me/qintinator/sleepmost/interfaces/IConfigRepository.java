@@ -11,5 +11,8 @@ public interface IConfigRepository {
     public int getCooldown();
     public boolean getMobNoTarget(World world);
     public String getPrefix();
-
+    public void reloadConfig();
+    public void addWorld(World world);
+    public void removeWorld(World world);
+    public void setFlag(World world, String flag, Object value);
 }

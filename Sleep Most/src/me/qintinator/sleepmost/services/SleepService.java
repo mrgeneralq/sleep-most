@@ -1,11 +1,12 @@
 package me.qintinator.sleepmost.services;
+import me.qintinator.sleepmost.enums.FlagType;
 import me.qintinator.sleepmost.enums.SleepSkipCause;
 import me.qintinator.sleepmost.events.SleepSkipEvent;
 import me.qintinator.sleepmost.interfaces.IConfigRepository;
+import me.qintinator.sleepmost.interfaces.ISleepFlag;
 import me.qintinator.sleepmost.interfaces.ISleepService;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 import java.util.stream.Collectors;
 
@@ -95,4 +96,38 @@ public class SleepService implements ISleepService {
         return SleepSkipCause.Storm;
     }
 
+    @Override
+    public void reloadConfig() {
+        configRepository.reloadConfig();
+    }
+
+    @Override
+    public void enableForWorld(World world) {
+        configRepository.addWorld(world);
+    }
+
+    @Override
+    public void disableForWorld(World world) {
+        configRepository.removeWorld(world);
+    }
+
+    @Override
+    public void setFlag(World world, ISleepFlag flag, String value) {
+
+        Object convertedFlagValue = null;
+
+        if(flag.getFlagType() == FlagType.Boolean)
+            convertedFlagValue = Boolean.parseBoolean(value);
+
+        if(flag.getFlagType() == FlagType.Double)
+            convertedFlagValue = Double.parseDouble(value);
+
+        if(flag.getFlagType() == FlagType.String)
+            convertedFlagValue = value;
+
+        if(flag.getFlagType() == FlagType.Integer)
+            convertedFlagValue = Integer.parseInt(value);
+
+        configRepository.setFlag(world, flag.getFlagName(), convertedFlagValue);
+    }
 }

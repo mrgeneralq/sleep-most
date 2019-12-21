@@ -42,4 +42,32 @@ public class ConfigRepository implements IConfigRepository {
     public String getPrefix() {
         return main.getConfig().getString("messages.prefix");
     }
+
+    @Override
+    public void reloadConfig() {
+        main.reloadConfig();
+    }
+
+    @Override
+    public void addWorld(World world) {
+
+        String worldName = world.getName();
+
+        main.getConfig().createSection(String.format("sleep.%s", world.getName()));
+        main.getConfig().set(String.format("sleep.%s.percentage-required", world.getName()), 0.5);
+        main.getConfig().set(String.format("sleep.%s.mob-no-target", world.getName()), true);
+        main.saveConfig();
+    }
+
+    @Override
+    public void removeWorld(World world) {
+        main.getConfig().set(String.format("sleep.%s", world.getName()),null);
+        main.saveConfig();
+    }
+
+    @Override
+    public void setFlag(World world, String flag, Object value) {
+        main.getConfig().set(String.format("sleep.%s.%s",world.getName(),flag),value);
+        main.saveConfig();
+    }
 }
