@@ -12,11 +12,9 @@ public class Main extends JavaPlugin{
 	@Override
 	public void onEnable() {
 
-
 		saveDefaultConfig();
 		Bootstrapper bootstrapper = Bootstrapper.getBootstrapper();
 		bootstrapper.initialize(this);
-
 		Bukkit.getPluginCommand("sleepmost").setExecutor(new SleepmostCommand(bootstrapper.getSleepService()));
 
 		Bukkit.getPluginManager().registerEvents(new OnSleep(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService()), this);

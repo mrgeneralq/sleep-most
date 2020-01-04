@@ -1,6 +1,6 @@
 # WELCOME TO THE OFFICAL SLEEP-MOST PLUGIN
 # CREATED BY MrGeneralQ aka qintinator
-# VERSION: 3.2.1
+# VERSION: 3.2.2
 
 sleep:
   # for each world, you can create different configurations
@@ -13,7 +13,7 @@ sleep:
     mob-no-target: true
 
 messages:
-  prefix: '&f[&csleep-most&f]'
+  prefix: '&7[&bSleep-Most&7]'
 
   #time in seconds for message cooldown when a player goes to sleep
   #default 10 seconds
