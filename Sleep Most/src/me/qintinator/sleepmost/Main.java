@@ -1,5 +1,6 @@
 package me.qintinator.sleepmost;
 
+import me.qintinator.sleepmost.bstats.Metrics;
 import me.qintinator.sleepmost.commands.SleepmostCommand;
 import me.qintinator.sleepmost.eventlisteners.*;
 import me.qintinator.sleepmost.statics.Bootstrapper;
@@ -11,6 +12,9 @@ public class Main extends JavaPlugin{
 	
 	@Override
 	public void onEnable() {
+
+		Metrics metric = new Metrics(this);
+
 
 		saveDefaultConfig();
 		Bootstrapper bootstrapper = Bootstrapper.getBootstrapper();
