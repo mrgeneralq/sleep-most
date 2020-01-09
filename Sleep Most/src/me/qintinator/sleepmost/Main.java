@@ -26,6 +26,12 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new OnSleepSkip(bootstrapper.getSleepService(), bootstrapper.getMessageService()), this);
 		Bukkit.getPluginManager().registerEvents(new OnMobTarget(bootstrapper.getSleepService()), this);
 		Bukkit.getPluginManager().registerEvents(new OnPlayerWorldChange(bootstrapper.getSleepService()), this);
+		Bukkit.getPluginManager().registerEvents(new OnPlayerJoin(bootstrapper.getUpdateService()), this);
+
+		boolean hasUpdate = bootstrapper.getUpdateService().hasUpdate();
+
+		if(hasUpdate)
+		Bukkit.getLogger().info("UPDATE FOUND: A newer version of sleep-most is available to download!");
 
 	}
 
