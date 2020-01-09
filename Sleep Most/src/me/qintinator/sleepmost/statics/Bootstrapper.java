@@ -4,9 +4,11 @@ import me.qintinator.sleepmost.Main;
 import me.qintinator.sleepmost.interfaces.*;
 import me.qintinator.sleepmost.repositories.ConfigRepository;
 import me.qintinator.sleepmost.repositories.CooldownRepository;
+import me.qintinator.sleepmost.repositories.UpdateRepository;
 import me.qintinator.sleepmost.services.CooldownService;
 import me.qintinator.sleepmost.services.MessageService;
 import me.qintinator.sleepmost.services.SleepService;
+import me.qintinator.sleepmost.services.UpdateService;
 
 public class Bootstrapper {
 
@@ -18,6 +20,8 @@ public class Bootstrapper {
     private ConfigMessageMapper configMessageMapper;
     private ICooldownService cooldownService;
     private ICooldownRepository cooldownRepository;
+    private IUpdateService updateService;
+    private IUpdateRepository updateRepository;
 
     public IConfigRepository getConfigRepository() {
         return configRepository;
@@ -34,7 +38,9 @@ public class Bootstrapper {
 
         this.configRepository = new ConfigRepository(main);
         this.cooldownRepository = new CooldownRepository();
+        this.updateRepository = new UpdateRepository();
 
+        this.updateService = new UpdateService(this.getUpdateRepository(), main);
         this.sleepService = new SleepService(this.getConfigRepository());
         this.cooldownService = new CooldownService(this.getCooldownRepository(), this.getConfigRepository());
         this.messageService = new MessageService(this.getConfigRepository(), this.getSleepService());
@@ -67,5 +73,13 @@ public class Bootstrapper {
 
     public ISleepService getSleepService() {
         return sleepService;
+    }
+
+    public IUpdateService getUpdateService() {
+        return updateService;
+    }
+
+    public IUpdateRepository getUpdateRepository() {
+        return updateRepository;
     }
 }

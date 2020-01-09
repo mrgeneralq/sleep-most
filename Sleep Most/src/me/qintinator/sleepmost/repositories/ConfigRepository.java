@@ -12,7 +12,6 @@ public class ConfigRepository implements IConfigRepository {
         this.main = main;
     }
 
-
     @Override
     public double getPercentageRequired(World world) {
         return main.getConfig().getDouble(String.format("sleep.%s.percentage-required", world.getName()));
