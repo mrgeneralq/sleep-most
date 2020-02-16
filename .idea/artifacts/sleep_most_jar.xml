@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="sleep-most:jar">
-    <output-path>$USER_HOME$/Desktop/spigot server/plugins</output-path>
-    <root id="archive" name="sleep-most.jar">
-      <element id="module-output" name="sleep-most" />
-    </root>
-  </artifact>
-</component>
