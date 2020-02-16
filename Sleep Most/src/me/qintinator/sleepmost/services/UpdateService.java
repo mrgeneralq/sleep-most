@@ -3,7 +3,6 @@ package me.qintinator.sleepmost.services;
 import me.qintinator.sleepmost.Main;
 import me.qintinator.sleepmost.interfaces.IUpdateRepository;
 import me.qintinator.sleepmost.interfaces.IUpdateService;
-import org.bukkit.Bukkit;
 
 
 public class UpdateService implements IUpdateService {

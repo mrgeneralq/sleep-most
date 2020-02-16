@@ -1,6 +1,7 @@
 package me.qintinator.sleepmost.commands.subcommands;
 
 import me.qintinator.sleepmost.enums.FlagType;
+import me.qintinator.sleepmost.interfaces.IMessageService;
 import me.qintinator.sleepmost.interfaces.ISleepFlag;
 import me.qintinator.sleepmost.interfaces.ISleepService;
 import me.qintinator.sleepmost.interfaces.ISubCommand;
@@ -18,17 +19,19 @@ public class SetFlagCommand implements ISubCommand {
 
     private final ISleepService sleepService;
     private final SleepFlagMapper flagMapper;
+    private final IMessageService messageService;
 
-    public SetFlagCommand(ISleepService sleepService) {
+    public SetFlagCommand(ISleepService sleepService, IMessageService messageService) {
         this.sleepService = sleepService;
         this.flagMapper = SleepFlagMapper.getMapper();
+        this.messageService = messageService;
     }
 
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!(sender instanceof Player)){
-            sender.sendMessage(Message.commandOnlyForPlayers);
+            messageService.sendMessage(sender, Message.commandOnlyForPlayers, true);
             return true;
         }
 
@@ -36,40 +39,43 @@ public class SetFlagCommand implements ISubCommand {
         World world = player.getWorld();
 
         if(!sleepService.enabledForWorld(world)){
-            player.sendMessage(Message.currentlyDisabled);
+            messageService.sendMessage(player, Message.currentlyDisabled, true);
             return true;
         }
 
         if(args.length < 2){
-            player.sendMessage(Message.getMessage("&btype &e/sleepmost setflag <flag> <value>"));
+            messageService.sendMessage(player, "&btype &e/sleepmost setflag <flag> <value>", true);
             return true;
         }
 
         String flag = args[1];
 
         if(!flagMapper.flagExists(flag)){
-            player.sendMessage(Message.getMessage("&cThis flag does not exist!"));
-            player.sendMessage(Message.getMessage("&bPossible flags are: &e " + flagMapper.getAllFlags().stream().collect(Collectors.joining(", "))));
+            messageService.sendMessage(player, "&cThis flag does not exist!", true);
+
+            String flagListStr = "&bPossible flags are: &e " + flagMapper.getAllFlags().stream().collect(Collectors.joining(", "));
+            messageService.sendMessage(player, flagListStr, false);
+
             return true;
         }
 
         ISleepFlag sleepFlag = flagMapper.getFlag(flag);
 
         if(args.length < 3){
-            player.sendMessage(Message.getMessage("&cMissing value! Use &e" + sleepFlag.getFlagUsage()));
+            messageService.sendMessage(player, "&cMissing value! Use &e" + sleepFlag.getFlagUsage(),true);
             return true;
         }
 
         String flagValue = args[2];
 
         if(!sleepFlag.isValidValue(flagValue)){
-            player.sendMessage(Message.getMessage("&cInvalid format! Use &e" + sleepFlag.getFlagUsage()));
+            messageService.sendMessage(player,"&cInvalid format! Use &e", true);
             return true;
         }
 
-
         sleepService.setFlag(world, sleepFlag, flagValue);
-        player.sendMessage(Message.getMessage(String.format("&bFlag &c%s &bis now set to &e%s &bfor world &e%s", sleepFlag.getFlagName(), flagValue, world.getName())));
+        String messageFormat = String.format("&bFlag &c%s &bis now set to &e%s &bfor world &e%s", sleepFlag.getFlagName(), flagValue, world.getName());
+        messageService.sendMessage(player, messageFormat, true);
         return true;
     }
 }

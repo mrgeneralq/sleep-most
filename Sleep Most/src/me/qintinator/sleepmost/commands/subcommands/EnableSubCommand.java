@@ -1,5 +1,6 @@
 package me.qintinator.sleepmost.commands.subcommands;
 
+import me.qintinator.sleepmost.interfaces.IMessageService;
 import me.qintinator.sleepmost.interfaces.ISleepService;
 import me.qintinator.sleepmost.interfaces.ISubCommand;
 import me.qintinator.sleepmost.statics.Message;
@@ -11,9 +12,11 @@ import org.bukkit.entity.Player;
 public class EnableSubCommand implements ISubCommand {
 
     private final ISleepService sleepService;
+    private final IMessageService messageService;
 
-    public EnableSubCommand(ISleepService sleepService) {
+    public EnableSubCommand(ISleepService sleepService, IMessageService messageService) {
     this.sleepService = sleepService;
+    this.messageService = messageService;
     }
 
     @Override
@@ -21,7 +24,7 @@ public class EnableSubCommand implements ISubCommand {
 
         if(!(sender instanceof Player))
         {
-            sender.sendMessage(Message.commandOnlyForPlayers);
+            messageService.sendMessage(sender, Message.commandOnlyForPlayers, true);
             return true;
         }
 
@@ -29,12 +32,12 @@ public class EnableSubCommand implements ISubCommand {
         World world = player.getWorld();
 
         if(sleepService.enabledForWorld(world)){
-            player.sendMessage(Message.alreadyEnabledForWorld);
+            messageService.sendMessage(player, Message.alreadyEnabledForWorld, true);
             return true;
         }
 
         sleepService.enableForWorld(world);
-        player.sendMessage(Message.enabledForWorld);
+        messageService.sendMessage(player, Message.enabledForWorld, true);
         return true;
     }
 }

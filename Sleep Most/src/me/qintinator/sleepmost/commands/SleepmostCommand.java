@@ -4,14 +4,13 @@ import me.qintinator.sleepmost.commands.subcommands.DisableSubCommand;
 import me.qintinator.sleepmost.commands.subcommands.EnableSubCommand;
 import me.qintinator.sleepmost.commands.subcommands.ReloadSubCommand;
 import me.qintinator.sleepmost.commands.subcommands.SetFlagCommand;
+import me.qintinator.sleepmost.interfaces.IMessageService;
 import me.qintinator.sleepmost.interfaces.ISleepService;
 import me.qintinator.sleepmost.interfaces.ISubCommand;
 import me.qintinator.sleepmost.statics.Message;
-import net.minecraft.server.v1_14_R1.ChatMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Listener;
 
 import java.util.HashMap;
 
@@ -20,17 +19,19 @@ public class SleepmostCommand implements CommandExecutor {
 
     private final HashMap<String, ISubCommand> subCommands = new HashMap<>();
     private final ISleepService sleepService;
+    private final IMessageService messageService;
 
-    public SleepmostCommand(ISleepService sleepService){
+    public SleepmostCommand(ISleepService sleepService, IMessageService messageService){
         this.sleepService = sleepService;
+        this.messageService = messageService;
         this.registerSubCommands();
     }
 
     private void registerSubCommands(){
-        subCommands.put("reload", new ReloadSubCommand(this.sleepService));
-        subCommands.put("enable", new EnableSubCommand(this.sleepService));
-        subCommands.put("disable", new DisableSubCommand(this.sleepService));
-        subCommands.put("setflag", new SetFlagCommand(this.sleepService));
+        subCommands.put("reload", new ReloadSubCommand(this.sleepService, this.messageService));
+        subCommands.put("enable", new EnableSubCommand(this.sleepService,this.messageService));
+        subCommands.put("disable", new DisableSubCommand(this.sleepService, this.messageService));
+        subCommands.put("setflag", new SetFlagCommand(this.sleepService, this.messageService));
     }
 
 
@@ -42,20 +43,20 @@ public class SleepmostCommand implements CommandExecutor {
         if(args.length == 0){
 
             if(!sender.hasPermission("sleepmost.help")){
-                sender.sendMessage(Message.noPermission);
+                messageService.sendMessage(sender, Message.noPermission, false);
                 return true;
             }
 
-            sender.sendMessage(Message.getMessage("&b*********************************************"));
-            sender.sendMessage(Message.getMessage("&b*&e  SLEEPMOST &o&7author: MrGeneralQ  &b*"));
-            sender.sendMessage(Message.getMessage("&b*********************************************"));
+            messageService.sendMessage(sender,"&b*********************************************",false);
+            messageService.sendMessage(sender,"&b*&e  SLEEPMOST &o&7author: MrGeneralQ  &b*",false);
+            messageService.sendMessage(sender,"&b*********************************************",false);
 
-            sender.sendMessage("");
-            sender.sendMessage(Message.getMessage("&e/sm &fshow a list of available commands"));
-            sender.sendMessage(Message.getMessage("&e/sm enable &fenable sleepmost in the current world"));
-            sender.sendMessage(Message.getMessage("&e/sm disable &fdisable sleepmost in the current world"));
-            sender.sendMessage(Message.getMessage("&e/sm setflag <flagname> <flagvalue> &fset a flag for the current world"));
-            sender.sendMessage(Message.getMessage("&e/sm reload &freload the config file"));
+            messageService.sendMessage(sender,"", false);
+            messageService.sendMessage(sender,"&e/sm &fshow a list of available commands", false);
+            messageService.sendMessage(sender,"&e/sm enable &fenable sleepmost in the current world", false);
+            messageService.sendMessage(sender,"&e/sm disable &fdisable sleepmost in the current world", false);
+            messageService.sendMessage(sender,"&e/sm setflag <flagname> <flagvalue> &fset a flag for the current world",false);
+            messageService.sendMessage(sender,"&e/sm reload &freload the config file",false);
             return true;
         }
 
@@ -65,10 +66,10 @@ public class SleepmostCommand implements CommandExecutor {
         if(!sender.hasPermission("sleepmost." + subCommand))
         {
             // check if player has permission of command
-            sender.sendMessage(Message.noPermission);
+            messageService.sendMessage(sender, Message.noPermission, false);
             return true;
         }
 
-       return subCommands.getOrDefault(subCommand, new ErrorCommand()).executeCommand(sender,command,commandLabel, args);
+       return subCommands.getOrDefault(subCommand, new ErrorCommand(messageService)).executeCommand(sender,command,commandLabel, args);
     }
 }

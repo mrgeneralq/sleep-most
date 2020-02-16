@@ -35,7 +35,8 @@ public class ConfigMessageMapper {
 		this.main = main;
 	}
 
-	public String getMessagePath(ConfigMessage message){
+	public String
+	getMessagePath(ConfigMessage message){
 		return configMessages.get(message);
 	}
 
