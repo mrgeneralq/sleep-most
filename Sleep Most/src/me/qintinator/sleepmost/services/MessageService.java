@@ -5,9 +5,9 @@ import me.qintinator.sleepmost.interfaces.IConfigRepository;
 import me.qintinator.sleepmost.interfaces.IMessageService;
 import me.qintinator.sleepmost.interfaces.ISleepService;
 import me.qintinator.sleepmost.statics.ConfigMessageMapper;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class MessageService implements IMessageService {
@@ -28,6 +28,10 @@ public class MessageService implements IMessageService {
         String configMessage = configRepository.getString(messagePath);
 
 
+        if(configMessage.length() == 0)
+            return "";
+
+
         if(includePrefix)
             return String.format("%s %s",prefix, configMessage);
         return configMessage;
@@ -43,7 +47,7 @@ public class MessageService implements IMessageService {
     @Override
     public void sendMessageToWorld(ConfigMessage message, World world) {
         for(Player p: world.getPlayers()){
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&',getMessage(message, true)));
+            this.sendMessage(p,getMessage(message, true), false);
         }
     }
 
@@ -66,9 +70,8 @@ public class MessageService implements IMessageService {
 
     @Override
     public void sendMessageToWorld(World world, String message) {
-
         for(Player p: world.getPlayers())
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            this.sendMessage(p, message, true);
     }
 
     @Override
@@ -79,4 +82,17 @@ public class MessageService implements IMessageService {
         this.sendMessageToWorld(world, message);
     }
 
+    public void sendMessage(CommandSender sender, String message, boolean showPrefix){
+
+        if(message.length() == 0)
+            return;
+
+        String fullMessage;
+        fullMessage = message;
+
+        if(showPrefix)
+        fullMessage = String.format("%s %s", configRepository.getPrefix(), message);
+
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&',fullMessage));
+    }
 }
