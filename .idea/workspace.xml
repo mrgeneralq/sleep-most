@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="sleep-most:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9d62c017-547a-4b39-904e-65eac7db5938" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/sleep_most_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/spigot_1_15_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sleep-most.iml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1Xt2ZcYyl3Uic9SGkVgextEwQtv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/spigot server/plugins" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9d62c017-547a-4b39-904e-65eac7db5938" name="Default Changelist" comment="" />
+      <created>1581851126230</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1581851126230</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="559" y="178" key="#Project_Structure" timestamp="1581851789065">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="559" y="178" key="#Project_Structure/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1581851789065" />
+    <state x="716" y="356" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog" timestamp="1581851531026">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="716" y="356" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1581851531026" />
+    <state x="747" y="261" key="FileChooserDialogImpl" timestamp="1581851783859">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="747" y="261" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1581851783859" />
+    <state x="447" y="94" key="SettingsEditor" timestamp="1581851747294">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="447" y="94" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1581851747294" />
+    <state x="630" y="229" width="672" height="678" key="search.everywhere.popup" timestamp="1581851791400">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="630" y="229" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1581851791400" />
+  </component>
+</project>
