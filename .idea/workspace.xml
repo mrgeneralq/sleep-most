@@ -7,12 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9d62c017-547a-4b39-904e-65eac7db5938" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/sleep_most_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/spigot_1_15_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sleep-most.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,9 +75,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="447" y="94" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1581851747294" />
-    <state x="630" y="229" width="672" height="678" key="search.everywhere.popup" timestamp="1581851791400">
+    <state x="630" y="229" width="672" height="678" key="search.everywhere.popup" timestamp="1581852021302">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="630" y="229" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1581851791400" />
+    <state x="630" y="229" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1581852021302" />
   </component>
 </project>
