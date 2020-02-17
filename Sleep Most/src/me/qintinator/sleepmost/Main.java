@@ -34,9 +34,11 @@ public class Main extends JavaPlugin{
 					boolean hasUpdate = bootstrapper.getUpdateService().hasUpdate();
 					if(hasUpdate)
 						Bukkit.getLogger().info("UPDATE FOUND: A newer version of sleep-most is available to download!");
-		};
+				};
 
-		updateChecker.run();
+		Thread thread = new Thread(updateChecker);
+		thread.start();
+
 
 	}
 }
