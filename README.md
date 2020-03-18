@@ -1,4 +1,4 @@
-![sleep most banner](https://www.spigotmc.org/attachments/sleepmost-jpg.369756/)
+![sleep most banner](https://i.imgur.com/nXFo4Y7.jpg/)
 
 # sleep-most
 
