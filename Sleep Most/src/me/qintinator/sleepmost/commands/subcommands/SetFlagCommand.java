@@ -69,7 +69,7 @@ public class SetFlagCommand implements ISubCommand {
         String flagValue = args[2];
 
         if(!sleepFlag.isValidValue(flagValue)){
-            messageService.sendMessage(player,"&cInvalid format! Use &e", true);
+            messageService.sendMessage(player,"&cInvalid format! Use &e " + sleepFlag.getFlagUsage(), true);
             return true;
         }
 

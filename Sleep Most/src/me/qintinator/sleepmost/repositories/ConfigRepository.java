@@ -38,6 +38,11 @@ public class ConfigRepository implements IConfigRepository {
     }
 
     @Override
+    public boolean getUseExempt(World world) {
+        return main.getConfig().getBoolean(String.format("sleep.%s.use-exempt", world.getName()));
+    }
+
+    @Override
     public String getPrefix() {
         return main.getConfig().getString("messages.prefix");
     }
@@ -55,6 +60,11 @@ public class ConfigRepository implements IConfigRepository {
         main.getConfig().createSection(String.format("sleep.%s", world.getName()));
         main.getConfig().set(String.format("sleep.%s.percentage-required", world.getName()), 0.5);
         main.getConfig().set(String.format("sleep.%s.mob-no-target", world.getName()), true);
+        main.getConfig().set(String.format("sleep.%s.use-exempt", world.getName()),true);
+        main.getConfig().set(String.format("sleep.%s.prevent-sleep",world.getName()),false);
+        main.getConfig().set(String.format("sleep.%s.prevent-phantom", world.getName()), false);
+        main.getConfig().set(String.format("sleep.%s.nightcycle-animation", world.getName()), false);
+        main.getConfig().set(String.format("sleep.%s.storm-sleep", world.getName()), false);
         main.saveConfig();
     }
 
@@ -68,5 +78,11 @@ public class ConfigRepository implements IConfigRepository {
     public void setFlag(World world, String flag, Object value) {
         main.getConfig().set(String.format("sleep.%s.%s",world.getName(),flag),value);
         main.saveConfig();
+    }
+
+    @Override
+    public Object getFlag(World world, String flag) {
+
+       return main.getConfig().get(String.format("sleep.%s.%s",world.getName(),flag));
     }
 }

@@ -1,9 +1,20 @@
 package me.qintinator.sleepmost.flags;
 
+import jdk.nashorn.internal.runtime.linker.Bootstrap;
 import me.qintinator.sleepmost.enums.FlagType;
+import me.qintinator.sleepmost.interfaces.IConfigRepository;
 import me.qintinator.sleepmost.interfaces.ISleepFlag;
+import me.qintinator.sleepmost.statics.Bootstrapper;
+import org.bukkit.World;
 
-public class PercentageRequiredFlag implements ISleepFlag {
+public class PercentageRequiredFlag implements ISleepFlag<Double> {
+
+    private final IConfigRepository configRepository;
+
+    public PercentageRequiredFlag(){
+        configRepository = Bootstrapper.getBootstrapper().getConfigRepository();
+    }
+
     @Override
     public String getFlagName() {
        return "percentage-required";
@@ -27,5 +38,15 @@ public class PercentageRequiredFlag implements ISleepFlag {
     @Override
     public FlagType getFlagType() {
         return FlagType.Double;
+    }
+
+    @Override
+    public Double getValue(World world) {
+        return null;
+    }
+
+    @Override
+    public void setValue(World world, Double value) {
+
     }
 }

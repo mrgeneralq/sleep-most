@@ -5,6 +5,8 @@ import me.qintinator.sleepmost.interfaces.IConfigRepository;
 import me.qintinator.sleepmost.interfaces.IMessageService;
 import me.qintinator.sleepmost.interfaces.ISleepService;
 import me.qintinator.sleepmost.statics.ConfigMessageMapper;
+import me.qintinator.sleepmost.statics.Message;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -27,20 +29,20 @@ public class MessageService implements IMessageService {
         String messagePath = ConfigMessageMapper.getMapper().getMessagePath(message);
         String configMessage = configRepository.getString(messagePath);
 
-
-        if(configMessage.length() == 0)
-            return "";
-
-
-        if(includePrefix)
-            return String.format("%s %s",prefix, configMessage);
-        return configMessage;
+        return this.getMessage(configMessage, includePrefix);
     }
 
     @Override
     public String getMessage(String message, boolean includePrefix) {
         String prefix = configRepository.getPrefix();
-        return String.format("%s %s", prefix, message);
+        if(message.length() == 0)
+            return "";
+
+        if(prefix.length() > 0 && includePrefix){
+            return String.format("%s %s", prefix, message);
+        }
+
+        return Message.getMessage(message.trim());
     }
 
 
@@ -84,15 +86,17 @@ public class MessageService implements IMessageService {
 
     public void sendMessage(CommandSender sender, String message, boolean showPrefix){
 
+        String prefix = configRepository.getPrefix();
+
         if(message.length() == 0)
             return;
 
         String fullMessage;
         fullMessage = message;
 
-        if(showPrefix)
-        fullMessage = String.format("%s %s", configRepository.getPrefix(), message);
+        if(showPrefix && prefix.length() > 0)
+        fullMessage = String.format("%s %s", prefix, message);
 
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&',fullMessage));
+        sender.sendMessage(Message.getMessage(fullMessage));
     }
 }
