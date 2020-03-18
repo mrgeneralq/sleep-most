@@ -1,7 +1,6 @@
 package me.qintinator.sleepmost.statics;
 
-import me.qintinator.sleepmost.flags.MobNoTargetFlag;
-import me.qintinator.sleepmost.flags.PercentageRequiredFlag;
+import me.qintinator.sleepmost.flags.*;
 import me.qintinator.sleepmost.interfaces.ISleepFlag;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +16,11 @@ public class SleepFlagMapper {
     private SleepFlagMapper() {
         allFlags.put("percentage-required", new PercentageRequiredFlag());
         allFlags.put("mob-no-target", new MobNoTargetFlag());
-
+        allFlags.put("use-exempt", new UseExemptFlag());
+        allFlags.put("prevent-sleep", new PreventSleepFlag());
+        allFlags.put("prevent-phantom", new PreventPhantomFlag());
+        allFlags.put("nightcycle-animation", new NightcycleAnimationFlag());
+        allFlags.put("storm-sleep", new StormSleepFlag());
     }
 
     public static SleepFlagMapper getMapper(){

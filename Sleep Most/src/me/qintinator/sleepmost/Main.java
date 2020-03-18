@@ -22,12 +22,13 @@ public class Main extends JavaPlugin{
 
 		Bukkit.getPluginCommand("sleepmost").setExecutor(new SleepmostCommand(bootstrapper.getSleepService(),messageService));
 
-		Bukkit.getPluginManager().registerEvents(new OnSleep(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService()), this);
+		Bukkit.getPluginManager().registerEvents(new OnSleep(this,bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(),bootstrapper.getSleepFlagService()), this);
 		Bukkit.getPluginManager().registerEvents(new OnLeave(bootstrapper.getCooldownService()), this);
 		Bukkit.getPluginManager().registerEvents(new OnSleepSkip(bootstrapper.getSleepService(), bootstrapper.getMessageService()), this);
 		Bukkit.getPluginManager().registerEvents(new OnMobTarget(bootstrapper.getSleepService()), this);
 		Bukkit.getPluginManager().registerEvents(new OnPlayerWorldChange(bootstrapper.getSleepService()), this);
 		Bukkit.getPluginManager().registerEvents(new OnPlayerJoin(bootstrapper.getUpdateService()), this);
+		Bukkit.getPluginManager().registerEvents(new OnEntitySpawn(bootstrapper.getSleepFlagService()), this);
 
 		Runnable updateChecker =
 				() -> {

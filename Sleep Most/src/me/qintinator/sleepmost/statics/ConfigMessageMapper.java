@@ -21,6 +21,8 @@ public class ConfigMessageMapper {
 		configMessages.put(ConfigMessage.STORM_SKIPPED, "messages.storm-skipped");
 		configMessages.put(ConfigMessage.PLAYERS_LEFT_TO_SKIP_NIGHT, "messages.players-left-night");
 		configMessages.put(ConfigMessage.PLAYERS_LEFT_TO_SKIP_STORM, "messages.players-left-storm");
+		configMessages.put(ConfigMessage.SLEEP_PREVENTED, "messages.sleep-prevented");
+		configMessages.put(ConfigMessage.NO_SLEEP_THUNDERSTORM, "messages.no-sleep-storm");
 	}
 
 

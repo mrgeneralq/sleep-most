@@ -1,17 +1,27 @@
 package me.qintinator.sleepmost.flags;
+
 import me.qintinator.sleepmost.enums.FlagType;
 import me.qintinator.sleepmost.interfaces.ISleepFlag;
+import me.qintinator.sleepmost.interfaces.ISleepFlagService;
+import me.qintinator.sleepmost.statics.Bootstrapper;
 import org.bukkit.World;
 
-public class MobNoTargetFlag implements ISleepFlag<Boolean> {
+public class StormSleepFlag implements ISleepFlag<Boolean> {
+
+    private final ISleepFlagService sleepFlagService;
+
+    public StormSleepFlag(){
+        sleepFlagService = Bootstrapper.getBootstrapper().getSleepFlagService();
+    }
+
     @Override
     public String getFlagName() {
-        return "mob-no-target";
+        return "storm-sleep";
     }
 
     @Override
     public String getFlagUsage() {
-        return "/sleepmost setflag mob-no-target <true|false>";
+        return "/sleepmost setflag storm-sleep <true|false>";
     }
 
     @Override
@@ -26,12 +36,13 @@ public class MobNoTargetFlag implements ISleepFlag<Boolean> {
 
     @Override
     public Boolean getValue(World world) {
-        return null;
+        return (Boolean) sleepFlagService.getFlag(world, getFlagName());
     }
 
     @Override
     public void setValue(World world, Boolean value) {
-
+        sleepFlagService.setFlag(world, getFlagName(), (Boolean) value);
     }
+
 
 }

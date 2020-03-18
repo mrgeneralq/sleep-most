@@ -5,12 +5,22 @@
 sleep:
   # for each world, you can create different configurations
   world:
-    percentage-required: 0.70
+    percentage-required: 0.50
     mob-no-target: true
+    use-exempt: false
+    prevent-sleep: false
+    prevent-phantom: false
+    nightcycle-animation: false
+    storm-sleep: true
 
   world_the_end:
-    percentage-required: 0.70
+    percentage-required: 0.50
     mob-no-target: true
+    use-exempt: false
+    prevent-sleep: false
+    prevent-phantom: false
+    nightcycle-animation: false
+    storm-sleep: true
 
 messages:
   prefix: '&7[&bSleep-Most&7]'
@@ -28,3 +38,5 @@ messages:
   #message format to show how many players are required to sleep
   players-left-night: '&bSleeping to skip night &f[&c%sleeping%/%required%&f]&b!'
   players-left-storm: '&bSleeping to skip the storm &f[&c%sleeping%/%required%&f]&b!'
+  sleep-prevented: '&cYou cannot sleep in this world!'
+  no-sleep-storm: '&cYou cannot sleep during a thunderstorm'

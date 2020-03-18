@@ -1,17 +1,18 @@
 package me.qintinator.sleepmost.flags;
+
 import me.qintinator.sleepmost.enums.FlagType;
 import me.qintinator.sleepmost.interfaces.ISleepFlag;
 import org.bukkit.World;
 
-public class MobNoTargetFlag implements ISleepFlag<Boolean> {
+public class UseExemptFlag implements ISleepFlag<Boolean> {
     @Override
     public String getFlagName() {
-        return "mob-no-target";
+        return "use-exempt";
     }
 
     @Override
     public String getFlagUsage() {
-        return "/sleepmost setflag mob-no-target <true|false>";
+        return "/sleepmost setflag use-exempt <true|false>";
     }
 
     @Override
@@ -31,7 +32,6 @@ public class MobNoTargetFlag implements ISleepFlag<Boolean> {
 
     @Override
     public void setValue(World world, Boolean value) {
-
     }
 
 }
