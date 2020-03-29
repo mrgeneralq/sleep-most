@@ -27,8 +27,6 @@ public class OnEntitySpawn implements Listener {
         return;
 
         ISleepFlag<Boolean> preventPhantomFlag = sleepFlagService.getSleepFlag("prevent-phantom");
-        if(preventPhantomFlag == null)
-            return;
 
         if(!preventPhantomFlag.getValue(world))
             return;

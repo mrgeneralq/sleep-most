@@ -7,15 +7,19 @@ import me.qintinator.sleepmost.interfaces.ISleepService;
 import me.qintinator.sleepmost.interfaces.ISubCommand;
 import me.qintinator.sleepmost.statics.Message;
 import me.qintinator.sleepmost.statics.SleepFlagMapper;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
-public class SetFlagCommand implements ISubCommand {
+public class SetFlagCommand implements ISubCommand , TabCompleter {
 
     private final ISleepService sleepService;
     private final SleepFlagMapper flagMapper;
@@ -77,5 +81,22 @@ public class SetFlagCommand implements ISubCommand {
         String messageFormat = String.format("&bFlag &c%s &bis now set to &e%s &bfor world &e%s", sleepFlag.getFlagName(), flagValue, world.getName());
         messageService.sendMessage(player, messageFormat, true);
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
+
+
+        Bukkit.broadcastMessage("test");
+
+
+        List<String> list = new ArrayList<>();
+        list.add("aaaa");
+        list.add("bbbb");
+
+        //if(args.length == 2)
+            return list;
+
+     //   return null;
     }
 }

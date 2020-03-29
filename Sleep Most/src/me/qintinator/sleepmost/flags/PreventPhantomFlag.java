@@ -36,7 +36,12 @@ public class PreventPhantomFlag implements ISleepFlag<Boolean> {
 
     @Override
     public Boolean getValue(World world) {
-        return (Boolean) sleepFlagService.getFlag(world, getFlagName());
+
+
+        if(sleepFlagService.getFlag(world, getFlagName()) == null)
+            return false;
+
+        return (boolean) sleepFlagService.getFlag(world, getFlagName());
     }
 
     @Override

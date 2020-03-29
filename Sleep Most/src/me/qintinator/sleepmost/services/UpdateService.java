@@ -31,4 +31,9 @@ public class UpdateService implements IUpdateService {
         return true;
     }
 
+    @Override
+    public String getCurrentVersion() {
+        return main.getDescription().getVersion();
+    }
+
 }

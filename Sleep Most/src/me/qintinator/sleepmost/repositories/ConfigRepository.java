@@ -82,7 +82,6 @@ public class ConfigRepository implements IConfigRepository {
 
     @Override
     public Object getFlag(World world, String flag) {
-
        return main.getConfig().get(String.format("sleep.%s.%s",world.getName(),flag));
     }
 }

@@ -1,29 +1,33 @@
 package me.qintinator.sleepmost.commands;
 
-import me.qintinator.sleepmost.commands.subcommands.DisableSubCommand;
-import me.qintinator.sleepmost.commands.subcommands.EnableSubCommand;
-import me.qintinator.sleepmost.commands.subcommands.ReloadSubCommand;
-import me.qintinator.sleepmost.commands.subcommands.SetFlagCommand;
-import me.qintinator.sleepmost.interfaces.IMessageService;
-import me.qintinator.sleepmost.interfaces.ISleepService;
-import me.qintinator.sleepmost.interfaces.ISubCommand;
+import me.qintinator.sleepmost.commands.subcommands.*;
+import me.qintinator.sleepmost.interfaces.*;
+import me.qintinator.sleepmost.services.UpdateService;
 import me.qintinator.sleepmost.statics.Message;
+import me.qintinator.sleepmost.statics.SleepFlagMapper;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class SleepmostCommand implements CommandExecutor {
+public class SleepmostCommand implements CommandExecutor, TabCompleter {
 
 
     private final HashMap<String, ISubCommand> subCommands = new HashMap<>();
     private final ISleepService sleepService;
     private final IMessageService messageService;
+    private final ISleepFlagService sleepFlagService;
+    private final IUpdateService updateService;
 
-    public SleepmostCommand(ISleepService sleepService, IMessageService messageService){
+    public SleepmostCommand(ISleepService sleepService, IMessageService messageService, ISleepFlagService sleepFlagService, IUpdateService updateService){
         this.sleepService = sleepService;
         this.messageService = messageService;
+        this.sleepFlagService = sleepFlagService;
+        this.updateService = updateService;
         this.registerSubCommands();
     }
 
@@ -32,6 +36,8 @@ public class SleepmostCommand implements CommandExecutor {
         subCommands.put("enable", new EnableSubCommand(this.sleepService,this.messageService));
         subCommands.put("disable", new DisableSubCommand(this.sleepService, this.messageService));
         subCommands.put("setflag", new SetFlagCommand(this.sleepService, this.messageService));
+        subCommands.put("info", new InfoSubCommand(this.sleepService, this.messageService, this.sleepFlagService));
+        subCommands.put("version", new VersionSubCommand(this.updateService, this.messageService));
     }
 
 
@@ -56,6 +62,8 @@ public class SleepmostCommand implements CommandExecutor {
             messageService.sendMessage(sender,"&e/sm enable &fenable sleepmost in the current world", false);
             messageService.sendMessage(sender,"&e/sm disable &fdisable sleepmost in the current world", false);
             messageService.sendMessage(sender,"&e/sm setflag <flagname> <flagvalue> &fset a flag for the current world",false);
+            messageService.sendMessage(sender,"&e/sm info &fshow a list of all flags set for your world",false);
+            messageService.sendMessage(sender,"&e/sm version &fshow the current version of sleep most",false);
             messageService.sendMessage(sender,"&e/sm reload &freload the config file",false);
             return true;
         }
@@ -71,5 +79,38 @@ public class SleepmostCommand implements CommandExecutor {
         }
 
        return subCommands.getOrDefault(subCommand, new ErrorCommand(messageService)).executeCommand(sender,command,commandLabel, args);
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
+
+
+        if(args.length < 1)
+            return null;
+
+
+        String arg1 = args[0];
+
+        //if(!commandSender.hasPermission(String.format("sleepmost.%s", arg1)))
+        //    return null;
+
+
+        if(args.length == 1){
+            List<String> subCommands = this.subCommands.keySet().stream().filter(subCmd -> commandSender.hasPermission("sleepmost." + subCmd)).collect(Collectors.toList());
+            Collections.sort(subCommands);
+            return subCommands;
+        }
+
+
+        if(args[0].equalsIgnoreCase("setflag") && args.length == 2)
+        {
+            SleepFlagMapper flagMapper = SleepFlagMapper.getMapper();
+            List<String> array =  flagMapper.getAllFlags();
+            Collections.sort(array);
+            return array;
+        }
+
+
+        return null;
     }
 }

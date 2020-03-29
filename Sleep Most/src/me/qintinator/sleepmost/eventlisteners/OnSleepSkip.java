@@ -6,6 +6,7 @@ import me.qintinator.sleepmost.enums.SleepSkipCause;
 import me.qintinator.sleepmost.events.SleepSkipEvent;
 import me.qintinator.sleepmost.interfaces.IMessageService;
 import me.qintinator.sleepmost.interfaces.ISleepService;
+import me.qintinator.sleepmost.statics.DataContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.World;
@@ -18,10 +19,12 @@ public class OnSleepSkip implements Listener {
 
     private final ISleepService sleepService;
     private final IMessageService messageService;
+    private final DataContainer dataContainer;
 
     public OnSleepSkip(ISleepService sleepService, IMessageService messageService) {
         this.sleepService = sleepService;
         this.messageService = messageService;
+        this.dataContainer = DataContainer.getContainer();
     }
 
     @EventHandler
@@ -30,6 +33,8 @@ public class OnSleepSkip implements Listener {
         World world = e.getWorld();
         SleepSkipCause cause = e.getCause();
 
+        if(dataContainer.getRunningWorldsAnimation().contains(world))
+            return;
 
         //reset phantom counter
         for(Player p: world.getPlayers())

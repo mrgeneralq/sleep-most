@@ -3,6 +3,7 @@ import me.qintinator.sleepmost.Main;
 import me.qintinator.sleepmost.enums.ConfigMessage;
 import me.qintinator.sleepmost.interfaces.*;
 import me.qintinator.sleepmost.runnables.NightcycleAnimationTimer;
+import me.qintinator.sleepmost.statics.DataContainer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,6 +19,7 @@ public class OnSleep implements Listener {
 	private final IMessageService messageService;
 	private final ICooldownService cooldownService;
 	private final ISleepFlagService sleepFlagService;
+	private final DataContainer dataContainer;
 
 	public OnSleep(Main main,ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService, ISleepFlagService sleepFlagService) {
 		this.sleepService = sleepService;
@@ -25,18 +27,19 @@ public class OnSleep implements Listener {
 		this.cooldownService = cooldownService;
 		this.sleepFlagService = sleepFlagService;
 		this.main = main;
+		this.dataContainer = DataContainer.getContainer();
 	}
 
 
 	@EventHandler
 	public void onPlayerSleep(PlayerBedEnterEvent e) {
 
-		if(e.isCancelled())
-			return;
-
-
 		Player player = e.getPlayer();
 		World world = player.getWorld();
+
+
+		if(e.isCancelled())
+			return;
 
 
 		if (!sleepService.enabledForWorld(world)){
@@ -46,6 +49,10 @@ public class OnSleep implements Listener {
 		if (!sleepService.resetRequired(world)){
 			return;
 		}
+
+		if(dataContainer.getRunningWorldsAnimation().contains(world))
+			return;
+
 
 		ISleepFlag<Boolean> stormSleepFlag = sleepFlagService.getSleepFlag("storm-sleep");
 		if(stormSleepFlag.getValue(world) == false && world.isThundering()){
@@ -68,8 +75,6 @@ public class OnSleep implements Listener {
 
 		// check if player is cooling down, if not send message to world and start cooldown of player
 		if(cooldownService.cooldownEnabled() && !cooldownService.isCoolingDown(player)){
-
-
 			messageService.sendPlayerLeftMessage(player, sleepService.getSleepSkipCause(world));
 			cooldownService.startCooldown(player);
 		}
@@ -79,8 +84,13 @@ public class OnSleep implements Listener {
 			return;
 
 
+
 		ISleepFlag<Boolean> nightCycleAnimation = sleepFlagService.getSleepFlag("nightcycle-animation");
 		if(nightCycleAnimation.getValue(world)){
+
+			//store running world
+			dataContainer.getRunningWorldsAnimation().add(world);
+
 			new NightcycleAnimationTimer(sleepService , messageService, world).runTaskTimer(main, 0,1);
 			return;
 		}

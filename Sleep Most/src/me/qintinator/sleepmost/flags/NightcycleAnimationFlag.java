@@ -36,6 +36,8 @@ public class NightcycleAnimationFlag implements ISleepFlag<Boolean> {
 
     @Override
     public Boolean getValue(World world) {
+        if(sleepFlagService.getFlag(world, this.getFlagName()) == null)
+            return false;
         return (boolean) sleepFlagService.getFlag(world, this.getFlagName());
     }
 

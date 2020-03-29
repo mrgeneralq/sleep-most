@@ -2,9 +2,22 @@ package me.qintinator.sleepmost.flags;
 
 import me.qintinator.sleepmost.enums.FlagType;
 import me.qintinator.sleepmost.interfaces.ISleepFlag;
+import me.qintinator.sleepmost.interfaces.ISleepFlagService;
+import me.qintinator.sleepmost.statics.Bootstrapper;
 import org.bukkit.World;
 
 public class UseExemptFlag implements ISleepFlag<Boolean> {
+
+    private final Bootstrapper bootstrapper;
+    private final ISleepFlagService sleepFlagService;
+
+    public UseExemptFlag(){
+        bootstrapper = Bootstrapper.getBootstrapper();
+        sleepFlagService = bootstrapper.getSleepFlagService();
+
+
+    }
+
     @Override
     public String getFlagName() {
         return "use-exempt";
@@ -27,7 +40,10 @@ public class UseExemptFlag implements ISleepFlag<Boolean> {
 
     @Override
     public Boolean getValue(World world) {
-        return null;
+        if(sleepFlagService.getFlag(world, getFlagName()) == null)
+            return null;
+
+        return (Boolean) sleepFlagService.getFlag(world, getFlagName());
     }
 
     @Override

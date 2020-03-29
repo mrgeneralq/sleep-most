@@ -36,6 +36,9 @@ public class StormSleepFlag implements ISleepFlag<Boolean> {
 
     @Override
     public Boolean getValue(World world) {
+        if(sleepFlagService.getFlag(world, getFlagName()) == null)
+            return null;
+        
         return (Boolean) sleepFlagService.getFlag(world, getFlagName());
     }
 
