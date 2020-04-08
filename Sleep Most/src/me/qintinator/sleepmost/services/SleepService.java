@@ -46,7 +46,7 @@ public class SleepService implements ISleepService {
 
     @Override
     public int getPlayersSleepingCount(World world) {
-        return Bukkit.getWorld(world.getName()).getPlayers().stream().filter(p -> p.isSleeping()).collect(Collectors.toList()).size() + 1;
+        return world.getPlayers().stream().filter(p -> p.isSleeping()).collect(Collectors.toList()).size() + 1;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class SleepService implements ISleepService {
 
        int total;
        if(configRepository.getUseExempt(world)){
-           total = Bukkit.getWorld(world.getName()).getPlayers().stream().filter(p -> !p.hasPermission("sleepmost.exempt")).collect(Collectors.toList()).size();
+           total = world.getPlayers().stream().filter(p -> !p.hasPermission("sleepmost.exempt")).collect(Collectors.toList()).size();
            if(total == 0)
                return 1;
            return total;
