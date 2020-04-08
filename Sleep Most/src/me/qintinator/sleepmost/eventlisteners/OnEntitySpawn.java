@@ -23,8 +23,13 @@ public class OnEntitySpawn implements Listener {
 
         World world = e.getEntity().getWorld();
 
-        if(e.getEntityType() != EntityType.valueOf("PHANTOM"))
-        return;
+        try {
+            if(e.getEntityType() != EntityType.valueOf("PHANTOM"))
+                return;
+        }catch (Exception ex) {
+            return;
+        }
+
 
         ISleepFlag<Boolean> preventPhantomFlag = sleepFlagService.getSleepFlag("prevent-phantom");
 

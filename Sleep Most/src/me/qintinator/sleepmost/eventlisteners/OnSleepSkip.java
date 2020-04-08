@@ -37,8 +37,13 @@ public class OnSleepSkip implements Listener {
             return;
 
         //reset phantom counter
-        for(Player p: world.getPlayers())
-            p.setStatistic(Statistic.TIME_SINCE_REST, 0);
+        try{
+
+            for(Player p: world.getPlayers())
+                p.setStatistic(Statistic.valueOf("TIME_SINCE_REST"), 0);
+        }catch (IllegalArgumentException error){
+
+        }
 
         if(cause == SleepSkipCause.Storm){
             messageService.sendMessageToWorld(ConfigMessage.STORM_SKIPPED, world);
