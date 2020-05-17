@@ -64,9 +64,17 @@ public class MessageService implements IMessageService {
     public String getPlayersLeftMessage(Player player, SleepSkipCause cause) {
 
         World world = player.getWorld();
+        int sleeping = sleepService.getPlayersSleepingCount(world);
+        int required = sleepService.getRequiredPlayersSleepingCount(world);
+        int total = sleepService.getPlayerCountInWorld(world);
+        int remaining = required - sleeping;
         return getMessage(this.getSleepSkipCauseMessage(cause),false)
-                .replaceFirst("%sleeping%", Integer.toString(sleepService.getPlayersSleepingCount(world)))
-                .replaceAll("%required%", Integer.toString(Math.round(sleepService.getRequiredPlayersSleepingCount(world))))
+                .replaceFirst("%sleeping%", Integer.toString(sleeping))
+                .replaceAll("%required%", Integer.toString(required))
+                .replaceAll("%total%", Integer.toString(total))
+                .replaceAll("%remaining%", Integer.toString(remaining))
+                .replaceAll("%sleeping_pct%", Integer.toString((int) Math.round(100 * sleepService.getSleepingPlayerPercentage(world))))
+                .replaceAll("%required_pct%", Integer.toString((int) Math.round(100 * sleepService.getPercentageRequired(world))))
                 .replaceAll("%player%", player.getName());
     }
 
