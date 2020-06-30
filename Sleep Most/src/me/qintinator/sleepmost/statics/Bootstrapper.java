@@ -21,6 +21,9 @@ public class Bootstrapper {
     private IUpdateRepository updateRepository;
     private ISleepFlagService sleepFlagService;
 
+    //new service logic
+    private ConfigService configService;
+
     public IConfigRepository getConfigRepository() {
         return configRepository;
     }
@@ -34,13 +37,16 @@ public class Bootstrapper {
     public void initialize(Main main){
         main = main;
 
+        this.configService = new ConfigService(main);
+
         this.configRepository = new ConfigRepository(main);
         this.cooldownRepository = new CooldownRepository();
         this.updateRepository = new UpdateRepository();
         this.sleepFlagService = new SleepFlagService(this.getConfigRepository());
+        this.configService = new ConfigService(main);
 
         this.updateService = new UpdateService(this.getUpdateRepository(), main);
-        this.sleepService = new SleepService(this.getConfigRepository());
+        this.sleepService = new SleepService(configService , this.getConfigRepository());
         this.cooldownService = new CooldownService(this.getCooldownRepository(), this.getConfigRepository());
         this.messageService = new MessageService(this.getConfigRepository(), this.getSleepService());
         this.configMessageMapper = ConfigMessageMapper.getMapper();

@@ -13,8 +13,10 @@ import java.util.stream.Collectors;
 public class SleepService implements ISleepService {
 
     private final IConfigRepository configRepository;
+    private final ConfigService configService;
 
-    public SleepService(IConfigRepository configRepository){
+    public SleepService(ConfigService configService, IConfigRepository configRepository){
+        this.configService = configService;
         this.configRepository = configRepository;
     }
 
@@ -74,7 +76,7 @@ public class SleepService implements ISleepService {
 
         if (this.isNight(world)) {
             cause = SleepSkipCause.NightTime;
-            world.setTime(0);
+            world.setTime(configService.getResetTime());
         } else {
             cause = SleepSkipCause.Storm;
         }

@@ -23,6 +23,10 @@ sleep:
     nightcycle-animation: false
     storm-sleep: true
 
+
+# specify the time which the world will be set after reset
+time-after-reset: 0
+
 messages:
   prefix: '&7[&bSleep-Most&7]'
 
