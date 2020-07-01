@@ -14,6 +14,7 @@ public class Main extends JavaPlugin{
 	@Override
 	public void onEnable() {
 
+
 		Metrics metric = new Metrics(this);
 
 		saveDefaultConfig();

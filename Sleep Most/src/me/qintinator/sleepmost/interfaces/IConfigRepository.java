@@ -15,6 +15,7 @@ public interface IConfigRepository {
     public void reloadConfig();
     public void addWorld(World world);
     public void removeWorld(World world);
+    public void disableForWorld(World world);
     public void setFlag(World world, String flag, Object value);
     public Object getFlag(World world, String flag);
 }

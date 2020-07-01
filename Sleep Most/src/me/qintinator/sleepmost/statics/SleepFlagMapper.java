@@ -21,6 +21,7 @@ public class SleepFlagMapper {
         allFlags.put("prevent-phantom", new PreventPhantomFlag());
         allFlags.put("nightcycle-animation", new NightcycleAnimationFlag());
         allFlags.put("storm-sleep", new StormSleepFlag());
+        allFlags.put("use-afk", new UseAfkFlag());
     }
 
     public static SleepFlagMapper getMapper(){

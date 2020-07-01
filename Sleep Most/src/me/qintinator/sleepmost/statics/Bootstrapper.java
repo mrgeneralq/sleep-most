@@ -46,7 +46,7 @@ public class Bootstrapper {
         this.configService = new ConfigService(main);
 
         this.updateService = new UpdateService(this.getUpdateRepository(), main);
-        this.sleepService = new SleepService(configService , this.getConfigRepository());
+        this.sleepService = new SleepService(configService, sleepFlagService , this.getConfigRepository());
         this.cooldownService = new CooldownService(this.getCooldownRepository(), this.getConfigRepository());
         this.messageService = new MessageService(this.getConfigRepository(), this.getSleepService());
         this.configMessageMapper = ConfigMessageMapper.getMapper();
@@ -74,7 +74,6 @@ public class Bootstrapper {
     public ICooldownRepository getCooldownRepository(){
         return this.cooldownRepository;
     }
-
 
     public ISleepService getSleepService() {
         return sleepService;

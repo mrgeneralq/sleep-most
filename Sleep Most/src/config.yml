@@ -1,28 +1,31 @@
 # WELCOME TO THE OFFICAL SLEEP-MOST PLUGIN
 # CREATED BY MrGeneralQ
-# VERSION: 4.1.4.0
+# VERSION: 4.3.0
 # SUPPORT NEEDED? Join our discord at --> https://mrgeneralq.net/discord
 
 sleep:
   # for each world, you can create different configurations
   world:
+    enabled: true
     percentage-required: 0.50
     mob-no-target: true
     use-exempt: false
+    use-afk: false
     prevent-sleep: false
     prevent-phantom: false
     nightcycle-animation: false
     storm-sleep: true
 
-  world_the_end:
+  world2:
+    enabled: false
     percentage-required: 0.50
     mob-no-target: true
     use-exempt: false
+    use-afk: false
     prevent-sleep: false
     prevent-phantom: false
     nightcycle-animation: false
     storm-sleep: true
-
 
 # specify the time which the world will be set after reset
 time-after-reset: 0
