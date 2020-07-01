@@ -1,22 +1,33 @@
 package me.qintinator.sleepmost.services;
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.qintinator.sleepmost.enums.FlagType;
 import me.qintinator.sleepmost.enums.SleepSkipCause;
+import me.qintinator.sleepmost.enums.SleepmostFlag;
 import me.qintinator.sleepmost.events.SleepSkipEvent;
+import me.qintinator.sleepmost.flags.UseAfkFlag;
 import me.qintinator.sleepmost.interfaces.IConfigRepository;
 import me.qintinator.sleepmost.interfaces.ISleepFlag;
+import me.qintinator.sleepmost.interfaces.ISleepFlagService;
 import me.qintinator.sleepmost.interfaces.ISleepService;
+import me.qintinator.sleepmost.statics.SleepFlagMapper;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class SleepService implements ISleepService {
 
+    private ISleepFlagService sleepFlagService;
     private final IConfigRepository configRepository;
     private final ConfigService configService;
 
-    public SleepService(ConfigService configService, IConfigRepository configRepository){
+    public SleepService(ConfigService configService, ISleepFlagService sleepFlagService, IConfigRepository configRepository){
         this.configService = configService;
+        this.sleepFlagService = sleepFlagService;
         this.configRepository = configRepository;
     }
 
@@ -48,7 +59,7 @@ public class SleepService implements ISleepService {
 
     @Override
     public int getPlayersSleepingCount(World world) {
-        return world.getPlayers().stream().filter(p -> p.isSleeping()).collect(Collectors.toList()).size() + 1;
+        return (int) world.getPlayers().stream().filter(LivingEntity::isSleeping).count() + 1;
     }
 
     @Override
@@ -59,15 +70,24 @@ public class SleepService implements ISleepService {
     @Override
     public int getPlayerCountInWorld(World world) {
 
-       int total;
-       if(configRepository.getUseExempt(world)){
-           total = world.getPlayers().stream().filter(p -> !p.hasPermission("sleepmost.exempt")).collect(Collectors.toList()).size();
-           if(total == 0)
-               return 1;
-           return total;
-       }
-            total = Bukkit.getWorld(world.getName()).getPlayers().size();
-            return total;
+        //full list of players
+        List<Player> allPlayers = world.getPlayers();
+
+
+        //check if exempt flag is enabled
+        if(configRepository.getUseExempt(world)){
+            allPlayers = allPlayers.stream().filter(p -> !p.hasPermission("sleepmost.exempt")).collect(Collectors.toList());
+        }
+
+
+        ISleepFlag flag = SleepFlagMapper.getMapper().getFlag("use-afk");
+        boolean afkFlagEnabled = (boolean) flag.getValue(world);
+
+        //check if user is afk
+           if (afkFlagEnabled && Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().getPlugin("Essentials") != null)
+               allPlayers = allPlayers.stream().filter(p -> PlaceholderAPI.setPlaceholders(p, "%essentials_afk%").equalsIgnoreCase("no")).collect(Collectors.toList());
+
+            return (allPlayers.size() > 0) ? allPlayers.size() : 1;
     }
 
     @Override
@@ -119,7 +139,7 @@ public class SleepService implements ISleepService {
 
     @Override
     public void disableForWorld(World world) {
-        configRepository.removeWorld(world);
+        configRepository.disableForWorld(world);
     }
 
     @Override

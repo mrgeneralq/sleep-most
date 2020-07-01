@@ -17,10 +17,13 @@ public class ConfigRepository implements IConfigRepository {
         return main.getConfig().getDouble(String.format("sleep.%s.percentage-required", world.getName()));
     }
 
+
+    @Deprecated
     @Override
     public boolean containsWorld(World world) {
-        return main.getConfig().isConfigurationSection(String.format("sleep.%s", world.getName()));
+        return main.getConfig().getBoolean(String.format("sleep.%s.enabled", world.getName()));
     }
+
 
     @Override
     public String getString(String string) {
@@ -55,12 +58,12 @@ public class ConfigRepository implements IConfigRepository {
     @Override
     public void addWorld(World world) {
 
-        String worldName = world.getName();
-
         main.getConfig().createSection(String.format("sleep.%s", world.getName()));
+        main.getConfig().set(String.format("sleep.%s.enabled", world.getName()), true);
         main.getConfig().set(String.format("sleep.%s.percentage-required", world.getName()), 0.5);
         main.getConfig().set(String.format("sleep.%s.mob-no-target", world.getName()), true);
         main.getConfig().set(String.format("sleep.%s.use-exempt", world.getName()),true);
+        main.getConfig().set(String.format("sleep.%s.use-afk", world.getName()), false);
         main.getConfig().set(String.format("sleep.%s.prevent-sleep",world.getName()),false);
         main.getConfig().set(String.format("sleep.%s.prevent-phantom", world.getName()), false);
         main.getConfig().set(String.format("sleep.%s.nightcycle-animation", world.getName()), false);
@@ -68,9 +71,16 @@ public class ConfigRepository implements IConfigRepository {
         main.saveConfig();
     }
 
+    @Deprecated
     @Override
     public void removeWorld(World world) {
         main.getConfig().set(String.format("sleep.%s", world.getName()),null);
+        main.saveConfig();
+    }
+
+    @Override
+    public void disableForWorld(World world) {
+        main.getConfig().set(String.format("sleep.%s.enabled", world.getName()), false);
         main.saveConfig();
     }
 

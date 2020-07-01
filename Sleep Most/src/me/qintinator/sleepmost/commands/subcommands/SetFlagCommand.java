@@ -87,9 +87,6 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
 
 
-        Bukkit.broadcastMessage("test");
-
-
         List<String> list = new ArrayList<>();
         list.add("aaaa");
         list.add("bbbb");
