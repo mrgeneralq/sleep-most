@@ -59,7 +59,7 @@ public class SleepService implements ISleepService {
 
     @Override
     public int getPlayersSleepingCount(World world) {
-        return (int) world.getPlayers().stream().filter(LivingEntity::isSleeping).count() + 1;
+        return (int) world.getPlayers().stream().filter(Player::isSleeping).count() + 1;
     }
 
     @Override
