@@ -28,7 +28,7 @@ public class OnSleepSkip implements Listener {
     }
 
     @EventHandler
-     public void OnSleepSkip(SleepSkipEvent e){
+     public void onSleepSkip(SleepSkipEvent e){
 
         World world = e.getWorld();
         SleepSkipCause cause = e.getCause();

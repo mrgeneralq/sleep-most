@@ -4,12 +4,14 @@ import me.qintinator.sleepmost.enums.ConfigMessage;
 import me.qintinator.sleepmost.interfaces.*;
 import me.qintinator.sleepmost.runnables.NightcycleAnimationTimer;
 import me.qintinator.sleepmost.statics.DataContainer;
+import me.qintinator.sleepmost.statics.VersionController;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
+import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 
@@ -38,9 +40,13 @@ public class OnSleep implements Listener {
 		Player player = e.getPlayer();
 		World world = player.getWorld();
 
-
 		if(e.isCancelled())
 			return;
+
+
+		//used to calculate sleeping players different for lower versions
+		if(VersionController.isOldVersion())
+		DataContainer.getContainer().addSleepingPlayer(player);
 
 
 		if (!sleepService.enabledForWorld(world)){
@@ -97,5 +103,16 @@ public class OnSleep implements Listener {
 		}
 
 		sleepService.resetDay(world);
+	}
+
+	@EventHandler
+	public void onPlayerBedLeave(PlayerBedLeaveEvent e){
+
+		Player player = e.getPlayer();
+
+		//used to calculate sleeping players different for lower versions
+		if(VersionController.isOldVersion())
+			DataContainer.getContainer().removeSleepingPlayer(player);
+
 	}
 }
