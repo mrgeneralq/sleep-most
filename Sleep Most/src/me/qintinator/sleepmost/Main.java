@@ -5,6 +5,7 @@ import me.qintinator.sleepmost.commands.subcommands.SetFlagCommand;
 import me.qintinator.sleepmost.eventlisteners.*;
 import me.qintinator.sleepmost.interfaces.IMessageService;
 import me.qintinator.sleepmost.statics.Bootstrapper;
+import me.qintinator.sleepmost.statics.VersionController;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,6 +14,9 @@ public class Main extends JavaPlugin{
 	
 	@Override
 	public void onEnable() {
+
+		if(VersionController.isOldVersion())
+			Bukkit.getLogger().warning("You are using an older Minecraft version that requires a different way of calculating who is asleep.");
 
 
 		Metrics metric = new Metrics(this);

@@ -9,7 +9,9 @@ import me.qintinator.sleepmost.interfaces.IConfigRepository;
 import me.qintinator.sleepmost.interfaces.ISleepFlag;
 import me.qintinator.sleepmost.interfaces.ISleepFlagService;
 import me.qintinator.sleepmost.interfaces.ISleepService;
+import me.qintinator.sleepmost.statics.DataContainer;
 import me.qintinator.sleepmost.statics.SleepFlagMapper;
+import me.qintinator.sleepmost.statics.VersionController;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
@@ -59,7 +61,19 @@ public class SleepService implements ISleepService {
 
     @Override
     public int getPlayersSleepingCount(World world) {
-        return (int) world.getPlayers().stream().filter(Player::isSleeping).count() + 1;
+
+        List<Player> sleepingPlayers = new ArrayList<Player>();
+
+        //check for lower versions
+        if(VersionController.isOldVersion()){
+            sleepingPlayers = DataContainer.getContainer().getSleepingPlayers(world);
+            return (int) sleepingPlayers.size();
+        }
+        else{
+            sleepingPlayers = world.getPlayers().stream().filter(Player::isSleeping).collect(Collectors.toList());
+            return (int) sleepingPlayers.size() + 1;
+        }
+
     }
 
     @Override
