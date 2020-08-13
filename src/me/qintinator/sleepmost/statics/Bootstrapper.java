@@ -35,7 +35,7 @@ public class Bootstrapper {
     private Bootstrapper(){ }
 
     public void initialize(Main main){
-        main = main;
+        this.main = main;
 
         this.configService = new ConfigService(main);
 

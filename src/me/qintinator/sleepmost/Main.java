@@ -38,7 +38,7 @@ public class Main extends JavaPlugin{
 
 
 		getCommand("sleepmost").setTabCompleter(new SleepmostCommand(bootstrapper.getSleepService(),messageService, bootstrapper.getSleepFlagService(), bootstrapper.getUpdateService()));
-
+		
 		Runnable updateChecker =
 				() -> {
 					boolean hasUpdate = bootstrapper.getUpdateService().hasUpdate();
