@@ -34,7 +34,5 @@ public class OnPlayerJoin implements Listener {
         Thread thread = new Thread(updateChecker);
         thread.start();
 
-        if(!updateService.hasUpdate())
-            return;
     }
 }
