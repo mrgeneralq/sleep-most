@@ -15,43 +15,45 @@ import org.bukkit.event.Listener;
 
 public class OnSleepSkip implements Listener {
 
-    private final ISleepService sleepService;
-    private final IMessageService messageService;
-    private final DataContainer dataContainer;
+	private final ISleepService sleepService;
+	private final IMessageService messageService;
+	private final DataContainer dataContainer;
 
-    public OnSleepSkip(ISleepService sleepService, IMessageService messageService) {
-        this.sleepService = sleepService;
-        this.messageService = messageService;
-        this.dataContainer = DataContainer.getContainer();
-    }
+	public OnSleepSkip(ISleepService sleepService, IMessageService messageService) {
+		this.sleepService = sleepService;
+		this.messageService = messageService;
+		this.dataContainer = DataContainer.getContainer();
+	}
 
-    @EventHandler
-     public void onSleepSkip(SleepSkipEvent e){
+	@EventHandler
+	public void onSleepSkip(SleepSkipEvent e){
 
-        World world = e.getWorld();
-        SleepSkipCause cause = e.getCause();
+		World world = e.getWorld();
 
-        if(dataContainer.getRunningWorldsAnimation().contains(world))
-            return;
+		if(dataContainer.getRunningWorldsAnimation().contains(world))
+			return;
 
-        //reset phantom counter
-        try{
+		resetPhantomCounter(world);
 
-            for(Player p: world.getPlayers())
-                p.setStatistic(Statistic.valueOf("TIME_SINCE_REST"), 0);
-        }catch (IllegalArgumentException error){
+		if(e.getCause() == SleepSkipCause.STORM){
+			messageService.sendMessageToWorld(ConfigMessage.STORM_SKIPPED, world);
+			return;
+		}
+		messageService.sendMessageToWorld(ConfigMessage.NIGHT_SKIPPED, world);
+		return;
 
-        }
+	}
+	private void resetPhantomCounter(World world) 
+	{
+		try{
 
-        if(cause == SleepSkipCause.Storm){
-            messageService.sendMessageToWorld(ConfigMessage.STORM_SKIPPED, world);
-            return;
-        }
-            messageService.sendMessageToWorld(ConfigMessage.NIGHT_SKIPPED, world);
-            return;
+			for(Player p: world.getPlayers())
+				p.setStatistic(Statistic.TIME_SINCE_REST, 0);
+		}catch (IllegalArgumentException error){
 
-        }
-     }
+		}
+	}
+}
 
 
 

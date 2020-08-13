@@ -1,11 +1,12 @@
 package me.qintinator.sleepmost.flags;
 
+import org.bukkit.World;
+
 import me.qintinator.sleepmost.enums.FlagType;
 import me.qintinator.sleepmost.interfaces.IConfigRepository;
 import me.qintinator.sleepmost.interfaces.ISleepFlag;
 import me.qintinator.sleepmost.interfaces.ISleepFlagService;
 import me.qintinator.sleepmost.statics.Bootstrapper;
-import org.bukkit.World;
 
 public class PercentageRequiredFlag implements ISleepFlag<Double> {
 
@@ -15,9 +16,9 @@ public class PercentageRequiredFlag implements ISleepFlag<Double> {
     private final ISleepFlagService sleepFlagService;
 
     public PercentageRequiredFlag(){
-        configRepository = Bootstrapper.getBootstrapper().getConfigRepository();
-        bootstrapper = Bootstrapper.getBootstrapper();
-        this.sleepFlagService = bootstrapper.getSleepFlagService();
+    	this.configRepository = Bootstrapper.getBootstrapper().getConfigRepository();
+    	this.bootstrapper = Bootstrapper.getBootstrapper();
+        this.sleepFlagService = this.bootstrapper.getSleepFlagService();
     }
 
     @Override
@@ -33,7 +34,7 @@ public class PercentageRequiredFlag implements ISleepFlag<Double> {
     @Override
     public boolean isValidValue(String value) {
         try {
-            double d = Double.parseDouble(value);
+            Double.parseDouble(value);
             return true;
         } catch (Exception e) {
             return false;
@@ -42,7 +43,7 @@ public class PercentageRequiredFlag implements ISleepFlag<Double> {
 
     @Override
     public FlagType getFlagType() {
-        return FlagType.Double;
+        return FlagType.DOUBLE;
     }
 
     @Override

@@ -24,7 +24,7 @@ public class DisableSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if (!(sender instanceof Player)) {
-            messageService.sendMessage(sender, Message.commandOnlyForPlayers, true);
+            messageService.sendMessage(sender, Message.ONLY_PLAYERS_COMMAND, true);
             return true;
         }
 
@@ -32,12 +32,12 @@ public class DisableSubCommand implements ISubCommand {
         World world = player.getWorld();
 
         if (!sleepService.enabledForWorld(world)) {
-            messageService.sendMessage(sender, Message.alreadyDisabledForWorld, true);
+            messageService.sendMessage(sender, Message.ALREADY_DISABLED_FOR_WORLD, true);
             return true;
         }
 
         sleepService.disableForWorld(world);
-        messageService.sendMessage(sender, Message.disabledForWorld, true);
+        messageService.sendMessage(sender, Message.DISABLED_FOR_WORLD, true);
         return true;
     }
 }

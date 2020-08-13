@@ -17,7 +17,7 @@ public class ErrorCommand implements ISubCommand {
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
-        messageService.sendMessage(sender, Message.unknownCommand, true);
+        messageService.sendMessage(sender, Message.UNKNOWN_COMMAND, true);
         return true;
     }
 }

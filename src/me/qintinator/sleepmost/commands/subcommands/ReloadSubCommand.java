@@ -21,7 +21,7 @@ public class ReloadSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         sleepService.reloadConfig();
-        messageService.sendMessage(sender, Message.configReloaded, true);
+        messageService.sendMessage(sender, Message.CONFIG_RELOADED, true);
         return true;
     }
 }

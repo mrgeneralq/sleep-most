@@ -13,9 +13,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class SleepmostCommand implements CommandExecutor, TabCompleter {
-
-
-    private final HashMap<String, ISubCommand> subCommands = new HashMap<>();
+    private final Map<String, ISubCommand> subCommands = new HashMap<>();
+    
     private final ISleepService sleepService;
     private final IMessageService messageService;
     private final ISleepFlagService sleepFlagService;
@@ -26,6 +25,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
         this.messageService = messageService;
         this.sleepFlagService = sleepFlagService;
         this.updateService = updateService;
+        
         this.registerSubCommands();
     }
 
@@ -47,22 +47,20 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
         if(args.length == 0){
 
             if(!sender.hasPermission("sleepmost.help")){
-                messageService.sendMessage(sender, Message.noPermission, false);
+                messageService.sendMessage(sender, Message.NO_PERMISSION, false);
                 return true;
             }
-
-            messageService.sendMessage(sender,"&b*********************************************",false);
-            messageService.sendMessage(sender,"&b*&e  SLEEPMOST &o&7author: MrGeneralQ  &b*",false);
-            messageService.sendMessage(sender,"&b*********************************************",false);
-
-            messageService.sendMessage(sender,"", false);
-            messageService.sendMessage(sender,"&e/sm &fshow a list of available commands", false);
-            messageService.sendMessage(sender,"&e/sm enable &fenable sleepmost in the current world", false);
-            messageService.sendMessage(sender,"&e/sm disable &fdisable sleepmost in the current world", false);
-            messageService.sendMessage(sender,"&e/sm setflag <flagname> <flagvalue> &fset a flag for the current world",false);
-            messageService.sendMessage(sender,"&e/sm info &fshow a list of all flags set for your world",false);
-            messageService.sendMessage(sender,"&e/sm version &fshow the current version of sleep most",false);
-            messageService.sendMessage(sender,"&e/sm reload &freload the config file",false);
+            messageService.sendMessage(sender, "&b*********************************************", false);
+            messageService.sendMessage(sender, "&b*&e  SLEEPMOST &o&7author: MrGeneralQ  &b*", false);
+            messageService.sendMessage(sender, "&b*********************************************", false);
+            messageService.sendMessage(sender, "", false);
+            messageService.sendMessage(sender, "&e/sm &fshow a list of available commands", false);
+            messageService.sendMessage(sender, "&e/sm enable &fenable sleepmost in the current world", false);
+            messageService.sendMessage(sender, "&e/sm disable &fdisable sleepmost in the current world", false);
+            messageService.sendMessage(sender, "&e/sm setflag <flagname> <flagvalue> &fset a flag for the current world", false);
+            messageService.sendMessage(sender, "&e/sm info &fshow a list of all flags set for your world", false);
+            messageService.sendMessage(sender, "&e/sm version &fshow the current version of sleep most", false);
+            messageService.sendMessage(sender, "&e/sm reload &freload the config file", false);
             return true;
         }
 
@@ -72,11 +70,11 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
         if(!sender.hasPermission("sleepmost." + subCommand))
         {
             // check if player has permission of command
-            messageService.sendMessage(sender, Message.noPermission, false);
+            messageService.sendMessage(sender, Message.NO_PERMISSION, false);
             return true;
         }
 
-       return subCommands.getOrDefault(subCommand, new ErrorCommand(messageService)).executeCommand(sender,command,commandLabel, args);
+       return subCommands.getOrDefault(subCommand, new ErrorCommand(messageService)).executeCommand(sender, command, commandLabel, args);
     }
 
     @Override
@@ -102,10 +100,9 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 
         if(args[0].equalsIgnoreCase("setflag") && args.length == 2)
         {
-            SleepFlagMapper flagMapper = SleepFlagMapper.getMapper();
-            List<String> array =  flagMapper.getAllFlags();
-            Collections.sort(array);
-            return array;
+            List<String> flags = SleepFlagMapper.getMapper().getAllFlags();
+            Collections.sort(flags);
+            return flags;
         }
 
 

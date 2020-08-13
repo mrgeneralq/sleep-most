@@ -40,7 +40,7 @@ public class MessageService implements IMessageService {
             return String.format("%s %s", prefix, message);
         }
 
-        return Message.getMessage(message.trim());
+        return Message.colorize(message.trim());
     }
 
 
@@ -53,7 +53,7 @@ public class MessageService implements IMessageService {
 
     @Override
     public ConfigMessage getSleepSkipCauseMessage(SleepSkipCause cause) {
-         if(cause == SleepSkipCause.Storm)
+         if(cause == SleepSkipCause.STORM)
              return ConfigMessage.PLAYERS_LEFT_TO_SKIP_STORM;
          return ConfigMessage.PLAYERS_LEFT_TO_SKIP_NIGHT;
     }
@@ -62,7 +62,7 @@ public class MessageService implements IMessageService {
     public String getPlayersLeftMessage(Player player, SleepSkipCause cause) {
 
         World world = player.getWorld();
-        return getMessage(this.getSleepSkipCauseMessage(cause),false)
+        return getMessage(this.getSleepSkipCauseMessage(cause), false)
                 .replaceFirst("%sleeping%", Integer.toString(sleepService.getPlayersSleepingCount(world)))
                 .replaceAll("%required%", Integer.toString(Math.round(sleepService.getRequiredPlayersSleepingCount(world))))
                 .replaceAll("%player%", player.getName());
@@ -77,8 +77,8 @@ public class MessageService implements IMessageService {
     @Override
     public void sendPlayerLeftMessage(Player player, SleepSkipCause cause) {
         World world = player.getWorld();
-
         String message = this.getPlayersLeftMessage(player, cause);
+        
         this.sendMessageToWorld(world, message);
     }
 
@@ -86,7 +86,7 @@ public class MessageService implements IMessageService {
 
         String prefix = configRepository.getPrefix();
 
-        if(message.length() == 0)
+        if(message.isEmpty())
             return;
 
         String fullMessage;
@@ -95,6 +95,6 @@ public class MessageService implements IMessageService {
         if(showPrefix && prefix.length() > 0)
         fullMessage = String.format("%s %s", prefix, message);
 
-        sender.sendMessage(Message.getMessage(fullMessage));
+        sender.sendMessage(Message.colorize(fullMessage));
     }
 }

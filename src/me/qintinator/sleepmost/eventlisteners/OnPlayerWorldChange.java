@@ -27,7 +27,6 @@ public class OnPlayerWorldChange implements Listener {
         if(sleepService.enabledForWorld(world))
             return;
 
-        player.sendMessage(Message.currentlyDisabled);
-
+        player.sendMessage(Message.CURRENTLY_DISABLED);
     }
 }

@@ -106,10 +106,10 @@ public class SleepService implements ISleepService {
         SleepSkipCause cause;
 
         if (this.isNight(world)) {
-            cause = SleepSkipCause.NightTime;
+            cause = SleepSkipCause.NIGHT_TIME;
             world.setTime(configService.getResetTime());
         } else {
-            cause = SleepSkipCause.Storm;
+            cause = SleepSkipCause.STORM;
         }
 
         world.setThundering(false);
@@ -134,8 +134,8 @@ public class SleepService implements ISleepService {
     @Override
     public SleepSkipCause getSleepSkipCause(World world) {
         if (this.isNight(world))
-            return SleepSkipCause.NightTime;
-        return SleepSkipCause.Storm;
+            return SleepSkipCause.NIGHT_TIME;
+        return SleepSkipCause.STORM;
     }
 
     @Override
@@ -154,22 +154,25 @@ public class SleepService implements ISleepService {
     }
 
     @Override
-    public void setFlag(World world, ISleepFlag flag, String value) {
-
+    public void setFlag(World world, ISleepFlag<?> flag, String value) {
+    	
         Object convertedFlagValue = null;
-
-        if(flag.getFlagType() == FlagType.Boolean)
-            convertedFlagValue = Boolean.parseBoolean(value);
-
-        if(flag.getFlagType() == FlagType.Double)
-            convertedFlagValue = Double.parseDouble(value);
-
-        if(flag.getFlagType() == FlagType.String)
-            convertedFlagValue = value;
-
-        if(flag.getFlagType() == FlagType.Integer)
-            convertedFlagValue = Integer.parseInt(value);
-
+        
+        switch(flag.getFlagType()) 
+        {
+        case BOOLEAN:
+        	 convertedFlagValue = Boolean.parseBoolean(value);
+        	 break;
+        case DOUBLE:
+        	convertedFlagValue = Double.parseDouble(value);
+        	break;
+        case STRING:
+        	convertedFlagValue = value;
+        	break;
+        case INTEGER:
+        	convertedFlagValue = Integer.parseInt(value);
+        	break;
+        }
         configRepository.setFlag(world, flag.getFlagName(), convertedFlagValue);
     }
 }

@@ -9,7 +9,7 @@ import me.qintinator.sleepmost.services.*;
 
 public class Bootstrapper {
 
-    private  Main main;
+    private Main main;
     private static Bootstrapper instance;
     private ISleepService sleepService;
     private IMessageService messageService;

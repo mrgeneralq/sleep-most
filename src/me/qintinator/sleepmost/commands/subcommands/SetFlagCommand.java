@@ -32,7 +32,7 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!(sender instanceof Player)){
-            messageService.sendMessage(sender, Message.commandOnlyForPlayers, true);
+            messageService.sendMessage(sender, Message.ONLY_PLAYERS_COMMAND, true);
             return true;
         }
 
@@ -40,7 +40,7 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
         World world = player.getWorld();
 
         if(!sleepService.enabledForWorld(world)){
-            messageService.sendMessage(player, Message.currentlyDisabled, true);
+            messageService.sendMessage(player, Message.CURRENTLY_DISABLED, true);
             return true;
         }
 
@@ -60,7 +60,7 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
             return true;
         }
 
-        ISleepFlag sleepFlag = flagMapper.getFlag(flag);
+        ISleepFlag<?> sleepFlag = flagMapper.getFlag(flag);
 
         if(args.length < 3){
             messageService.sendMessage(player, "&cMissing value! Use &e" + sleepFlag.getFlagUsage(),true);
