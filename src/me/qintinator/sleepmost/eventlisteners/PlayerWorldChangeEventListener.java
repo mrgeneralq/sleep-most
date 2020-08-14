@@ -8,11 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 
-public class OnPlayerWorldChange implements Listener {
+public class PlayerWorldChangeEventListener implements Listener {
 
     private final ISleepService sleepService;
 
-    public OnPlayerWorldChange(ISleepService sleepService){
+    public PlayerWorldChangeEventListener(ISleepService sleepService){
         this.sleepService = sleepService;
     }
 

@@ -2,6 +2,7 @@ package me.qintinator.sleepmost.eventlisteners;
 
 import me.qintinator.sleepmost.interfaces.IUpdateService;
 import me.qintinator.sleepmost.statics.Message;
+import me.qintinator.sleepmost.statics.VersionController;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,12 +10,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 
-public class OnPlayerJoin implements Listener {
+public class PlayerJoinEventListener implements Listener {
 
     private final IUpdateService updateService;
     private final Plugin plugin;
 
-    public OnPlayerJoin(Plugin plugin, IUpdateService updateService) {
+    public PlayerJoinEventListener(Plugin plugin, IUpdateService updateService) {
         this.plugin = plugin;
         this.updateService = updateService;
     }
@@ -32,7 +33,9 @@ public class OnPlayerJoin implements Listener {
 
     //Notify the player if this plugin has a new update which the server doesn't have
     private void notifyNewUpdate(Player player) {
-        if (updateService.hasUpdate())
+        if (updateService.hasUpdate()){
             player.sendMessage(Message.colorize("&bA newer version of &esleep-most &bis available! &cPlease note that support is only given to the latest version"));
+            player.sendMessage(Message.colorize(String.format("&a%s", VersionController.UPDATE_URL)));
+        }
     }
 }

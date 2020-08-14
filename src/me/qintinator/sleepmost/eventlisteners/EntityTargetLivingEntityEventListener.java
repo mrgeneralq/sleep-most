@@ -9,12 +9,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
-public class OnMobTarget implements Listener{
+public class EntityTargetLivingEntityEventListener implements Listener{
 
 	private final ISleepService sleepService;
 	private final ISleepFlagService sleepFlagService;
 
-	public OnMobTarget(ISleepService sleepService, ISleepFlagService sleepFlagService) {
+	public EntityTargetLivingEntityEventListener(ISleepService sleepService, ISleepFlagService sleepFlagService) {
 		this.sleepService = sleepService;
 		this.sleepFlagService  = sleepFlagService;
 	}

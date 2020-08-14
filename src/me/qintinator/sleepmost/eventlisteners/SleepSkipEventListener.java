@@ -13,13 +13,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 
-public class OnSleepSkip implements Listener {
+public class SleepSkipEventListener implements Listener {
 
 	private final ISleepService sleepService;
 	private final IMessageService messageService;
 	private final DataContainer dataContainer;
 
-	public OnSleepSkip(ISleepService sleepService, IMessageService messageService) {
+	public SleepSkipEventListener(ISleepService sleepService, IMessageService messageService) {
 		this.sleepService = sleepService;
 		this.messageService = messageService;
 		this.dataContainer = DataContainer.getContainer();
