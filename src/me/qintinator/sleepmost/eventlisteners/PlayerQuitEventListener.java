@@ -6,11 +6,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class OnLeave implements Listener {
+public class PlayerQuitEventListener implements Listener {
 
     private final ICooldownService cooldownService;
 
-    public OnLeave(ICooldownService cooldownService) {
+    public PlayerQuitEventListener(ICooldownService cooldownService) {
         this.cooldownService = cooldownService;
     }
 

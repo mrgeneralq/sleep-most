@@ -1,13 +1,13 @@
 package me.qintinator.sleepmost.repositories;
 
-import me.qintinator.sleepmost.Main;
+import me.qintinator.sleepmost.Sleepmost;
 import me.qintinator.sleepmost.interfaces.IConfigRepository;
 import org.bukkit.World;
 
 public class ConfigRepository implements IConfigRepository {
-    private final Main main;
+    private final Sleepmost main;
 
-    public ConfigRepository(Main main) {
+    public ConfigRepository(Sleepmost main) {
         this.main = main;
     }
 

@@ -19,6 +19,7 @@ public class UpdateRepository implements IUpdateRepository {
 	@Override
 	public String getLatestVersion() {
 		try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + resourceId).openStream();
+
 				Scanner scanner = new Scanner(inputStream)) {
 			if (scanner.hasNext()) {
 				return scanner.next();

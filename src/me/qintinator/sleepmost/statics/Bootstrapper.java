@@ -1,6 +1,6 @@
 package me.qintinator.sleepmost.statics;
 
-import me.qintinator.sleepmost.Main;
+import me.qintinator.sleepmost.Sleepmost;
 import me.qintinator.sleepmost.interfaces.*;
 import me.qintinator.sleepmost.repositories.ConfigRepository;
 import me.qintinator.sleepmost.repositories.CooldownRepository;
@@ -9,7 +9,7 @@ import me.qintinator.sleepmost.services.*;
 
 public class Bootstrapper {
 
-    private Main main;
+    private Sleepmost main;
     private static Bootstrapper instance;
     private ISleepService sleepService;
     private IMessageService messageService;
@@ -22,7 +22,7 @@ public class Bootstrapper {
     private ISleepFlagService sleepFlagService;
 
     //new service logic
-    private ConfigService configService;
+    private IConfigService configService;
 
     public IConfigRepository getConfigRepository() {
         return configRepository;
@@ -34,7 +34,7 @@ public class Bootstrapper {
 
     private Bootstrapper(){ }
 
-    public void initialize(Main main){
+    public void initialize(Sleepmost main){
         this.main = main;
 
         this.configService = new ConfigService(main);
@@ -45,7 +45,7 @@ public class Bootstrapper {
         this.sleepFlagService = new SleepFlagService(this.getConfigRepository());
         this.configService = new ConfigService(main);
 
-        this.updateService = new UpdateService(this.getUpdateRepository(), main);
+        this.updateService = new UpdateService(this.getUpdateRepository(), main, configService);
         this.sleepService = new SleepService(configService, sleepFlagService , this.getConfigRepository());
         this.cooldownService = new CooldownService(this.getCooldownRepository(), this.getConfigRepository());
         this.messageService = new MessageService(this.getConfigRepository(), this.getSleepService());

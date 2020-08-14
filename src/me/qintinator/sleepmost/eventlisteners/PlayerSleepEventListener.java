@@ -1,5 +1,5 @@
 package me.qintinator.sleepmost.eventlisteners;
-import me.qintinator.sleepmost.Main;
+import me.qintinator.sleepmost.Sleepmost;
 import me.qintinator.sleepmost.enums.ConfigMessage;
 import me.qintinator.sleepmost.interfaces.*;
 import me.qintinator.sleepmost.runnables.NightcycleAnimationTimer;
@@ -13,16 +13,16 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
 
 
-public class OnSleep implements Listener {
+public class PlayerSleepEventListener implements Listener {
 
-	private final Main main;
+	private final Sleepmost main;
 	private final ISleepService sleepService;
 	private final IMessageService messageService;
 	private final ICooldownService cooldownService;
 	private final ISleepFlagService sleepFlagService;
 	private final DataContainer dataContainer;
 
-	public OnSleep(Main main,ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService, ISleepFlagService sleepFlagService) {
+	public PlayerSleepEventListener(Sleepmost main, ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService, ISleepFlagService sleepFlagService) {
 		this.sleepService = sleepService;
 		this.messageService = messageService;
 		this.cooldownService = cooldownService;

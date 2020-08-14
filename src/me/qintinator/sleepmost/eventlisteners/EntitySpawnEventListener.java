@@ -9,11 +9,11 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 import me.qintinator.sleepmost.interfaces.ISleepFlag;
 import me.qintinator.sleepmost.interfaces.ISleepFlagService;
 
-public class OnEntitySpawn implements Listener {
+public class EntitySpawnEventListener implements Listener {
 
 	private final ISleepFlagService sleepFlagService;
 
-	public OnEntitySpawn(ISleepFlagService sleepFlagService) {
+	public EntitySpawnEventListener(ISleepFlagService sleepFlagService) {
 		this.sleepFlagService = sleepFlagService;
 	}
 
