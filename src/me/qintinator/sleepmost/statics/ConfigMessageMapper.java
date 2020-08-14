@@ -5,14 +5,14 @@ import java.util.HashMap;
 import me.qintinator.sleepmost.enums.ConfigMessage;
 import org.bukkit.ChatColor;
 
-import me.qintinator.sleepmost.Main;
+import me.qintinator.sleepmost.Sleepmost;
 
 public class ConfigMessageMapper {
 
 
 	private static ConfigMessageMapper messageMapper;
 	private final HashMap<ConfigMessage, String> configMessages;
-	private Main main;
+	private Sleepmost main;
 
 	private ConfigMessageMapper(){
 		configMessages = new HashMap<>();
@@ -33,7 +33,7 @@ public class ConfigMessageMapper {
 			return messageMapper;
 	}
 
-	public void initialize(Main main){
+	public void initialize(Sleepmost main){
 		this.main = main;
 	}
 

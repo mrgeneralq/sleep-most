@@ -3,6 +3,10 @@
 # VERSION: 4.5
 # SUPPORT NEEDED? Join our discord at --> https://discord.pseudonova.com/ WE ARE HAPPY TO HELP YOU FURTHER!
 
+
+ # WARNING: SUPPORT IS ONLY GIVEN TO THE LATEST VERSION
+update-checker-enabled: true
+
 sleep:
   # for each world, you can create different configurations
   world:

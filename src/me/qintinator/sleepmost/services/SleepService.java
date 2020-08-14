@@ -3,10 +3,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import me.qintinator.sleepmost.enums.FlagType;
 import me.qintinator.sleepmost.enums.SleepSkipCause;
 import me.qintinator.sleepmost.events.SleepSkipEvent;
-import me.qintinator.sleepmost.interfaces.IConfigRepository;
-import me.qintinator.sleepmost.interfaces.ISleepFlag;
-import me.qintinator.sleepmost.interfaces.ISleepFlagService;
-import me.qintinator.sleepmost.interfaces.ISleepService;
+import me.qintinator.sleepmost.interfaces.*;
 import me.qintinator.sleepmost.statics.DataContainer;
 import me.qintinator.sleepmost.statics.SleepFlagMapper;
 import me.qintinator.sleepmost.statics.VersionController;
@@ -22,9 +19,9 @@ public class SleepService implements ISleepService {
 
     private ISleepFlagService sleepFlagService;
     private final IConfigRepository configRepository;
-    private final ConfigService configService;
+    private final IConfigService configService;
 
-    public SleepService(ConfigService configService, ISleepFlagService sleepFlagService, IConfigRepository configRepository){
+    public SleepService(IConfigService configService, ISleepFlagService sleepFlagService, IConfigRepository configRepository){
         this.configService = configService;
         this.sleepFlagService = sleepFlagService;
         this.configRepository = configRepository;
