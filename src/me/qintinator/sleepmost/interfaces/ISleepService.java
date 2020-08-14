@@ -19,5 +19,5 @@ public interface ISleepService {
     public void reloadConfig();
     public void enableForWorld(World world);
     public void disableForWorld(World world);
-    public void setFlag(World world, ISleepFlag flag, String value);
+    public void setFlag(World world, ISleepFlag<?> flag, String value);
 }

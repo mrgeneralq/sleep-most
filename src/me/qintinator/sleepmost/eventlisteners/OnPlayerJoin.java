@@ -8,30 +8,27 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class OnPlayerJoin implements Listener {
 
-    private final IUpdateService updateService;
+	private final IUpdateService updateService;
 
+	public OnPlayerJoin(IUpdateService updateService) {
+		this.updateService = updateService;
+	}
 
-    public OnPlayerJoin(IUpdateService updateService) {
-        this.updateService = updateService;
-    }
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent e){
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e){
+		Player player = e.getPlayer();
 
-        Player player = e.getPlayer();
+		if(player.hasPermission("sleepmost.alerts"))
+			new Thread(() -> notifyNewUpdate(player)).start();
+	}
 
-        if(!player.hasPermission("sleepmost.alerts"))
-            return;
-
-        Runnable updateChecker =
-                () -> {
-                    boolean hasUpdate = updateService.hasUpdate();
-                    if(hasUpdate)
-                        player.sendMessage(Message.getMessage("&bA newer version of &esleep-most &bis available! &cPlease note that support is only given to the latest version"));
-                };
-
-        Thread thread = new Thread(updateChecker);
-        thread.start();
-
-    }
+	//Notify the player if this plugin has a new update which the server doesn't have
+	private void notifyNewUpdate(Player player) 
+	{
+		if(updateService.hasUpdate()) 
+		{
+			player.sendMessage(Message.colorize("&bA newer version of &esleep-most &bis available! &cPlease note that support is only given to the latest version"));
+		}
+	}
 }

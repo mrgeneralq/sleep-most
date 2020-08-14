@@ -7,7 +7,7 @@ import org.bukkit.World;
 
 public class NightcycleAnimationFlag implements ISleepFlag<Boolean> {
 
-    private ISleepFlagService sleepFlagService;
+    private final ISleepFlagService sleepFlagService;
 
     public NightcycleAnimationFlag(){
         this.sleepFlagService = Bootstrapper.getBootstrapper().getSleepFlagService();
@@ -25,19 +25,19 @@ public class NightcycleAnimationFlag implements ISleepFlag<Boolean> {
 
     @Override
     public boolean isValidValue(String value) {
-        return value.equals("true")||value.equals("false");
+        return value.equals("true") || value.equals("false");
     }
 
     @Override
     public FlagType getFlagType() {
-        return FlagType.Boolean;
+        return FlagType.BOOLEAN;
     }
 
     @Override
     public Boolean getValue(World world) {
-        if(sleepFlagService.getFlag(world, this.getFlagName()) == null)
-            return false;
-        return (boolean) sleepFlagService.getFlag(world, this.getFlagName());
+    	Object flagValue = sleepFlagService.getFlag(world, this.getFlagName());
+    	
+    	return flagValue == null ? null : (boolean) flagValue;
     }
 
     @Override

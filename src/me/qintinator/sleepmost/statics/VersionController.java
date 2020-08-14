@@ -1,27 +1,16 @@
 package me.qintinator.sleepmost.statics;
 
-import org.bukkit.Bukkit;
-
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class VersionController {
+import org.bukkit.Bukkit;
 
-    private static List<String> oldVersions = new ArrayList();
+public class VersionController {
+	
+    private static final List<String> OLD_VERSIONS = Arrays.asList("1.8", "1.9", "1.10", "1.11", "1.12", "1.13");
 
     public static boolean isOldVersion(){
-        oldVersions.add("1.8");
-        oldVersions.add("1.9");
-        oldVersions.add("1.10");
-        oldVersions.add("1.11");
-        oldVersions.add("1.12");
-        oldVersions.add("1.13");
-
-        for(String oldVersion: oldVersions){
-            if(Bukkit.getVersion().contains(oldVersion))
-                return true;
-        }
-            return false;
+    	return OLD_VERSIONS.stream().anyMatch(Bukkit.getVersion()::contains);
     }
 
 }

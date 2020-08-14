@@ -30,7 +30,7 @@ public class InfoSubCommand implements ISubCommand {
 
 
         if(!(sender instanceof Player)){
-            messageService.sendMessage(sender, Message.commandOnlyForPlayers, true);
+            messageService.sendMessage(sender, Message.ONLY_PLAYERS_COMMAND, true);
             return true;
         }
 
@@ -38,13 +38,13 @@ public class InfoSubCommand implements ISubCommand {
         World world = player.getWorld();
 
         if(!sleepService.enabledForWorld(world)){
-            messageService.sendMessage(player, Message.currentlyDisabled, true);
+            messageService.sendMessage(player, Message.CURRENTLY_DISABLED, true);
             return true;
         }
 
         List<String> flags = sleepFlagMapper.getAllFlags();
 
-        List<ISleepFlag> sleepFlagCollection = new ArrayList<>();
+        List<ISleepFlag<?>> sleepFlagCollection = new ArrayList<>();
 
         for(String flag : flags){
 
@@ -57,13 +57,13 @@ public class InfoSubCommand implements ISubCommand {
 
 
 
-        messageService.sendMessage(sender,"&b*********************************************",false);
-        messageService.sendMessage(sender,String.format("&e&l  FLAGS &o&7world: &c&l%s", world.getName()),false);
-        messageService.sendMessage(sender,"&b*********************************************",false);
+        messageService.sendMessage(sender, "&b*********************************************", false);
+        messageService.sendMessage(sender, String.format("&e&l  FLAGS &o&7world: &c&l%s", world.getName()), false);
+        messageService.sendMessage(sender, "&b*********************************************", false);
 
-        messageService.sendMessage(sender,"", false);
+        messageService.sendMessage(sender, "" , false);
 
-        for(ISleepFlag flagItem: sleepFlagCollection)
+        for(ISleepFlag<?> flagItem : sleepFlagCollection)
             messageService.sendMessage(sender,String.format("&e%s &b%s",flagItem.getFlagName(), flagItem.getValue(world)), false);
 
         messageService.sendMessage(sender,"", false);

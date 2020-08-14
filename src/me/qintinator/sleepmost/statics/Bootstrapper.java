@@ -9,7 +9,7 @@ import me.qintinator.sleepmost.services.*;
 
 public class Bootstrapper {
 
-    private  Main main;
+    private Main main;
     private static Bootstrapper instance;
     private ISleepService sleepService;
     private IMessageService messageService;
@@ -35,13 +35,13 @@ public class Bootstrapper {
     private Bootstrapper(){ }
 
     public void initialize(Main main){
-        main = main;
+        this.main = main;
 
         this.configService = new ConfigService(main);
 
         this.configRepository = new ConfigRepository(main);
         this.cooldownRepository = new CooldownRepository();
-        this.updateRepository = new UpdateRepository();
+        this.updateRepository = new UpdateRepository("60623");
         this.sleepFlagService = new SleepFlagService(this.getConfigRepository());
         this.configService = new ConfigService(main);
 

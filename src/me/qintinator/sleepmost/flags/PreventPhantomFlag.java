@@ -31,7 +31,7 @@ public class PreventPhantomFlag implements ISleepFlag<Boolean> {
 
     @Override
     public FlagType getFlagType() {
-        return FlagType.Boolean;
+        return FlagType.BOOLEAN;
     }
 
     @Override

@@ -1,9 +1,10 @@
 package me.qintinator.sleepmost.enums;
 
-public enum FlagType {
-    Boolean,
-    Integer,
-    Double,
-    Float,
-    String
+public enum FlagType
+{
+    BOOLEAN,
+    INTEGER,
+    DOUBLE,
+    FLOAT,
+    STRING;
 }

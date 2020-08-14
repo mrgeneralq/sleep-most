@@ -8,7 +8,7 @@ import org.bukkit.World;
 public class MobNoTargetFlag implements ISleepFlag<Boolean> {
 
 
-    ISleepFlagService sleepFlagService;
+    private ISleepFlagService sleepFlagService;
 
     public MobNoTargetFlag(){
         sleepFlagService = Bootstrapper.getBootstrapper().getSleepFlagService();
@@ -32,7 +32,7 @@ public class MobNoTargetFlag implements ISleepFlag<Boolean> {
 
     @Override
     public FlagType getFlagType() {
-        return FlagType.Boolean;
+        return FlagType.BOOLEAN;
     }
 
     @Override
