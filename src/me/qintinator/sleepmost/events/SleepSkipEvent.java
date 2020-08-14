@@ -7,31 +7,27 @@ import org.bukkit.event.HandlerList;
 
 public class SleepSkipEvent extends Event {
 
-    private final static HandlerList handlers = new HandlerList();
-    private final World world;
+	private final static HandlerList handlers = new HandlerList();
+	private final World world;
+	private final SleepSkipCause cause;
 
-    public SleepSkipCause getCause() {
-        return cause;
-    }
+	public SleepSkipEvent(World world, SleepSkipCause cause){
+		this.world = world;
+		this.cause = cause;
+	}
+	public SleepSkipCause getCause() {
+		return cause;
+	}
+	public World getWorld(){
+		return this.world;
+	}
 
-    private final SleepSkipCause cause;
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 
-
-    public SleepSkipEvent(World world, SleepSkipCause cause){
-        this.world = world;
-        this.cause = cause;
-    }
-
-    public World getWorld(){
-        return this.world;
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 }

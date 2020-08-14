@@ -10,15 +10,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
 public class OnMobTarget implements Listener{
-	
+
 	private final ISleepService sleepService;
 	private final ISleepFlagService sleepFlagService;
+
 	public OnMobTarget(ISleepService sleepService, ISleepFlagService sleepFlagService) {
 		this.sleepService = sleepService;
 		this.sleepFlagService  = sleepFlagService;
-
 	}
-	
+
 	@EventHandler
 	public void onMobTarget(EntityTargetLivingEntityEvent event) {
 
@@ -35,14 +35,13 @@ public class OnMobTarget implements Listener{
 			return;
 
 		//check if mob targeting is enabled for world
-
 		ISleepFlag<Boolean> mobNoTargetFlag = sleepFlagService.getSleepFlag("mob-no-target");
 		Boolean value = mobNoTargetFlag.getValue(world);
-		
+
 		if(!value)
 			return;
 
-		// cancel te event
+		// cancel the event
 		event.setCancelled(true);
 	}
 

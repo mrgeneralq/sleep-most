@@ -41,7 +41,7 @@ public class Bootstrapper {
 
         this.configRepository = new ConfigRepository(main);
         this.cooldownRepository = new CooldownRepository();
-        this.updateRepository = new UpdateRepository();
+        this.updateRepository = new UpdateRepository("60623");
         this.sleepFlagService = new SleepFlagService(this.getConfigRepository());
         this.configService = new ConfigService(main);
 

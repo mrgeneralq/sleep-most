@@ -7,7 +7,7 @@ import org.bukkit.World;
 
 public class NightcycleAnimationFlag implements ISleepFlag<Boolean> {
 
-    private ISleepFlagService sleepFlagService;
+    private final ISleepFlagService sleepFlagService;
 
     public NightcycleAnimationFlag(){
         this.sleepFlagService = Bootstrapper.getBootstrapper().getSleepFlagService();

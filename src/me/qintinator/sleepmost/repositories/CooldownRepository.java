@@ -1,15 +1,17 @@
 package me.qintinator.sleepmost.repositories;
 
-import me.qintinator.sleepmost.interfaces.ICooldownRepository;
-import org.bukkit.entity.Player;
-
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+
+import org.bukkit.entity.Player;
+
+import me.qintinator.sleepmost.interfaces.ICooldownRepository;
 
 public class CooldownRepository implements ICooldownRepository {
 
-    private final HashMap<UUID, Long> cooldownMap = new HashMap<>();
+    private final Map<UUID, Long> cooldownMap = new HashMap<>();
 
     @Override
     public long getPlayerCooldown(Player player) {

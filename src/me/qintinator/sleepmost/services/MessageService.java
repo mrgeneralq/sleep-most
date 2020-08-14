@@ -12,89 +12,93 @@ import org.bukkit.entity.Player;
 
 public class MessageService implements IMessageService {
 
-    private final IConfigRepository configRepository;
-    private final ISleepService sleepService;
+	private final IConfigRepository configRepository;
+	private final ISleepService sleepService;
 
-    public MessageService(IConfigRepository configRepository, ISleepService sleepService) {
-        this.configRepository = configRepository;
-        this.sleepService = sleepService;
-    }
+	public MessageService(IConfigRepository configRepository, ISleepService sleepService) {
+		this.configRepository = configRepository;
+		this.sleepService = sleepService;
+	}
 
-    @Override
-    public String getMessage(ConfigMessage message, boolean includePrefix) {
+	@Override
+	public String getMessage(ConfigMessage message, boolean includePrefix) {
 
-        String prefix = configRepository.getPrefix();
-        String messagePath = ConfigMessageMapper.getMapper().getMessagePath(message);
-        String configMessage = configRepository.getString(messagePath);
+		String prefix = configRepository.getPrefix();
+		String messagePath = ConfigMessageMapper.getMapper().getMessagePath(message);
+		String configMessage = configRepository.getString(messagePath);
 
-        return this.getMessage(configMessage, includePrefix);
-    }
+		return this.getMessage(configMessage, includePrefix);
+	}
 
-    @Override
-    public String getMessage(String message, boolean includePrefix) {
-        String prefix = configRepository.getPrefix();
-        if(message.length() == 0)
-            return "";
+	@Override
+	public String getMessage(String message, boolean includePrefix) {
+		if(message.isEmpty())
+			return "";
 
-        if(prefix.length() > 0 && includePrefix){
-            return String.format("%s %s", prefix, message);
-        }
+		//add the prefix to the message
+		if(includePrefix) 
+		{
+			String prefix = configRepository.getPrefix();
 
-        return Message.colorize(message.trim());
-    }
+			if(!prefix.isEmpty()){
+				message = String.format("%s %s", prefix, message);
+			}
+		}
+		return Message.colorize(message.trim());
+	}
 
 
-    @Override
-    public void sendMessageToWorld(ConfigMessage message, World world) {
-        for(Player p: world.getPlayers()){
-            this.sendMessage(p,getMessage(message, true), false);
-        }
-    }
+	@Override
+	public void sendMessageToWorld(ConfigMessage message, World world) {
+		for(Player p: world.getPlayers()){
+			this.sendMessage(p,getMessage(message, true), false);
+		}
+	}
 
-    @Override
-    public ConfigMessage getSleepSkipCauseMessage(SleepSkipCause cause) {
-         if(cause == SleepSkipCause.STORM)
-             return ConfigMessage.PLAYERS_LEFT_TO_SKIP_STORM;
-         return ConfigMessage.PLAYERS_LEFT_TO_SKIP_NIGHT;
-    }
+	@Override
+	public ConfigMessage getSleepSkipCauseMessage(SleepSkipCause cause) {
+		return cause == SleepSkipCause.STORM ? ConfigMessage.PLAYERS_LEFT_TO_SKIP_STORM : ConfigMessage.PLAYERS_LEFT_TO_SKIP_NIGHT;
+	}
 
-    @Override
-    public String getPlayersLeftMessage(Player player, SleepSkipCause cause) {
+	@Override
+	public String getPlayersLeftMessage(Player player, SleepSkipCause cause) {
 
-        World world = player.getWorld();
-        return getMessage(this.getSleepSkipCauseMessage(cause), false)
-                .replaceFirst("%sleeping%", Integer.toString(sleepService.getPlayersSleepingCount(world)))
-                .replaceAll("%required%", Integer.toString(Math.round(sleepService.getRequiredPlayersSleepingCount(world))))
-                .replaceAll("%player%", player.getName());
-    }
+		World world = player.getWorld();
 
-    @Override
-    public void sendMessageToWorld(World world, String message) {
-        for(Player p: world.getPlayers())
-            this.sendMessage(p, message, true);
-    }
+		return getMessage(this.getSleepSkipCauseMessage(cause), false)
+				.replaceFirst("%sleeping%", Integer.toString(sleepService.getPlayersSleepingCount(world)))
+				.replaceAll("%required%", Integer.toString(Math.round(sleepService.getRequiredPlayersSleepingCount(world))))
+				.replaceAll("%player%", player.getName());
+	}
 
-    @Override
-    public void sendPlayerLeftMessage(Player player, SleepSkipCause cause) {
-        World world = player.getWorld();
-        String message = this.getPlayersLeftMessage(player, cause);
-        
-        this.sendMessageToWorld(world, message);
-    }
+	@Override
+	public void sendMessageToWorld(World world, String message) {
+		for(Player p: world.getPlayers())
+			this.sendMessage(p, message, true);
+	}
 
-    public void sendMessage(CommandSender sender, String message, boolean showPrefix){
+	@Override
+	public void sendPlayerLeftMessage(Player player, SleepSkipCause cause) {
+		World world = player.getWorld();
+		String message = this.getPlayersLeftMessage(player, cause);
 
-        String prefix = configRepository.getPrefix();
+		this.sendMessageToWorld(world, message);
+	}
 
-        if(message.isEmpty())
-            return;
+	public void sendMessage(CommandSender sender, String message, boolean showPrefix){
 
-        String fullMessage;
-        fullMessage = message;
+		if(message.isEmpty())
+			return;
 
-        if(showPrefix && prefix.length() > 0)
-        fullMessage = String.format("%s %s", prefix, message);
+		//add the prefix to the message
+		if(showPrefix)
+		{
+			String prefix = configRepository.getPrefix();
 
-        sender.sendMessage(Message.colorize(fullMessage));
-    }
+			if(!prefix.isEmpty()) 
+				message = String.format("%s %s", prefix, message);
+		}
+
+		sender.sendMessage(Message.colorize(message));
+	}
 }

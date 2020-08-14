@@ -25,7 +25,6 @@ public class Main extends JavaPlugin{
 		if(VersionController.isOldVersion())
 			Bukkit.getLogger().warning("You are using an older Minecraft version that requires a different way of calculating who is asleep.");
 		
-		//general
 		new Metrics(this);
 		saveDefaultConfig();
 		
@@ -49,7 +48,7 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new OnPlayerJoin(bootstrapper.getUpdateService()), this);
 		Bukkit.getPluginManager().registerEvents(new OnEntitySpawn(bootstrapper.getSleepFlagService()), this);
 		
-		//log if this version of the plugin is not the latest
+		//log if version of the plugin is not the latest
 		new Thread(() -> notifyIfNewUpdateExists(updateService)).start();
 	}
 	private void notifyIfNewUpdateExists(IUpdateService updateService) 
