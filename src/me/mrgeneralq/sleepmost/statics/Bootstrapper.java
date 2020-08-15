@@ -1,11 +1,11 @@
-package me.qintinator.sleepmost.statics;
+package me.mrgeneralq.sleepmost.statics;
 
-import me.qintinator.sleepmost.Sleepmost;
-import me.qintinator.sleepmost.interfaces.*;
-import me.qintinator.sleepmost.repositories.ConfigRepository;
-import me.qintinator.sleepmost.repositories.CooldownRepository;
-import me.qintinator.sleepmost.repositories.UpdateRepository;
-import me.qintinator.sleepmost.services.*;
+import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.repositories.ConfigRepository;
+import me.mrgeneralq.sleepmost.repositories.CooldownRepository;
+import me.mrgeneralq.sleepmost.repositories.UpdateRepository;
+import me.mrgeneralq.sleepmost.services.*;
+import me.mrgeneralq.sleepmost.Sleepmost;
 
 public class Bootstrapper {
 

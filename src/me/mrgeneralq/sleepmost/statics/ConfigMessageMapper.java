@@ -1,11 +1,11 @@
-package me.qintinator.sleepmost.statics;
+package me.mrgeneralq.sleepmost.statics;
 
 import java.util.HashMap;
 
-import me.qintinator.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import org.bukkit.ChatColor;
 
-import me.qintinator.sleepmost.Sleepmost;
+import me.mrgeneralq.sleepmost.Sleepmost;
 
 public class ConfigMessageMapper {
 

@@ -1,4 +1,4 @@
-package me.qintinator.sleepmost.statics;
+package me.mrgeneralq.sleepmost.statics;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;

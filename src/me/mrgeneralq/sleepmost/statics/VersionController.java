@@ -1,4 +1,4 @@
-package me.qintinator.sleepmost.statics;
+package me.mrgeneralq.sleepmost.statics;
 
 import java.util.Arrays;
 import java.util.List;

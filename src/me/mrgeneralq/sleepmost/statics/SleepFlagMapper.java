@@ -1,7 +1,7 @@
-package me.qintinator.sleepmost.statics;
+package me.mrgeneralq.sleepmost.statics;
 
-import me.qintinator.sleepmost.flags.*;
-import me.qintinator.sleepmost.interfaces.ISleepFlag;
+import me.mrgeneralq.sleepmost.flags.*;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,20 +1,20 @@
-package me.qintinator.sleepmost;
+package me.mrgeneralq.sleepmost;
+import me.mrgeneralq.sleepmost.bstats.Metrics;
+import me.mrgeneralq.sleepmost.commands.SleepmostCommand;
+import me.mrgeneralq.sleepmost.interfaces.IMessageService;
+import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
+import me.mrgeneralq.sleepmost.statics.Bootstrapper;
+import me.mrgeneralq.sleepmost.statics.VersionController;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.qintinator.sleepmost.bstats.Metrics;
-import me.qintinator.sleepmost.commands.SleepmostCommand;
-import me.qintinator.sleepmost.eventlisteners.EntitySpawnEventListener;
-import me.qintinator.sleepmost.eventlisteners.PlayerQuitEventListener;
-import me.qintinator.sleepmost.eventlisteners.EntityTargetLivingEntityEventListener;
-import me.qintinator.sleepmost.eventlisteners.PlayerJoinEventListener;
-import me.qintinator.sleepmost.eventlisteners.PlayerWorldChangeEventListener;
-import me.qintinator.sleepmost.eventlisteners.PlayerSleepEventListener;
-import me.qintinator.sleepmost.eventlisteners.SleepSkipEventListener;
-import me.qintinator.sleepmost.interfaces.IMessageService;
-import me.qintinator.sleepmost.interfaces.IUpdateService;
-import me.qintinator.sleepmost.statics.Bootstrapper;
-import me.qintinator.sleepmost.statics.VersionController;
+import me.mrgeneralq.sleepmost.eventlisteners.EntitySpawnEventListener;
+import me.mrgeneralq.sleepmost.eventlisteners.PlayerQuitEventListener;
+import me.mrgeneralq.sleepmost.eventlisteners.EntityTargetLivingEntityEventListener;
+import me.mrgeneralq.sleepmost.eventlisteners.PlayerJoinEventListener;
+import me.mrgeneralq.sleepmost.eventlisteners.PlayerWorldChangeEventListener;
+import me.mrgeneralq.sleepmost.eventlisteners.PlayerSleepEventListener;
+import me.mrgeneralq.sleepmost.eventlisteners.SleepSkipEventListener;
 
 public class Sleepmost extends JavaPlugin{
 	
