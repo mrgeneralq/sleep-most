@@ -1,7 +1,7 @@
-package me.qintinator.sleepmost.repositories;
+package me.mrgeneralq.sleepmost.repositories;
 
-import me.qintinator.sleepmost.Sleepmost;
-import me.qintinator.sleepmost.interfaces.IConfigRepository;
+import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
+import me.mrgeneralq.sleepmost.Sleepmost;
 import org.bukkit.World;
 
 public class ConfigRepository implements IConfigRepository {

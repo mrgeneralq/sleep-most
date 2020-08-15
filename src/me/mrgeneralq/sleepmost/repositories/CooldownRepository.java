@@ -1,13 +1,12 @@
-package me.qintinator.sleepmost.repositories;
+package me.mrgeneralq.sleepmost.repositories;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import me.mrgeneralq.sleepmost.interfaces.ICooldownRepository;
 import org.bukkit.entity.Player;
-
-import me.qintinator.sleepmost.interfaces.ICooldownRepository;
 
 public class CooldownRepository implements ICooldownRepository {
 

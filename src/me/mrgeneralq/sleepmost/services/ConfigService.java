@@ -1,7 +1,7 @@
-package me.qintinator.sleepmost.services;
+package me.mrgeneralq.sleepmost.services;
 
-import me.qintinator.sleepmost.Sleepmost;
-import me.qintinator.sleepmost.interfaces.IConfigService;
+import me.mrgeneralq.sleepmost.interfaces.IConfigService;
+import me.mrgeneralq.sleepmost.Sleepmost;
 
 public class ConfigService implements IConfigService {
 

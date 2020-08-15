@@ -1,6 +1,6 @@
-package me.qintinator.sleepmost.eventlisteners;
+package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.qintinator.sleepmost.interfaces.ICooldownService;
+import me.mrgeneralq.sleepmost.interfaces.ICooldownService;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

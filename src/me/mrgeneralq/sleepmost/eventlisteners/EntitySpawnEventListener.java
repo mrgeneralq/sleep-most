@@ -1,4 +1,4 @@
-package me.qintinator.sleepmost.eventlisteners;
+package me.mrgeneralq.sleepmost.eventlisteners;
 
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
@@ -6,8 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
-import me.qintinator.sleepmost.interfaces.ISleepFlag;
-import me.qintinator.sleepmost.interfaces.ISleepFlagService;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
 
 public class EntitySpawnEventListener implements Listener {
 

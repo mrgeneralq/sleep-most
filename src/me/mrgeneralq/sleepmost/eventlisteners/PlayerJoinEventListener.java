@@ -1,8 +1,8 @@
-package me.qintinator.sleepmost.eventlisteners;
+package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.qintinator.sleepmost.interfaces.IUpdateService;
-import me.qintinator.sleepmost.statics.Message;
-import me.qintinator.sleepmost.statics.VersionController;
+import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
+import me.mrgeneralq.sleepmost.statics.Message;
+import me.mrgeneralq.sleepmost.statics.VersionController;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

@@ -1,9 +1,9 @@
-package me.qintinator.sleepmost.services;
+package me.mrgeneralq.sleepmost.services;
 
-import me.qintinator.sleepmost.interfaces.IConfigRepository;
-import me.qintinator.sleepmost.interfaces.ISleepFlag;
-import me.qintinator.sleepmost.interfaces.ISleepFlagService;
-import me.qintinator.sleepmost.statics.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
 import org.bukkit.World;
 
 public class SleepFlagService implements ISleepFlagService {

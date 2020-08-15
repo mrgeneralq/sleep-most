@@ -1,5 +1,5 @@
-package me.qintinator.sleepmost.interfaces;
-import me.qintinator.sleepmost.enums.SleepSkipCause;
+package me.mrgeneralq.sleepmost.interfaces;
+import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import org.bukkit.World;
 
 public interface ISleepService {

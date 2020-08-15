@@ -1,9 +1,9 @@
-package me.qintinator.sleepmost.flags;
+package me.mrgeneralq.sleepmost.flags;
 
-import me.qintinator.sleepmost.enums.FlagType;
-import me.qintinator.sleepmost.interfaces.ISleepFlag;
-import me.qintinator.sleepmost.interfaces.ISleepFlagService;
-import me.qintinator.sleepmost.statics.Bootstrapper;
+import me.mrgeneralq.sleepmost.enums.FlagType;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
+import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 import org.bukkit.World;
 
 public class PreventPhantomFlag implements ISleepFlag<Boolean> {

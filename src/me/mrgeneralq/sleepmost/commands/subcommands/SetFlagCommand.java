@@ -1,11 +1,11 @@
-package me.qintinator.sleepmost.commands.subcommands;
+package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.qintinator.sleepmost.interfaces.IMessageService;
-import me.qintinator.sleepmost.interfaces.ISleepFlag;
-import me.qintinator.sleepmost.interfaces.ISleepService;
-import me.qintinator.sleepmost.interfaces.ISubCommand;
-import me.qintinator.sleepmost.statics.Message;
-import me.qintinator.sleepmost.statics.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.interfaces.IMessageService;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
+import me.mrgeneralq.sleepmost.interfaces.ISleepService;
+import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
+import me.mrgeneralq.sleepmost.statics.Message;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

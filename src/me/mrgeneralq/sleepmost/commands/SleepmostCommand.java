@@ -1,4 +1,4 @@
-package me.qintinator.sleepmost.commands;
+package me.mrgeneralq.sleepmost.commands;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -6,24 +6,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import me.qintinator.sleepmost.commands.subcommands.DisableSubCommand;
-import me.qintinator.sleepmost.commands.subcommands.EnableSubCommand;
-import me.qintinator.sleepmost.commands.subcommands.InfoSubCommand;
-import me.qintinator.sleepmost.commands.subcommands.ReloadSubCommand;
-import me.qintinator.sleepmost.commands.subcommands.SetFlagCommand;
-import me.qintinator.sleepmost.commands.subcommands.VersionSubCommand;
-import me.qintinator.sleepmost.interfaces.IMessageService;
-import me.qintinator.sleepmost.interfaces.ISleepFlagService;
-import me.qintinator.sleepmost.interfaces.ISleepService;
-import me.qintinator.sleepmost.interfaces.ISubCommand;
-import me.qintinator.sleepmost.interfaces.IUpdateService;
-import me.qintinator.sleepmost.statics.Message;
-import me.qintinator.sleepmost.statics.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.commands.subcommands.DisableSubCommand;
+import me.mrgeneralq.sleepmost.commands.subcommands.EnableSubCommand;
+import me.mrgeneralq.sleepmost.commands.subcommands.InfoSubCommand;
+import me.mrgeneralq.sleepmost.commands.subcommands.ReloadSubCommand;
+import me.mrgeneralq.sleepmost.commands.subcommands.SetFlagCommand;
+import me.mrgeneralq.sleepmost.commands.subcommands.VersionSubCommand;
+import me.mrgeneralq.sleepmost.interfaces.IMessageService;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
+import me.mrgeneralq.sleepmost.interfaces.ISleepService;
+import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
+import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
+import me.mrgeneralq.sleepmost.statics.Message;
 
 public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	private final Map<String, ISubCommand> subCommands = new HashMap<>();

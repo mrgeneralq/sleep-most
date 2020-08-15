@@ -1,7 +1,7 @@
-package me.qintinator.sleepmost.interfaces;
+package me.mrgeneralq.sleepmost.interfaces;
 
-import me.qintinator.sleepmost.enums.ConfigMessage;
-import me.qintinator.sleepmost.enums.SleepSkipCause;
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

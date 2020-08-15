@@ -1,12 +1,11 @@
-package me.qintinator.sleepmost.eventlisteners;
+package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.qintinator.sleepmost.Sleepmost;
-import me.qintinator.sleepmost.enums.ConfigMessage;
-import me.qintinator.sleepmost.interfaces.*;
-import me.qintinator.sleepmost.runnables.NightcycleAnimationTimer;
-import me.qintinator.sleepmost.statics.DataContainer;
-import me.qintinator.sleepmost.statics.VersionController;
-import org.bukkit.Bukkit;
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.Sleepmost;
+import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTimer;
+import me.mrgeneralq.sleepmost.statics.DataContainer;
+import me.mrgeneralq.sleepmost.statics.VersionController;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

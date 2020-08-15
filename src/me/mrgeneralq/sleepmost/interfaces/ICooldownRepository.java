@@ -1,4 +1,4 @@
-package me.qintinator.sleepmost.interfaces;
+package me.mrgeneralq.sleepmost.interfaces;
 
 import org.bukkit.entity.Player;
 

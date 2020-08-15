@@ -1,10 +1,10 @@
-package me.qintinator.sleepmost.runnables;
+package me.mrgeneralq.sleepmost.runnables;
 
-import me.qintinator.sleepmost.enums.SleepSkipCause;
-import me.qintinator.sleepmost.events.SleepSkipEvent;
-import me.qintinator.sleepmost.interfaces.IMessageService;
-import me.qintinator.sleepmost.interfaces.ISleepService;
-import me.qintinator.sleepmost.statics.DataContainer;
+import me.mrgeneralq.sleepmost.statics.DataContainer;
+import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
+import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
+import me.mrgeneralq.sleepmost.interfaces.IMessageService;
+import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;

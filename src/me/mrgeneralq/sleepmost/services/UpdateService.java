@@ -1,9 +1,9 @@
-package me.qintinator.sleepmost.services;
+package me.mrgeneralq.sleepmost.services;
 
-import me.qintinator.sleepmost.Sleepmost;
-import me.qintinator.sleepmost.interfaces.IConfigService;
-import me.qintinator.sleepmost.interfaces.IUpdateRepository;
-import me.qintinator.sleepmost.interfaces.IUpdateService;
+import me.mrgeneralq.sleepmost.interfaces.IConfigService;
+import me.mrgeneralq.sleepmost.Sleepmost;
+import me.mrgeneralq.sleepmost.interfaces.IUpdateRepository;
+import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 import org.bukkit.Bukkit;
 
 import java.util.Date;

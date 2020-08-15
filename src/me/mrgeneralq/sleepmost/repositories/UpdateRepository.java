@@ -1,6 +1,6 @@
-package me.qintinator.sleepmost.repositories;
+package me.mrgeneralq.sleepmost.repositories;
 
-import me.qintinator.sleepmost.interfaces.IUpdateRepository;
+import me.mrgeneralq.sleepmost.interfaces.IUpdateRepository;
 
 import java.io.IOException;
 import java.io.InputStream;

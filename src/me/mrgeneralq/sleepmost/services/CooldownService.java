@@ -1,8 +1,8 @@
-package me.qintinator.sleepmost.services;
+package me.mrgeneralq.sleepmost.services;
 
-import me.qintinator.sleepmost.interfaces.IConfigRepository;
-import me.qintinator.sleepmost.interfaces.ICooldownRepository;
-import me.qintinator.sleepmost.interfaces.ICooldownService;
+import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
+import me.mrgeneralq.sleepmost.interfaces.ICooldownRepository;
+import me.mrgeneralq.sleepmost.interfaces.ICooldownService;
 import org.bukkit.entity.Player;
 import java.util.Date;
 

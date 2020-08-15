@@ -1,11 +1,11 @@
-package me.qintinator.sleepmost.eventlisteners;
+package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.qintinator.sleepmost.enums.ConfigMessage;
-import me.qintinator.sleepmost.enums.SleepSkipCause;
-import me.qintinator.sleepmost.events.SleepSkipEvent;
-import me.qintinator.sleepmost.interfaces.IMessageService;
-import me.qintinator.sleepmost.interfaces.ISleepService;
-import me.qintinator.sleepmost.statics.DataContainer;
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
+import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
+import me.mrgeneralq.sleepmost.interfaces.IMessageService;
+import me.mrgeneralq.sleepmost.interfaces.ISleepService;
+import me.mrgeneralq.sleepmost.statics.DataContainer;
 import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

@@ -1,6 +1,6 @@
-package me.qintinator.sleepmost.interfaces;
+package me.mrgeneralq.sleepmost.interfaces;
 
-import me.qintinator.sleepmost.enums.FlagType;
+import me.mrgeneralq.sleepmost.enums.FlagType;
 import org.bukkit.World;
 
 public interface ISleepFlag<T> {

@@ -1,8 +1,8 @@
-package me.qintinator.sleepmost.eventlisteners;
+package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.qintinator.sleepmost.interfaces.ISleepFlag;
-import me.qintinator.sleepmost.interfaces.ISleepFlagService;
-import me.qintinator.sleepmost.interfaces.ISleepService;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
+import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

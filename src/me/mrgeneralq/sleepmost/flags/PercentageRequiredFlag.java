@@ -1,12 +1,12 @@
-package me.qintinator.sleepmost.flags;
+package me.mrgeneralq.sleepmost.flags;
 
+import me.mrgeneralq.sleepmost.enums.FlagType;
+import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
+import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
 import org.bukkit.World;
 
-import me.qintinator.sleepmost.enums.FlagType;
-import me.qintinator.sleepmost.interfaces.IConfigRepository;
-import me.qintinator.sleepmost.interfaces.ISleepFlag;
-import me.qintinator.sleepmost.interfaces.ISleepFlagService;
-import me.qintinator.sleepmost.statics.Bootstrapper;
+import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 
 public class PercentageRequiredFlag implements ISleepFlag<Double> {
 

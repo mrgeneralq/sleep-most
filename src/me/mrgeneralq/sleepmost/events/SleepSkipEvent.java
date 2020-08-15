@@ -1,6 +1,6 @@
-package me.qintinator.sleepmost.events;
+package me.mrgeneralq.sleepmost.events;
 
-import me.qintinator.sleepmost.enums.SleepSkipCause;
+import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import org.bukkit.World;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

@@ -1,4 +1,4 @@
-package me.qintinator.sleepmost.enums;
+package me.mrgeneralq.sleepmost.enums;
 
 public enum SleepmostFlag {
     MOB_NO_TARGET,
