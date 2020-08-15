@@ -100,12 +100,12 @@ public class SleepService implements ISleepService {
 
     @Override
     public void resetDay(World world) {
-        SleepSkipCause cause;
+        SleepSkipCause cause = SleepSkipCause.UNKNOWN;
 
         if (this.isNight(world)) {
             cause = SleepSkipCause.NIGHT_TIME;
             world.setTime(configService.getResetTime());
-        } else {
+        } else if(world.isThundering()){
             cause = SleepSkipCause.STORM;
         }
 
