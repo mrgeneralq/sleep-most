@@ -34,6 +34,7 @@ public class NightcycleAnimationTimer extends BukkitRunnable {
 
             world.setThundering(false);
             world.setStorm(false);
+
             Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, SleepSkipCause.NIGHT_TIME));
             this.cancel();
         }
