@@ -1,6 +1,6 @@
 name: sleep-most
 version: 4.5.1
-main: me.qintinator.sleepmost.Sleepmost
+main: me.mrgeneralq.sleepmost.Sleepmost
 author: MrGeneralQ
 commands:
   sleepmost:
