@@ -28,8 +28,6 @@ public class UpdateService implements IUpdateService {
     public boolean hasUpdate() {
 
         if(!configService.updateCheckerEnabled()){
-
-            Bukkit.broadcastMessage("Update checker is not enabled");
             return false;
         }
 
@@ -51,12 +49,26 @@ public class UpdateService implements IUpdateService {
         if(cachedUpdateVersion == null)
         	return false;
 
-        return !main.getDescription().getVersion().equalsIgnoreCase(cachedUpdateVersion);
+
+        try{
+            int currentVersion = Integer.parseInt(getCurrentVersion().replaceAll("\\.",""));
+            int cachedVersion = Integer.parseInt(this.cachedUpdateVersion.replaceAll("\\.",""));
+
+            return cachedVersion > currentVersion;
+
+        }catch(Exception ex){
+            return false;
+        }
     }
 
     @Override
     public String getCurrentVersion() {
         return main.getDescription().getVersion();
+    }
+
+    @Override
+    public String getCachedUpdateVersion(){
+        return this.cachedUpdateVersion;
     }
 
 }

@@ -34,8 +34,13 @@ public class PlayerJoinEventListener implements Listener {
     //Notify the player if this plugin has a new update which the server doesn't have
     private void notifyNewUpdate(Player player) {
         if (updateService.hasUpdate()){
-            player.sendMessage(Message.colorize("&bA newer version of &esleep-most &bis available! &cPlease note that support is only given to the latest version"));
+
+            player.sendMessage(Message.colorize("&b==============================================="));
+            player.sendMessage(Message.colorize(String.format("&bA newer version of &esleep-most &bis available: &e%s", updateService.getCachedUpdateVersion())));
             player.sendMessage(Message.colorize(String.format("&a%s", VersionController.UPDATE_URL)));
+            player.sendMessage(Message.colorize("&eYou may ignore this message if you just updated (spigot takes some time)"));
+            player.sendMessage(Message.colorize("&b==============================================="));
+
         }
     }
 }
