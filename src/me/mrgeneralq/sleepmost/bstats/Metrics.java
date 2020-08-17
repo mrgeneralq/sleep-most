@@ -1,7 +1,27 @@
 package me.mrgeneralq.sleepmost.bstats;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.zip.GZIPOutputStream;
+
+import javax.net.ssl.HttpsURLConnection;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -9,16 +29,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.zip.GZIPOutputStream;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
 /**
  * bStats collects some data for plugin authors.
@@ -66,6 +80,9 @@ public class Metrics {
     // The plugin
     private final Plugin plugin;
 
+    // The plugin id
+    private final int pluginId;
+
     // A list with all custom charts
     private final List<CustomChart> charts = new ArrayList<>();
 
@@ -73,12 +90,15 @@ public class Metrics {
      * Class constructor.
      *
      * @param plugin The plugin which stats should be submitted.
+     * @param pluginId The id of the plugin.
+     *                 It can be found at <a href="https://bstats.org/what-is-my-plugin-id">What is my plugin id?</a>
      */
-    public Metrics(Plugin plugin) {
+    public Metrics(Plugin plugin, int pluginId) {
         if (plugin == null) {
             throw new IllegalArgumentException("Plugin cannot be null!");
         }
         this.plugin = plugin;
+        this.pluginId = pluginId;
 
         // Get the config file
         File bStatsFolder = new File(plugin.getDataFolder().getParentFile(), "bStats");
@@ -193,6 +213,7 @@ public class Metrics {
         String pluginVersion = plugin.getDescription().getVersion();
 
         data.addProperty("pluginName", pluginName); // Append the name of the plugin
+        data.addProperty("id", pluginId); // Append the id of the plugin
         data.addProperty("pluginVersion", pluginVersion); // Append the version of the plugin
         JsonArray customCharts = new JsonArray();
         for (CustomChart customChart : charts) {
@@ -287,7 +308,6 @@ public class Metrics {
                                 if (logFailedRequests) {
                                     this.plugin.getLogger().log(Level.SEVERE, "Encountered unexpected exception", e);
                                 }
-                                continue; // continue looping since we cannot do any other thing.
                             }
                         }
                     } catch (NullPointerException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) { }
@@ -298,17 +318,14 @@ public class Metrics {
         data.add("plugins", pluginData);
 
         // Create a new thread for the connection to the bStats server
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // Send the data
-                    sendData(plugin, data);
-                } catch (Exception e) {
-                    // Something went wrong! :(
-                    if (logFailedRequests) {
-                        plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + plugin.getName(), e);
-                    }
+        new Thread(() -> {
+            try {
+                // Send the data
+                sendData(plugin, data);
+            } catch (Exception e) {
+                // Something went wrong! :(
+                if (logFailedRequests) {
+                    plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + plugin.getName(), e);
                 }
             }
         }).start();
@@ -329,7 +346,7 @@ public class Metrics {
             throw new IllegalAccessException("This method must not be called from the main thread!");
         }
         if (logSentData) {
-            plugin.getLogger().info("Sending data to bStats: " + data.toString());
+            plugin.getLogger().info("Sending data to bStats: " + data);
         }
         HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
 
@@ -347,22 +364,20 @@ public class Metrics {
 
         // Send data
         connection.setDoOutput(true);
-        DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
-        outputStream.write(compressedData);
-        outputStream.flush();
-        outputStream.close();
-
-        InputStream inputStream = connection.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
+            outputStream.write(compressedData);
+        }
 
         StringBuilder builder = new StringBuilder();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            builder.append(line);
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                builder.append(line);
+            }
         }
-        bufferedReader.close();
+
         if (logResponseStatusText) {
-            plugin.getLogger().info("Sent data to bStats and received response: " + builder.toString());
+            plugin.getLogger().info("Sent data to bStats and received response: " + builder);
         }
     }
 
@@ -378,9 +393,9 @@ public class Metrics {
             return null;
         }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        GZIPOutputStream gzip = new GZIPOutputStream(outputStream);
-        gzip.write(str.getBytes(StandardCharsets.UTF_8));
-        gzip.close();
+        try (GZIPOutputStream gzip = new GZIPOutputStream(outputStream)) {
+            gzip.write(str.getBytes(StandardCharsets.UTF_8));
+        }
         return outputStream.toByteArray();
     }
 
@@ -657,7 +672,7 @@ public class Metrics {
             }
             for (Map.Entry<String, Integer> entry : map.entrySet()) {
                 JsonArray categoryValues = new JsonArray();
-                categoryValues.add(entry.getValue());
+                categoryValues.add(new JsonPrimitive(entry.getValue()));
                 values.add(entry.getKey(), categoryValues);
             }
             data.add("values", values);
@@ -701,7 +716,7 @@ public class Metrics {
                 allSkipped = false;
                 JsonArray categoryValues = new JsonArray();
                 for (int categoryValue : entry.getValue()) {
-                    categoryValues.add(categoryValue);
+                    categoryValues.add(new JsonPrimitive(categoryValue));
                 }
                 values.add(entry.getKey(), categoryValues);
             }
@@ -713,5 +728,4 @@ public class Metrics {
             return data;
         }
     }
-
 }
