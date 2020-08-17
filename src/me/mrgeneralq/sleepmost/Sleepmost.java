@@ -29,8 +29,8 @@ public class Sleepmost extends JavaPlugin{
 		saveDefaultConfig();
 		
 		//init metrics
-		final int spigotResourceID = 6212;
-		new Metrics(this, spigotResourceID);
+		final int bStatsID = 6212;
+		new Metrics(this, bStatsID);
 		
 		//init bootstrapper
 		Bootstrapper bootstrapper = Bootstrapper.getBootstrapper();
