@@ -25,7 +25,7 @@ public class Sleepmost extends JavaPlugin{
 		if(VersionController.isOldVersion())
 			Bukkit.getLogger().warning("You are using an older Minecraft version that requires a different way of calculating who is asleep.");
 		
-		new Metrics(this);
+		new Metrics(this, 6212);
 		saveDefaultConfig();
 		
 		//init bootstrapper
