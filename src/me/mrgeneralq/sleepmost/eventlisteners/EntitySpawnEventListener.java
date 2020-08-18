@@ -21,7 +21,7 @@ public class EntitySpawnEventListener implements Listener {
 	public void onEntitySpawn(EntitySpawnEvent e){
 
 		World world = e.getEntity().getWorld();
-
+		
 		if(!isPhantom(e.getEntityType())) {
 			return;
 		}
@@ -35,7 +35,7 @@ public class EntitySpawnEventListener implements Listener {
 	private boolean isPhantom(EntityType type) 
 	{
 		try {
-			return type == EntityType.PHANTOM;
+			return type == EntityType.valueOf("PHANTOM");
 		}
 		catch(Exception ex) {
 			return false;
