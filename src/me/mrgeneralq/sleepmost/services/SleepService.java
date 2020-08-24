@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.services;
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.mrgeneralq.sleepmost.enums.SleepCalculationType;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
@@ -71,7 +72,31 @@ public class SleepService implements ISleepService {
 
     @Override
     public int getRequiredPlayersSleepingCount(World world) {
-        return (int) Math.ceil(getPlayerCountInWorld(world) * getPercentageRequired(world));
+
+
+        SleepCalculationType sleepCalculationType = SleepCalculationType.PERCENTAGE_REQUIRED;
+        int requiredCount = 0;
+
+        try{
+
+            String enumName = String.format("%s%s", (String) sleepFlagService.getFlagValue(world, "calculation-method"),"_REQUIRED");
+            enumName = enumName.toUpperCase();
+
+            sleepCalculationType = SleepCalculationType.valueOf(enumName);
+        }catch (Exception ex){}
+
+        switch (sleepCalculationType){
+            case PERCENTAGE_REQUIRED:
+                requiredCount =  (int) Math.ceil(getPlayerCountInWorld(world) * getPercentageRequired(world));
+                break;
+            case PLAYERS_REQUIRED:
+
+                int requiredPlayersInconfig = (int) sleepFlagService.getFlagValue(world,"players-required");
+
+                requiredCount = (requiredPlayersInconfig <= getPlayerCountInWorld(world)) ? requiredPlayersInconfig: getPlayerCountInWorld(world);
+        }
+
+        return requiredCount;
     }
 
     @Override
@@ -151,10 +176,10 @@ public class SleepService implements ISleepService {
 
     @Override
     public void setFlag(World world, ISleepFlag<?> flag, String value) {
-    	
+
         Object convertedFlagValue = null;
-        
-        switch(flag.getFlagType()) 
+
+        switch(flag.getFlagType())
         {
         case BOOLEAN:
         	 convertedFlagValue = Boolean.parseBoolean(value);

@@ -1,7 +1,7 @@
 name: sleep-most
-version: 4.5.3
+version: 4.6.0
 main: me.mrgeneralq.sleepmost.Sleepmost
-author: MrGeneralQ
+authors: [MrGeneralQ, HorrendousEntity]
 commands:
   sleepmost:
     usage: /sleepmost

@@ -4,6 +4,6 @@ import org.bukkit.World;
 
 public interface ISleepFlagService {
     void setFlag(World world, String flagName, Object value);
-    Object getFlag(World world, String flagName);
+    Object getFlagValue(World world, String flagName);
     <T> ISleepFlag<T> getSleepFlag(String flagName);
 }
