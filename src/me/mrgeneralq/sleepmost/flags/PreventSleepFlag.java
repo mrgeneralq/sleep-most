@@ -3,15 +3,14 @@ package me.mrgeneralq.sleepmost.flags;
 import me.mrgeneralq.sleepmost.enums.FlagType;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
-import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 import org.bukkit.World;
 
 public class PreventSleepFlag implements ISleepFlag<Boolean> {
 
     private final ISleepFlagService sleepFlagService;
 
-    public PreventSleepFlag(){
-        sleepFlagService = Bootstrapper.getBootstrapper().getSleepFlagService();
+    public PreventSleepFlag(ISleepFlagService sleepFlagService){
+        this.sleepFlagService = sleepFlagService;
     }
 
     @Override
@@ -36,10 +35,10 @@ public class PreventSleepFlag implements ISleepFlag<Boolean> {
 
     @Override
     public Boolean getValue(World world) {
-        if(sleepFlagService.getFlag(world, getFlagName()) == null)
+        if(sleepFlagService.getFlagValue(world, getFlagName()) == null)
             return false;
 
-        return (Boolean) sleepFlagService.getFlag(world, getFlagName());
+        return (Boolean) sleepFlagService.getFlagValue(world, getFlagName());
     }
 
     @Override

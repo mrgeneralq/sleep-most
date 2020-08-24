@@ -20,7 +20,7 @@ public class SleepFlagService implements ISleepFlagService {
         configRepository.setFlag(world, flagName, value);
     }
 
-    public Object getFlag(World world, String flagName){
+    public Object getFlagValue(World world, String flagName){
         return configRepository.getFlag(world, flagName);
     }
 

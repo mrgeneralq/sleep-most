@@ -1,4 +1,5 @@
 package me.mrgeneralq.sleepmost;
+import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,6 +36,10 @@ public class Sleepmost extends JavaPlugin{
 		//init bootstrapper
 		Bootstrapper bootstrapper = Bootstrapper.getBootstrapper();
 		bootstrapper.initialize(this);
+
+		SleepFlagMapper sleepFlagMapper = SleepFlagMapper.getMapper();
+		sleepFlagMapper.setup(bootstrapper.getSleepFlagService());
+
 		
 		IMessageService messageService = bootstrapper.getMessageService();
 		IUpdateService updateService = bootstrapper.getUpdateService();
@@ -47,7 +52,7 @@ public class Sleepmost extends JavaPlugin{
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new PlayerSleepEventListener(this, bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(),bootstrapper.getSleepFlagService()), this);
 		pm.registerEvents(new PlayerQuitEventListener(bootstrapper.getCooldownService()), this);
-		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService()), this);
+		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getConfigService()), this);
 		pm.registerEvents(new EntityTargetLivingEntityEventListener(bootstrapper.getSleepService(), bootstrapper.getSleepFlagService()), this);
 		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new PlayerJoinEventListener(this,bootstrapper.getUpdateService()), this);

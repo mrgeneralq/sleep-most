@@ -2,15 +2,14 @@ package me.mrgeneralq.sleepmost.flags;
 import me.mrgeneralq.sleepmost.enums.FlagType;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
-import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 import org.bukkit.World;
 
 public class NightcycleAnimationFlag implements ISleepFlag<Boolean> {
 
     private final ISleepFlagService sleepFlagService;
 
-    public NightcycleAnimationFlag(){
-        this.sleepFlagService = Bootstrapper.getBootstrapper().getSleepFlagService();
+    public NightcycleAnimationFlag(ISleepFlagService sleepFlagService){
+        this.sleepFlagService = sleepFlagService;
     }
 
     @Override
@@ -35,7 +34,7 @@ public class NightcycleAnimationFlag implements ISleepFlag<Boolean> {
 
     @Override
     public Boolean getValue(World world) {
-    	Object flagValue = sleepFlagService.getFlag(world, this.getFlagName());
+    	Object flagValue = sleepFlagService.getFlagValue(world, this.getFlagName());
     	
     	return flagValue == null ? null : (boolean) flagValue;
     }

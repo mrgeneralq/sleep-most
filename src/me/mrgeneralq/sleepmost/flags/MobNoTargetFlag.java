@@ -2,7 +2,6 @@ package me.mrgeneralq.sleepmost.flags;
 import me.mrgeneralq.sleepmost.enums.FlagType;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
-import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 import org.bukkit.World;
 
 public class MobNoTargetFlag implements ISleepFlag<Boolean> {
@@ -10,8 +9,8 @@ public class MobNoTargetFlag implements ISleepFlag<Boolean> {
 
     private ISleepFlagService sleepFlagService;
 
-    public MobNoTargetFlag(){
-        sleepFlagService = Bootstrapper.getBootstrapper().getSleepFlagService();
+    public MobNoTargetFlag(ISleepFlagService sleepFlagService){
+        this.sleepFlagService = sleepFlagService;
     }
 
 
@@ -37,10 +36,10 @@ public class MobNoTargetFlag implements ISleepFlag<Boolean> {
 
     @Override
     public Boolean getValue(World world) {
-        if(sleepFlagService.getFlag(world, this.getFlagName()) == null)
+        if(sleepFlagService.getFlagValue(world, this.getFlagName()) == null)
             return false;
 
-        return (boolean) sleepFlagService.getFlag(world, this.getFlagName());
+        return (boolean) sleepFlagService.getFlagValue(world, this.getFlagName());
     }
 
     @Override

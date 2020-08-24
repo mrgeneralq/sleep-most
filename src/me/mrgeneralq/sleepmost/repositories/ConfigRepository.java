@@ -59,7 +59,9 @@ public class ConfigRepository implements IConfigRepository {
 
         main.getConfig().createSection(String.format("sleep.%s", world.getName()));
         main.getConfig().set(String.format("sleep.%s.enabled", world.getName()), true);
+        main.getConfig().set(String.format("sleep.%s.calculation-method", world.getName()), "percentage");
         main.getConfig().set(String.format("sleep.%s.percentage-required", world.getName()), 0.5);
+        main.getConfig().set(String.format("sleep.%s.players-required", world.getName()), 5);
         main.getConfig().set(String.format("sleep.%s.mob-no-target", world.getName()), true);
         main.getConfig().set(String.format("sleep.%s.use-exempt", world.getName()),true);
         main.getConfig().set(String.format("sleep.%s.use-afk", world.getName()), false);

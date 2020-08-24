@@ -3,9 +3,12 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
+import me.mrgeneralq.sleepmost.interfaces.IConfigService;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
+import me.mrgeneralq.sleepmost.statics.VersionController;
+import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -17,11 +20,13 @@ public class SleepSkipEventListener implements Listener {
 
 	private final ISleepService sleepService;
 	private final IMessageService messageService;
+	private IConfigService configService;
 	private final DataContainer dataContainer;
 
-	public SleepSkipEventListener(ISleepService sleepService, IMessageService messageService) {
+	public SleepSkipEventListener(ISleepService sleepService, IMessageService messageService, IConfigService configService) {
 		this.sleepService = sleepService;
 		this.messageService = messageService;
+		this.configService = configService;
 		this.dataContainer = DataContainer.getContainer();
 	}
 
@@ -37,20 +42,44 @@ public class SleepSkipEventListener implements Listener {
 
 		if(e.getCause() == SleepSkipCause.STORM){
 			messageService.sendMessageToWorld(ConfigMessage.STORM_SKIPPED, world);
+
+			if(configService.getTitleStormSkippedEnabled() && !VersionController.isOldVersion()){
+				for(Player p: world.getPlayers())
+					p.sendTitle(configService.getTitleStormSkippedTitle(), configService.getTitleStormSkippedSubTitle(), 10,70,20);
+			}
+
+			if(configService.getSoundStormSkippedEnabled()){
+				for(Player p: world.getPlayers())
+					p.playSound(p.getLocation(), configService.getSoundStormSkippedSound(), 0.4F , 1F);
+			}
+
 			return;
 		}
-		messageService.sendMessageToWorld(ConfigMessage.NIGHT_SKIPPED, world);
-		return;
 
+		if(configService.getTitleNightSkippedEnabled() && !VersionController.isOldVersion()) {
+			for (Player p : world.getPlayers())
+				p.sendTitle(configService.getTitleNightSkippedTitle(), configService.getTitleNightSkippedSubTitle(), 10, 70, 20);
+			messageService.sendMessageToWorld(ConfigMessage.NIGHT_SKIPPED, world);
+		}
+
+		if(configService.getSoundNightSkippedEnabled()){
+			for(Player p: world.getPlayers())
+				p.playSound(p.getLocation(), configService.getSoundNightSkippedSound(), 0.4F , 1F);
+		}
 	}
+
+
 	private void resetPhantomCounter(World world) 
 	{
+		/*
+		* DISCLAIMER: Statistic and TIME_SINCE_REST Does not exist
+		* in older versions of Minecraft
+		 */
 		try{
-
 			for(Player p: world.getPlayers())
 				p.setStatistic(Statistic.TIME_SINCE_REST, 0);
-		}catch (IllegalArgumentException error){
-
+		}catch (NoSuchFieldError error){
+			// statistic did not exist yet in some versions
 		}
 	}
 }
