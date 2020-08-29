@@ -1,6 +1,6 @@
 # WELCOME TO THE OFFICAL SLEEP-MOST PLUGIN
 # AUTHORS MrGeneralQ, HorrendousEntity
-# VERSION: 4.6.0
+# VERSION: 4.6.1
 # SUPPORT NEEDED? Join our discord at --> https://discord.pseudonova.com/ WE ARE HAPPY TO HELP YOU FURTHER!
 
 
@@ -38,11 +38,11 @@ sleep:
 
 titles:
   night-skipped:
-    enabled: true
+    enabled: false
     title: '&aNight skipped'
     subtitle: '&bGood morning sunshine!'
   storm-skipped:
-    enabled: true
+    enabled: false
     title: '&eStorm skipped'
     subtitle: '&bWhat a weather...'
 
@@ -51,10 +51,10 @@ titles:
 
 sounds:
   night-skipped:
-    enabled: true
+    enabled: false
     sound: UI_TOAST_CHALLENGE_COMPLETE
   storm-skipped:
-    enabled: true
+    enabled: false
     sound: ENTITY_WITHER_SPAWN
 
 
