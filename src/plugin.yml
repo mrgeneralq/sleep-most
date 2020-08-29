@@ -1,4 +1,5 @@
 name: sleep-most
+api-version: 1.16
 version: 4.6.1
 main: me.mrgeneralq.sleepmost.Sleepmost
 authors: [MrGeneralQ, HorrendousEntity]
