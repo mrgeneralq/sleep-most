@@ -1,4 +1,4 @@
-![sleep most banner](https://i.imgur.com/nXFo4Y7.jpg/)
+![sleep most banner](https://i.imgur.com/6ffpDeD.png)
 
 # sleep-most
 
