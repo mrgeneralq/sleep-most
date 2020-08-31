@@ -48,7 +48,6 @@ titles:
 
 
 # Add sound effects after skipping the night or storm
-
 sounds:
   night-skipped:
     enabled: false
