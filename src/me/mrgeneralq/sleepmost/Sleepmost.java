@@ -1,4 +1,5 @@
 package me.mrgeneralq.sleepmost;
+import me.mrgeneralq.sleepmost.eventlisteners.*;
 import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -6,13 +7,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.mrgeneralq.sleepmost.bstats.Metrics;
 import me.mrgeneralq.sleepmost.commands.SleepmostCommand;
-import me.mrgeneralq.sleepmost.eventlisteners.EntitySpawnEventListener;
-import me.mrgeneralq.sleepmost.eventlisteners.EntityTargetLivingEntityEventListener;
-import me.mrgeneralq.sleepmost.eventlisteners.PlayerJoinEventListener;
-import me.mrgeneralq.sleepmost.eventlisteners.PlayerQuitEventListener;
-import me.mrgeneralq.sleepmost.eventlisteners.PlayerSleepEventListener;
-import me.mrgeneralq.sleepmost.eventlisteners.PlayerWorldChangeEventListener;
-import me.mrgeneralq.sleepmost.eventlisteners.SleepSkipEventListener;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 import me.mrgeneralq.sleepmost.statics.Bootstrapper;
@@ -57,6 +51,7 @@ public class Sleepmost extends JavaPlugin{
 		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new PlayerJoinEventListener(this,bootstrapper.getUpdateService()), this);
 		pm.registerEvents(new EntitySpawnEventListener(bootstrapper.getSleepFlagService()), this);
+		pm.registerEvents(new TimeSkipEventListener(), this);
 		
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
 			notifyIfNewUpdateExists(updateService);
