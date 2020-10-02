@@ -13,6 +13,7 @@ import me.mrgeneralq.sleepmost.eventlisteners.PlayerQuitEventListener;
 import me.mrgeneralq.sleepmost.eventlisteners.PlayerSleepEventListener;
 import me.mrgeneralq.sleepmost.eventlisteners.PlayerWorldChangeEventListener;
 import me.mrgeneralq.sleepmost.eventlisteners.SleepSkipEventListener;
+import me.mrgeneralq.sleepmost.eventlisteners.TimeSkipEventListener;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 import me.mrgeneralq.sleepmost.statics.Bootstrapper;
@@ -57,6 +58,7 @@ public class Sleepmost extends JavaPlugin{
 		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new PlayerJoinEventListener(this,bootstrapper.getUpdateService()), this);
 		pm.registerEvents(new EntitySpawnEventListener(bootstrapper.getSleepFlagService()), this);
+		pm.registerEvents(new TimeSkipEventListener(), this);
 		
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
 			notifyIfNewUpdateExists(updateService);
