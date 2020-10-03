@@ -1,17 +1,18 @@
 package me.mrgeneralq.sleepmost.statics;
 
 import java.util.HashMap;
+import java.util.Map;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import org.bukkit.ChatColor;
 
 import me.mrgeneralq.sleepmost.Sleepmost;
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 
 public class ConfigMessageMapper {
 
 
 	private static ConfigMessageMapper messageMapper;
-	private final HashMap<ConfigMessage, String> configMessages;
+	private final Map<ConfigMessage, String> configMessages;
 	private Sleepmost main;
 
 	private ConfigMessageMapper(){
@@ -24,32 +25,30 @@ public class ConfigMessageMapper {
 		configMessages.put(ConfigMessage.SLEEP_PREVENTED, "messages.sleep-prevented");
 		configMessages.put(ConfigMessage.NO_SLEEP_THUNDERSTORM, "messages.no-sleep-storm");
 	}
-
-
-
+	
 	public static ConfigMessageMapper getMapper(){
 		if(messageMapper == null)
 			messageMapper = new ConfigMessageMapper();
-			return messageMapper;
+		return messageMapper;
 	}
-
+	
 	public void initialize(Sleepmost main){
 		this.main = main;
 	}
-
-	public String
-	getMessagePath(ConfigMessage message){
+	
+	public String getMessagePath(ConfigMessage message){
 		return configMessages.get(message);
 	}
-
-
-	public String getMessage(ConfigMessage configMessage, Boolean includePrefix) {
+	
+	public String getMessage(ConfigMessage configMessage, boolean includePrefix) 
+	{
+		String message = "";
 		
-		if(includePrefix)
-		return ChatColor.translateAlternateColorCodes('&', getMessage(ConfigMessage.PREFIX, false)+ " " + main.getConfig().getString(configMessages.get(configMessage)));
-		return ChatColor.translateAlternateColorCodes('&', main.getConfig().getString(configMessages.get(configMessage)));
+		if(includePrefix) {
+			message += getMessage(ConfigMessage.PREFIX, false) + " ";
+		}
+		message += main.getConfig().getString(configMessages.get(configMessage));
+		
+		return ChatColor.translateAlternateColorCodes('&', message);
 	}
-	
-	
-
 }

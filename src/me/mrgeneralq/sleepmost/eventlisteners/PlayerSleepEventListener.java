@@ -86,23 +86,23 @@ public class PlayerSleepEventListener implements Listener {
         if (!sleepService.sleepPercentageReached(world))
             return;
 
-
+        String lastSleeperName = e.getPlayer().getName();
+        
 		ISleepFlag<Boolean> nightCycleAnimation = sleepFlagService.getSleepFlag("nightcycle-animation");
+		
         if (nightCycleAnimation.getValue(world)) {
-
-
         	if(world.isThundering() && !sleepService.isNight(world)){
-        		sleepService.resetDay(world);
+        		sleepService.resetDay(world, lastSleeperName);
         		return;
 			}
 
             //store running world
             dataContainer.getRunningWorldsAnimation().add(world);
-            new NightcycleAnimationTimer(sleepService, messageService, world).runTaskTimer(main, 0, 1);
+            new NightcycleAnimationTimer(sleepService, messageService, world, lastSleeperName).runTaskTimer(main, 0, 1);
             return;
         }
 
-        sleepService.resetDay(world);
+        sleepService.resetDay(world, lastSleeperName);
     }
 
     @EventHandler

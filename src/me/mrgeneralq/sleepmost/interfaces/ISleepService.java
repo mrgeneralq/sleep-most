@@ -12,7 +12,7 @@ public interface ISleepService {
     public int getPlayersSleepingCount(World world);
     public int getRequiredPlayersSleepingCount(World world);
     public int getPlayerCountInWorld(World world);
-    public void resetDay(World world);
+    public void resetDay(World world, String lastSleeperName);
     public boolean resetRequired(World world);
     public boolean isNight(World world);
     public SleepSkipCause getSleepSkipCause(World world);

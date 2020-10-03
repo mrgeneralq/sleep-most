@@ -51,7 +51,7 @@ public class MessageService implements IMessageService {
 	@Override
 	public void sendMessageToWorld(ConfigMessage message, World world) {
 		for(Player p: world.getPlayers()){
-			this.sendMessage(p,getMessage(message, true), false);
+			this.sendMessage(p, getMessage(message, true), false);
 		}
 	}
 
@@ -81,8 +81,18 @@ public class MessageService implements IMessageService {
 	public void sendPlayerLeftMessage(Player player, SleepSkipCause cause) {
 		World world = player.getWorld();
 		String message = this.getPlayersLeftMessage(player, cause);
-
+		
 		this.sendMessageToWorld(world, message);
+	}
+	
+	@Override
+	public void sendNightSkippedMessage(World world, String lastSleeperName, SleepSkipCause cause) {
+		ConfigMessage message = (cause == SleepSkipCause.STORM ? ConfigMessage.STORM_SKIPPED : ConfigMessage.NIGHT_SKIPPED);
+		
+		String skipMessage = ConfigMessageMapper.getMapper().getMessage(message, false)
+				.replace("%player%", lastSleeperName);
+		
+		sendMessageToWorld(world, skipMessage);
 	}
 
 	public void sendMessage(CommandSender sender, String message, boolean showPrefix){
