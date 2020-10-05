@@ -45,7 +45,9 @@ public class SleepSkipEventListener implements Listener {
 
 			if(configService.getTitleStormSkippedEnabled() && !VersionController.isOldVersion()){
 				for(Player p: world.getPlayers())
-					p.sendTitle(configService.getTitleStormSkippedTitle(), configService.getTitleStormSkippedSubTitle(), 10,70,20);
+					p.sendTitle(configService.getTitleStormSkippedTitle().replaceAll("%player%", p.getName())
+							, configService.getTitleStormSkippedSubTitle().replaceAll("%player%", p.getName())
+							, 10,70,20);
 			}
 
 			if(configService.getSoundStormSkippedEnabled()){
@@ -58,9 +60,10 @@ public class SleepSkipEventListener implements Listener {
 
 		if(configService.getTitleNightSkippedEnabled() && !VersionController.isOldVersion()) {
 			for (Player p : world.getPlayers())
-				p.sendTitle(configService.getTitleNightSkippedTitle(), configService.getTitleNightSkippedSubTitle(), 10, 70, 20);
-			//messageService.sendMessageToWorld(ConfigMessage.NIGHT_SKIPPED, world);
-			messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getCause());
+
+				p.sendTitle(configService.getTitleNightSkippedTitle().replaceAll("%player%", p.getName()),
+						configService.getTitleNightSkippedSubTitle().replaceAll("%player%",p.getName()), 10, 70, 20);
+			messageService.sendMessageToWorld(ConfigMessage.NIGHT_SKIPPED, world);
 		}
 
 		if(configService.getSoundNightSkippedEnabled()){
