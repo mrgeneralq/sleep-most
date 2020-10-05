@@ -1,5 +1,8 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
+import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
+
+import org.bukkit.Sound;
 import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -13,7 +16,6 @@ import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.VersionController;
-
 
 public class SleepSkipEventListener implements Listener {
 
@@ -36,58 +38,64 @@ public class SleepSkipEventListener implements Listener {
 
 		if(dataContainer.getRunningWorldsAnimation().contains(world))
 			return;
-
+		
 		resetPhantomCounter(world);
-
-		if(e.getCause() == SleepSkipCause.STORM){
-			//messageService.sendMessageToWorld(ConfigMessage.STORM_SKIPPED, world);
-			messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getCause());
-
-			if(configService.getTitleStormSkippedEnabled() && !VersionController.isOldVersion()){
-				for(Player p: world.getPlayers())
-					p.sendTitle(configService.getTitleStormSkippedTitle().replaceAll("%player%", p.getName())
-							, configService.getTitleStormSkippedSubTitle().replaceAll("%player%", p.getName())
-							, 10,70,20);
-			}
-
-			if(configService.getSoundStormSkippedEnabled()){
-				for(Player p: world.getPlayers())
-					p.playSound(p.getLocation(), configService.getSoundStormSkippedSound(), 0.4F , 1F);
-			}
-
+		
+		this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getCause());
+		
+		if(VersionController.isOldVersion())
+		{
 			return;
 		}
-
-		if(configService.getTitleNightSkippedEnabled() && !VersionController.isOldVersion()) {
-			for (Player p : world.getPlayers())
-
-				p.sendTitle(configService.getTitleNightSkippedTitle().replaceAll("%player%", p.getName()),
-						configService.getTitleNightSkippedSubTitle().replaceAll("%player%",p.getName()), 10, 70, 20);
-			messageService.sendMessageToWorld(ConfigMessage.NIGHT_SKIPPED, world);
-		}
-
-		if(configService.getSoundNightSkippedEnabled()){
-			for(Player p: world.getPlayers())
-				p.playSound(p.getLocation(), configService.getSoundNightSkippedSound(), 0.4F , 1F);
-		}
+		sendSkipSound(world, e.getCause());
+		sendSkipTitle(world, e.getCause());
 	}
-
 
 	private void resetPhantomCounter(World world) 
 	{
 		/*
-		* DISCLAIMER: Statistic and TIME_SINCE_REST Does not exist
-		* in older versions of Minecraft
+		 * DISCLAIMER: Statistic and TIME_SINCE_REST Does not exist
+		 * in older versions of Minecraft
 		 */
-		try{
+		try
+		{
 			for(Player p: world.getPlayers())
 				p.setStatistic(Statistic.TIME_SINCE_REST, 0);
-		}catch (NoSuchFieldError error){
+		}
+		catch(NoSuchFieldError error) {
 			// statistic did not exist yet in some versions
 		}
 	}
+	private void sendSkipTitle(World world, SleepSkipCause cause) 
+	{
+		boolean titleEnabled = (cause == NIGHT_TIME ? configService.getTitleNightSkippedEnabled() : configService.getTitleStormSkippedEnabled());
+				
+		if(!titleEnabled) 
+		{
+			return;
+		}
+		String skippedTitle = (cause == NIGHT_TIME ? configService.getTitleNightSkippedTitle() : configService.getTitleStormSkippedTitle());
+		String skippedSubtitle = (cause == NIGHT_TIME ? configService.getTitleNightSkippedSubTitle() : configService.getTitleStormSkippedSubTitle());
+		
+		for(Player p : world.getPlayers()) {
+			skippedTitle = skippedTitle.replace("%player%", p.getName());
+			skippedSubtitle = skippedSubtitle.replace("%player%", p.getName());
+			
+			p.sendTitle(skippedTitle, skippedSubtitle, 10, 70, 20);
+		}
+	}
+	private void sendSkipSound(World world, SleepSkipCause cause) 
+	{
+		boolean soundEnabled = (cause == NIGHT_TIME ? configService.getSoundNightSkippedEnabled() : configService.getSoundStormSkippedEnabled());
+		
+		if(!soundEnabled)
+		{
+			return;
+		}
+		Sound skipSound = (cause == NIGHT_TIME ? configService.getSoundNightSkippedSound() : configService.getSoundStormSkippedSound());
+		
+		for(Player p : world.getPlayers()) {
+			p.playSound(p.getLocation(), skipSound, 0.4F, 1F);
+		}
+	}
 }
-
-
-
-
