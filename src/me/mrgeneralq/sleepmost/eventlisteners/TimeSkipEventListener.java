@@ -1,5 +1,4 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
-
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 import me.mrgeneralq.sleepmost.statics.Message;
 import me.mrgeneralq.sleepmost.statics.VersionController;
@@ -12,7 +11,6 @@ import org.bukkit.event.world.TimeSkipEvent;
 import org.bukkit.plugin.Plugin;
 
 public class TimeSkipEventListener implements Listener {
-
 
     @EventHandler
     public void onTimeSkip(TimeSkipEvent e) {

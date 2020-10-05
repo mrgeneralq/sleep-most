@@ -13,14 +13,15 @@ public class NightcycleAnimationTimer extends BukkitRunnable {
 
     private final ISleepService sleepService;
     private final IMessageService messageService;
-    private final World world;
     private final DataContainer dataContainer;
+    private final World world;
+    private final String lastSleeperName;
 
-
-    public NightcycleAnimationTimer(ISleepService sleepService, IMessageService messageService, World world) {
+    public NightcycleAnimationTimer(ISleepService sleepService, IMessageService messageService, World world, String lastSleeperName) {
         this.sleepService = sleepService;
         this.messageService = messageService;
         this.world = world;
+        this.lastSleeperName = lastSleeperName;
         this.dataContainer = DataContainer.getContainer();
     }
 
@@ -35,7 +36,7 @@ public class NightcycleAnimationTimer extends BukkitRunnable {
             world.setThundering(false);
             world.setStorm(false);
 
-            Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, SleepSkipCause.NIGHT_TIME));
+            Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, SleepSkipCause.NIGHT_TIME, lastSleeperName));
             this.cancel();
         }
 

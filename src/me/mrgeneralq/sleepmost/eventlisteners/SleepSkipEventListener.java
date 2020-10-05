@@ -1,6 +1,11 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import org.bukkit.Statistic;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import me.mrgeneralq.sleepmost.interfaces.IConfigService;
@@ -8,12 +13,6 @@ import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.VersionController;
-import org.bukkit.Bukkit;
-import org.bukkit.Statistic;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 
 public class SleepSkipEventListener implements Listener {
@@ -41,7 +40,8 @@ public class SleepSkipEventListener implements Listener {
 		resetPhantomCounter(world);
 
 		if(e.getCause() == SleepSkipCause.STORM){
-			messageService.sendMessageToWorld(ConfigMessage.STORM_SKIPPED, world);
+			//messageService.sendMessageToWorld(ConfigMessage.STORM_SKIPPED, world);
+			messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getCause());
 
 			if(configService.getTitleStormSkippedEnabled() && !VersionController.isOldVersion()){
 				for(Player p: world.getPlayers())
@@ -60,6 +60,7 @@ public class SleepSkipEventListener implements Listener {
 
 		if(configService.getTitleNightSkippedEnabled() && !VersionController.isOldVersion()) {
 			for (Player p : world.getPlayers())
+
 				p.sendTitle(configService.getTitleNightSkippedTitle().replaceAll("%player%", p.getName()),
 						configService.getTitleNightSkippedSubTitle().replaceAll("%player%",p.getName()), 10, 70, 20);
 			messageService.sendMessageToWorld(ConfigMessage.NIGHT_SKIPPED, world);

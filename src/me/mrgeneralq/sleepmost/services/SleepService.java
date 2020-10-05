@@ -11,6 +11,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -117,13 +119,13 @@ public class SleepService implements ISleepService {
 
         //check if user is afk
            if (afkFlagEnabled && Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().getPlugin("Essentials") != null)
-               allPlayers = allPlayers.stream().filter(p -> PlaceholderAPI.setPlaceholders(p, "%essentials_afk%").equalsIgnoreCase("no")).collect(Collectors.toList());
+               allPlayers = allPlayers.stream().filter(p -> PlaceholderAPI.setPlaceholders(p, "%essentials_afk%").equalsIgnoreCase("no")).collect(toList());
 
             return (allPlayers.size() > 0) ? allPlayers.size() : 1;
     }
 
     @Override
-    public void resetDay(World world) {
+    public void resetDay(World world, String lastSleeperName) {
         SleepSkipCause cause = SleepSkipCause.UNKNOWN;
 
         if (this.isNight(world)) {
@@ -132,19 +134,15 @@ public class SleepService implements ISleepService {
         } else if(world.isThundering()){
             cause = SleepSkipCause.STORM;
         }
-
+        
         world.setThundering(false);
         world.setStorm(false);
-        Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, cause));
+        Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, cause, lastSleeperName));
     }
 
     @Override
     public boolean resetRequired(World world) {
-
-        //check if the world is night or thundering
-        if(this.isNight(world) || world.isThundering())
-            return true;
-        return false;
+    	return isNight(world) || world.isThundering();
     }
 
     @Override
@@ -154,9 +152,7 @@ public class SleepService implements ISleepService {
 
     @Override
     public SleepSkipCause getSleepSkipCause(World world) {
-        if (this.isNight(world))
-            return SleepSkipCause.NIGHT_TIME;
-        return SleepSkipCause.STORM;
+    	return isNight(world) ? SleepSkipCause.NIGHT_TIME : SleepSkipCause.STORM;
     }
 
     @Override
