@@ -40,15 +40,13 @@ public class SleepSkipEventListener implements Listener {
 			return;
 		
 		resetPhantomCounter(world);
-		
-		this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getCause());
-		
-		if(VersionController.isOldVersion())
-		{
-			return;
-		}
 		sendSkipSound(world, e.getCause());
-		sendSkipTitle(world, e.getCause());
+		
+		if(!VersionController.isOldVersion())
+		{
+			sendSkipTitle(world, e.getCause());
+		}
+		this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getCause());
 	}
 
 	private void resetPhantomCounter(World world) 
@@ -69,7 +67,7 @@ public class SleepSkipEventListener implements Listener {
 	private void sendSkipTitle(World world, SleepSkipCause cause) 
 	{
 		boolean titleEnabled = (cause == NIGHT_TIME ? configService.getTitleNightSkippedEnabled() : configService.getTitleStormSkippedEnabled());
-				
+		
 		if(!titleEnabled) 
 		{
 			return;
