@@ -1,6 +1,6 @@
 name: sleep-most
 api-version: 1.13
-version: 4.6.4
+version: ${project.version}
 main: me.mrgeneralq.sleepmost.Sleepmost
 authors: [MrGeneralQ, PandaCrafter1, HorrendousEntity]
 commands:
