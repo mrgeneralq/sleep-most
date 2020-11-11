@@ -3,7 +3,6 @@ import me.mrgeneralq.sleepmost.enums.FlagType;
 import me.mrgeneralq.sleepmost.enums.SleepCalculationType;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 public class CalculationMethodFlag implements ISleepFlag<String> {
