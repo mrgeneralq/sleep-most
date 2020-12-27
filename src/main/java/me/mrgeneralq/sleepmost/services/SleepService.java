@@ -3,10 +3,10 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import me.mrgeneralq.sleepmost.enums.SleepCalculationType;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
-import me.mrgeneralq.sleepmost.statics.VersionController;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -61,7 +61,7 @@ public class SleepService implements ISleepService {
         List<Player> sleepingPlayers = new ArrayList<Player>();
 
         //check for lower versions
-        if(VersionController.isOldVersion()){
+        if(ServerVersion.CURRENT_VERSION.sleepCalculatedDifferently()){
             sleepingPlayers = DataContainer.getContainer().getSleepingPlayers(world);
             return (int) sleepingPlayers.size();
         }
