@@ -1,4 +1,5 @@
 package me.mrgeneralq.sleepmost;
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -17,7 +18,6 @@ import me.mrgeneralq.sleepmost.eventlisteners.TimeSkipEventListener;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 import me.mrgeneralq.sleepmost.statics.Bootstrapper;
-import me.mrgeneralq.sleepmost.statics.VersionController;
 
 public class Sleepmost extends JavaPlugin{
 	
@@ -25,7 +25,7 @@ public class Sleepmost extends JavaPlugin{
 	@Override
 	public void onEnable() {
 
-		if(VersionController.isOldVersion())
+		if(ServerVersion.CURRENT_VERSION.sleepCalculatedDifferently())
 			getLogger().warning("You are using an older Minecraft version that requires a different way of calculating who is asleep.");
 		
 		saveDefaultConfig();

@@ -2,7 +2,7 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 import me.mrgeneralq.sleepmost.statics.Message;
-import me.mrgeneralq.sleepmost.statics.VersionController;
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,7 +37,7 @@ public class PlayerJoinEventListener implements Listener {
 
             player.sendMessage(Message.colorize("&b==============================================="));
             player.sendMessage(Message.colorize(String.format("&bA newer version of &esleep-most &bis available: &e%s", updateService.getCachedUpdateVersion())));
-            player.sendMessage(Message.colorize(String.format("&a%s", VersionController.UPDATE_URL)));
+            player.sendMessage(Message.colorize(String.format("&a%s", ServerVersion.UPDATE_URL)));
             player.sendMessage(Message.colorize("&eYou may ignore this message if you just updated (spigot takes some time)"));
             player.sendMessage(Message.colorize("&b==============================================="));
 

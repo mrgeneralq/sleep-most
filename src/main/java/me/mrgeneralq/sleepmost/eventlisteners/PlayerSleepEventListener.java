@@ -5,7 +5,7 @@ import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTimer;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
-import me.mrgeneralq.sleepmost.statics.VersionController;
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,7 +44,7 @@ public class PlayerSleepEventListener implements Listener {
 
 
         //used to calculate sleeping players different for lower versions
-        if (VersionController.isOldVersion())
+        if (ServerVersion.CURRENT_VERSION.sleepCalculatedDifferently())
             DataContainer.getContainer().addSleepingPlayer(player);
 
 
@@ -111,7 +111,7 @@ public class PlayerSleepEventListener implements Listener {
         Player player = e.getPlayer();
 
         //used to calculate sleeping players different for lower versions
-        if (VersionController.isOldVersion())
+        if (ServerVersion.CURRENT_VERSION.sleepCalculatedDifferently())
             DataContainer.getContainer().removeSleepingPlayer(player);
 
     }
