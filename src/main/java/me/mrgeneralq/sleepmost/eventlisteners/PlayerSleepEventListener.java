@@ -9,6 +9,7 @@ import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
@@ -33,15 +34,11 @@ public class PlayerSleepEventListener implements Listener {
     }
 
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerSleep(PlayerBedEnterEvent e) {
 
         Player player = e.getPlayer();
         World world = player.getWorld();
-
-        if (e.isCancelled())
-            return;
-
 
         //used to calculate sleeping players different for lower versions
         if (ServerVersion.CURRENT_VERSION.sleepCalculatedDifferently())
@@ -87,9 +84,9 @@ public class PlayerSleepEventListener implements Listener {
             return;
 
         String lastSleeperName = e.getPlayer().getName();
-
+        
 		ISleepFlag<Boolean> nightCycleAnimation = sleepFlagService.getSleepFlag("nightcycle-animation");
-
+		
         if (nightCycleAnimation.getValue(world)) {
         	if(world.isThundering() && !sleepService.isNight(world)){
         		sleepService.resetDay(world, lastSleeperName);
