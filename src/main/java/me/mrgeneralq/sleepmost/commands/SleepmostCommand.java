@@ -4,26 +4,22 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+import me.mrgeneralq.sleepmost.commands.subcommands.*;
 import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import me.mrgeneralq.sleepmost.commands.subcommands.DisableSubCommand;
-import me.mrgeneralq.sleepmost.commands.subcommands.EnableSubCommand;
-import me.mrgeneralq.sleepmost.commands.subcommands.InfoSubCommand;
-import me.mrgeneralq.sleepmost.commands.subcommands.ReloadSubCommand;
-import me.mrgeneralq.sleepmost.commands.subcommands.SetFlagCommand;
-import me.mrgeneralq.sleepmost.commands.subcommands.VersionSubCommand;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 import me.mrgeneralq.sleepmost.statics.Message;
+
+import static java.util.stream.Collectors.toList;
 
 public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	private final Map<String, ISubCommand> subCommands = new HashMap<>();
@@ -49,6 +45,9 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("setflag", new SetFlagCommand(this.sleepService, this.messageService));
 		subCommands.put("info", new InfoSubCommand(this.sleepService, this.messageService, this.sleepFlagService));
 		subCommands.put("version", new VersionSubCommand(this.updateService, this.messageService));
+
+		//enable when debugging
+		//subCommands.put("test", new TestCommand());
 	}
 
 
@@ -106,9 +105,11 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 
 
 		if(args.length == 1){
-			List<String> subCommands = this.subCommands.keySet().stream().filter(subCmd -> commandSender.hasPermission("sleepmost." + subCmd)).collect(Collectors.toList());
-			Collections.sort(subCommands);
-			return subCommands;
+			//return the subcommands the player has permissions to execute
+			return this.subCommands.keySet().stream()
+					.filter(subCmd -> commandSender.hasPermission("sleepmost." + subCmd))
+					.sorted()
+					.collect(toList());
 		}
 
 
@@ -118,8 +119,6 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 			Collections.sort(flags);
 			return flags;
 		}
-
-
 		return null;
 	}
 }

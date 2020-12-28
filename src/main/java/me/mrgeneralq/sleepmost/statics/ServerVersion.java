@@ -16,7 +16,6 @@ public enum ServerVersion
     //settings
     private boolean supportsHexColors;
     private boolean supportsTitles;
-
     private boolean sleepCalculatedDifferently;
 
     //the cached current server version
@@ -38,27 +37,22 @@ public enum ServerVersion
         });
         forVersionsUntil(V1_14, version -> version.sleepCalculatedDifferently = true);
     }
-
     ServerVersion()
     {
         this.name = WordUtils.capitalizeFully(name().substring(1).toLowerCase().replace('_', '.'));
     }
-
     public String getName()
     {
         return this.name;
     }
-
     public boolean supportsHexColors()
     {
         return this.supportsHexColors;
     }
-
     public boolean supportsTitles()
     {
         return this.supportsTitles;
     }
-
     public boolean sleepCalculatedDifferently()
     {
         return this.sleepCalculatedDifferently;
@@ -67,21 +61,26 @@ public enum ServerVersion
     //Setup methods
     private static ServerVersion computeServerVersion()
     {
-        return Arrays.stream(VALUES).filter(version -> Bukkit.getVersion().contains(version.getName())).findFirst().orElse(UNKNOWN);
+        return Arrays.stream(VALUES)
+                .filter(version -> Bukkit.getVersion().contains(version.getName()))
+                .findFirst()
+                .orElse(UNKNOWN);
     }
-
     private static void forVersionsFrom(ServerVersion minimum, Consumer<ServerVersion> action)
     {
-        versionsStream().filter(version -> version.ordinal() >= minimum.ordinal()).forEach(action);
+        versionsStream()
+                .filter(version -> version.ordinal() >= minimum.ordinal())
+                .forEach(action);
     }
-
     private static void forVersionsUntil(ServerVersion maximum, Consumer<ServerVersion> action)
     {
-        versionsStream().filter(version -> version.ordinal() <= maximum.ordinal()).forEach(action);
+        versionsStream()
+                .filter(version -> version.ordinal() <= maximum.ordinal())
+                .forEach(action);
     }
-
     private static Stream<ServerVersion> versionsStream()
     {
-        return Arrays.stream(VALUES).filter(version -> version != UNKNOWN);
+        return Arrays.stream(VALUES)
+                .filter(version -> version != UNKNOWN);
     }
 }

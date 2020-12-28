@@ -7,6 +7,9 @@ import java.util.regex.Pattern;
 
 public class ChatColorUtils
 {
+    //Container of static methods
+    private ChatColorUtils(){}
+
     private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
 
     public static String colorize(String text)
@@ -30,7 +33,11 @@ public class ChatColorUtils
         {
             String color = text.substring(matcher.start(), matcher.end());
 
+            //replace the found color to what spigot supports
             text = text.replace(color, net.md_5.bungee.api.ChatColor.of(color).toString());
+
+            //create a matcher for the updated message
+            matcher = HEX_COLOR_PATTERN.matcher(text);
         }
         return text;
     }

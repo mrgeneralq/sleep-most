@@ -2,13 +2,13 @@ package me.mrgeneralq.sleepmost.services;
 
 import me.mrgeneralq.sleepmost.interfaces.IConfigService;
 import me.mrgeneralq.sleepmost.Sleepmost;
-import me.mrgeneralq.sleepmost.statics.Message;
 import org.bukkit.Sound;
+
+import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
 
 public class ConfigService implements IConfigService {
 
     private final Sleepmost main;
-
 
     public ConfigService(Sleepmost main) {
         this.main = main;
@@ -32,12 +32,12 @@ public class ConfigService implements IConfigService {
 
     @Override
     public String getTitleNightSkippedTitle() {
-        return Message.colorize(main.getConfig().getString("titles.night-skipped.title"));
+        return colorize(main.getConfig().getString("titles.night-skipped.title"));
     }
 
     @Override
     public String getTitleNightSkippedSubTitle() {
-        return Message.colorize(main.getConfig().getString("titles.night-skipped.subtitle"));
+        return colorize(main.getConfig().getString("titles.night-skipped.subtitle"));
     }
 
     @Override
@@ -47,12 +47,12 @@ public class ConfigService implements IConfigService {
 
     @Override
     public String getTitleStormSkippedTitle() {
-        return Message.colorize(main.getConfig().getString("titles.storm-skipped.title"));
+        return colorize(main.getConfig().getString("titles.storm-skipped.title"));
     }
 
     @Override
     public String getTitleStormSkippedSubTitle() {
-        return Message.colorize(main.getConfig().getString("titles.storm-skipped.subtitle"));
+        return colorize(main.getConfig().getString("titles.storm-skipped.subtitle"));
     }
 
 

@@ -4,11 +4,14 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
+import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import me.mrgeneralq.sleepmost.statics.ConfigMessageMapper;
 import me.mrgeneralq.sleepmost.statics.Message;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
 
 public class MessageService implements IMessageService {
 
@@ -44,7 +47,7 @@ public class MessageService implements IMessageService {
 				message = String.format("%s %s", prefix, message);
 			}
 		}
-		return Message.colorize(message.trim());
+		return colorize(message.trim());
 	}
 
 
@@ -109,6 +112,6 @@ public class MessageService implements IMessageService {
 				message = String.format("%s %s", prefix, message);
 		}
 
-		sender.sendMessage(Message.colorize(message));
+		sender.sendMessage(colorize(message));
 	}
 }
