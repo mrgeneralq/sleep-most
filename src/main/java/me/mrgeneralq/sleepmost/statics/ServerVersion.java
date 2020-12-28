@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 public enum ServerVersion
 {
-    UNKNOWN, V1_8, V1_9, V1_10, V1_11, V1_12, V1_13, V1_14, V1_15, V1_16;
+    UNKNOWN, V1_8, V1_9, V1_10, V1_11, V1_12, V1_13, V1_14, V1_15, V1_16, V1_17;
 
     private final String name;
 
@@ -30,12 +30,9 @@ public enum ServerVersion
     {
         CURRENT_VERSION = computeServerVersion();
 
-        forVersionsFrom(V1_16, version ->
-        {
-            version.supportsHexColors = true;
-            version.supportsTitles = true;
-        });
-        forVersionsUntil(V1_14, version -> version.sleepCalculatedDifferently = true);
+        forVersionsFrom(V1_16, version -> version.supportsHexColors = true);
+        forVersionsFrom(V1_14, version -> version.supportsTitles = true);
+        forVersionsUntil(V1_13, version -> version.sleepCalculatedDifferently = true);
     }
     ServerVersion()
     {
