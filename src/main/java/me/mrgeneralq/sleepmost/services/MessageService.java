@@ -68,7 +68,8 @@ public class MessageService implements IMessageService {
 		return getMessage(this.getSleepSkipCauseMessage(cause), false)
 				.replaceFirst("%sleeping%", Integer.toString(sleepService.getPlayersSleepingCount(world)))
 				.replaceAll("%required%", Integer.toString(Math.round(sleepService.getRequiredPlayersSleepingCount(world))))
-				.replaceAll("%player%", player.getName());
+				.replaceAll("%player%", player.getName())
+				.replaceAll("%dplayer%", player.getDisplayName());
 	}
 
 	@Override
