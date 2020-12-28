@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
 
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Sound;
 import org.bukkit.Statistic;
 import org.bukkit.World;
@@ -15,7 +16,6 @@ import me.mrgeneralq.sleepmost.interfaces.IConfigService;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
-import me.mrgeneralq.sleepmost.statics.VersionController;
 
 public class SleepSkipEventListener implements Listener {
 
@@ -41,8 +41,8 @@ public class SleepSkipEventListener implements Listener {
 		
 		resetPhantomCounter(world);
 		sendSkipSound(world, e.getCause());
-		
-		if(!VersionController.isOldVersion())
+
+		if (ServerVersion.CURRENT_VERSION.supportsTitles())
 		{
 			sendSkipTitle(world, e.getCause());
 		}
