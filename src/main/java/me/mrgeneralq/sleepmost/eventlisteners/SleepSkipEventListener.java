@@ -76,8 +76,8 @@ public class SleepSkipEventListener implements Listener {
 		String skippedSubtitle = (cause == NIGHT_TIME ? configService.getTitleNightSkippedSubTitle() : configService.getTitleStormSkippedSubTitle());
 		
 		for(Player p : world.getPlayers()) {
-			skippedTitle = skippedTitle.replace("%player%", p.getName());
-			skippedSubtitle = skippedSubtitle.replace("%player%", p.getName());
+			skippedTitle = skippedTitle.replaceAll("%player%", p.getName()).replaceAll("%dplayer", p.getDisplayName());
+			skippedSubtitle = skippedSubtitle.replaceAll("%player%", p.getName()).replaceAll("%dplayer", p.getDisplayName());
 			
 			p.sendTitle(skippedTitle, skippedSubtitle, 10, 70, 20);
 		}
