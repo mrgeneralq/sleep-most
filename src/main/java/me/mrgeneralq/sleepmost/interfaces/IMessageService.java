@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.interfaces;
 
+import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,4 +19,5 @@ public interface IMessageService
 	public void sendPlayerLeftMessage(Player player, SleepSkipCause cause);
 	public void sendNightSkippedMessage(World world, String lastSleeperName, SleepSkipCause cause);
 	public void sendMessage(CommandSender sender, String message, boolean showPrefix);
+	public MessageBuilder getBuilder();
 }
