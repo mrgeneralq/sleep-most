@@ -1,4 +1,5 @@
 package me.mrgeneralq.sleepmost.services;
+import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
@@ -114,5 +115,10 @@ public class MessageService implements IMessageService {
 		}
 
 		sender.sendMessage(colorize(message));
+	}
+
+	@Override
+	public MessageBuilder getBuilder() {
+		return new MessageBuilder(this.configRepository.getPrefix());
 	}
 }
