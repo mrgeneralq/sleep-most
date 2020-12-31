@@ -18,45 +18,38 @@ public class MessageService implements IMessageService {
 
 	private final IConfigRepository configRepository;
 	private final ISleepService sleepService;
+	private final ConfigMessageMapper messageMapper = ConfigMessageMapper.getMapper();
 
 	public MessageService(IConfigRepository configRepository, ISleepService sleepService) {
 		this.configRepository = configRepository;
 		this.sleepService = sleepService;
 	}
 
-	@Override
-	public String getMessage(ConfigMessage message, boolean includePrefix) {
 
-		String prefix = configRepository.getPrefix();
-		String messagePath = ConfigMessageMapper.getMapper().getMessagePath(message);
-		String configMessage = configRepository.getString(messagePath);
-
-		return this.getMessage(configMessage, includePrefix);
-	}
+	/*
+	* This method returns the value specified in the config based on the path defined in the ConfigMessageMapper
+	* This should be the only entry point to retrieve messages from the config
+	*/
 
 	@Override
-	public String getMessage(String message, boolean includePrefix) {
-		if(message.isEmpty())
-			return "";
+	public String getConfigMessage(ConfigMessage message) {
 
-		//add the prefix to the message
-		if(includePrefix) 
-		{
-			String prefix = configRepository.getPrefix();
+		String path = this.messageMapper.getMessagePath(message);
+		return configRepository.getString(path);
 
-			if(!prefix.isEmpty()){
-				message = String.format("%s %s", prefix, message);
-			}
-		}
-		return colorize(message.trim());
 	}
-
 
 	@Override
 	public void sendMessageToWorld(ConfigMessage message, World world) {
-		for(Player p: world.getPlayers()){
-			this.sendMessage(p, getMessage(message, true), false);
-		}
+
+		String configMessage = this.messageMapper.getMessagePath(message);
+		MessageBuilder messageBuilder = this.getNewBuilder(configMessage);
+
+		String newMessage = messageBuilder.usePrefix(true).build();
+
+		for(Player p: world.getPlayers())
+			p.sendMessage(newMessage);
+
 	}
 
 	@Override
@@ -68,12 +61,17 @@ public class MessageService implements IMessageService {
 	public String getPlayersLeftMessage(Player player, SleepSkipCause cause) {
 
 		World world = player.getWorld();
+		ConfigMessage skipCauseConfigMessage = this.getSleepSkipCauseMessage(cause);
+		String message = this.getConfigMessage(skipCauseConfigMessage);
 
-		return getMessage(this.getSleepSkipCauseMessage(cause), false)
-				.replaceFirst("%sleeping%", Integer.toString(sleepService.getPlayersSleepingCount(world)))
-				.replaceAll("%required%", Integer.toString(Math.round(sleepService.getRequiredPlayersSleepingCount(world))))
-				.replaceAll("%player%", player.getName())
-				.replaceAll("%dplayer%", player.getDisplayName());
+
+		String newMessage = this.getNewBuilder(message)
+				.usePrefix(true)
+				.setPlayer(player)
+				.setPlaceHolder("%sleeping%", Integer.toString(sleepService.getPlayersSleepingCount(world)))
+				.setPlaceHolder("%required%", Integer.toString(Math.round(sleepService.getRequiredPlayersSleepingCount(world))))
+				.build();
+		return newMessage;
 	}
 
 	@Override
@@ -90,12 +88,11 @@ public class MessageService implements IMessageService {
 	public void sendPlayerLeftMessage(Player player, SleepSkipCause cause) {
 		World world = player.getWorld();
 		String message = this.getPlayersLeftMessage(player, cause);
-		
 		this.sendMessageToWorld(world, message);
 	}
 	
 	@Override
-	public void sendNightSkippedMessage(World world, String lastSleeperName, SleepSkipCause cause) {
+	public void sendNightSkippedMessage(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause) {
 		ConfigMessage message = (cause == SleepSkipCause.STORM ? ConfigMessage.STORM_SKIPPED : ConfigMessage.NIGHT_SKIPPED);
 		
 		String skipMessage = ConfigMessageMapper.getMapper().getMessage(message, false)

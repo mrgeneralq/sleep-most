@@ -10,13 +10,13 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 
 public interface IMessageService 
 {
-	String getMessage(ConfigMessage message, boolean includePrefix);
-	String getMessage(String message ,boolean includePrefix);
+
+	String getConfigMessage(ConfigMessage message);
 	void sendMessageToWorld(ConfigMessage message, World world);
 	ConfigMessage getSleepSkipCauseMessage(SleepSkipCause cause);
 	String getPlayersLeftMessage(Player player, SleepSkipCause cause);
 	void sendMessageToWorld(World world, String string);
 	void sendPlayerLeftMessage(Player player, SleepSkipCause cause);
-	void sendNightSkippedMessage(World world, String lastSleeperName, SleepSkipCause cause);
+	void sendNightSkippedMessage(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause);
 	MessageBuilder getNewBuilder(String rawMessage);
 }

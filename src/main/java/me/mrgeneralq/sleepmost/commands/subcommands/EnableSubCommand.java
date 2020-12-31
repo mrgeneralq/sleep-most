@@ -3,6 +3,7 @@ package me.mrgeneralq.sleepmost.commands.subcommands;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
+import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import me.mrgeneralq.sleepmost.statics.Message;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -24,7 +25,7 @@ public class EnableSubCommand implements ISubCommand {
 
         if(!(sender instanceof Player))
         {
-            messageService.sendMessage(sender, Message.ONLY_PLAYERS_COMMAND, true);
+            sender.sendMessage(ChatColorUtils.colorize(Message.ONLY_PLAYERS_COMMAND));
             return true;
         }
 
@@ -32,12 +33,12 @@ public class EnableSubCommand implements ISubCommand {
         World world = player.getWorld();
 
         if(sleepService.enabledForWorld(world)){
-            messageService.sendMessage(player, Message.ALREADY_ENABLED_FOR_WORLD, true);
-            return true;
+           player.sendMessage(ChatColorUtils.colorize(Message.ALREADY_ENABLED_FOR_WORLD));
+           return true;
         }
 
         sleepService.enableForWorld(world);
-        messageService.sendMessage(player, Message.ENABLED_FOR_WORLD, true);
+        player.sendMessage(ChatColorUtils.colorize(Message.ENABLED_FOR_WORLD));
         return true;
     }
 }

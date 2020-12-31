@@ -85,8 +85,8 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
 
 
         List<String> list = new ArrayList<>();
-        list.add("aaaa");
-        list.add("bbbb");
+      //  list.add("aaaa");
+      //  list.add("bbbb");
 
         //if(args.length == 2)
             return list;

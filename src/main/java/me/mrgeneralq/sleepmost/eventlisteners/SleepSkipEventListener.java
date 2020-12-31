@@ -46,7 +46,7 @@ public class SleepSkipEventListener implements Listener {
 		{
 			sendSkipTitle(world, e.getCause());
 		}
-		this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getCause());
+		this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(),e.getLastSleeperDisplayName(), e.getCause());
 	}
 
 	private void resetPhantomCounter(World world) 

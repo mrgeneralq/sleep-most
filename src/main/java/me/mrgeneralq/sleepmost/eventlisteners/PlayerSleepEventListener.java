@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
+import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.interfaces.*;
@@ -59,16 +60,31 @@ public class PlayerSleepEventListener implements Listener {
 
         ISleepFlag<Boolean> stormSleepFlag = sleepFlagService.getSleepFlag("storm-sleep");
         if (!stormSleepFlag.getValue(world) && world.isThundering()) {
-            messageService.sendMessage(player, messageService.getMessage(ConfigMessage.NO_SLEEP_THUNDERSTORM, false), true);
-            e.setCancelled(true);
-            return;
-        }
 
+            String preventSleepStormMessage = messageService.getConfigMessage(ConfigMessage.NO_SLEEP_THUNDERSTORM);
+            String stormSkipMessage = messageService.getNewBuilder(preventSleepStormMessage)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .usePrefix(false)
+                    .build();
+
+            player.sendMessage(stormSkipMessage);
+
+        }
 
         // getting the sleep flag
         ISleepFlag<Boolean> preventSleepFlag = sleepFlagService.getSleepFlag("prevent-sleep");
+
         if (preventSleepFlag.getValue(world)) {
-            messageService.sendMessage(player, messageService.getMessage(ConfigMessage.SLEEP_PREVENTED, true), false);
+
+            String sleepPreventedConfigMessage = messageService.getConfigMessage(ConfigMessage.SLEEP_PREVENTED);
+            String sleepPreventedMessage = messageService.getNewBuilder(sleepPreventedConfigMessage)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .usePrefix(true)
+                    .build();
+
+            player.sendMessage(sleepPreventedMessage);
             e.setCancelled(true);
             return;
         }

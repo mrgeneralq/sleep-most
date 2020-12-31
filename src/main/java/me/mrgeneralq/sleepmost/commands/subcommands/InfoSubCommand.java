@@ -1,6 +1,7 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
 import me.mrgeneralq.sleepmost.statics.Message;
 import org.bukkit.World;
@@ -30,7 +31,12 @@ public class InfoSubCommand implements ISubCommand {
 
 
         if(!(sender instanceof Player)){
-            messageService.sendMessage(sender, Message.ONLY_PLAYERS_COMMAND, true);
+
+            String onlyPlayersCommandMessage = messageService.getNewBuilder(Message.ONLY_PLAYERS_COMMAND)
+                    .usePrefix(true)
+                    .build();
+
+            sender.sendMessage(onlyPlayersCommandMessage);
             return true;
         }
 
@@ -38,7 +44,13 @@ public class InfoSubCommand implements ISubCommand {
         World world = player.getWorld();
 
         if(!sleepService.enabledForWorld(world)){
-            messageService.sendMessage(player, Message.CURRENTLY_DISABLED, true);
+
+            String disabledForWorldMessage = messageService.getNewBuilder(Message.CURRENTLY_DISABLED)
+                    .setWorld(world)
+                    .setPlayer(player)
+                    .build();
+
+            player.sendMessage(disabledForWorldMessage);
             return true;
         }
 
@@ -55,20 +67,17 @@ public class InfoSubCommand implements ISubCommand {
         }
 
 
-
-
-        messageService.sendMessage(sender, "&b*********************************************", false);
-        messageService.sendMessage(sender, String.format("&e&l  FLAGS &o&7world: &c&l%s", world.getName()), false);
-        messageService.sendMessage(sender, "&b*********************************************", false);
-
-        messageService.sendMessage(sender, "" , false);
+        sender.sendMessage(ChatColorUtils.colorize("&b*********************************************"));
+        sender.sendMessage(ChatColorUtils.colorize(String.format("&e&l  FLAGS &o&7world: &c&l%s", world.getName())));
+        sender.sendMessage(ChatColorUtils.colorize(String.format("&e&l  FLAGS &o&7world: &c&l%s", world.getName())));
+        sender.sendMessage(ChatColorUtils.colorize("&b*********************************************"));
+        sender.sendMessage(ChatColorUtils.colorize(""));
 
         for(ISleepFlag<?> flagItem : sleepFlagCollection)
-            messageService.sendMessage(sender,String.format("&e%s &b%s",flagItem.getFlagName(), flagItem.getValue(world)), false);
+            sender.sendMessage(ChatColorUtils.colorize(String.format("&e%s &b%s",flagItem.getFlagName(), flagItem.getValue(world))));
 
-        messageService.sendMessage(sender,"", false);
-        messageService.sendMessage(sender,"&b*********************************************",false);
-
+        sender.sendMessage(ChatColorUtils.colorize(""));
+        sender.sendMessage(ChatColorUtils.colorize("&b*********************************************"));
         return true;
     }
 }
