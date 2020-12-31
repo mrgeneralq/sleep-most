@@ -78,8 +78,12 @@ public class MessageService implements IMessageService {
 
 	@Override
 	public void sendMessageToWorld(World world, String message) {
+		String finalMessage = getNewBuilder(message)
+				.usePrefix(true)
+				.build();
+
 		for(Player p: world.getPlayers())
-			this.sendMessage(p, message, true);
+			p.sendMessage(message);
 	}
 
 	@Override
@@ -100,25 +104,8 @@ public class MessageService implements IMessageService {
 		sendMessageToWorld(world, skipMessage);
 	}
 
-	public void sendMessage(CommandSender sender, String message, boolean showPrefix){
-
-		if(message.isEmpty())
-			return;
-
-		//add the prefix to the message
-		if(showPrefix)
-		{
-			String prefix = configRepository.getPrefix();
-
-			if(!prefix.isEmpty()) 
-				message = String.format("%s %s", prefix, message);
-		}
-
-		sender.sendMessage(colorize(message));
-	}
-
 	@Override
-	public MessageBuilder getBuilder() {
-		return new MessageBuilder(this.configRepository.getPrefix());
+	public MessageBuilder getNewBuilder(String rawMessage) {
+		return new MessageBuilder(rawMessage, this.configRepository.getPrefix());
 	}
 }

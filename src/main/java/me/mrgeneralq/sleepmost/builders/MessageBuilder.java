@@ -10,19 +10,18 @@ public class MessageBuilder {
     private boolean usePrefix = false;
     private final String prefix;
 
-
-    public MessageBuilder(String prefix) {
+    public MessageBuilder(String message, String prefix) {
+        this.message = message;
         this.prefix = prefix;
     }
 
     public String build(){
-
-        String newMessage = ChatColorUtils.colorize(this.message.trim());
+        String finalMessage = this.message.trim();
 
         if(usePrefix)
-            return String.format("%s %s", this.prefix, newMessage).trim();
+            finalMessage = String.format("%s %s", this.prefix, finalMessage).trim();
 
-        return newMessage;
+        return ChatColorUtils.colorize(finalMessage);
     }
 
     public MessageBuilder setPlayer(Player player){
@@ -45,16 +44,8 @@ public class MessageBuilder {
         this.message = this.message.replaceAll(placeHolder, value);
         return this;
     }
-
-    public MessageBuilder initialize(String message){
-        this.setMessage(message);
-        this.usePrefix = false;
-        return this;
-    }
-
     public MessageBuilder setMessage(String message){
         this.message = message;
         return this;
     }
-
 }
