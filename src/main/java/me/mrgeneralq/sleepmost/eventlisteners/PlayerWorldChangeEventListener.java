@@ -1,8 +1,8 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
+import me.mrgeneralq.sleepmost.enums.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
-import me.mrgeneralq.sleepmost.statics.Message;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,6 +30,6 @@ public class PlayerWorldChangeEventListener implements Listener {
         if(sleepService.enabledForWorld(world))
             return;
 
-        player.sendMessage(messageService.getNewBuilder(Message.CURRENTLY_DISABLED).build());
+        player.sendMessage(messageService.getFromTemplate(MessageTemplate.CURRENTLY_DISABLED));
     }
 }

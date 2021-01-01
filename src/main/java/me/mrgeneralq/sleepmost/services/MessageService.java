@@ -6,14 +6,9 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
-import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import me.mrgeneralq.sleepmost.statics.ConfigMessageMapper;
-import me.mrgeneralq.sleepmost.statics.Message;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
 
 public class MessageService implements IMessageService {
 
@@ -66,13 +61,12 @@ public class MessageService implements IMessageService {
 		String message = this.getConfigMessage(skipCauseConfigMessage);
 
 
-		String newMessage = this.getNewBuilder(message)
+		return getNewBuilder(message)
 				.usePrefix(true)
 				.setPlayer(player)
 				.setPlaceHolder("%sleeping%", Integer.toString(sleepService.getPlayersSleepingCount(world)))
 				.setPlaceHolder("%required%", Integer.toString(Math.round(sleepService.getRequiredPlayersSleepingCount(world))))
 				.build();
-		return newMessage;
 	}
 
 	@Override
@@ -109,11 +103,11 @@ public class MessageService implements IMessageService {
 
 	@Override
 	public MessageBuilder getNewBuilder(MessageTemplate messageTemplate){
-		return new MessageBuilder(messageTemplate.getMessage(), this.configRepository.getPrefix());
+		return getNewBuilder(messageTemplate.getMessage());
 	}
 
 	@Override
 	public String getFromTemplate(MessageTemplate messageTemplate){
-		return new MessageBuilder(messageTemplate.getMessage(), this.configRepository.getPrefix()).build();
+		return getNewBuilder(messageTemplate).build();
 	}
 }

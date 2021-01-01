@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.enums.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
@@ -32,7 +33,7 @@ public class InfoSubCommand implements ISubCommand {
 
         if(!(sender instanceof Player)){
 
-            String onlyPlayersCommandMessage = messageService.getNewBuilder(Message.ONLY_PLAYERS_COMMAND)
+            String onlyPlayersCommandMessage = messageService.getNewBuilder(MessageTemplate.ONLY_PLAYERS_COMMAND)
                     .usePrefix(true)
                     .build();
 
@@ -45,7 +46,7 @@ public class InfoSubCommand implements ISubCommand {
 
         if(!sleepService.enabledForWorld(world)){
 
-            String disabledForWorldMessage = messageService.getNewBuilder(Message.CURRENTLY_DISABLED)
+            String disabledForWorldMessage = messageService.getNewBuilder(MessageTemplate.CURRENTLY_DISABLED)
                     .setWorld(world)
                     .setPlayer(player)
                     .build();

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import me.mrgeneralq.sleepmost.commands.subcommands.*;
+import me.mrgeneralq.sleepmost.enums.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
 import org.bukkit.command.Command;
@@ -18,7 +19,6 @@ import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
-import me.mrgeneralq.sleepmost.statics.Message;
 
 import static java.util.stream.Collectors.toList;
 
@@ -60,7 +60,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		if(args.length == 0){
 
 			if(!sender.hasPermission("sleepmost.help")){
-				sender.sendMessage(ChatColorUtils.colorize(Message.NO_PERMISSION));
+				sender.sendMessage(messageService.getFromTemplate(MessageTemplate.NO_PERMISSION));
 				return true;
 			}
 			sender.sendMessage(ChatColorUtils.colorize("&b*********************************************"));
@@ -83,8 +83,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		// check if player has permission of command
 		if(!sender.hasPermission("sleepmost." + subCommand))
 		{
-
-			sender.sendMessage(ChatColorUtils.colorize(Message.NO_PERMISSION));
+			sender.sendMessage(messageService.getFromTemplate(MessageTemplate.NO_PERMISSION));
 			return true;
 		}
 

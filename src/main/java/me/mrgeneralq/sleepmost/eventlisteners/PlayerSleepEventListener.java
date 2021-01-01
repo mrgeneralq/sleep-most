@@ -1,6 +1,5 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.interfaces.*;
@@ -62,6 +61,7 @@ public class PlayerSleepEventListener implements Listener {
         if (!stormSleepFlag.getValue(world) && world.isThundering()) {
 
             String preventSleepStormMessage = messageService.getConfigMessage(ConfigMessage.NO_SLEEP_THUNDERSTORM);
+
             String stormSkipMessage = messageService.getNewBuilder(preventSleepStormMessage)
                     .setPlayer(player)
                     .setWorld(world)

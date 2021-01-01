@@ -1,13 +1,12 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.enums.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
-import me.mrgeneralq.sleepmost.statics.Message;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,7 +15,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SetFlagCommand implements ISubCommand , TabCompleter {
 
@@ -61,37 +59,39 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
         String flag = args[1];
 
         if(!flagMapper.flagExists(flag)){
-
-            String flagNotExistMessage = messageService.getNewBuilder("&cThis flag does not exist!")
+            String unknownFlagMessage = messageService.getNewBuilder("&cThis flag does not exist!")
                     .usePrefix(true)
                     .build();
 
-            player.sendMessage(flagNotExistMessage);
-
-            String flagListStr = "&bPossible flags are: &e " + flagMapper.getAllFlags().stream().collect(Collectors.joining(", "));
-            String possibleFlags = messageService.getNewBuilder(flagListStr).build();
-            player.sendMessage(possibleFlags);
-
+            player.sendMessage(unknownFlagMessage);
+            player.sendMessage(getPossibleFlagsMessage());
             return true;
         }
 
         ISleepFlag<?> sleepFlag = flagMapper.getFlag(flag);
 
         if(args.length < 3){
-            messageService.sendMessage(player, "&cMissing value! Use &e" + sleepFlag.getFlagUsage(),true);
+            String usageMessage = messageService.getNewBuilder("&cMissing value! Use &e" + sleepFlag.getFlagUsage())
+                    .usePrefix(true)
+                    .build();
+
+            player.sendMessage(usageMessage);
             return true;
         }
 
         String flagValue = args[2];
 
         if(!sleepFlag.isValidValue(flagValue)){
-            messageService.sendMessage(player,"&cInvalid format! Use &e " + sleepFlag.getFlagUsage(), true);
+            String invalidFormatMessage = messageService.getNewBuilder("&cInvalid format! Use &e " + sleepFlag.getFlagUsage())
+                    .usePrefix(true)
+                    .build();
+
+            player.sendMessage(invalidFormatMessage);
             return true;
         }
 
         sleepService.setFlag(world, sleepFlag, flagValue);
-        String messageFormat = String.format("&bFlag &c%s &bis now set to &e%s &bfor world &e%s", sleepFlag.getFlagName(), flagValue, world.getName());
-        messageService.sendMessage(player, messageFormat, true);
+        player.sendMessage(getFlagSetMessage(sleepFlag.getFlagName(), flagValue, world.getName()));
         return true;
     }
 
@@ -108,4 +108,19 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
 
      //   return null;
     }
+    private String getPossibleFlagsMessage()
+    {
+        String flagsNames = StringUtils.join(flagMapper.getAllFlags(), ", ");
+
+        return messageService.getNewBuilder("&bPossible flags are: &e " + flagsNames).build();
+    }
+    private String getFlagSetMessage(String flagName, String flagValue, String worldName)
+    {
+        String rawMessage = String.format("&bFlag &c%s &bis now set to &e%s &bfor world &e%s", flagName, flagValue, worldName);
+
+        return messageService.getNewBuilder(rawMessage)
+                .usePrefix(true)
+                .build();
+    }
+
 }

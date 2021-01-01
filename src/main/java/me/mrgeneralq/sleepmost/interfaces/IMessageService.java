@@ -2,9 +2,7 @@ package me.mrgeneralq.sleepmost.interfaces;
 
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.enums.MessageTemplate;
-import me.mrgeneralq.sleepmost.statics.Message;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;

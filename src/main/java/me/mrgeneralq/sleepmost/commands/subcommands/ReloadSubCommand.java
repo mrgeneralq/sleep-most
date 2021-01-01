@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.enums.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
@@ -19,9 +20,8 @@ public class ReloadSubCommand implements ISubCommand {
 
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-
         sleepService.reloadConfig();
-        messageService.sendMessage(sender, Message.CONFIG_RELOADED, true);
+        sender.sendMessage(messageService.getFromTemplate(MessageTemplate.CONFIG_RELOADED));
         return true;
     }
 }
