@@ -1,5 +1,7 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.builders.MessageBuilder;
+import me.mrgeneralq.sleepmost.enums.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
@@ -31,8 +33,10 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
+
+
         if(!(sender instanceof Player)){
-            messageService.sendMessage(sender, Message.ONLY_PLAYERS_COMMAND, true);
+            sender.sendMessage(messageService.getFromTemplate(MessageTemplate.NO_PERMISSION));
             return true;
         }
 
@@ -40,22 +44,33 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
         World world = player.getWorld();
 
         if(!sleepService.enabledForWorld(world)){
-            messageService.sendMessage(player, Message.CURRENTLY_DISABLED, true);
+            player.sendMessage(messageService.getFromTemplate(MessageTemplate.CURRENTLY_DISABLED));
             return true;
         }
 
         if(args.length < 2){
-            messageService.sendMessage(player, "&btype &e/sleepmost setflag <flag> <value>", true);
+
+            String setFlagMessage = messageService.getNewBuilder("&btype &e/sleepmost setflag <flag> <value>")
+                    .usePrefix(true)
+                    .build();
+
+            player.sendMessage(setFlagMessage);
             return true;
         }
 
         String flag = args[1];
 
         if(!flagMapper.flagExists(flag)){
-            messageService.sendMessage(player, "&cThis flag does not exist!", true);
+
+            String flagNotExistMessage = messageService.getNewBuilder("&cThis flag does not exist!")
+                    .usePrefix(true)
+                    .build();
+
+            player.sendMessage(flagNotExistMessage);
 
             String flagListStr = "&bPossible flags are: &e " + flagMapper.getAllFlags().stream().collect(Collectors.joining(", "));
-            messageService.sendMessage(player, flagListStr, false);
+            String possibleFlags = messageService.getNewBuilder(flagListStr).build();
+            player.sendMessage(possibleFlags);
 
             return true;
         }

@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.builders;
 
+import me.mrgeneralq.sleepmost.enums.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -46,6 +47,13 @@ public class MessageBuilder {
     }
     public MessageBuilder setMessage(String message){
         this.message = message;
+        return this;
+    }
+
+    public MessageBuilder fromTemplate(MessageTemplate template){
+
+        this.usePrefix = template.usesPrefix();
+        this.setMessage(template.getMessage());
         return this;
     }
 }

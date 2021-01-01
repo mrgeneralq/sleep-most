@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.enums.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
@@ -25,7 +26,7 @@ public class DisableSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColorUtils.colorize(Message.ONLY_PLAYERS_COMMAND));
+            sender.sendMessage(messageService.getFromTemplate(MessageTemplate.ONLY_PLAYERS_COMMAND));
             return true;
         }
 
@@ -33,12 +34,12 @@ public class DisableSubCommand implements ISubCommand {
         World world = player.getWorld();
 
         if (!sleepService.enabledForWorld(world)) {
-            player.sendMessage(ChatColorUtils.colorize(Message.ALREADY_DISABLED_FOR_WORLD));
+            player.sendMessage(messageService.getFromTemplate(MessageTemplate.ALREADY_DISABLED_FOR_WORLD));
             return true;
         }
 
         sleepService.disableForWorld(world);
-        player.sendMessage(ChatColorUtils.colorize(Message.DISABLED_FOR_WORLD));
+        player.sendMessage(messageService.getFromTemplate(MessageTemplate.DISABLED_FOR_WORLD));
         return true;
     }
 }

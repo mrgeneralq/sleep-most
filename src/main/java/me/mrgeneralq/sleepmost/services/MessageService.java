@@ -1,6 +1,7 @@
 package me.mrgeneralq.sleepmost.services;
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageTemplate;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
@@ -104,5 +105,15 @@ public class MessageService implements IMessageService {
 	@Override
 	public MessageBuilder getNewBuilder(String rawMessage) {
 		return new MessageBuilder(rawMessage, this.configRepository.getPrefix());
+	}
+
+	@Override
+	public MessageBuilder getNewBuilder(MessageTemplate messageTemplate){
+		return new MessageBuilder(messageTemplate.getMessage(), this.configRepository.getPrefix());
+	}
+
+	@Override
+	public String getFromTemplate(MessageTemplate messageTemplate){
+		return new MessageBuilder(messageTemplate.getMessage(), this.configRepository.getPrefix()).build();
 	}
 }
