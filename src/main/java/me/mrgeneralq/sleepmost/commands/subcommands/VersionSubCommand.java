@@ -20,7 +20,16 @@ public class VersionSubCommand implements ISubCommand {
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
-        messageService.sendMessage(sender, "&bYou are running version &c" +  updateService.getCurrentVersion(), true);
+        sender.sendMessage(this.getVersionCommandMessage());
         return true;
+    }
+
+
+    private String getVersionCommandMessage(){
+
+        String message = "&bYou are running version &c" +  updateService.getCurrentVersion();
+        return messageService.getNewBuilder(message)
+                .usePrefix(true)
+                .build();
     }
 }

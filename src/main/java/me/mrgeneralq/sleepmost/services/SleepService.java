@@ -125,7 +125,7 @@ public class SleepService implements ISleepService {
     }
 
     @Override
-    public void resetDay(World world, String lastSleeperName) {
+    public void resetDay(World world, String lastSleeperName, String lastSleeperDisplayName) {
         SleepSkipCause cause = SleepSkipCause.UNKNOWN;
 
         if (this.isNight(world)) {
@@ -137,7 +137,7 @@ public class SleepService implements ISleepService {
         
         world.setThundering(false);
         world.setStorm(false);
-        Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, cause, lastSleeperName));
+        Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, cause, lastSleeperName, lastSleeperDisplayName));
     }
 
     @Override
