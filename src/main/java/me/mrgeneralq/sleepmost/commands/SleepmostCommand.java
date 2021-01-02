@@ -48,7 +48,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("version", new VersionSubCommand(this.updateService, this.messageService));
 
 		//enable when debugging
-		subCommands.put("test", new TestCommand());
+		//subCommands.put("test", new TestCommand());
 	}
 
 
