@@ -11,4 +11,5 @@ public interface ISleepFlag<T> {
     public FlagType getFlagType();
     public T getValue(World world);
     public void setValue(World world, T value);
+    public void setValue(T value);
 }

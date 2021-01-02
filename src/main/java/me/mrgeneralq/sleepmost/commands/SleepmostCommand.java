@@ -7,7 +7,7 @@ import java.util.Map;
 
 import me.mrgeneralq.sleepmost.commands.subcommands.*;
 import me.mrgeneralq.sleepmost.enums.MessageTemplate;
-import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.mappers.SleepFlagMapper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

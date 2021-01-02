@@ -4,7 +4,7 @@ import me.mrgeneralq.sleepmost.enums.SleepCalculationType;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
-import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.mappers.SleepFlagMapper;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import org.bukkit.Bukkit;

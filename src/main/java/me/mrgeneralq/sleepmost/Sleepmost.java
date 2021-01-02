@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
-import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.mappers.SleepFlagMapper;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;

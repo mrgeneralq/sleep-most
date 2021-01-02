@@ -1,6 +1,7 @@
 package me.mrgeneralq.sleepmost.services;
 
-import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.enums.SleepmostFlag;
+import me.mrgeneralq.sleepmost.mappers.SleepFlagMapper;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
@@ -25,7 +26,17 @@ public class SleepFlagService implements ISleepFlagService {
     }
 
     @Override
+    public ISleepFlag<?> getFlag(SleepmostFlag flag, World world) {
+        ISleepFlag<?> newFlag = SleepFlagMapper.getMapper().getFlag(flag);
+        String flagPath = String.format("%s.%s", world.getName(), newFlag.getFlagName());
+
+    }
+
+    @Override
     public ISleepFlag getSleepFlag(String flagName) {
+
+        //here comes the magic
+
         return SleepFlagMapper.getMapper().getFlag(flagName);
     }
 
