@@ -68,7 +68,7 @@ public class SleepSkipEventListener implements Listener {
 	{
 		boolean titleEnabled = (cause == NIGHT_TIME ? configService.getTitleNightSkippedEnabled() : configService.getTitleStormSkippedEnabled());
 		
-		if(!titleEnabled) 
+		if(!titleEnabled)
 		{
 			return;
 		}
@@ -76,10 +76,10 @@ public class SleepSkipEventListener implements Listener {
 		String skippedSubtitle = (cause == NIGHT_TIME ? configService.getTitleNightSkippedSubTitle() : configService.getTitleStormSkippedSubTitle());
 		
 		for(Player p : world.getPlayers()) {
-			skippedTitle = skippedTitle.replaceAll("%player%", p.getName()).replaceAll("%dplayer%", p.getDisplayName());
-			skippedSubtitle = skippedSubtitle.replaceAll("%player%", p.getName()).replaceAll("%dplayer%", p.getDisplayName());
+			String playerTitle = skippedTitle = skippedTitle.replaceAll("%player%", p.getName()).replaceAll("%dplayer%", p.getDisplayName());
+			String playerSubtitle = skippedSubtitle.replaceAll("%player%", p.getName()).replaceAll("%dplayer%", p.getDisplayName());
 			
-			p.sendTitle(skippedTitle, skippedSubtitle, 10, 70, 20);
+			p.sendTitle(playerTitle, playerSubtitle, 10, 70, 20);
 		}
 	}
 	private void sendSkipSound(World world, SleepSkipCause cause) 
