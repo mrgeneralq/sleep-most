@@ -8,4 +8,6 @@ public interface ISleepFlagService {
     Object getFlagValue(World world, String flagName);
     <T> ISleepFlag<T> getSleepFlag(String flagName);
     ISleepFlag<?> getFlag(SleepmostFlag flag, World world);
+
+    void setValue(SleepmostFlag flag, World world, Object value);
 }

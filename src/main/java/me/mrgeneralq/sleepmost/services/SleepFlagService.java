@@ -27,8 +27,17 @@ public class SleepFlagService implements ISleepFlagService {
 
     @Override
     public ISleepFlag<?> getFlag(SleepmostFlag flag, World world) {
+
+        //this is what I had so far
+
+
+
         ISleepFlag<?> newFlag = SleepFlagMapper.getMapper().getFlag(flag);
         String flagPath = String.format("%s.%s", world.getName(), newFlag.getFlagName());
+
+        newFlag.setValue(configRepository.get);
+
+
 
     }
 
