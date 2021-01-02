@@ -44,7 +44,7 @@ public class TestCommand implements ISubCommand
         //add random 6 hex digits
         for(int i = 1; i <= 6; i++)
         {
-            color.append(String.valueOf(randomHexLetter()));
+            color.append(randomHexLetter());
         }
         return color.toString();
     }

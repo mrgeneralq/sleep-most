@@ -1,7 +1,8 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
+import me.mrgeneralq.sleepmost.enums.MessageTemplate;
+import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
-import me.mrgeneralq.sleepmost.statics.Message;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,9 +12,11 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 public class PlayerWorldChangeEventListener implements Listener {
 
     private final ISleepService sleepService;
+    private final IMessageService messageService;
 
-    public PlayerWorldChangeEventListener(ISleepService sleepService){
+    public PlayerWorldChangeEventListener(ISleepService sleepService, IMessageService messageService){
         this.sleepService = sleepService;
+        this.messageService = messageService;
     }
 
     @EventHandler
@@ -27,6 +30,6 @@ public class PlayerWorldChangeEventListener implements Listener {
         if(sleepService.enabledForWorld(world))
             return;
 
-        player.sendMessage(Message.CURRENTLY_DISABLED);
+        player.sendMessage(messageService.fromTemplate(MessageTemplate.CURRENTLY_DISABLED));
     }
 }

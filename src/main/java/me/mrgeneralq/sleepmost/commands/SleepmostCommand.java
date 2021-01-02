@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import me.mrgeneralq.sleepmost.commands.subcommands.*;
+import me.mrgeneralq.sleepmost.enums.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,9 +18,9 @@ import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
-import me.mrgeneralq.sleepmost.statics.Message;
 
 import static java.util.stream.Collectors.toList;
+import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
 
 public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	private final Map<String, ISubCommand> subCommands = new HashMap<>();
@@ -59,20 +60,19 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		if(args.length == 0){
 
 			if(!sender.hasPermission("sleepmost.help")){
-				messageService.sendMessage(sender, Message.NO_PERMISSION, false);
+				sender.sendMessage(messageService.fromTemplate(MessageTemplate.NO_PERMISSION));
 				return true;
 			}
-			messageService.sendMessage(sender, "&b*********************************************", false);
-			messageService.sendMessage(sender, "&b*&e  SLEEPMOST &o&7author: MrGeneralQ  &b*", false);
-			messageService.sendMessage(sender, "&b*********************************************", false);
-			messageService.sendMessage(sender, "", false);
-			messageService.sendMessage(sender, "&e/sm &fshow a list of available commands", false);
-			messageService.sendMessage(sender, "&e/sm enable &fenable sleepmost in the current world", false);
-			messageService.sendMessage(sender, "&e/sm disable &fdisable sleepmost in the current world", false);
-			messageService.sendMessage(sender, "&e/sm setflag <flagname> <flagvalue> &fset a flag for the current world", false);
-			messageService.sendMessage(sender, "&e/sm info &fshow a list of all flags set for your world", false);
-			messageService.sendMessage(sender, "&e/sm version &fshow the current version of sleep most", false);
-			messageService.sendMessage(sender, "&e/sm reload &freload the config file", false);
+			sender.sendMessage(colorize("&b*********************************************"));
+			sender.sendMessage(colorize("&b*&e  SLEEPMOST &o&7author: MrGeneralQ  &b*"));
+			sender.sendMessage(colorize("&b*********************************************"));
+			sender.sendMessage(colorize("&e/sm &fshow a list of available commands"));
+			sender.sendMessage(colorize("&e/sm enable &fenable sleepmost in the current world"));
+			sender.sendMessage(colorize("&e/sm disable &fdisable sleepmost in the current world"));
+			sender.sendMessage(colorize("&e/sm setflag <flagname> <flagvalue> &fset a flag for the current world"));
+			sender.sendMessage(colorize("&e/sm info &fshow a list of all flags set for your world"));
+			sender.sendMessage(colorize("&e/sm version &fshow the current version of sleep most"));
+			sender.sendMessage(colorize("&e/sm reload &freload the config file"));
 			return true;
 		}
 
@@ -82,8 +82,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		// check if player has permission of command
 		if(!sender.hasPermission("sleepmost." + subCommand))
 		{
-			
-			messageService.sendMessage(sender, Message.NO_PERMISSION, false);
+			sender.sendMessage(messageService.fromTemplate(MessageTemplate.NO_PERMISSION));
 			return true;
 		}
 

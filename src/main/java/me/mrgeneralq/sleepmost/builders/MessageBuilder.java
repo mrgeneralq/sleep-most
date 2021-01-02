@@ -6,28 +6,28 @@ import org.bukkit.entity.Player;
 
 public class MessageBuilder {
 
-    private String message= "";
-    private boolean usePrefix = false;
     private final String prefix;
+    private String message;
+    private boolean usePrefix = false;
 
-
-    public MessageBuilder(String prefix) {
+    public MessageBuilder(String message, String prefix) {
+        this.message = message;
         this.prefix = prefix;
     }
 
     public String build(){
-
-        String newMessage = ChatColorUtils.colorize(this.message.trim());
+        String finalMessage = this.message.trim();
 
         if(usePrefix)
-            return String.format("%s %s", this.prefix, newMessage).trim();
+            finalMessage = String.format("%s %s", this.prefix, finalMessage).trim();
 
-        return newMessage;
+        return ChatColorUtils.colorize(finalMessage);
     }
 
     public MessageBuilder setPlayer(Player player){
-        this.message = this.message.replaceAll("%player%", player.getName())
-                .replaceAll("%dplayer%", player.getDisplayName());
+        this.message = this.message
+                .replace("%player%", player.getName())
+                .replace("%dplayer%", player.getDisplayName());
         return this;
     }
 
@@ -37,24 +37,16 @@ public class MessageBuilder {
     }
 
     public MessageBuilder setWorld(World world){
-        this.message = this.message.replaceAll("%world%", world.getName());
+        this.message = this.message.replace("%world%", world.getName());
         return this;
     }
 
     public MessageBuilder setPlaceHolder(String placeHolder, String value){
-        this.message = this.message.replaceAll(placeHolder, value);
+        this.message = this.message.replace(placeHolder, value);
         return this;
     }
-
-    public MessageBuilder initialize(String message){
-        this.setMessage(message);
-        this.usePrefix = false;
-        return this;
-    }
-
     public MessageBuilder setMessage(String message){
         this.message = message;
         return this;
     }
-
 }

@@ -59,16 +59,32 @@ public class PlayerSleepEventListener implements Listener {
 
         ISleepFlag<Boolean> stormSleepFlag = sleepFlagService.getSleepFlag("storm-sleep");
         if (!stormSleepFlag.getValue(world) && world.isThundering()) {
-            messageService.sendMessage(player, messageService.getMessage(ConfigMessage.NO_SLEEP_THUNDERSTORM, false), true);
+
+            String preventSleepStormMessage = messageService.getConfigMessage(ConfigMessage.NO_SLEEP_THUNDERSTORM);
+
+            String stormSkipMessage = messageService.newBuilder(preventSleepStormMessage)
+                    .usePrefix(false)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .build();
+            player.sendMessage(stormSkipMessage);
+
             e.setCancelled(true);
             return;
         }
 
-
         // getting the sleep flag
         ISleepFlag<Boolean> preventSleepFlag = sleepFlagService.getSleepFlag("prevent-sleep");
+
         if (preventSleepFlag.getValue(world)) {
-            messageService.sendMessage(player, messageService.getMessage(ConfigMessage.SLEEP_PREVENTED, true), false);
+
+            String sleepPreventedConfigMessage = messageService.getConfigMessage(ConfigMessage.SLEEP_PREVENTED);
+
+            player.sendMessage(messageService.newPrefixedBuilder(sleepPreventedConfigMessage)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .build());
+
             e.setCancelled(true);
             return;
         }
@@ -84,12 +100,13 @@ public class PlayerSleepEventListener implements Listener {
             return;
 
         String lastSleeperName = e.getPlayer().getName();
+        String lastSleeperDisplayName = e.getPlayer().getDisplayName();
         
 		ISleepFlag<Boolean> nightCycleAnimation = sleepFlagService.getSleepFlag("nightcycle-animation");
 		
         if (nightCycleAnimation.getValue(world)) {
         	if(world.isThundering() && !sleepService.isNight(world)){
-        		sleepService.resetDay(world, lastSleeperName);
+        		sleepService.resetDay(world, lastSleeperName, lastSleeperDisplayName);
         		return;
 			}
 
@@ -99,7 +116,7 @@ public class PlayerSleepEventListener implements Listener {
             return;
         }
 
-        sleepService.resetDay(world, lastSleeperName);
+        sleepService.resetDay(world, lastSleeperName, lastSleeperDisplayName);
     }
 
     @EventHandler

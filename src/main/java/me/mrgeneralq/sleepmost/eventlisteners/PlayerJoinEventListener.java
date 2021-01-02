@@ -1,8 +1,6 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
-import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
-import me.mrgeneralq.sleepmost.statics.Message;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
