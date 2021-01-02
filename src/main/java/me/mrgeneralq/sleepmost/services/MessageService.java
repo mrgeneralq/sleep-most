@@ -39,7 +39,7 @@ public class MessageService implements IMessageService {
 	public void sendMessageToWorld(ConfigMessage message, World world) {
 
 		String configMessage = this.messageMapper.getMessagePath(message);
-		MessageBuilder messageBuilder = this.getNewBuilder(configMessage);
+		MessageBuilder messageBuilder = this.newBuilder(configMessage);
 
 		String newMessage = messageBuilder.usePrefix(true).build();
 
@@ -61,7 +61,7 @@ public class MessageService implements IMessageService {
 		String message = this.getConfigMessage(skipCauseConfigMessage);
 
 
-		return getNewBuilder(message)
+		return this.newBuilder(message)
 				.usePrefix(true)
 				.setPlayer(player)
 				.setPlaceHolder("%sleeping%", Integer.toString(sleepService.getPlayersSleepingCount(world)))
@@ -71,7 +71,7 @@ public class MessageService implements IMessageService {
 
 	@Override
 	public void sendMessageToWorld(World world, String message) {
-		String finalMessage = getNewBuilder(message)
+		String finalMessage = this.newBuilder(message)
 				.usePrefix(true)
 				.build();
 
@@ -97,17 +97,24 @@ public class MessageService implements IMessageService {
 	}
 
 	@Override
-	public MessageBuilder getNewBuilder(String rawMessage) {
+	public MessageBuilder newBuilder(String rawMessage) {
 		return new MessageBuilder(rawMessage, this.configRepository.getPrefix());
 	}
 
 	@Override
-	public MessageBuilder getNewBuilder(MessageTemplate messageTemplate){
-		return getNewBuilder(messageTemplate.getMessage());
+	public MessageBuilder newBuilder(MessageTemplate messageTemplate){
+		return this.newBuilder(messageTemplate.getMessage());
 	}
 
 	@Override
-	public String getFromTemplate(MessageTemplate messageTemplate){
-		return getNewBuilder(messageTemplate).build();
+	public MessageBuilder newPrefixedBuilder(String rawMessage)
+	{
+		return this.newBuilder(rawMessage)
+				.usePrefix(true);
+	}
+
+	@Override
+	public String fromTemplate(MessageTemplate messageTemplate){
+		return this.newBuilder(messageTemplate).build();
 	}
 }

@@ -62,14 +62,15 @@ public class PlayerSleepEventListener implements Listener {
 
             String preventSleepStormMessage = messageService.getConfigMessage(ConfigMessage.NO_SLEEP_THUNDERSTORM);
 
-            String stormSkipMessage = messageService.getNewBuilder(preventSleepStormMessage)
+            String stormSkipMessage = messageService.newBuilder(preventSleepStormMessage)
+                    .usePrefix(false)
                     .setPlayer(player)
                     .setWorld(world)
-                    .usePrefix(false)
                     .build();
-
             player.sendMessage(stormSkipMessage);
 
+            e.setCancelled(true);
+            return;
         }
 
         // getting the sleep flag
@@ -78,13 +79,12 @@ public class PlayerSleepEventListener implements Listener {
         if (preventSleepFlag.getValue(world)) {
 
             String sleepPreventedConfigMessage = messageService.getConfigMessage(ConfigMessage.SLEEP_PREVENTED);
-            String sleepPreventedMessage = messageService.getNewBuilder(sleepPreventedConfigMessage)
+
+            player.sendMessage(messageService.newPrefixedBuilder(sleepPreventedConfigMessage)
                     .setPlayer(player)
                     .setWorld(world)
-                    .usePrefix(true)
-                    .build();
+                    .build());
 
-            player.sendMessage(sleepPreventedMessage);
             e.setCancelled(true);
             return;
         }

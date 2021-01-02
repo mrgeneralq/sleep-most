@@ -18,8 +18,9 @@ public interface IMessageService
 	void sendMessageToWorld(World world, String string);
 	void sendPlayerLeftMessage(Player player, SleepSkipCause cause);
 	void sendNightSkippedMessage(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause);
-	MessageBuilder getNewBuilder(String rawMessage);
-	MessageBuilder getNewBuilder(MessageTemplate messageTemplate);
-	String getFromTemplate(MessageTemplate messageTemplate);
+	MessageBuilder newBuilder(String rawMessage);
+	MessageBuilder newBuilder(MessageTemplate messageTemplate);
+	MessageBuilder newPrefixedBuilder(String rawMessage);
+	String fromTemplate(MessageTemplate messageTemplate);
 
 }

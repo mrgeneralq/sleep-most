@@ -31,10 +31,8 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
-
-
         if(!(sender instanceof Player)){
-            sender.sendMessage(messageService.getFromTemplate(MessageTemplate.NO_PERMISSION));
+            sender.sendMessage(messageService.fromTemplate(MessageTemplate.NO_PERMISSION));
             return true;
         }
 
@@ -42,56 +40,42 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
         World world = player.getWorld();
 
         if(!sleepService.enabledForWorld(world)){
-            player.sendMessage(messageService.getFromTemplate(MessageTemplate.CURRENTLY_DISABLED));
+            player.sendMessage(messageService.fromTemplate(MessageTemplate.CURRENTLY_DISABLED));
             return true;
         }
 
-        if(args.length < 2){
-
-            String setFlagMessage = messageService.getNewBuilder("&btype &e/sleepmost setflag <flag> <value>")
-                    .usePrefix(true)
-                    .build();
-
-            player.sendMessage(setFlagMessage);
+        if(args.length < 2) {
+            player.sendMessage(messageService.newPrefixedBuilder("&btype &e/sleepmost setflag <flag> <value>").build());
             return true;
         }
-
         String flag = args[1];
 
-        if(!flagMapper.flagExists(flag)){
-            String unknownFlagMessage = messageService.getNewBuilder("&cThis flag does not exist!")
-                    .usePrefix(true)
-                    .build();
-
-            player.sendMessage(unknownFlagMessage);
+        if(!flagMapper.flagExists(flag)) {
+            player.sendMessage(messageService.newPrefixedBuilder("&cThis flag does not exist!").build());
             player.sendMessage(getPossibleFlagsMessage());
             return true;
         }
-
         ISleepFlag<?> sleepFlag = flagMapper.getFlag(flag);
 
         if(args.length < 3){
-            String usageMessage = messageService.getNewBuilder("&cMissing value! Use &e" + sleepFlag.getFlagUsage())
-                    .usePrefix(true)
-                    .build();
-
-            player.sendMessage(usageMessage);
+            player.sendMessage(messageService.newPrefixedBuilder("&cMissing value! Use &e" + sleepFlag.getFlagUsage()).build());
             return true;
         }
 
         String flagValue = args[2];
 
-        if(!sleepFlag.isValidValue(flagValue)){
-            String invalidFormatMessage = messageService.getNewBuilder("&cInvalid format! Use &e " + sleepFlag.getFlagUsage())
-                    .usePrefix(true)
-                    .build();
-
-            player.sendMessage(invalidFormatMessage);
+        if(!sleepFlag.isValidValue(flagValue)) {
+            player.sendMessage(messageService.newPrefixedBuilder("&cInvalid format! Use &e " + sleepFlag.getFlagUsage()).build());
             return true;
         }
 
         sleepService.setFlag(world, sleepFlag, flagValue);
-        player.sendMessage(getFlagSetMessage(sleepFlag.getFlagName(), flagValue, world.getName()));
+
+        player.sendMessage(messageService.newPrefixedBuilder("&bFlag &c%flag% &bis now set to &e%value% &bfor world &e%world%")
+                .setPlaceHolder("%flag%", sleepFlag.getFlagName())
+                .setPlaceHolder("%value%", flagValue)
+                .setPlaceHolder("%world%", world.getName())
+                .build());
         return true;
     }
 
@@ -112,15 +96,6 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
     {
         String flagsNames = StringUtils.join(flagMapper.getAllFlags(), ", ");
 
-        return messageService.getNewBuilder("&bPossible flags are: &e " + flagsNames).build();
+        return messageService.newBuilder("&bPossible flags are: &e " + flagsNames).build();
     }
-    private String getFlagSetMessage(String flagName, String flagValue, String worldName)
-    {
-        String rawMessage = String.format("&bFlag &c%s &bis now set to &e%s &bfor world &e%s", flagName, flagValue, worldName);
-
-        return messageService.getNewBuilder(rawMessage)
-                .usePrefix(true)
-                .build();
-    }
-
 }

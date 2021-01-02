@@ -4,7 +4,6 @@ import me.mrgeneralq.sleepmost.enums.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
-import me.mrgeneralq.sleepmost.statics.Message;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -33,7 +32,7 @@ public class InfoSubCommand implements ISubCommand {
 
         if(!(sender instanceof Player)){
 
-            String onlyPlayersCommandMessage = messageService.getNewBuilder(MessageTemplate.ONLY_PLAYERS_COMMAND)
+            String onlyPlayersCommandMessage = messageService.newBuilder(MessageTemplate.ONLY_PLAYERS_COMMAND)
                     .usePrefix(true)
                     .build();
 
@@ -46,7 +45,7 @@ public class InfoSubCommand implements ISubCommand {
 
         if(!sleepService.enabledForWorld(world)){
 
-            String disabledForWorldMessage = messageService.getNewBuilder(MessageTemplate.CURRENTLY_DISABLED)
+            String disabledForWorldMessage = messageService.newBuilder(MessageTemplate.CURRENTLY_DISABLED)
                     .setWorld(world)
                     .setPlayer(player)
                     .build();
