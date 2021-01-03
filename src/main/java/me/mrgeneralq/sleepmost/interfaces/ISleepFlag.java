@@ -8,7 +8,5 @@ public interface ISleepFlag<V> {
     public String getUsage();
     public boolean isValidValue(String value);
     public V getValue(World world);
-
-    //used to set the value in the config
     public void setValue(World world, V value);
 }
