@@ -33,7 +33,7 @@ public class SleepFlagService implements ISleepFlagService {
 
 
         ISleepFlag<?> newFlag = SleepFlagMapper.getMapper().getFlag(flag);
-        String flagPath = String.format("%s.%s", world.getName(), newFlag.getFlagName());
+        String flagPath = String.format("%s.%s", world.getName(), newFlag.getName());
 
         newFlag.setValue(configRepository.get);
 

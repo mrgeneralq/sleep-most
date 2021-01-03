@@ -1,15 +1,14 @@
 package me.mrgeneralq.sleepmost.interfaces;
 
-import me.mrgeneralq.sleepmost.enums.FlagType;
 import org.bukkit.World;
 
-public interface ISleepFlag<T> {
+public interface ISleepFlag<V> {
 
-    public String getFlagName();
-    public String getFlagUsage();
+    public String getName();
+    public String getUsage();
     public boolean isValidValue(String value);
-    public FlagType getFlagType();
-    public T getValue(World world);
-    public void setValue(World world, T value);
-    public void setValue(T value);
+    public V getValue(World world);
+
+    //used to set the value in the config
+    public void setValue(World world, V value);
 }

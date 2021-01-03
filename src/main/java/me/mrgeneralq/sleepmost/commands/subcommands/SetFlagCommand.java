@@ -58,21 +58,21 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
         ISleepFlag<?> sleepFlag = flagMapper.getFlag(flag);
 
         if(args.length < 3){
-            player.sendMessage(messageService.newPrefixedBuilder("&cMissing value! Use &e" + sleepFlag.getFlagUsage()).build());
+            player.sendMessage(messageService.newPrefixedBuilder("&cMissing value! Use &e" + sleepFlag.getUsage()).build());
             return true;
         }
 
         String flagValue = args[2];
 
         if(!sleepFlag.isValidValue(flagValue)) {
-            player.sendMessage(messageService.newPrefixedBuilder("&cInvalid format! Use &e " + sleepFlag.getFlagUsage()).build());
+            player.sendMessage(messageService.newPrefixedBuilder("&cInvalid format! Use &e " + sleepFlag.getUsage()).build());
             return true;
         }
 
         sleepService.setFlag(world, sleepFlag, flagValue);
 
         player.sendMessage(messageService.newPrefixedBuilder("&bFlag &c%flag% &bis now set to &e%value% &bfor world &e%world%")
-                .setPlaceHolder("%flag%", sleepFlag.getFlagName())
+                .setPlaceHolder("%flag%", sleepFlag.getName())
                 .setPlaceHolder("%value%", flagValue)
                 .setPlaceHolder("%world%", world.getName())
                 .build());

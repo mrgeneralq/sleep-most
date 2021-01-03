@@ -1,6 +1,5 @@
 package me.mrgeneralq.sleepmost.mappers;
 
-import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.enums.SleepmostFlag;
 import me.mrgeneralq.sleepmost.flags.*;
 import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
@@ -36,6 +35,8 @@ public class SleepFlagMapper {
         allFlags.put(SleepmostFlag.USE_AFK, new UseAfkFlag(this.sleepFlagService));
         allFlags.put(SleepmostFlag.CALCULATION_METHOD, new CalculationMethodFlag(this.sleepFlagService));
         allFlags.put(SleepmostFlag.PLAYERS_REQUIRED, new PlayersRequiredFlag(this.sleepFlagService));
+
+        //here is a missing boiler plate. Most likely we could add something like a AbstractFlag and the sleepFlag service implemented there , right? :)
     }
 
     public static SleepFlagMapper getMapper(){
@@ -53,6 +54,6 @@ public class SleepFlagMapper {
     }
 
     public List<String> getAllFlags(){
-        return allFlags.values().stream().map(ISleepFlag::getFlagName).collect(Collectors.toList());
+        return allFlags.values().stream().map(ISleepFlag::getName).collect(Collectors.toList());
     }
 }

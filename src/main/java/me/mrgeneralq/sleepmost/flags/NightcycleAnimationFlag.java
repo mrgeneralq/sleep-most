@@ -13,12 +13,12 @@ public class NightcycleAnimationFlag implements ISleepFlag<Boolean> {
     }
 
     @Override
-    public String getFlagName() {
+    public String getName() {
         return "nightcycle-animation";
     }
 
     @Override
-    public String getFlagUsage() {
+    public String getUsage() {
         return "/sleepmost setflag sleep-animation <true|false>";
     }
 
@@ -28,20 +28,20 @@ public class NightcycleAnimationFlag implements ISleepFlag<Boolean> {
     }
 
     @Override
-    public FlagType getFlagType() {
+    public FlagType getType() {
         return FlagType.BOOLEAN;
     }
 
     @Override
     public Boolean getValue(World world) {
-    	Object flagValue = sleepFlagService.getFlagValue(world, this.getFlagName());
+    	Object flagValue = sleepFlagService.getFlagValue(world, this.getName());
     	
     	return flagValue == null ? null : (boolean) flagValue;
     }
 
     @Override
     public void setValue(World world, Boolean value) {
-        sleepFlagService.setFlag(world,this.getFlagName(),value);
+        sleepFlagService.setFlag(world,this.getName(),value);
     }
 
 }

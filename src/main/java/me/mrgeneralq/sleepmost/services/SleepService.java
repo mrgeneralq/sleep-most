@@ -175,7 +175,7 @@ public class SleepService implements ISleepService {
 
         Object convertedFlagValue = null;
 
-        switch(flag.getFlagType())
+        switch(flag.getType())
         {
         case BOOLEAN:
         	 convertedFlagValue = Boolean.parseBoolean(value);
@@ -190,6 +190,6 @@ public class SleepService implements ISleepService {
         	convertedFlagValue = Integer.parseInt(value);
         	break;
         }
-        configRepository.setFlag(world, flag.getFlagName(), convertedFlagValue);
+        configRepository.setFlag(world, flag.getName(), convertedFlagValue);
     }
 }

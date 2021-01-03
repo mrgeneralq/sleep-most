@@ -74,7 +74,7 @@ public class InfoSubCommand implements ISubCommand {
         sender.sendMessage(ChatColorUtils.colorize(""));
 
         for(ISleepFlag<?> flagItem : sleepFlagCollection)
-            sender.sendMessage(ChatColorUtils.colorize(String.format("&e%s &b%s",flagItem.getFlagName(), flagItem.getValue(world))));
+            sender.sendMessage(ChatColorUtils.colorize(String.format("&e%s &b%s",flagItem.getName(), flagItem.getValue(world))));
 
         sender.sendMessage(ChatColorUtils.colorize(""));
         sender.sendMessage(ChatColorUtils.colorize("&b*********************************************"));

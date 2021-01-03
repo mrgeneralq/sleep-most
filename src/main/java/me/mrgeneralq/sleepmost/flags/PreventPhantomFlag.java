@@ -14,12 +14,12 @@ public class PreventPhantomFlag implements ISleepFlag<Boolean> {
     }
 
     @Override
-    public String getFlagName() {
+    public String getName() {
         return "prevent-phantom";
     }
 
     @Override
-    public String getFlagUsage() {
+    public String getUsage() {
         return "/sleepmost setflag prevent-phantom <true|false>";
     }
 
@@ -29,7 +29,7 @@ public class PreventPhantomFlag implements ISleepFlag<Boolean> {
     }
 
     @Override
-    public FlagType getFlagType() {
+    public FlagType getType() {
         return FlagType.BOOLEAN;
     }
 
@@ -37,15 +37,15 @@ public class PreventPhantomFlag implements ISleepFlag<Boolean> {
     public Boolean getValue(World world) {
 
 
-        if(sleepFlagService.getFlagValue(world, getFlagName()) == null)
+        if(sleepFlagService.getFlagValue(world, getName()) == null)
             return false;
 
-        return (boolean) sleepFlagService.getFlagValue(world, getFlagName());
+        return (boolean) sleepFlagService.getFlagValue(world, getName());
     }
 
     @Override
     public void setValue(World world, Boolean value) {
-        sleepFlagService.setFlag(world, getFlagName(), (Boolean) value);
+        sleepFlagService.setFlag(world, getName(), (Boolean) value);
     }
 
 

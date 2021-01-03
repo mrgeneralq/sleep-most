@@ -19,12 +19,12 @@ public class PlayersRequiredFlag implements ISleepFlag<Integer> {
 
 
     @Override
-    public String getFlagName() {
+    public String getName() {
         return this.flagName;
     }
 
     @Override
-    public String getFlagUsage() {
+    public String getUsage() {
         return this.flagUsage;
     }
 
@@ -39,7 +39,7 @@ public class PlayersRequiredFlag implements ISleepFlag<Integer> {
     }
 
     @Override
-    public FlagType getFlagType() {
+    public FlagType getType() {
         return this.flagType;
     }
 

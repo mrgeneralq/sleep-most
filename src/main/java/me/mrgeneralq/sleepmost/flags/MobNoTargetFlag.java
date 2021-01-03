@@ -15,12 +15,12 @@ public class MobNoTargetFlag implements ISleepFlag<Boolean> {
 
 
     @Override
-    public String getFlagName() {
+    public String getName() {
         return "mob-no-target";
     }
 
     @Override
-    public String getFlagUsage() {
+    public String getUsage() {
         return "/sleepmost setflag mob-no-target <true|false>";
     }
 
@@ -30,16 +30,16 @@ public class MobNoTargetFlag implements ISleepFlag<Boolean> {
     }
 
     @Override
-    public FlagType getFlagType() {
+    public FlagType getType() {
         return FlagType.BOOLEAN;
     }
 
     @Override
     public Boolean getValue(World world) {
-        if(sleepFlagService.getFlagValue(world, this.getFlagName()) == null)
+        if(sleepFlagService.getFlagValue(world, this.getName()) == null)
             return false;
 
-        return (boolean) sleepFlagService.getFlagValue(world, this.getFlagName());
+        return (boolean) sleepFlagService.getFlagValue(world, this.getName());
     }
 
     @Override

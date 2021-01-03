@@ -20,12 +20,12 @@ public class CalculationMethodFlag implements ISleepFlag<String> {
 
 
     @Override
-    public String getFlagName() {
+    public String getName() {
         return this.flagName;
     }
 
     @Override
-    public String getFlagUsage() {
+    public String getUsage() {
         return this.flagUsage;
     }
 
@@ -41,18 +41,20 @@ public class CalculationMethodFlag implements ISleepFlag<String> {
     }
 
     @Override
-    public FlagType getFlagType() {
+    public FlagType getType() {
         return this.flagType;
     }
 
     @Override
     public String getValue(World world) {
-        Object flagValue = this.sleepFlagService.getFlagValue(world, this.getFlagName());
+        //here we are missing the boiler plate
+
+        Object flagValue = this.sleepFlagService.getFlagValue(world, this.getName());
         return flagValue == null ? null : (String) flagValue;
     }
 
     @Override
     public void setValue(World world, String value) {
-        this.sleepFlagService.setFlag(world, this.flagName, value);
+        this.sleepFlagService
     }
 }

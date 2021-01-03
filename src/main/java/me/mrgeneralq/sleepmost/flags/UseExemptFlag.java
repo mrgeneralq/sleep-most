@@ -14,12 +14,12 @@ public class UseExemptFlag implements ISleepFlag<Boolean> {
 	}
 
 	@Override
-	public String getFlagName() {
+	public String getName() {
 		return "use-exempt";
 	}
 
 	@Override
-	public String getFlagUsage() {
+	public String getUsage() {
 		return "/sleepmost setflag use-exempt <true|false>";
 	}
 
@@ -29,16 +29,16 @@ public class UseExemptFlag implements ISleepFlag<Boolean> {
 	}
 
 	@Override
-	public FlagType getFlagType() {
+	public FlagType getType() {
 		return FlagType.BOOLEAN;
 	}
 
 	@Override
 	public Boolean getValue(World world) {
-		if(sleepFlagService.getFlagValue(world, getFlagName()) == null)
+		if(sleepFlagService.getFlagValue(world, getName()) == null)
 			return null;
 
-		return (Boolean) sleepFlagService.getFlagValue(world, getFlagName());
+		return (Boolean) sleepFlagService.getFlagValue(world, getName());
 	}
 
 	@Override

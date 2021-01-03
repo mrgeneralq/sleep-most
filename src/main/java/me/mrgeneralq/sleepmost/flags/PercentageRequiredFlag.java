@@ -15,12 +15,12 @@ public class PercentageRequiredFlag implements ISleepFlag<Double> {
     }
 
     @Override
-    public String getFlagName() {
+    public String getName() {
        return "percentage-required";
     }
 
     @Override
-    public String getFlagUsage() {
+    public String getUsage() {
         return "Use /sleepmost setflag percentage-required <0.1 - 1>";
     }
 
@@ -35,15 +35,15 @@ public class PercentageRequiredFlag implements ISleepFlag<Double> {
     }
 
     @Override
-    public FlagType getFlagType() {
+    public FlagType getType() {
         return FlagType.DOUBLE;
     }
 
     @Override
     public Double getValue(World world) {
-        if(sleepFlagService.getFlagValue(world, this.getFlagName()) == null)
+        if(sleepFlagService.getFlagValue(world, this.getName()) == null)
             return null;
-        return (Double) sleepFlagService.getFlagValue(world, this.getFlagName());
+        return (Double) sleepFlagService.getFlagValue(world, this.getName());
     }
 
     @Override
