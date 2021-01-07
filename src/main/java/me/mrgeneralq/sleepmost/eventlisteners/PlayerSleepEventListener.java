@@ -3,7 +3,8 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTimer;
+import me.mrgeneralq.sleepmost.repositories.SleepFlagRepository;
+import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTask;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.World;
@@ -21,14 +22,12 @@ public class PlayerSleepEventListener implements Listener {
     private final ISleepService sleepService;
     private final IMessageService messageService;
     private final ICooldownService cooldownService;
-    private final ISleepFlagService sleepFlagService;
     private final DataContainer dataContainer;
 
-    public PlayerSleepEventListener(Sleepmost main, ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService, ISleepFlagService sleepFlagService) {
+    public PlayerSleepEventListener(Sleepmost main, ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService) {
         this.sleepService = sleepService;
         this.messageService = messageService;
         this.cooldownService = cooldownService;
-        this.sleepFlagService = sleepFlagService;
         this.main = main;
         this.dataContainer = DataContainer.getContainer();
     }
@@ -56,9 +55,7 @@ public class PlayerSleepEventListener implements Listener {
         if (dataContainer.getRunningWorldsAnimation().contains(world))
             return;
 
-
-        ISleepFlag<Boolean> stormSleepFlag = sleepFlagService.getSleepFlag("storm-sleep");
-        if (!stormSleepFlag.getValue(world) && world.isThundering()) {
+        if (world.isThundering() && !SleepFlagRepository.getInstance().getStormSleepFlag().getController().getValueAt(world)) {
 
             String preventSleepStormMessage = messageService.getConfigMessage(ConfigMessage.NO_SLEEP_THUNDERSTORM);
 
@@ -73,10 +70,7 @@ public class PlayerSleepEventListener implements Listener {
             return;
         }
 
-        // getting the sleep flag
-        ISleepFlag<Boolean> preventSleepFlag = sleepFlagService.getSleepFlag("prevent-sleep");
-
-        if (preventSleepFlag.getValue(world)) {
+        if(SleepFlagRepository.getInstance().getPreventSleepFlag().getController().getValueAt(world)) {
 
             String sleepPreventedConfigMessage = messageService.getConfigMessage(ConfigMessage.SLEEP_PREVENTED);
 
@@ -89,7 +83,6 @@ public class PlayerSleepEventListener implements Listener {
             return;
         }
 
-
         // check if player is cooling down, if not send message to world and start cooldown of player
         if (cooldownService.cooldownEnabled() && !cooldownService.isCoolingDown(player)) {
             messageService.sendPlayerLeftMessage(player, sleepService.getSleepSkipCause(world));
@@ -101,10 +94,8 @@ public class PlayerSleepEventListener implements Listener {
 
         String lastSleeperName = e.getPlayer().getName();
         String lastSleeperDisplayName = e.getPlayer().getDisplayName();
-        
-		ISleepFlag<Boolean> nightCycleAnimation = sleepFlagService.getSleepFlag("nightcycle-animation");
 		
-        if (nightCycleAnimation.getValue(world)) {
+        if (SleepFlagRepository.getInstance().getNightcycleAnimationFlag().getController().getValueAt(world)) {
         	if(world.isThundering() && !sleepService.isNight(world)){
         		sleepService.resetDay(world, lastSleeperName, lastSleeperDisplayName);
         		return;
@@ -112,7 +103,7 @@ public class PlayerSleepEventListener implements Listener {
 
             //store running world
             dataContainer.getRunningWorldsAnimation().add(world);
-            new NightcycleAnimationTimer(sleepService, messageService, world, lastSleeperName).runTaskTimer(main, 0, 1);
+            new NightcycleAnimationTask(sleepService, messageService, world, lastSleeperName).runTaskTimer(main, 0, 1);
             return;
         }
 

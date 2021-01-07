@@ -1,9 +1,9 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.enums.MessageTemplate;
-import me.mrgeneralq.sleepmost.mappers.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.messages.MessageTemplate;
+import me.mrgeneralq.sleepmost.repositories.SleepFlagRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
-import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
+import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
 import org.apache.commons.lang.StringUtils;
@@ -19,12 +19,11 @@ import java.util.List;
 public class SetFlagCommand implements ISubCommand , TabCompleter {
 
     private final ISleepService sleepService;
-    private final SleepFlagMapper flagMapper;
     private final IMessageService messageService;
+    private final SleepFlagRepository flagMapper = SleepFlagRepository.getInstance();
 
     public SetFlagCommand(ISleepService sleepService, IMessageService messageService) {
         this.sleepService = sleepService;
-        this.flagMapper = SleepFlagMapper.getMapper();
         this.messageService = messageService;
     }
 
@@ -48,33 +47,37 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
             player.sendMessage(messageService.newPrefixedBuilder("&btype &e/sleepmost setflag <flag> <value>").build());
             return true;
         }
-        String flag = args[1];
+        String flagName = args[1];
 
-        if(!flagMapper.flagExists(flag)) {
+        if(!flagMapper.flagExists(flagName)) {
             player.sendMessage(messageService.newPrefixedBuilder("&cThis flag does not exist!").build());
-            player.sendMessage(getPossibleFlagsMessage());
+            player.sendMessage(messageService.newBuilder("&bPossible flags are: &e%flagsNames%")
+                    .setPlaceHolder("%flagsNames%", StringUtils.join(flagMapper.getFlagsNames(), ", "))
+                    .build());
             return true;
         }
-        ISleepFlag<?> sleepFlag = flagMapper.getFlag(flag);
+        ISleepFlag<?> sleepFlag = flagMapper.getFlag(flagName);
 
         if(args.length < 3){
-            player.sendMessage(messageService.newPrefixedBuilder("&cMissing value! Use &e" + sleepFlag.getUsage()).build());
+            player.sendMessage(messageService.newPrefixedBuilder("&cMissing value! Use &e%commandUsage")
+                    .setPlaceHolder("%commandUsage", sleepFlag.getCommandUsage())
+                    .build());
             return true;
         }
+        String stringValue = args[2];
 
-        String flagValue = args[2];
-
-        if(!sleepFlag.isValidValue(flagValue)) {
-            player.sendMessage(messageService.newPrefixedBuilder("&cInvalid format! Use &e " + sleepFlag.getUsage()).build());
+        if(!sleepFlag.isValidValue(stringValue)) {
+            player.sendMessage(messageService.newPrefixedBuilder("&cInvalid format! Use &e%commandUsage")
+                    .setPlaceHolder("%commandUsage", sleepFlag.getCommandUsage())
+                    .build());
             return true;
         }
+        sleepFlag.getController().setValueAt(world, stringValue);
 
-        sleepService.setFlag(world, sleepFlag, flagValue);
-
-        player.sendMessage(messageService.newPrefixedBuilder("&bFlag &c%flag% &bis now set to &e%value% &bfor world &e%world%")
-                .setPlaceHolder("%flag%", sleepFlag.getName())
-                .setPlaceHolder("%value%", flagValue)
-                .setPlaceHolder("%world%", world.getName())
+        player.sendMessage(messageService.newPrefixedBuilder("&bFlag &c%flag &bis now set to &e%value &bfor world &e%world")
+                .setPlaceHolder("%flag", sleepFlag.getName())
+                .setPlaceHolder("%value", stringValue)
+                .setPlaceHolder("%world", world.getName())
                 .build());
         return true;
     }
@@ -91,11 +94,5 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
             return list;
 
      //   return null;
-    }
-    private String getPossibleFlagsMessage()
-    {
-        String flagsNames = StringUtils.join(flagMapper.getAllFlags(), ", ");
-
-        return messageService.newBuilder("&bPossible flags are: &e " + flagsNames).build();
     }
 }

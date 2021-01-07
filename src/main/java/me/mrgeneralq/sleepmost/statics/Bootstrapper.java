@@ -1,6 +1,7 @@
 package me.mrgeneralq.sleepmost.statics;
 
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.messages.MessageService;
 import me.mrgeneralq.sleepmost.repositories.ConfigRepository;
 import me.mrgeneralq.sleepmost.repositories.CooldownRepository;
 import me.mrgeneralq.sleepmost.repositories.UpdateRepository;
@@ -19,7 +20,6 @@ public class Bootstrapper {
     private ICooldownRepository cooldownRepository;
     private IUpdateService updateService;
     private IUpdateRepository updateRepository;
-    private ISleepFlagService sleepFlagService;
 
     //new service logic
     private IConfigService configService;
@@ -37,22 +37,25 @@ public class Bootstrapper {
     public void initialize(Sleepmost main){
         this.main = main;
 
+        //config
         this.configService = new ConfigService(main);
         this.configRepository = new ConfigRepository(main);
-        this.cooldownRepository = new CooldownRepository();
-        this.updateRepository = new UpdateRepository("60623");
-        this.sleepFlagService = new SleepFlagService(this.getConfigRepository());
-        this.configService = new ConfigService(main);
-
-        this.updateService = new UpdateService(this.getUpdateRepository(), main, configService);
-        this.sleepService = new SleepService(configService, sleepFlagService , this.getConfigRepository());
-        this.cooldownService = new CooldownService(this.getCooldownRepository(), this.getConfigRepository());
-        this.messageService = new MessageService(this.getConfigRepository(), this.getSleepService());
         this.configMessageMapper = ConfigMessageMapper.getMapper();
+        this.configMessageMapper.initialize(main);
 
+        //update
+        this.updateRepository = new UpdateRepository("60623");
+        this.updateService = new UpdateService(updateRepository, main, configService);
 
-        // initialize for singleton
-        configMessageMapper.initialize(main);
+        //sleep
+        this.sleepService = new SleepService(configService, configRepository);
+
+        //cooldown
+        this.cooldownRepository = new CooldownRepository();
+        this.cooldownService = new CooldownService(cooldownRepository, configRepository);
+
+        //messages
+        this.messageService = new MessageService(configRepository, sleepService);
     }
 
     public static Bootstrapper getBootstrapper(){
@@ -84,10 +87,6 @@ public class Bootstrapper {
 
     public IUpdateRepository getUpdateRepository() {
         return updateRepository;
-    }
-
-    public ISleepFlagService getSleepFlagService() {
-        return sleepFlagService;
     }
 
     public IConfigService getConfigService() {

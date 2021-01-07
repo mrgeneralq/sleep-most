@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
-import me.mrgeneralq.sleepmost.mappers.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.repositories.SleepFlagRepository;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -38,26 +38,24 @@ public class Sleepmost extends JavaPlugin{
 		Bootstrapper bootstrapper = Bootstrapper.getBootstrapper();
 		bootstrapper.initialize(this);
 
-		SleepFlagMapper sleepFlagMapper = SleepFlagMapper.getMapper();
-		sleepFlagMapper.setup(bootstrapper.getSleepFlagService());
-
+		SleepFlagRepository.getInstance().setup(bootstrapper.getConfigRepository(), bootstrapper.getConfigService(), bootstrapper.getMessageService());
 		
 		IMessageService messageService = bootstrapper.getMessageService();
 		IUpdateService updateService = bootstrapper.getUpdateService();
 		
 		//init commands
-		Bukkit.getPluginCommand("sleepmost").setExecutor(new SleepmostCommand(bootstrapper.getSleepService(), messageService, bootstrapper.getSleepFlagService(), bootstrapper.getUpdateService()));
-		getCommand("sleepmost").setTabCompleter(new SleepmostCommand(bootstrapper.getSleepService(), messageService, bootstrapper.getSleepFlagService(), bootstrapper.getUpdateService()));
+		Bukkit.getPluginCommand("sleepmost").setExecutor(new SleepmostCommand(bootstrapper.getSleepService(), messageService, bootstrapper.getUpdateService()));
+		getCommand("sleepmost").setTabCompleter(new SleepmostCommand(bootstrapper.getSleepService(), messageService, bootstrapper.getUpdateService()));
 		
 		//init listeners
 		PluginManager pm = Bukkit.getPluginManager();
-		pm.registerEvents(new PlayerSleepEventListener(this, bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(),bootstrapper.getSleepFlagService()), this);
+		pm.registerEvents(new PlayerSleepEventListener(this, bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService()), this);
 		pm.registerEvents(new PlayerQuitEventListener(bootstrapper.getCooldownService()), this);
 		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getConfigService()), this);
-		pm.registerEvents(new EntityTargetLivingEntityEventListener(bootstrapper.getSleepService(), bootstrapper.getSleepFlagService()), this);
+		pm.registerEvents(new EntityTargetLivingEntityEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService()), this);
 		pm.registerEvents(new PlayerJoinEventListener(this,bootstrapper.getUpdateService()), this);
-		pm.registerEvents(new EntitySpawnEventListener(bootstrapper.getSleepFlagService()), this);
+		pm.registerEvents(new EntitySpawnEventListener(), this);
 		pm.registerEvents(new TimeSkipEventListener(), this);
 		
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {

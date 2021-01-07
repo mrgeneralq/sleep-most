@@ -6,15 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import me.mrgeneralq.sleepmost.commands.subcommands.*;
-import me.mrgeneralq.sleepmost.enums.MessageTemplate;
-import me.mrgeneralq.sleepmost.mappers.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.messages.MessageTemplate;
+import me.mrgeneralq.sleepmost.repositories.SleepFlagRepository;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
-import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
@@ -27,13 +26,11 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 
 	private final ISleepService sleepService;
 	private final IMessageService messageService;
-	private final ISleepFlagService sleepFlagService;
 	private final IUpdateService updateService;
 
-	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, ISleepFlagService sleepFlagService, IUpdateService updateService){
+	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService){
 		this.sleepService = sleepService;
 		this.messageService = messageService;
-		this.sleepFlagService = sleepFlagService;
 		this.updateService = updateService;
 
 		this.registerSubCommands();
@@ -44,7 +41,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("enable", new EnableSubCommand(this.sleepService,this.messageService));
 		subCommands.put("disable", new DisableSubCommand(this.sleepService, this.messageService));
 		subCommands.put("setflag", new SetFlagCommand(this.sleepService, this.messageService));
-		subCommands.put("info", new InfoSubCommand(this.sleepService, this.messageService, this.sleepFlagService));
+		subCommands.put("info", new InfoSubCommand(this.sleepService, this.messageService));
 		subCommands.put("version", new VersionSubCommand(this.updateService, this.messageService));
 
 		//enable when debugging
@@ -114,7 +111,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 
 		if(args[0].equalsIgnoreCase("setflag") && args.length == 2)
 		{
-			List<String> flags = SleepFlagMapper.getMapper().getAllFlags();
+			List<String> flags = SleepFlagRepository.getInstance().getFlagsNames();
 			Collections.sort(flags);
 			return flags;
 		}

@@ -1,53 +1,24 @@
-package me.mrgeneralq.sleepmost.flags;
+package me.mrgeneralq.sleepmost.flags.list;
 
-import me.mrgeneralq.sleepmost.enums.FlagType;
-import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
-import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
-import org.bukkit.World;
+import me.mrgeneralq.sleepmost.flags.DoubleFlag;
 
-public class PercentageRequiredFlag implements ISleepFlag<Double> {
-
-
-    private final ISleepFlagService sleepFlagService;
-
-    public PercentageRequiredFlag(ISleepFlagService sleepFlagService){
-        this.sleepFlagService = sleepFlagService;
+public class PercentageRequiredFlag extends DoubleFlag
+{
+    public PercentageRequiredFlag()
+    {
+        super("percentage-required", "<0.1 - 1>");
     }
 
     @Override
-    public String getName() {
-       return "percentage-required";
-    }
-
-    @Override
-    public String getUsage() {
-        return "Use /sleepmost setflag percentage-required <0.1 - 1>";
-    }
-
-    @Override
-    public boolean isValidValue(String value) {
-        try {
-            Double.parseDouble(value);
-            return true;
-        } catch (Exception e) {
+    public boolean isValidValue(String stringValue)
+    {
+        if(!super.isValidValue(stringValue))
             return false;
-        }
-    }
 
-    @Override
-    public FlagType getType() {
-        return FlagType.DOUBLE;
-    }
+        double value = parseValueFrom(stringValue);
 
-    @Override
-    public Double getValue(World world) {
-        if(sleepFlagService.getFlagValue(world, this.getName()) == null)
-            return null;
-        return (Double) sleepFlagService.getFlagValue(world, this.getName());
-    }
+        return value >= 0 && value <= 1;
 
-    @Override
-    public void setValue(World world, Double value) {
-
+        //return parseValueFrom(stringValue).isBetween(0, 1);
     }
 }
