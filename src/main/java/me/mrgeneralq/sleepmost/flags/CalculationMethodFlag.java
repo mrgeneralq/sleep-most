@@ -1,25 +1,19 @@
-package me.mrgeneralq.sleepmost.flags.list;
+package me.mrgeneralq.sleepmost.flags;
 import me.mrgeneralq.sleepmost.enums.SleepCalculationType;
-import me.mrgeneralq.sleepmost.flags.StringFlag;
+import me.mrgeneralq.sleepmost.flags.types.EnumFlag;
 
-//TODO: implement an EnumFlag class
-public class CalculationMethodFlag extends StringFlag
+public class CalculationMethodFlag extends EnumFlag<SleepCalculationType>
 {
     public CalculationMethodFlag()
     {
-        super("calculation-method", "<percentage|players>");
+        super("calculation-method", "<percentage|players>", SleepCalculationType.class);
     }
 
     @Override
-    public boolean isValidValue(String value)
+    public boolean isValidValue(String stringValue)
     {
-        String enumName = String.format("%s%s", value.toUpperCase(), "_REQUIRED");
+        String enumName = String.format("%s_REQUIRED", stringValue.toUpperCase());
 
-        try{
-            SleepCalculationType.valueOf(enumName);
-            return true;
-        }catch (Exception ex){
-            return false;
-        }
+        return super.isValidValue(enumName);
     }
 }

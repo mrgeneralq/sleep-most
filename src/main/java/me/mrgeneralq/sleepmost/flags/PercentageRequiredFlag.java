@@ -1,6 +1,6 @@
-package me.mrgeneralq.sleepmost.flags.list;
+package me.mrgeneralq.sleepmost.flags;
 
-import me.mrgeneralq.sleepmost.flags.DoubleFlag;
+import me.mrgeneralq.sleepmost.flags.types.DoubleFlag;
 
 public class PercentageRequiredFlag extends DoubleFlag
 {

@@ -1,6 +1,6 @@
-package me.mrgeneralq.sleepmost.flags.list;
+package me.mrgeneralq.sleepmost.flags;
 
-import me.mrgeneralq.sleepmost.flags.BooleanFlag;
+import me.mrgeneralq.sleepmost.flags.types.BooleanFlag;
 
 public class PreventSleepFlag extends BooleanFlag
 {

@@ -1,5 +1,5 @@
-package me.mrgeneralq.sleepmost.flags.list;
-import me.mrgeneralq.sleepmost.flags.IntegerFlag;
+package me.mrgeneralq.sleepmost.flags;
+import me.mrgeneralq.sleepmost.flags.types.IntegerFlag;
 
 public class PlayersRequiredFlag extends IntegerFlag
 {

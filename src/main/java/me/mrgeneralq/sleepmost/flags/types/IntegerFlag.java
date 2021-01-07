@@ -1,10 +1,10 @@
-package me.mrgeneralq.sleepmost.flags;
+package me.mrgeneralq.sleepmost.flags.types;
 
 public abstract class IntegerFlag extends AbstractFlag<Integer>
 {
-    public IntegerFlag(String name, String usage)
+    public IntegerFlag(String name, String valueCommandDescription)
     {
-        super(name, usage);
+        super(name, valueCommandDescription);
     }
 
     @Override

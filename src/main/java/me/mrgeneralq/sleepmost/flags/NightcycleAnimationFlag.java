@@ -1,5 +1,5 @@
-package me.mrgeneralq.sleepmost.flags.list;
-import me.mrgeneralq.sleepmost.flags.BooleanFlag;
+package me.mrgeneralq.sleepmost.flags;
+import me.mrgeneralq.sleepmost.flags.types.BooleanFlag;
 
 public class NightcycleAnimationFlag extends BooleanFlag
 {

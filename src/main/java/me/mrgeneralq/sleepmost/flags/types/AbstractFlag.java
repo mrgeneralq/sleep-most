@@ -1,9 +1,10 @@
-package me.mrgeneralq.sleepmost.flags;
+package me.mrgeneralq.sleepmost.flags.types;
 
+import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.flags.controllers.AbstractFlagController;
 
-public abstract class AbstractFlag<V> implements ISleepFlag<V> {
-
+public abstract class AbstractFlag<V> implements ISleepFlag<V>
+{
     private final String name;
     private final String commandUsage;
     private AbstractFlagController<V> controller;
