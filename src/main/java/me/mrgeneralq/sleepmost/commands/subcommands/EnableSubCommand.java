@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.enums.MessageTemplate;
+import me.mrgeneralq.sleepmost.messages.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
@@ -9,7 +9,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class EnableSubCommand implements ISubCommand {
+public class
+EnableSubCommand implements ISubCommand {
 
     private final ISleepService sleepService;
     private final IMessageService messageService;

@@ -1,7 +1,7 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.messages.MessageTemplate;
-import me.mrgeneralq.sleepmost.repositories.SleepFlagRepository;
+import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
@@ -20,7 +20,7 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
 
     private final ISleepService sleepService;
     private final IMessageService messageService;
-    private final SleepFlagRepository flagMapper = SleepFlagRepository.getInstance();
+    private final FlagsRepository flagsRepository = FlagsRepository.getInstance();
 
     public SetFlagCommand(ISleepService sleepService, IMessageService messageService) {
         this.sleepService = sleepService;
@@ -49,14 +49,14 @@ public class SetFlagCommand implements ISubCommand , TabCompleter {
         }
         String flagName = args[1];
 
-        if(!flagMapper.flagExists(flagName)) {
+        if(!flagsRepository.flagExists(flagName)) {
             player.sendMessage(messageService.newPrefixedBuilder("&cThis flag does not exist!").build());
             player.sendMessage(messageService.newBuilder("&bPossible flags are: &e%flagsNames%")
-                    .setPlaceHolder("%flagsNames%", StringUtils.join(flagMapper.getFlagsNames(), ", "))
+                    .setPlaceHolder("%flagsNames%", StringUtils.join(flagsRepository.getFlagsNames(), ", "))
                     .build());
             return true;
         }
-        ISleepFlag<?> sleepFlag = flagMapper.getFlag(flagName);
+        ISleepFlag<?> sleepFlag = flagsRepository.getFlag(flagName);
 
         if(args.length < 3){
             player.sendMessage(messageService.newPrefixedBuilder("&cMissing value! Use &e%commandUsage")

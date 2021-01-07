@@ -15,7 +15,7 @@ import java.util.*;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
-public class SleepFlagRepository
+public class FlagsRepository
 {
     private final Map<String, ISleepFlag<?>> flagByName = new HashMap<>();
 
@@ -35,8 +35,8 @@ public class SleepFlagRepository
     private CalculationMethodFlag calculationMethodFlag;
     private PlayersRequiredFlag playersRequiredFlag;
 
-    public static SleepFlagRepository instance;
-    private SleepFlagRepository(){}
+    public static FlagsRepository instance;
+    private FlagsRepository(){}
 
     public void setup(IConfigRepository configRepository, IConfigService configService, IMessageService messageService){
         this.configRepository = configRepository;
@@ -46,9 +46,9 @@ public class SleepFlagRepository
         setupFlags();
         findWorldsWithIllegalValues().forEach(this::notifyAboutIllegalValues);
     }
-    public static SleepFlagRepository getInstance(){
+    public static FlagsRepository getInstance(){
         if(instance == null)
-            instance = new SleepFlagRepository();
+            instance = new FlagsRepository();
         return instance;
     }
     public ISleepFlag<?> getFlag(String flagName){

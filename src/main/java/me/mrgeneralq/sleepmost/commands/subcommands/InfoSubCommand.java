@@ -3,7 +3,7 @@ package me.mrgeneralq.sleepmost.commands.subcommands;
 import me.mrgeneralq.sleepmost.messages.MessageTemplate;
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.repositories.SleepFlagRepository;
+import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,6 +15,7 @@ public class InfoSubCommand implements ISubCommand {
 
     private final ISleepService sleepService;
     private final IMessageService messageService;
+    private final FlagsRepository flagsRepository = FlagsRepository.getInstance();
 
     public InfoSubCommand(ISleepService sleepService, IMessageService messageService) {
         this.sleepService = sleepService;
@@ -45,7 +46,7 @@ public class InfoSubCommand implements ISubCommand {
         sender.sendMessage(colorize(String.format("&e&lFLAGS &o&7world: &c&l%s", world.getName())));
         sender.sendMessage(colorize("&b*********************************************"));
 
-        for(ISleepFlag<?> flag : SleepFlagRepository.getInstance().getFlags())
+        for(ISleepFlag<?> flag : this.flagsRepository.getFlags())
         {
             sender.sendMessage(messageService.newBuilder("&e%flagName &b%value")
                     .setPlaceHolder("%flagName", flag.getName())

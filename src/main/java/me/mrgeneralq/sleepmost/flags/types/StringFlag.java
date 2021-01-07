@@ -2,9 +2,9 @@ package me.mrgeneralq.sleepmost.flags.types;
 
 public abstract class StringFlag extends AbstractFlag<String>
 {
-    public StringFlag(String name, String valueDescription)
+    public StringFlag(String name, String valueCommandDescription)
     {
-        super(name, valueDescription);
+        super(name, valueCommandDescription);
     }
 
     @Override

@@ -4,6 +4,7 @@ import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,22 +28,20 @@ public class PlayerJoinEventListener implements Listener {
 
         Player player = e.getPlayer();
 
-        if (player.hasPermission("sleepmost.alerts"))
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        if (!player.hasPermission("sleepmost.alerts"))
+            return;
+
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
+        {
+            if(updateService.hasUpdate())
                 notifyNewUpdate(player);
-            });
+        });
     }
-
-    //Notify the player if this plugin has a new update which the server doesn't have
-    private void notifyNewUpdate(Player player) {
-        if (updateService.hasUpdate()){
-
-            player.sendMessage(colorize("&b==============================================="));
-            player.sendMessage(colorize(String.format("&bA newer version of &esleep-most &bis available: &e%s", updateService.getCachedUpdateVersion())));
-            player.sendMessage(ChatColor.GREEN + ServerVersion.UPDATE_URL);
-            player.sendMessage(colorize("&eYou may ignore this message if you just updated (spigot takes some time)"));
-            player.sendMessage(colorize("&b==============================================="));
-
-        }
+    private void notifyNewUpdate(CommandSender sender) {
+        sender.sendMessage(colorize("&b==============================================="));
+        sender.sendMessage(colorize(String.format("&bA newer version of &esleep-most &bis available: &e%s", updateService.getCachedUpdateVersion())));
+        sender.sendMessage(ChatColor.GREEN + ServerVersion.UPDATE_URL);
+        sender.sendMessage(colorize("&eYou may ignore this message if you just updated (spigot takes some time)"));
+        sender.sendMessage(colorize("&b==============================================="));
     }
 }

@@ -4,7 +4,7 @@ import me.mrgeneralq.sleepmost.enums.SleepCalculationType;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
-import me.mrgeneralq.sleepmost.repositories.SleepFlagRepository;
+import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import org.bukkit.Bukkit;
@@ -19,6 +19,7 @@ public class SleepService implements ISleepService {
 
     private final IConfigRepository configRepository;
     private final IConfigService configService;
+    private final FlagsRepository flagsRepository = FlagsRepository.getInstance();
 
     public SleepService(IConfigService configService, IConfigRepository configRepository){
         this.configService = configService;
@@ -71,7 +72,7 @@ public class SleepService implements ISleepService {
         int requiredCount = 0;
 
         try{
-            String enumName = String.format("%s%s", SleepFlagRepository.getInstance().getCalculationMethodFlag().getController().getValueAt(world) ,"_REQUIRED");
+            String enumName = String.format("%s%s", this.flagsRepository.getCalculationMethodFlag().getController().getValueAt(world) ,"_REQUIRED");
             enumName = enumName.toUpperCase();
 
             sleepCalculationType = SleepCalculationType.valueOf(enumName);
@@ -82,7 +83,7 @@ public class SleepService implements ISleepService {
                 requiredCount =  (int) Math.ceil(getPlayerCountInWorld(world) * getPercentageRequired(world));
                 break;
             case PLAYERS_REQUIRED:
-                int requiredPlayersInConfig = SleepFlagRepository.getInstance().getPlayersRequiredFlag().getController().getValueAt(world);
+                int requiredPlayersInConfig = this.flagsRepository.getPlayersRequiredFlag().getController().getValueAt(world);
 
                 requiredCount = (requiredPlayersInConfig <= getPlayerCountInWorld(world)) ? requiredPlayersInConfig: getPlayerCountInWorld(world);
         }
@@ -102,7 +103,7 @@ public class SleepService implements ISleepService {
                     .filter(p -> !p.hasPermission("sleepmost.exempt"))
                     .collect(toList());
         }
-        boolean afkFlagEnabled = SleepFlagRepository.getInstance().getUseAfkFlag().getController().getValueAt(world);
+        boolean afkFlagEnabled = this.flagsRepository.getUseAfkFlag().getController().getValueAt(world);
 
         //check if user is afk
         if(afkFlagEnabled && Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().getPlugin("Essentials") != null)

@@ -26,9 +26,7 @@ public class CooldownService implements ICooldownService {
         long now = new Date().getTime();
         long differenceInSeconds =  (now - cooldownStartDate) / 1000;
 
-        if(differenceInSeconds >= configRepository.getCooldown())
-            return false;
-        return true;
+        return differenceInSeconds < configRepository.getCooldown();
     }
 
     @Override

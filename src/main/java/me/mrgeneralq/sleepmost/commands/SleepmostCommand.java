@@ -7,7 +7,7 @@ import java.util.Map;
 
 import me.mrgeneralq.sleepmost.commands.subcommands.*;
 import me.mrgeneralq.sleepmost.messages.MessageTemplate;
-import me.mrgeneralq.sleepmost.repositories.SleepFlagRepository;
+import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,6 +27,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	private final ISleepService sleepService;
 	private final IMessageService messageService;
 	private final IUpdateService updateService;
+	private final FlagsRepository flagsRepository = FlagsRepository.getInstance();
 
 	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService){
 		this.sleepService = sleepService;
@@ -111,7 +112,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 
 		if(args[0].equalsIgnoreCase("setflag") && args.length == 2)
 		{
-			List<String> flags = SleepFlagRepository.getInstance().getFlagsNames();
+			List<String> flags = this.flagsRepository.getFlagsNames();
 			Collections.sort(flags);
 			return flags;
 		}

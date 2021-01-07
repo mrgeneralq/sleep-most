@@ -1,7 +1,7 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
-import me.mrgeneralq.sleepmost.repositories.SleepFlagRepository;
+import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 public class EntityTargetLivingEntityEventListener implements Listener{
 
 	private final ISleepService sleepService;
+	private final FlagsRepository flagsRepository = FlagsRepository.getInstance();
 
 	public EntityTargetLivingEntityEventListener(ISleepService sleepService) {
 		this.sleepService = sleepService;
@@ -27,7 +28,7 @@ public class EntityTargetLivingEntityEventListener implements Listener{
 		if(!player.isSleeping())
 			return;
 
-		if(!SleepFlagRepository.getInstance().getMobNoTargetFlag().getController().getValueAt(world))
+		if(!this.flagsRepository.getMobNoTargetFlag().getController().getValueAt(world))
 			return;
 
 		event.setCancelled(true);

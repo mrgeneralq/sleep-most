@@ -21,7 +21,7 @@ public class SleepSkipEventListener implements Listener {
 
 	private final ISleepService sleepService;
 	private final IMessageService messageService;
-	private IConfigService configService;
+	private final IConfigService configService;
 	private final DataContainer dataContainer;
 
 	public SleepSkipEventListener(ISleepService sleepService, IMessageService messageService, IConfigService configService) {

@@ -44,7 +44,7 @@ public class DataContainer {
     }
 
     public List<Player> getSleepingPlayers(World world){
-        return new ArrayList<Player>(sleepingPlayers.get(world));
+        return new ArrayList<>(sleepingPlayers.get(world));
     }
 
 }

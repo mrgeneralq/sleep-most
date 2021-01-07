@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.commands;
 
-import me.mrgeneralq.sleepmost.enums.MessageTemplate;
+import me.mrgeneralq.sleepmost.messages.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
 import org.bukkit.command.Command;

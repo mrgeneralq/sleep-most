@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
-import me.mrgeneralq.sleepmost.repositories.SleepFlagRepository;
+import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -38,7 +38,7 @@ public class Sleepmost extends JavaPlugin{
 		Bootstrapper bootstrapper = Bootstrapper.getBootstrapper();
 		bootstrapper.initialize(this);
 
-		SleepFlagRepository.getInstance().setup(bootstrapper.getConfigRepository(), bootstrapper.getConfigService(), bootstrapper.getMessageService());
+		FlagsRepository.getInstance().setup(bootstrapper.getConfigRepository(), bootstrapper.getConfigService(), bootstrapper.getMessageService());
 		
 		IMessageService messageService = bootstrapper.getMessageService();
 		IUpdateService updateService = bootstrapper.getUpdateService();

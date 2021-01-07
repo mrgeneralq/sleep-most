@@ -2,8 +2,7 @@ package me.mrgeneralq.sleepmost.interfaces;
 
 public interface IUpdateService {
 
-    public boolean hasUpdate();
-    public String getCurrentVersion();
-
+    boolean hasUpdate();
+    String getCurrentVersion();
     String getCachedUpdateVersion();
 }

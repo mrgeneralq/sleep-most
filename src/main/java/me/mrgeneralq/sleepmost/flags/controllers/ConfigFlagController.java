@@ -15,9 +15,9 @@ public class ConfigFlagController<V> extends AbstractFlagController<V>
     @Override
     public V getValueAt(World world)
     {
-        String configValue = configRepository.getFlagValue(world, getFlag());
+        String stringValue = configRepository.getFlagValue(world, getFlag());
 
-        return getFlag().parseValueFrom(configValue);
+        return getFlag().parseValueFrom(stringValue);
     }
 
     @Override
