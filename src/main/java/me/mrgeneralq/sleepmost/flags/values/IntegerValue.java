@@ -12,4 +12,10 @@ public class IntegerValue extends NumericValue<Integer>
     {
         return String.valueOf(get());
     }
+
+    /*@Override
+    public static Integer fromString(String textValue)
+    {
+        return Integer.valueOf(textValue);
+    }*/
 }

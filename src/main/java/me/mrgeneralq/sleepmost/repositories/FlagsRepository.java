@@ -2,28 +2,23 @@ package me.mrgeneralq.sleepmost.repositories;
 
 import me.mrgeneralq.sleepmost.flags.*;
 import me.mrgeneralq.sleepmost.flags.controllers.ConfigFlagController;
+import me.mrgeneralq.sleepmost.flags.types.AbstractFlag;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IConfigService;
+import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Map.Entry;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 
-public class FlagsRepository
+public class FlagsRepository implements IFlagsRepository
 {
     private final Map<String, ISleepFlag<?>> flagByName = new HashMap<>();
+    private final IConfigRepository configRepository;
+    private final IConfigService configService;
+    private final IMessageService messageService;
 
-    private IConfigRepository configRepository;
-    private IConfigService configService;
-    private IMessageService messageService;
-
-    //all flags objects, for easy accessibility and type safety
+    //all flags objects(for type safety)
     private PercentageRequiredFlag percentageRequiredFlag;
     private MobNoTargetFlag mobNoTargetFlag;
     private UseExemptFlag useExemptFlag;
@@ -35,31 +30,47 @@ public class FlagsRepository
     private CalculationMethodFlag calculationMethodFlag;
     private PlayersRequiredFlag playersRequiredFlag;
 
-    public static FlagsRepository instance;
-    private FlagsRepository(){}
-
-    public void setup(IConfigRepository configRepository, IConfigService configService, IMessageService messageService){
+    public FlagsRepository(IConfigRepository configRepository, IConfigService configService, IMessageService messageService)
+    {
         this.configRepository = configRepository;
         this.configService = configService;
         this.messageService = messageService;
 
-        setupFlags();
-        findWorldsWithIllegalValues().forEach(this::notifyAboutIllegalValues);
+        setup();
     }
-    public static FlagsRepository getInstance(){
-        if(instance == null)
-            instance = new FlagsRepository();
-        return instance;
+    public void setup()
+    {
+        setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(this.configRepository)));
+        setupFlag(this.mobNoTargetFlag = new MobNoTargetFlag(new ConfigFlagController<>(this.configRepository)));
+        setupFlag(this.useExemptFlag = new UseExemptFlag(new ConfigFlagController<>(this.configRepository)));
+        setupFlag(this.preventSleepFlag = new PreventSleepFlag(new ConfigFlagController<>(this.configRepository)));
+        setupFlag(this.preventPhantomFlag = new PreventPhantomFlag(new ConfigFlagController<>(this.configRepository)));
+        setupFlag(this.stormSleepFlag = new StormSleepFlag(new ConfigFlagController<>(this.configRepository)));
+        setupFlag(this.useAfkFlag = new UseAfkFlag(new ConfigFlagController<>(this.configRepository)));
+        setupFlag(this.playersRequiredFlag = new PlayersRequiredFlag(new ConfigFlagController<>(this.configRepository)));
+        setupFlag(this.percentageRequiredFlag = new PercentageRequiredFlag(new ConfigFlagController<>(this.configRepository)));
+        setupFlag(this.calculationMethodFlag = new CalculationMethodFlag(new ConfigFlagController<>(this.configRepository)));
     }
-    public ISleepFlag<?> getFlag(String flagName){
-        return flagByName.get(flagName);
+
+    @Override
+    public ISleepFlag<?> getFlag(String flagName)
+    {
+        return this.flagByName.get(flagName);
     }
-    public boolean flagExists(String flagName){
-        return flagByName.containsKey(flagName);
+
+    @Override
+    public boolean flagExists(String flagName)
+    {
+        return this.flagByName.containsKey(flagName);
     }
-    public Set<ISleepFlag<?>> getFlags(){
+
+    @Override
+    public Set<ISleepFlag<?>> getFlags()
+    {
         return new HashSet<>(this.flagByName.values());
     }
+
+    @Override
     public List<String> getFlagsNames(){
         return flagByName.values().stream()
                 .map(ISleepFlag::getName)
@@ -67,61 +78,45 @@ public class FlagsRepository
     }
 
     //Flags Getters
-    public PercentageRequiredFlag getPercentageRequiredFlag(){ return percentageRequiredFlag; }
-    public MobNoTargetFlag getMobNoTargetFlag(){ return mobNoTargetFlag; }
-    public UseExemptFlag getUseExemptFlag(){ return useExemptFlag; }
-    public PreventSleepFlag getPreventSleepFlag(){ return preventSleepFlag; }
-    public PreventPhantomFlag getPreventPhantomFlag(){ return preventPhantomFlag; }
-    public NightcycleAnimationFlag getNightcycleAnimationFlag(){ return nightcycleAnimationFlag; }
-    public StormSleepFlag getStormSleepFlag(){ return stormSleepFlag; }
-    public UseAfkFlag getUseAfkFlag(){ return useAfkFlag; }
-    public CalculationMethodFlag getCalculationMethodFlag(){ return calculationMethodFlag; }
-    public PlayersRequiredFlag getPlayersRequiredFlag(){ return playersRequiredFlag; }
-
-    private void setupFlags(){
-        setupFlag(this.percentageRequiredFlag = new PercentageRequiredFlag());
-        setupFlag(this.mobNoTargetFlag = new MobNoTargetFlag());
-        setupFlag(this.useExemptFlag = new UseExemptFlag());
-        setupFlag(this.preventSleepFlag = new PreventSleepFlag());
-        setupFlag(this.preventPhantomFlag = new PreventPhantomFlag());
-        setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag());
-        setupFlag(this.stormSleepFlag = new StormSleepFlag());
-        setupFlag(this.useAfkFlag = new UseAfkFlag());
-        setupFlag(this.calculationMethodFlag = new CalculationMethodFlag());
-        setupFlag(this.playersRequiredFlag = new PlayersRequiredFlag());
+    public PercentageRequiredFlag getPercentageRequiredFlag(){
+        return this.percentageRequiredFlag;
     }
-    private <V> void setupFlag(ISleepFlag<V> flag){
+    public MobNoTargetFlag getMobNoTargetFlag(){
+        return this.mobNoTargetFlag;
+    }
+    public UseExemptFlag getUseExemptFlag() {
+        return this.useExemptFlag;
+    }
+    public PreventSleepFlag getPreventSleepFlag() {
+        return this.preventSleepFlag;
+    }
+    public PreventPhantomFlag getPreventPhantomFlag() {
+        return this.preventPhantomFlag;
+    }
+    public NightcycleAnimationFlag getNightcycleAnimationFlag() {
+        return this.nightcycleAnimationFlag;
+    }
+    public StormSleepFlag getStormSleepFlag() {
+        return this.stormSleepFlag;
+    }
+    public UseAfkFlag getUseAfkFlag() {
+        return this.useAfkFlag;
+    }
+    public CalculationMethodFlag getCalculationMethodFlag() {
+        return this.calculationMethodFlag;
+    }
+    public PlayersRequiredFlag getPlayersRequiredFlag() {
+        return this.playersRequiredFlag;
+    }
+    private <V> void setupFlag(ISleepFlag<V> flag)
+    {
+        //register the flag
         this.flagByName.put(flag.getName(), flag);
 
-        ConfigFlagController<V> controller = new ConfigFlagController<>(this.configRepository);
-        flag.setController(controller);
-        controller.setFlag(flag);
-    }
-    private void notifyAboutIllegalValues(World world, Map<ISleepFlag<?>, String> illegalValues){
-        illegalValues.forEach((flag, value) ->
+        //update the controller about which flag it controls
+        if(flag instanceof AbstractFlag)
         {
-            Bukkit.getConsoleSender().sendMessage(messageService.newPrefixedBuilder("&cThe value of the &e%flagName &cflag at &b%worldName &cis &4illegal(&c%value&4)")
-                    .setPlaceHolder("%flagName", flag.getName())
-                    .setPlaceHolder("%value", value)
-                    .setPlaceHolder("%worldName", world.getName())
-                    .build());
-        });
-
-        //TODO: Implement this defensive mechanism
-        Bukkit.getConsoleSender().sendMessage(messageService.newPrefixedBuilder("&4Therefore the world will not be used.").build());
-    }
-    private Map<World, Map<ISleepFlag<?>, String>> findWorldsWithIllegalValues()
-    {
-        return this.configService.getActivatedWorlds().stream()
-                .map(world -> new SimpleEntry<>(world, findIllegalValues(world)))
-                .filter(entry -> !entry.getValue().isEmpty())
-                .collect(toMap(Entry::getKey, Entry::getValue));
-    }
-    private Map<ISleepFlag<?>, String> findIllegalValues(World world)
-    {
-        return this.flagByName.values().stream()
-                .map(flag -> new SimpleEntry<>(flag, configRepository.getFlagValue(world, flag)))
-                .filter(entry -> !entry.getKey().isValidValue(entry.getValue()))
-                .collect(toMap(Entry::getKey, Entry::getValue));
+            ((AbstractFlag<V>) flag).getController().setFlag(flag);
+        }
     }
 }

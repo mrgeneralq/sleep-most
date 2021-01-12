@@ -1,20 +1,12 @@
 package me.mrgeneralq.sleepmost.flags.types;
 
-public abstract class IntegerFlag extends AbstractFlag<Integer>
-{
-    public IntegerFlag(String name, String valueCommandDescription)
-    {
-        super(name, valueCommandDescription);
-    }
+import me.mrgeneralq.sleepmost.flags.controllers.AbstractFlagController;
+import me.mrgeneralq.sleepmost.flags.serialization.IntegerSerialization;
 
-    @Override
-    public Integer parseValueFrom(String stringValue)
+public class IntegerFlag extends AbstractFlag<Integer>
+{
+    public IntegerFlag(String name, String valueDescription, AbstractFlagController<Integer> controller)
     {
-        try {
-            return Integer.parseInt(stringValue);
-        }
-        catch(NumberFormatException exception) {
-            return null;
-        }
+        super(name, valueDescription, controller, IntegerSerialization.INSTANCE);
     }
 }

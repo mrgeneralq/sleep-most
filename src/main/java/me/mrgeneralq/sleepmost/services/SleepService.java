@@ -1,10 +1,12 @@
 package me.mrgeneralq.sleepmost.services;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.mrgeneralq.sleepmost.enums.SleepCalculationType;
+import me.mrgeneralq.sleepmost.flags.CalculationMethodFlag;
+import me.mrgeneralq.sleepmost.flags.PlayersRequiredFlag;
+import me.mrgeneralq.sleepmost.flags.UseAfkFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
-import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import org.bukkit.Bukkit;
@@ -19,11 +21,18 @@ public class SleepService implements ISleepService {
 
     private final IConfigRepository configRepository;
     private final IConfigService configService;
-    private final FlagsRepository flagsRepository = FlagsRepository.getInstance();
 
-    public SleepService(IConfigService configService, IConfigRepository configRepository){
+    private final CalculationMethodFlag calculationMethodFlag;
+    private final PlayersRequiredFlag playersRequiredFlag;
+    private final UseAfkFlag useAfkFlag;
+
+    public SleepService(IConfigService configService, IConfigRepository configRepository, CalculationMethodFlag calculationMethodFlag, PlayersRequiredFlag playersRequiredFlag, UseAfkFlag useAfkFlag){
         this.configService = configService;
         this.configRepository = configRepository;
+
+        this.calculationMethodFlag = calculationMethodFlag;
+        this.playersRequiredFlag = playersRequiredFlag;
+        this.useAfkFlag = useAfkFlag;
     }
 
     @Override
@@ -72,7 +81,7 @@ public class SleepService implements ISleepService {
         int requiredCount = 0;
 
         try{
-            String enumName = String.format("%s%s", this.flagsRepository.getCalculationMethodFlag().getController().getValueAt(world) ,"_REQUIRED");
+            String enumName = String.format("%s%s", this.calculationMethodFlag.getValueAt(world) ,"_REQUIRED");
             enumName = enumName.toUpperCase();
 
             sleepCalculationType = SleepCalculationType.valueOf(enumName);
@@ -83,7 +92,7 @@ public class SleepService implements ISleepService {
                 requiredCount =  (int) Math.ceil(getPlayerCountInWorld(world) * getPercentageRequired(world));
                 break;
             case PLAYERS_REQUIRED:
-                int requiredPlayersInConfig = this.flagsRepository.getPlayersRequiredFlag().getController().getValueAt(world);
+                int requiredPlayersInConfig = this.playersRequiredFlag.getValueAt(world);
 
                 requiredCount = (requiredPlayersInConfig <= getPlayerCountInWorld(world)) ? requiredPlayersInConfig: getPlayerCountInWorld(world);
         }
@@ -103,7 +112,7 @@ public class SleepService implements ISleepService {
                     .filter(p -> !p.hasPermission("sleepmost.exempt"))
                     .collect(toList());
         }
-        boolean afkFlagEnabled = this.flagsRepository.getUseAfkFlag().getController().getValueAt(world);
+        boolean afkFlagEnabled = this.useAfkFlag.getValueAt(world);
 
         //check if user is afk
         if(afkFlagEnabled && Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().getPlugin("Essentials") != null)
@@ -137,7 +146,7 @@ public class SleepService implements ISleepService {
 
     @Override
     public boolean isNight(World world) {
-            return (world.getTime() > 12541 && world.getTime() < 23850);
+        return (world.getTime() > 12541 && world.getTime() < 23850);
     }
 
     @Override

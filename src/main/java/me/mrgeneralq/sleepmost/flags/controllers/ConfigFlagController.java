@@ -15,14 +15,16 @@ public class ConfigFlagController<V> extends AbstractFlagController<V>
     @Override
     public V getValueAt(World world)
     {
-        String stringValue = configRepository.getFlagValue(world, getFlag());
+        Object configValue = this.configRepository.getFlagValue(this.flag, world);
 
-        return getFlag().parseValueFrom(stringValue);
+        return this.flag.getSerialization().parseValueFrom(configValue);
     }
 
     @Override
     public void setValueAt(World world, V value)
     {
-        this.configRepository.setFlagValue(world, getFlag(), value);
+        Object serializedValue = this.flag.getSerialization().serialize(value);
+
+        this.configRepository.setFlagValue(this.flag, world, serializedValue);
     }
 }

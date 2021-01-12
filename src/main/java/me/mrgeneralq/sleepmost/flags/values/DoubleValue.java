@@ -14,7 +14,7 @@ public class DoubleValue extends NumericValue<Double>
     }
 
     /*@Override
-    public Double fromConfigValue(String value)
+    public Double fromString(String value)
     {
         return Double.valueOf(value);
     }*/

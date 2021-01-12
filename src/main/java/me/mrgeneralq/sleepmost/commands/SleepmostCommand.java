@@ -6,17 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import me.mrgeneralq.sleepmost.commands.subcommands.*;
+import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.messages.MessageTemplate;
-import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-
-import me.mrgeneralq.sleepmost.interfaces.IMessageService;
-import me.mrgeneralq.sleepmost.interfaces.ISleepService;
-import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
-import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 
 import static java.util.stream.Collectors.toList;
 import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
@@ -27,12 +22,15 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	private final ISleepService sleepService;
 	private final IMessageService messageService;
 	private final IUpdateService updateService;
-	private final FlagsRepository flagsRepository = FlagsRepository.getInstance();
+	private final IFlagService flagService;
+	private final IFlagsRepository flagsRepository;
 
-	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService){
+	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository){
 		this.sleepService = sleepService;
 		this.messageService = messageService;
 		this.updateService = updateService;
+		this.flagService = flagService;
+		this.flagsRepository = flagsRepository;
 
 		this.registerSubCommands();
 	}
@@ -41,12 +39,12 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("reload", new ReloadSubCommand(this.sleepService, this.messageService));
 		subCommands.put("enable", new EnableSubCommand(this.sleepService,this.messageService));
 		subCommands.put("disable", new DisableSubCommand(this.sleepService, this.messageService));
-		subCommands.put("setflag", new SetFlagCommand(this.sleepService, this.messageService));
-		subCommands.put("info", new InfoSubCommand(this.sleepService, this.messageService));
+		subCommands.put("setflag", new SetFlagCommand(this.sleepService, this.messageService, this.flagService, this.flagsRepository));
+		subCommands.put("info", new InfoSubCommand(this.sleepService, this.messageService, this.flagService, this.flagsRepository));
 		subCommands.put("version", new VersionSubCommand(this.updateService, this.messageService));
 
 		//enable when debugging
-		//subCommands.put("test", new TestCommand());
+		subCommands.put("test", new TestCommand(this.flagsRepository.getMobNoTargetFlag()));
 	}
 
 

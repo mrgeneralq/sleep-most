@@ -19,5 +19,5 @@ public interface IConfigService {
     Sound getSoundNightSkippedSound();
     boolean getSoundStormSkippedEnabled();
     Sound getSoundStormSkippedSound();
-    Set<World> getActivatedWorlds();
+    Set<World> getEnabledWorlds();
 }

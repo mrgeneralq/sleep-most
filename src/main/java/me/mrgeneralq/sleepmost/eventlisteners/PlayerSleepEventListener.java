@@ -3,7 +3,6 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
 import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTask;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
@@ -23,13 +22,14 @@ public class PlayerSleepEventListener implements Listener {
     private final IMessageService messageService;
     private final ICooldownService cooldownService;
     private final DataContainer dataContainer;
-    private final FlagsRepository flagsRepository = FlagsRepository.getInstance();
+    private final IFlagsRepository flagsRepository;
 
-    public PlayerSleepEventListener(Sleepmost main, ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService) {
+    public PlayerSleepEventListener(Sleepmost main, ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService, IFlagsRepository flagsRepository) {
+        this.main = main;
         this.sleepService = sleepService;
         this.messageService = messageService;
         this.cooldownService = cooldownService;
-        this.main = main;
+        this.flagsRepository = flagsRepository;
         this.dataContainer = DataContainer.getContainer();
     }
 
@@ -55,7 +55,7 @@ public class PlayerSleepEventListener implements Listener {
         if (dataContainer.getRunningWorldsAnimation().contains(world))
             return;
 
-        if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getController().getValueAt(world)) {
+        if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {
 
             String preventSleepStormMessage = messageService.getConfigMessage(ConfigMessage.NO_SLEEP_THUNDERSTORM);
 
@@ -70,7 +70,7 @@ public class PlayerSleepEventListener implements Listener {
             return;
         }
 
-        if(this.flagsRepository.getPreventSleepFlag().getController().getValueAt(world)) {
+        if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
 
             String sleepPreventedConfigMessage = messageService.getConfigMessage(ConfigMessage.SLEEP_PREVENTED);
 
@@ -95,7 +95,7 @@ public class PlayerSleepEventListener implements Listener {
         String lastSleeperName = e.getPlayer().getName();
         String lastSleeperDisplayName = e.getPlayer().getDisplayName();
 
-        if (this.flagsRepository.getNightcycleAnimationFlag().getController().getValueAt(world)) {
+        if (this.flagsRepository.getNightcycleAnimationFlag().getValueAt(world)) {
         	if(world.isThundering() && !sleepService.isNight(world)){
         		sleepService.resetDay(world, lastSleeperName, lastSleeperDisplayName);
         		return;

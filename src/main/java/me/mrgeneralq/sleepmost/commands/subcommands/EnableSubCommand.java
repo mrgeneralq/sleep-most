@@ -9,8 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class
-EnableSubCommand implements ISubCommand {
+public class EnableSubCommand implements ISubCommand {
 
     private final ISleepService sleepService;
     private final IMessageService messageService;

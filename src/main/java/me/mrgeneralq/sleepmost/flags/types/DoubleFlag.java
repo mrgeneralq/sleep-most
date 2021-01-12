@@ -1,20 +1,12 @@
 package me.mrgeneralq.sleepmost.flags.types;
 
+import me.mrgeneralq.sleepmost.flags.controllers.AbstractFlagController;
+import me.mrgeneralq.sleepmost.flags.serialization.DoubleSerialization;
+
 public class DoubleFlag extends AbstractFlag<Double>
 {
-    public DoubleFlag(String name, String valueCommandDescription)
+    public DoubleFlag(String name, String valueDescription, AbstractFlagController<Double> controller)
     {
-        super(name, valueCommandDescription);
-    }
-
-    @Override
-    public Double parseValueFrom(String stringValue)
-    {
-        try {
-            return Double.parseDouble(stringValue);
-        }
-        catch(NumberFormatException exception) {
-            return null;
-        }
+        super(name, valueDescription, controller, DoubleSerialization.INSTANCE);
     }
 }

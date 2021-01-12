@@ -1,19 +1,13 @@
 package me.mrgeneralq.sleepmost.flags;
 import me.mrgeneralq.sleepmost.enums.SleepCalculationType;
+import me.mrgeneralq.sleepmost.flags.controllers.AbstractFlagController;
 import me.mrgeneralq.sleepmost.flags.types.EnumFlag;
+import me.mrgeneralq.sleepmost.flags.serialization.SleepCalculationTypeSerialization;
 
 public class CalculationMethodFlag extends EnumFlag<SleepCalculationType>
 {
-    public CalculationMethodFlag()
+    public CalculationMethodFlag(AbstractFlagController<SleepCalculationType> controller)
     {
-        super("calculation-method", "<percentage|players>", SleepCalculationType.class);
-    }
-
-    @Override
-    public boolean isValidValue(String stringValue)
-    {
-        String enumName = String.format("%s_REQUIRED", stringValue.toUpperCase());
-
-        return super.isValidValue(enumName);
+        super("calculation-method", "<percentage|players>", controller, SleepCalculationTypeSerialization.INSTANCE, SleepCalculationType.class);
     }
 }

@@ -4,6 +4,7 @@ import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.messages.MessageService;
 import me.mrgeneralq.sleepmost.repositories.ConfigRepository;
 import me.mrgeneralq.sleepmost.repositories.CooldownRepository;
+import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
 import me.mrgeneralq.sleepmost.repositories.UpdateRepository;
 import me.mrgeneralq.sleepmost.services.*;
 import me.mrgeneralq.sleepmost.Sleepmost;
@@ -20,8 +21,8 @@ public class Bootstrapper {
     private ICooldownRepository cooldownRepository;
     private IUpdateService updateService;
     private IUpdateRepository updateRepository;
-
-    //new service logic
+    private IFlagsRepository flagsRepository;
+    private IFlagService flagService;
     private IConfigService configService;
 
     public IConfigRepository getConfigRepository() {
@@ -45,17 +46,22 @@ public class Bootstrapper {
 
         //update
         this.updateRepository = new UpdateRepository("60623");
-        this.updateService = new UpdateService(updateRepository, main, configService);
-
-        //sleep
-        this.sleepService = new SleepService(configService, configRepository);
+        this.updateService = new UpdateService(this.updateRepository, main, this.configService);
 
         //cooldown
         this.cooldownRepository = new CooldownRepository();
-        this.cooldownService = new CooldownService(cooldownRepository, configRepository);
+        this.cooldownService = new CooldownService(this.cooldownRepository, this.configRepository);
 
         //messages
-        this.messageService = new MessageService(configRepository, sleepService);
+        this.messageService = new MessageService(this.configRepository, this.sleepService);
+
+        //flags
+        this.flagsRepository = new FlagsRepository(this.configRepository, this.configService, this.messageService);
+        this.flagService = new FlagService(this.flagsRepository, this.configRepository, this.configService, this.messageService);
+        this.flagService.reportIllegalValues();
+
+        //sleep
+        this.sleepService = new SleepService(this.configService, this.configRepository, this.flagsRepository.getCalculationMethodFlag(), this.flagsRepository.getPlayersRequiredFlag(), this.flagsRepository.getUseAfkFlag());
     }
 
     public static Bootstrapper getBootstrapper(){
@@ -91,5 +97,11 @@ public class Bootstrapper {
 
     public IConfigService getConfigService() {
         return configService;
+    }
+    public IFlagsRepository getFlagsRepository(){
+        return this.flagsRepository;
+    }
+    public IFlagService getFlagService() {
+        return this.flagService;
     }
 }

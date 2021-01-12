@@ -16,7 +16,6 @@ public interface IConfigRepository {
     void addWorld(World world);
     void removeWorld(World world);
     void disableForWorld(World world);
-
-    <V> void setFlagValue(World world, ISleepFlag<V> flag, V value);
-    String getFlagValue(World world, ISleepFlag<?> flag);
+    void setFlagValue(ISleepFlag<?> flag, World world, Object value);
+    Object getFlagValue(ISleepFlag<?> flag, World world);
 }

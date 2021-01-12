@@ -20,31 +20,28 @@ public class DataContainer {
         sleepingPlayers = new HashMap<>();
 
     }
-    
+
     public static DataContainer getContainer(){
         if(instance == null)
             instance = new DataContainer();
         return instance;
     }
 
-
     public Set<World> getRunningWorldsAnimation() {
         return runningWorldsAnimation;
     }
 
-
-    public void addSleepingPlayer(Player player){
-    	this.sleepingPlayers.computeIfAbsent(player.getWorld(), p -> Sets.newHashSet()).add(player);
+    public void addSleepingPlayer(Player player)
+    {
+        this.sleepingPlayers.computeIfAbsent(player.getWorld(), p -> Sets.newHashSet()).add(player);
     }
 
     public void removeSleepingPlayer(Player player){
-        Set<Player> playerList = this.sleepingPlayers.get(player.getWorld());
-        playerList.remove(player);
-
+        this.sleepingPlayers.get(player.getWorld()).remove(player);
     }
 
-    public List<Player> getSleepingPlayers(World world){
+    public List<Player> getSleepingPlayers(World world)
+    {
         return new ArrayList<>(sleepingPlayers.get(world));
     }
-
 }

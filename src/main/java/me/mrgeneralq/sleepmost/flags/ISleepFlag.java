@@ -1,15 +1,14 @@
 package me.mrgeneralq.sleepmost.flags;
 
-import me.mrgeneralq.sleepmost.flags.controllers.AbstractFlagController;
+import me.mrgeneralq.sleepmost.flags.serialization.IValueSerialization;
+import org.bukkit.World;
 
 public interface ISleepFlag<V>
 {
     String getName();
-    String getCommandUsage();
-    boolean isValidValue(String stringValue);
-    V parseValueFrom(String stringValue);
-
-    //Controller data
-    AbstractFlagController<V> getController();
-    void setController(AbstractFlagController<V> controller);
+    String getValueDescription();
+    boolean isValidValue(Object value);
+    V getValueAt(World world);
+    void setValueAt(World world, V value);
+    IValueSerialization<V> getSerialization();
 }

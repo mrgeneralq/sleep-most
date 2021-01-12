@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.flags.MobNoTargetFlag;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import org.bukkit.ChatColor;
@@ -11,6 +12,13 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class TestCommand implements ISubCommand
 {
+    private final MobNoTargetFlag mobNoTargetFlag;
+
+    public TestCommand(MobNoTargetFlag mobNoTargetFlag)
+    {
+        this.mobNoTargetFlag = mobNoTargetFlag;
+    }
+
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
@@ -20,7 +28,8 @@ public class TestCommand implements ISubCommand
             return false;
         }
         Player player = (Player) sender;
-        player.sendMessage(beautifulize("Sleepmost was created by ") + ChatColor.GREEN + "MrGeneralQ" + beautifulize(", and ") + ChatColor.GREEN + "Mizrahi" + beautifulize(" helped."));
+        player.sendMessage("mob-no-target value: " + this.mobNoTargetFlag.getValueAt(player.getWorld()));
+        //player.sendMessage(beautifulize("Sleepmost was created by ") + ChatColor.GREEN + "MrGeneralQ" + beautifulize(", and ") + ChatColor.GREEN + "Mizrahi" + beautifulize(" helped."));
 
         return true;
     }

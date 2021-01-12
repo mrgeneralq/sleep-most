@@ -87,15 +87,15 @@ public class ConfigRepository implements IConfigRepository {
     }
 
     @Override
-    public <V> void setFlagValue(World world, ISleepFlag<V> flag, V value)
+    public void setFlagValue(ISleepFlag<?> flag, World world, Object value)
     {
         main.getConfig().set(getValuePath(flag, world), value);
         main.saveConfig();
     }
 
     @Override
-    public String getFlagValue(World world, ISleepFlag<?> flag) {
-        return main.getConfig().getString(getValuePath(flag, world));
+    public Object getFlagValue(ISleepFlag<?> flag, World world) {
+        return main.getConfig().get(getValuePath(flag, world));
     }
 
     private static String getValuePath(ISleepFlag<?> flag, World world) {

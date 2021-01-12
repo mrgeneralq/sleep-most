@@ -14,7 +14,7 @@ public class StringValue extends AbstractFlagValue<String>
     }
 
     /*@Override
-    public String fromConfigValue(String value)
+    public String fromString(String value)
     {
         return value;
     }*/

@@ -14,18 +14,15 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import me.mrgeneralq.sleepmost.interfaces.IConfigService;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
-import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 
 public class SleepSkipEventListener implements Listener {
 
-	private final ISleepService sleepService;
 	private final IMessageService messageService;
 	private final IConfigService configService;
 	private final DataContainer dataContainer;
 
-	public SleepSkipEventListener(ISleepService sleepService, IMessageService messageService, IConfigService configService) {
-		this.sleepService = sleepService;
+	public SleepSkipEventListener(IMessageService messageService, IConfigService configService) {
 		this.messageService = messageService;
 		this.configService = configService;
 		this.dataContainer = DataContainer.getContainer();

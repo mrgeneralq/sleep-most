@@ -14,7 +14,7 @@ public class BooleanValue extends AbstractFlagValue<Boolean>
     }
 
     /*@Override
-    public Boolean fromConfigValue(String value)
+    public Boolean fromString(String value)
     {
         return Boolean.valueOf(value);
     }*/

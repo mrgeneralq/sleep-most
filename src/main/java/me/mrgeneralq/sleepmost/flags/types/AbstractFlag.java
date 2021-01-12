@@ -2,17 +2,21 @@ package me.mrgeneralq.sleepmost.flags.types;
 
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.flags.controllers.AbstractFlagController;
+import me.mrgeneralq.sleepmost.flags.serialization.IValueSerialization;
+import org.bukkit.World;
 
 public abstract class AbstractFlag<V> implements ISleepFlag<V>
 {
-    private final String name;
-    private final String commandUsage;
+    private final String name, valueDescription;
     private AbstractFlagController<V> controller;
+    private final IValueSerialization<V> serialization;
 
-    public AbstractFlag(String name, String valueCommandDescription)
+    public AbstractFlag(String name, String valueDescription, AbstractFlagController<V> controller, IValueSerialization<V> serialization)
     {
         this.name = name;
-        this.commandUsage = String.format("/sleepmost setflag %s %s", name, valueCommandDescription);
+        this.valueDescription = valueDescription;
+        this.controller = controller;
+        this.serialization = serialization;
     }
 
     @Override
@@ -22,26 +26,42 @@ public abstract class AbstractFlag<V> implements ISleepFlag<V>
     }
 
     @Override
-    public String getCommandUsage()
+    public String getValueDescription()
     {
-        return this.commandUsage;
+        return this.valueDescription;
     }
 
-    @Override
-    public boolean isValidValue(String stringValue)
-    {
-        return parseValueFrom(stringValue) != null;
-    }
-
-    @Override
     public AbstractFlagController<V> getController()
     {
         return this.controller;
     }
 
     @Override
+    public V getValueAt(World world)
+    {
+        return this.controller.getValueAt(world);
+    }
+
+    @Override
+    public void setValueAt(World world, V value)
+    {
+        this.controller.setValueAt(world, value);
+    }
+
     public void setController(AbstractFlagController<V> controller)
     {
         this.controller = controller;
+    }
+
+    @Override
+    public boolean isValidValue(Object value)
+    {
+        return this.serialization.parseValueFrom(value) != null;
+    }
+
+    @Override
+    public IValueSerialization<V> getSerialization()
+    {
+        return this.serialization;
     }
 }

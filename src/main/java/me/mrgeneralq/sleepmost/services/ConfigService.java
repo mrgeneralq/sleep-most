@@ -98,7 +98,7 @@ public class ConfigService implements IConfigService {
     }
 
     @Override
-    public Set<World> getActivatedWorlds()
+    public Set<World> getEnabledWorlds()
     {
         return main.getConfig().getConfigurationSection("sleep").getKeys(false).stream()
                 .map(Bukkit::getWorld)
