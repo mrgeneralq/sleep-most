@@ -14,13 +14,9 @@ public class SleepCalculationTypeSerialization extends EnumSerialization<SleepCa
     @Override
     public Object serialize(SleepCalculationType value)
     {
-        return getDisplayName(value);
-    }
-
-    @Override
-    public String getDisplayName(SleepCalculationType value)
-    {
-        return value.name().substring(0, value.name().indexOf('_')).toLowerCase();
+        return value.name()
+                .substring(0, value.name().indexOf('_'))
+                .toLowerCase();
     }
 
     @Override

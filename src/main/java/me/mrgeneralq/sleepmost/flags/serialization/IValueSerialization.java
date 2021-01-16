@@ -6,9 +6,5 @@ public interface IValueSerialization<V>
     {
         return value;
     }
-    default String getDisplayName(V value)
-    {
-        return value.toString();
-    }
     V parseValueFrom(Object object);
 }

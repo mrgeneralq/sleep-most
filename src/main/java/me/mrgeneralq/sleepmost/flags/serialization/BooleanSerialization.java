@@ -11,15 +11,19 @@ public class BooleanSerialization implements IValueSerialization<Boolean>
             return (Boolean) object;
 
         if(object instanceof String)
-        {
-            String text = (String) object;
+            return parseFromString((String) object);
 
-            if(text.equalsIgnoreCase("true"))
-                return true;
+        return null;
+    }
 
-            if(text.equalsIgnoreCase("false"))
-                return false;
-        }
+    protected static Boolean parseFromString(String text)
+    {
+        if(text.equalsIgnoreCase("true"))
+            return true;
+
+        else if(text.equalsIgnoreCase("false"))
+            return false;
+
         return null;
     }
 }

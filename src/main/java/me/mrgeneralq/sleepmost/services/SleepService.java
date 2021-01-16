@@ -4,6 +4,7 @@ import me.mrgeneralq.sleepmost.enums.SleepCalculationType;
 import me.mrgeneralq.sleepmost.flags.CalculationMethodFlag;
 import me.mrgeneralq.sleepmost.flags.PlayersRequiredFlag;
 import me.mrgeneralq.sleepmost.flags.UseAfkFlag;
+import me.mrgeneralq.sleepmost.flags.serialization.SleepCalculationTypeSerialization;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
@@ -25,6 +26,10 @@ public class SleepService implements ISleepService {
     private final CalculationMethodFlag calculationMethodFlag;
     private final PlayersRequiredFlag playersRequiredFlag;
     private final UseAfkFlag useAfkFlag;
+
+    private static final int
+            NIGHT_START_TIME = 12541,
+            NIGHT_END_TIME = 23850;
 
     public SleepService(IConfigService configService, IConfigRepository configRepository, CalculationMethodFlag calculationMethodFlag, PlayersRequiredFlag playersRequiredFlag, UseAfkFlag useAfkFlag){
         this.configService = configService;
@@ -75,26 +80,29 @@ public class SleepService implements ISleepService {
     @Override
     public int getRequiredPlayersSleepingCount(World world) {
 
-
-        SleepCalculationType sleepCalculationType = SleepCalculationType.PERCENTAGE_REQUIRED;
-
-        int requiredCount = 0;
+        /*SleepCalculationType sleepCalculationType = SleepCalculationType.PLAYERS_REQUIRED;
 
         try{
-            String enumName = String.format("%s%s", this.calculationMethodFlag.getValueAt(world) ,"_REQUIRED");
+            String enumName = String.format("%s%s", this.calculationMethodFlag.getValueAt(world), "_REQUIRED");
             enumName = enumName.toUpperCase();
 
             sleepCalculationType = SleepCalculationType.valueOf(enumName);
-        }catch (Exception ex){}
+        }
+        catch (Exception ex){}*/
 
-        switch (sleepCalculationType){
+        int requiredCount;
+
+        switch (this.calculationMethodFlag.getValueAt(world))
+        {
             case PERCENTAGE_REQUIRED:
                 requiredCount =  (int) Math.ceil(getPlayerCountInWorld(world) * getPercentageRequired(world));
                 break;
             case PLAYERS_REQUIRED:
                 int requiredPlayersInConfig = this.playersRequiredFlag.getValueAt(world);
-
                 requiredCount = (requiredPlayersInConfig <= getPlayerCountInWorld(world)) ? requiredPlayersInConfig: getPlayerCountInWorld(world);
+                break;
+            default:
+                requiredCount = 0;
         }
 
         return requiredCount;
@@ -146,7 +154,7 @@ public class SleepService implements ISleepService {
 
     @Override
     public boolean isNight(World world) {
-        return (world.getTime() > 12541 && world.getTime() < 23850);
+        return world.getTime() > NIGHT_START_TIME && world.getTime() < NIGHT_END_TIME;
     }
 
     @Override

@@ -47,13 +47,11 @@ public class Sleepmost extends JavaPlugin{
 		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getMessageService(), bootstrapper.getConfigService()), this);
 		pm.registerEvents(new EntityTargetLivingEntityEventListener(bootstrapper.getFlagsRepository().getMobNoTargetFlag()), this);
 		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService()), this);
-		pm.registerEvents(new PlayerJoinEventListener(this,bootstrapper.getUpdateService()), this);
+		pm.registerEvents(new PlayerJoinEventListener(this,bootstrapper.getUpdateService(), bootstrapper.getMessageService()), this);
 		pm.registerEvents(new EntitySpawnEventListener(bootstrapper.getFlagsRepository().getPreventPhantomFlag()), this);
 		pm.registerEvents(new TimeSkipEventListener(), this);
 		
-		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
-			notifyIfNewUpdateExists(bootstrapper.getUpdateService());
-		});
+		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
 	}
 	private void notifyIfNewUpdateExists(IUpdateService updateService) 
 	{

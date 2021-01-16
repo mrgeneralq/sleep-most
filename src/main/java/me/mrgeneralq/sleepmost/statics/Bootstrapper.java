@@ -38,30 +38,26 @@ public class Bootstrapper {
     public void initialize(Sleepmost main){
         this.main = main;
 
-        //config
-        this.configService = new ConfigService(main);
-        this.configRepository = new ConfigRepository(main);
-        this.configMessageMapper = ConfigMessageMapper.getMapper();
-        this.configMessageMapper.initialize(main);
-
-        //update
+        //repos
         this.updateRepository = new UpdateRepository("60623");
-        this.updateService = new UpdateService(this.updateRepository, main, this.configService);
-
-        //cooldown
         this.cooldownRepository = new CooldownRepository();
+        this.configRepository = new ConfigRepository(main);
+        this.flagsRepository = new FlagsRepository(this.configRepository);
+
+        //services
+        this.configService = new ConfigService(main);
+        this.updateService = new UpdateService(this.updateRepository, main, this.configService);
         this.cooldownService = new CooldownService(this.cooldownRepository, this.configRepository);
-
-        //messages
-        this.messageService = new MessageService(this.configRepository, this.sleepService);
-
-        //flags
-        this.flagsRepository = new FlagsRepository(this.configRepository, this.configService, this.messageService);
-        this.flagService = new FlagService(this.flagsRepository, this.configRepository, this.configService, this.messageService);
-        this.flagService.reportIllegalValues();
-
-        //sleep
         this.sleepService = new SleepService(this.configService, this.configRepository, this.flagsRepository.getCalculationMethodFlag(), this.flagsRepository.getPlayersRequiredFlag(), this.flagsRepository.getUseAfkFlag());
+        this.messageService = new MessageService(this.configRepository, this.sleepService);
+        this.flagService = new FlagService(this.flagsRepository, this.configRepository, this.configService, this.messageService);
+
+        //mappers
+        this.configMessageMapper = ConfigMessageMapper.getMapper();
+
+        //independent inits
+        this.configMessageMapper.initialize(main);
+        this.flagService.reportIllegalValues();
     }
 
     public static Bootstrapper getBootstrapper(){

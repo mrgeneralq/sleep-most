@@ -10,4 +10,10 @@ public class CalculationMethodFlag extends EnumFlag<SleepCalculationType>
     {
         super("calculation-method", "<percentage|players>", controller, SleepCalculationTypeSerialization.INSTANCE, SleepCalculationType.class);
     }
+
+    @Override
+    public String getDisplayName(SleepCalculationType value)
+    {
+        return value.name().substring(0, value.name().indexOf('_')).toLowerCase();
+    }
 }

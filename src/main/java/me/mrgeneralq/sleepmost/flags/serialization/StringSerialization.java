@@ -7,6 +7,9 @@ public class StringSerialization implements IValueSerialization<String>
     @Override
     public String parseValueFrom(Object object)
     {
-        return String.valueOf(object);
+        if(object instanceof String)
+            return (String) object;
+
+        return null;
     }
 }

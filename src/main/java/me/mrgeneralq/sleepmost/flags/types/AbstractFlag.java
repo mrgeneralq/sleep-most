@@ -48,11 +48,6 @@ public abstract class AbstractFlag<V> implements ISleepFlag<V>
         this.controller.setValueAt(world, value);
     }
 
-    public void setController(AbstractFlagController<V> controller)
-    {
-        this.controller = controller;
-    }
-
     @Override
     public boolean isValidValue(Object value)
     {
@@ -63,5 +58,10 @@ public abstract class AbstractFlag<V> implements ISleepFlag<V>
     public IValueSerialization<V> getSerialization()
     {
         return this.serialization;
+    }
+
+    public void setController(AbstractFlagController<V> controller)
+    {
+        this.controller = controller;
     }
 }

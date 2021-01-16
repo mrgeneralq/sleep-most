@@ -23,4 +23,5 @@ public interface IFlagsRepository
     UseAfkFlag getUseAfkFlag();
     CalculationMethodFlag getCalculationMethodFlag();
     PlayersRequiredFlag getPlayersRequiredFlag();
+    //TestFlag getTestFlag();
 }

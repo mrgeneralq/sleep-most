@@ -10,16 +10,19 @@ public class DoubleSerialization implements IValueSerialization<Double>
         if(object instanceof Double)
             return (Double) object;
 
-        if(object instanceof String)
-        {
-            try
-            {
-                return Double.parseDouble((String) object);
-            }
-            catch(NumberFormatException exception){
-                return null;
-            }
-        }
+        else if(object instanceof String)
+            return parseFromString((String) object);
+
         return null;
+    }
+
+    protected static Double parseFromString(String text)
+    {
+        try {
+            return Double.parseDouble(text);
+        }
+        catch(NumberFormatException exception) {
+            return null;
+        }
     }
 }

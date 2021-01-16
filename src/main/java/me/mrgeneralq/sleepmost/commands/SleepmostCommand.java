@@ -1,6 +1,5 @@
 package me.mrgeneralq.sleepmost.commands;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("version", new VersionSubCommand(this.updateService, this.messageService));
 
 		//enable when debugging
-		subCommands.put("test", new TestCommand(this.flagsRepository.getMobNoTargetFlag()));
+		//subCommands.put("test", new TestCommand());
 	}
 
 
@@ -110,9 +109,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 
 		if(args[0].equalsIgnoreCase("setflag") && args.length == 2)
 		{
-			List<String> flags = this.flagsRepository.getFlagsNames();
-			Collections.sort(flags);
-			return flags;
+			return this.flagsRepository.getFlagsNames();
 		}
 		return null;
 	}

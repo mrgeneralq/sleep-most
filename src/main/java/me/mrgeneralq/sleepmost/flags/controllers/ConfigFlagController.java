@@ -7,6 +7,7 @@ public class ConfigFlagController<V> extends AbstractFlagController<V>
 {
     private final IConfigRepository configRepository;
 
+    //refactor to take an object of IValuesSerialization<V>
     public ConfigFlagController(IConfigRepository configRepository)
     {
         this.configRepository = configRepository;

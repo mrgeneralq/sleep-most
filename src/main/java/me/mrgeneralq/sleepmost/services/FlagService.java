@@ -59,7 +59,7 @@ public class FlagService implements IFlagService
     @Override
     public <V> String getValueDisplayName(ISleepFlag<V> flag, Object value)
     {
-        return flag.getSerialization().getDisplayName((V) value);
+        return flag.getDisplayName((V) value);
     }
 
     @Override

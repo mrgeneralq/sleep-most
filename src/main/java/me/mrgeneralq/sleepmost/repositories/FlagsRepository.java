@@ -3,10 +3,8 @@ package me.mrgeneralq.sleepmost.repositories;
 import me.mrgeneralq.sleepmost.flags.*;
 import me.mrgeneralq.sleepmost.flags.controllers.ConfigFlagController;
 import me.mrgeneralq.sleepmost.flags.types.AbstractFlag;
-import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
-import me.mrgeneralq.sleepmost.interfaces.IConfigService;
-import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
-import me.mrgeneralq.sleepmost.interfaces.IMessageService;
+import me.mrgeneralq.sleepmost.interfaces.*;
+
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -14,9 +12,8 @@ import static java.util.stream.Collectors.toList;
 public class FlagsRepository implements IFlagsRepository
 {
     private final Map<String, ISleepFlag<?>> flagByName = new HashMap<>();
+
     private final IConfigRepository configRepository;
-    private final IConfigService configService;
-    private final IMessageService messageService;
 
     //all flags objects(for type safety)
     private PercentageRequiredFlag percentageRequiredFlag;
@@ -29,17 +26,13 @@ public class FlagsRepository implements IFlagsRepository
     private UseAfkFlag useAfkFlag;
     private CalculationMethodFlag calculationMethodFlag;
     private PlayersRequiredFlag playersRequiredFlag;
+    //private TestFlag testFlag;
 
-    public FlagsRepository(IConfigRepository configRepository, IConfigService configService, IMessageService messageService)
+    public FlagsRepository(IConfigRepository configRepository)
     {
         this.configRepository = configRepository;
-        this.configService = configService;
-        this.messageService = messageService;
 
-        setup();
-    }
-    public void setup()
-    {
+        //setupFlag(this.testFlag = new TestFlag(new ConfigFlagController<>(this.configRepository)));
         setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(this.configRepository)));
         setupFlag(this.mobNoTargetFlag = new MobNoTargetFlag(new ConfigFlagController<>(this.configRepository)));
         setupFlag(this.useExemptFlag = new UseExemptFlag(new ConfigFlagController<>(this.configRepository)));
@@ -74,42 +67,56 @@ public class FlagsRepository implements IFlagsRepository
     public List<String> getFlagsNames(){
         return flagByName.values().stream()
                 .map(ISleepFlag::getName)
+                .sorted()
                 .collect(toList());
     }
 
     //Flags Getters
-    public PercentageRequiredFlag getPercentageRequiredFlag(){
+    @Override public PercentageRequiredFlag getPercentageRequiredFlag(){
         return this.percentageRequiredFlag;
     }
-    public MobNoTargetFlag getMobNoTargetFlag(){
+
+    @Override public MobNoTargetFlag getMobNoTargetFlag(){
         return this.mobNoTargetFlag;
     }
-    public UseExemptFlag getUseExemptFlag() {
+
+    @Override public UseExemptFlag getUseExemptFlag() {
         return this.useExemptFlag;
     }
-    public PreventSleepFlag getPreventSleepFlag() {
+
+    @Override public PreventSleepFlag getPreventSleepFlag() {
         return this.preventSleepFlag;
     }
-    public PreventPhantomFlag getPreventPhantomFlag() {
+
+    @Override public PreventPhantomFlag getPreventPhantomFlag() {
         return this.preventPhantomFlag;
     }
-    public NightcycleAnimationFlag getNightcycleAnimationFlag() {
+
+    @Override public NightcycleAnimationFlag getNightcycleAnimationFlag() {
         return this.nightcycleAnimationFlag;
     }
-    public StormSleepFlag getStormSleepFlag() {
+
+    @Override public StormSleepFlag getStormSleepFlag() {
         return this.stormSleepFlag;
     }
-    public UseAfkFlag getUseAfkFlag() {
+
+    @Override public UseAfkFlag getUseAfkFlag() {
         return this.useAfkFlag;
     }
-    public CalculationMethodFlag getCalculationMethodFlag() {
+
+    @Override public CalculationMethodFlag getCalculationMethodFlag() {
         return this.calculationMethodFlag;
     }
-    public PlayersRequiredFlag getPlayersRequiredFlag() {
+
+    @Override public PlayersRequiredFlag getPlayersRequiredFlag() {
         return this.playersRequiredFlag;
     }
-    private <V> void setupFlag(ISleepFlag<V> flag)
-    {
+
+    /*@Override public TestFlag getTestFlag(){
+        return this.testFlag;
+    }*/
+
+    private <V> void setupFlag(ISleepFlag<V> flag) {
         //register the flag
         this.flagByName.put(flag.getName(), flag);
 

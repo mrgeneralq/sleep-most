@@ -50,6 +50,7 @@ public class MessageService implements IMessageService {
 		String message = this.getConfigMessage(skipCauseConfigMessage);
 
 		return newPrefixedBuilder(message)
+				.usePrefix(false)
 				.setPlayer(player)
 				.setPlaceHolder("%sleeping%", Integer.toString(sleepService.getPlayersSleepingCount(world)))
 				.setPlaceHolder("%required%", Integer.toString(Math.round(sleepService.getRequiredPlayersSleepingCount(world))))
