@@ -16,16 +16,17 @@ public class FlagsRepository implements IFlagsRepository
     private final IConfigRepository configRepository;
 
     //all flags objects(for type safety)
-    private PercentageRequiredFlag percentageRequiredFlag;
-    private MobNoTargetFlag mobNoTargetFlag;
-    private UseExemptFlag useExemptFlag;
-    private PreventSleepFlag preventSleepFlag;
-    private PreventPhantomFlag preventPhantomFlag;
-    private NightcycleAnimationFlag nightcycleAnimationFlag;
-    private StormSleepFlag stormSleepFlag;
-    private UseAfkFlag useAfkFlag;
-    private CalculationMethodFlag calculationMethodFlag;
-    private PlayersRequiredFlag playersRequiredFlag;
+    private final PercentageRequiredFlag percentageRequiredFlag;
+    private final MobNoTargetFlag mobNoTargetFlag;
+    private final UseExemptFlag useExemptFlag;
+    private final PreventSleepFlag preventSleepFlag;
+    private final PreventPhantomFlag preventPhantomFlag;
+    private final NightcycleAnimationFlag nightcycleAnimationFlag;
+    private final StormSleepFlag stormSleepFlag;
+    private final UseAfkFlag useAfkFlag;
+    private final CalculationMethodFlag calculationMethodFlag;
+    private final PlayersRequiredFlag playersRequiredFlag;
+    private final SkipDelayFlag skipDelayFlag;
     //private TestFlag testFlag;
 
     public FlagsRepository(IConfigRepository configRepository)
@@ -43,6 +44,7 @@ public class FlagsRepository implements IFlagsRepository
         setupFlag(this.playersRequiredFlag = new PlayersRequiredFlag(new ConfigFlagController<>(this.configRepository)));
         setupFlag(this.percentageRequiredFlag = new PercentageRequiredFlag(new ConfigFlagController<>(this.configRepository)));
         setupFlag(this.calculationMethodFlag = new CalculationMethodFlag(new ConfigFlagController<>(this.configRepository)));
+        setupFlag(this.skipDelayFlag = new SkipDelayFlag(new ConfigFlagController<>(this.configRepository)));
     }
 
     @Override
@@ -110,6 +112,11 @@ public class FlagsRepository implements IFlagsRepository
 
     @Override public PlayersRequiredFlag getPlayersRequiredFlag() {
         return this.playersRequiredFlag;
+    }
+
+    @Override
+    public SkipDelayFlag getSkipDelayFlag() {
+        return this.skipDelayFlag;
     }
 
     /*@Override public TestFlag getTestFlag(){

@@ -21,6 +21,7 @@ sleep:
     prevent-phantom: false
     nightcycle-animation: false
     storm-sleep: true
+    skip-delay: 0
 
   world2:
     enabled: false
@@ -34,6 +35,7 @@ sleep:
     prevent-phantom: false
     nightcycle-animation: false
     storm-sleep: true
+    skip-delay: 0
 
 
 titles:
