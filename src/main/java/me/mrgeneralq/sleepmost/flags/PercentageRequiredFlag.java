@@ -1,53 +1,27 @@
 package me.mrgeneralq.sleepmost.flags;
 
-import me.mrgeneralq.sleepmost.enums.FlagType;
-import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
-import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
-import org.bukkit.World;
+import me.mrgeneralq.sleepmost.flags.controllers.AbstractFlagController;
+import me.mrgeneralq.sleepmost.flags.types.DoubleFlag;
+import me.mrgeneralq.sleepmost.flags.serialization.DoubleSerialization;
 
-public class PercentageRequiredFlag implements ISleepFlag<Double> {
-
-
-    private final ISleepFlagService sleepFlagService;
-
-    public PercentageRequiredFlag(ISleepFlagService sleepFlagService){
-        this.sleepFlagService = sleepFlagService;
+public class PercentageRequiredFlag extends DoubleFlag
+{
+    public PercentageRequiredFlag(AbstractFlagController<Double> controller)
+    {
+        super("percentage-required", "<0.1 - 1>", controller);
     }
 
     @Override
-    public String getFlagName() {
-       return "percentage-required";
-    }
+    public boolean isValidValue(Object value)
+    {
+        Double percentages = DoubleSerialization.INSTANCE.parseValueFrom(value);
 
-    @Override
-    public String getFlagUsage() {
-        return "Use /sleepmost setflag percentage-required <0.1 - 1>";
-    }
-
-    @Override
-    public boolean isValidValue(String value) {
-        try {
-            Double.parseDouble(value);
-            return true;
-        } catch (Exception e) {
+        if(percentages == null)
+        {
             return false;
         }
-    }
+        return percentages >= 0 && percentages <= 1;
 
-    @Override
-    public FlagType getFlagType() {
-        return FlagType.DOUBLE;
-    }
-
-    @Override
-    public Double getValue(World world) {
-        if(sleepFlagService.getFlagValue(world, this.getFlagName()) == null)
-            return null;
-        return (Double) sleepFlagService.getFlagValue(world, this.getFlagName());
-    }
-
-    @Override
-    public void setValue(World world, Double value) {
-
+        //return parseValueFrom(stringValue).isBetween(0, 1);
     }
 }

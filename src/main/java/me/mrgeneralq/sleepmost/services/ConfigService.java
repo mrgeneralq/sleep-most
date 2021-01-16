@@ -2,8 +2,14 @@ package me.mrgeneralq.sleepmost.services;
 
 import me.mrgeneralq.sleepmost.interfaces.IConfigService;
 import me.mrgeneralq.sleepmost.Sleepmost;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
+import org.bukkit.World;
 
+import java.util.Objects;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
 
 public class ConfigService implements IConfigService {
@@ -84,9 +90,19 @@ public class ConfigService implements IConfigService {
         try{
             String soundName = main.getConfig().getString("sounds.storm-skipped.sound");
             return Sound.valueOf(soundName);
-        }catch(Exception ex){
+        }
+        catch(Exception ex)
+        {
             return null;
         }
     }
 
+    @Override
+    public Set<World> getEnabledWorlds()
+    {
+        return main.getConfig().getConfigurationSection("sleep").getKeys(false).stream()
+                .map(Bukkit::getWorld)
+                .filter(Objects::nonNull)
+                .collect(toSet());
+    }
 }

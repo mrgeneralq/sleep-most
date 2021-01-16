@@ -1,20 +1,19 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
+import me.mrgeneralq.sleepmost.flags.PreventPhantomFlag;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
-import me.mrgeneralq.sleepmost.interfaces.ISleepFlag;
-import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
+public class EntitySpawnEventListener implements Listener
+{
+	private final PreventPhantomFlag preventPhantomFlag;
 
-public class EntitySpawnEventListener implements Listener {
-
-	private final ISleepFlagService sleepFlagService;
-
-	public EntitySpawnEventListener(ISleepFlagService sleepFlagService) {
-		this.sleepFlagService = sleepFlagService;
+	public EntitySpawnEventListener(PreventPhantomFlag preventPhantomFlag)
+	{
+		this.preventPhantomFlag = preventPhantomFlag;
 	}
 
 	@EventHandler
@@ -22,12 +21,10 @@ public class EntitySpawnEventListener implements Listener {
 
 		World world = e.getEntity().getWorld();
 		
-		if(!isPhantom(e.getEntityType())) {
+		if(!isPhantom(e.getEntityType()))
 			return;
-		}
-		ISleepFlag<Boolean> preventPhantomFlag = sleepFlagService.getSleepFlag("prevent-phantom");
 
-		if(!preventPhantomFlag.getValue(world))
+		if(!this.preventPhantomFlag.getValueAt(world))
 			return;
 
 		e.setCancelled(true);

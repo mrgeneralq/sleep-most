@@ -20,7 +20,8 @@ public class TestCommand implements ISubCommand
             return false;
         }
         Player player = (Player) sender;
-        player.sendMessage(beautifulize("Sleepmost was created by ") + ChatColor.GREEN + "MrGeneralQ" + beautifulize(", and ") + ChatColor.GREEN + "Mizrahi" + beautifulize(" helped."));
+        //player.sendMessage(this.testFlag.getDisplayName(this.testFlag.getValueAt(player.getWorld())));
+        //player.sendMessage(beautifulize("Sleepmost was created by ") + ChatColor.GREEN + "MrGeneralQ" + beautifulize(", and ") + ChatColor.GREEN + "Mizrahi" + beautifulize(" helped."));
 
         return true;
     }

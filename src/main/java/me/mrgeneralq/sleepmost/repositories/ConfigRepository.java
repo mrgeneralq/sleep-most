@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.repositories;
 
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.Sleepmost;
+import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import org.bukkit.World;
 
 public class ConfigRepository implements IConfigRepository {
@@ -86,13 +87,18 @@ public class ConfigRepository implements IConfigRepository {
     }
 
     @Override
-    public void setFlag(World world, String flag, Object value) {
-        main.getConfig().set(String.format("sleep.%s.%s",world.getName(),flag),value);
+    public void setFlagValue(ISleepFlag<?> flag, World world, Object value)
+    {
+        main.getConfig().set(getValuePath(flag, world), value);
         main.saveConfig();
     }
 
     @Override
-    public Object getFlag(World world, String flag) {
-       return main.getConfig().get(String.format("sleep.%s.%s",world.getName(),flag));
+    public Object getFlagValue(ISleepFlag<?> flag, World world) {
+        return main.getConfig().get(getValuePath(flag, world));
+    }
+
+    private static String getValuePath(ISleepFlag<?> flag, World world) {
+        return String.format("sleep.%s.%s", world.getName(), flag.getName());
     }
 }

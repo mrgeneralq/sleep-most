@@ -4,20 +4,19 @@ import org.bukkit.World;
 
 public interface ISleepService {
 
-    public boolean enabledForWorld(World world);
-    public boolean sleepPercentageReached(World world);
-    public double getPercentageRequired(World world);
-    public boolean getMobNoTarget(World world);
-    public double getSleepingPlayerPercentage(World world);
-    public int getPlayersSleepingCount(World world);
-    public int getRequiredPlayersSleepingCount(World world);
-    public int getPlayerCountInWorld(World world);
-    public void resetDay(World world, String lastSleeperName, String lastSleeperDisplayName);
-    public boolean resetRequired(World world);
-    public boolean isNight(World world);
-    public SleepSkipCause getSleepSkipCause(World world);
-    public void reloadConfig();
-    public void enableForWorld(World world);
-    public void disableForWorld(World world);
-    public void setFlag(World world, ISleepFlag<?> flag, String value);
+    boolean enabledForWorld(World world);
+    boolean sleepPercentageReached(World world);
+    double getPercentageRequired(World world);
+    boolean getMobNoTarget(World world);
+    double getSleepingPlayerPercentage(World world);
+    int getPlayersSleepingCount(World world);
+    int getRequiredPlayersSleepingCount(World world);
+    int getPlayerCountInWorld(World world);
+    void resetDay(World world, String lastSleeperName, String lastSleeperDisplayName);
+    boolean resetRequired(World world);
+    boolean isNight(World world);
+    SleepSkipCause getSleepSkipCause(World world);
+    void reloadConfig();
+    void enableForWorld(World world);
+    void disableForWorld(World world);
 }

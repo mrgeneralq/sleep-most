@@ -1,23 +1,16 @@
 package me.mrgeneralq.sleepmost.commands;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import me.mrgeneralq.sleepmost.commands.subcommands.*;
-import me.mrgeneralq.sleepmost.enums.MessageTemplate;
-import me.mrgeneralq.sleepmost.statics.SleepFlagMapper;
+import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.messages.MessageTemplate;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-
-import me.mrgeneralq.sleepmost.interfaces.IMessageService;
-import me.mrgeneralq.sleepmost.interfaces.ISleepFlagService;
-import me.mrgeneralq.sleepmost.interfaces.ISleepService;
-import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
-import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 
 import static java.util.stream.Collectors.toList;
 import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
@@ -27,14 +20,16 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 
 	private final ISleepService sleepService;
 	private final IMessageService messageService;
-	private final ISleepFlagService sleepFlagService;
 	private final IUpdateService updateService;
+	private final IFlagService flagService;
+	private final IFlagsRepository flagsRepository;
 
-	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, ISleepFlagService sleepFlagService, IUpdateService updateService){
+	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository){
 		this.sleepService = sleepService;
 		this.messageService = messageService;
-		this.sleepFlagService = sleepFlagService;
 		this.updateService = updateService;
+		this.flagService = flagService;
+		this.flagsRepository = flagsRepository;
 
 		this.registerSubCommands();
 	}
@@ -43,8 +38,8 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("reload", new ReloadSubCommand(this.sleepService, this.messageService));
 		subCommands.put("enable", new EnableSubCommand(this.sleepService,this.messageService));
 		subCommands.put("disable", new DisableSubCommand(this.sleepService, this.messageService));
-		subCommands.put("setflag", new SetFlagCommand(this.sleepService, this.messageService));
-		subCommands.put("info", new InfoSubCommand(this.sleepService, this.messageService, this.sleepFlagService));
+		subCommands.put("setflag", new SetFlagCommand(this.sleepService, this.messageService, this.flagService, this.flagsRepository));
+		subCommands.put("info", new InfoSubCommand(this.sleepService, this.messageService, this.flagService, this.flagsRepository));
 		subCommands.put("version", new VersionSubCommand(this.updateService, this.messageService));
 
 		//enable when debugging
@@ -114,9 +109,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 
 		if(args[0].equalsIgnoreCase("setflag") && args.length == 2)
 		{
-			List<String> flags = SleepFlagMapper.getMapper().getAllFlags();
-			Collections.sort(flags);
-			return flags;
+			return this.flagsRepository.getFlagsNames();
 		}
 		return null;
 	}

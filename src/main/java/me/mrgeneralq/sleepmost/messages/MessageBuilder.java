@@ -1,4 +1,4 @@
-package me.mrgeneralq.sleepmost.builders;
+package me.mrgeneralq.sleepmost.messages;
 
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import org.bukkit.World;
@@ -25,10 +25,7 @@ public class MessageBuilder {
     }
 
     public MessageBuilder setPlayer(Player player){
-        this.message = this.message
-                .replace("%player%", player.getName())
-                .replace("%dplayer%", player.getDisplayName());
-        return this;
+        return setPlaceHolder("%player%", player.getName()).setPlaceHolder("%dplayer%", player.getDisplayName());
     }
 
     public MessageBuilder usePrefix(boolean usePrefix){

@@ -4,7 +4,4 @@ public enum SleepCalculationType {
 
     PERCENTAGE_REQUIRED,
     PLAYERS_REQUIRED;
-
-
-
 }

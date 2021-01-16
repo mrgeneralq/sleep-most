@@ -1,4 +1,4 @@
-package me.mrgeneralq.sleepmost.enums;
+package me.mrgeneralq.sleepmost.messages;
 
 public enum MessageTemplate {
     NO_PERMISSION("&cYou don't have permission to that command!"),
@@ -11,23 +11,21 @@ public enum MessageTemplate {
     DISABLED_FOR_WORLD("&bSleepmost is now &cdisabled &bfor this world!"),
     CURRENTLY_DISABLED ("&bSleepmost is currently &cdisabled &bfor this world. Type &a/sm enable &bto enable sleepmost for this world.");
 
-    private final String message;
+    private final String rawMessage;
     private final boolean usePrefix;
 
-    MessageTemplate(String message, boolean usePrefix)
+    MessageTemplate(String rawMessage)
     {
-        this.message = message;
+        this(rawMessage, false);
+    }
+    MessageTemplate(String rawMessage, boolean usePrefix)
+    {
+        this.rawMessage = rawMessage;
         this.usePrefix = usePrefix;
     }
-    MessageTemplate(String message)
-    {
-        this(message, false);
+    public String getRawMessage() {
+        return rawMessage;
     }
-
-    public String getMessage() {
-        return message;
-    }
-
     public boolean usesPrefix() {
         return usePrefix;
     }

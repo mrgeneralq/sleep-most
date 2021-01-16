@@ -3,20 +3,18 @@ package me.mrgeneralq.sleepmost.statics;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.ChatColor;
-
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 
 public class ConfigMessageMapper {
 
+	private Sleepmost main;
+	private final Map<ConfigMessage, String> configMessages = new HashMap<>();
 
 	private static ConfigMessageMapper messageMapper;
-	private final Map<ConfigMessage, String> configMessages;
-	private Sleepmost main;
 
 	private ConfigMessageMapper(){
-		configMessages = new HashMap<>();
+
 		configMessages.put(ConfigMessage.PREFIX, "messages.prefix");
 		configMessages.put(ConfigMessage.NIGHT_SKIPPED, "messages.night-skipped");
 		configMessages.put(ConfigMessage.STORM_SKIPPED, "messages.storm-skipped");
@@ -49,6 +47,6 @@ public class ConfigMessageMapper {
 		}
 		message += main.getConfig().getString(configMessages.get(configMessage));
 		
-		return ChatColor.translateAlternateColorCodes('&', message);
+		return ChatColorUtils.colorizeChatColors(message);
 	}
 }
