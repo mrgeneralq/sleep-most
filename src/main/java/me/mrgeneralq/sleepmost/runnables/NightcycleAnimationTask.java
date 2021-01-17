@@ -32,6 +32,9 @@ public class NightcycleAnimationTask extends BukkitRunnable {
             //remove animation checker
             this.dataContainer.setAnimationRunning(world, false);
 
+
+
+
             world.setThundering(false);
             world.setStorm(false);
 

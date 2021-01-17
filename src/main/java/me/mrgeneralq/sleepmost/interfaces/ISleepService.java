@@ -23,6 +23,6 @@ public interface ISleepService {
     void setSleeping(Player player, boolean sleeping);
     boolean isPlayerAsleep(Player player);
     int getSleepingPlayersAmount(World world);
-    void onSleep(World world, String lastSleeperName, String lastSleeperDisplayName);
+    void onSleepSkip(World world, String lastSleeperName, String lastSleeperDisplayName);
 
 }

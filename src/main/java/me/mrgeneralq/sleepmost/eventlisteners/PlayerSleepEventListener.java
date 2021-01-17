@@ -86,10 +86,10 @@ public class PlayerSleepEventListener implements Listener {
             cooldownService.startCooldown(player);
         }
 
-        if (!sleepService.sleepPercentageReached(world))
-            return;
 
-        this.sleepService.onSleep(world, player.getName(), player.getDisplayName());
+        //call the sleep logic + messages + trigger in case percentage is reached
+        this.sleepService.setSleeping(player , true);
+
     }
 
     @EventHandler
