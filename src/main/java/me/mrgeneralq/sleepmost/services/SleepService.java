@@ -156,7 +156,7 @@ public class SleepService implements ISleepService {
                 executeSleepReset(world, lastSleeperName, lastSleeperDisplayName);
 
             }
-        }.runTaskLaterAsynchronously(plugin, skipDelay * 20L);
+        }.runTaskLater(plugin, skipDelay * 20L);
     }
 
     @Override
@@ -195,12 +195,10 @@ public class SleepService implements ISleepService {
     }
 
     @Override
-    public boolean PlayerIsAsleep(Player player) {
+    public boolean isPlayerAsleep(Player player) {
         return DataContainer.getContainer().getSleepingPlayers(player.getWorld()).contains(player);
     }
 
-
-    // this method will invoke the reset functionality for the day
     private void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName) {
         SleepSkipCause cause = SleepSkipCause.UNKNOWN;
 

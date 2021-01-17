@@ -40,13 +40,12 @@ public class DataContainer {
             this.runningWorldsAnimation.remove(world.getUID());
     }
 
-
     public void setPlayerSleeping(Player player, boolean sleeping) {
 
         UUID worldID = player.getWorld().getUID();
         UUID playerID = player.getUniqueId();
 
-        Set<UUID> sleepingPlayers = this.sleepingPlayers.get(worldID);
+        Set<UUID> sleepingPlayers = this.sleepingPlayers.computeIfAbsent(worldID, w -> new HashSet<>());
 
         if (sleeping)
             sleepingPlayers.add(playerID);

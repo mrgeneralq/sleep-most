@@ -21,6 +21,6 @@ public interface ISleepService {
     void enableForWorld(World world);
     void disableForWorld(World world);
     void setSleeping(Player player, boolean sleeping);
-    boolean PlayerIsAsleep(Player player);
+    boolean isPlayerAsleep(Player player);
 
 }
