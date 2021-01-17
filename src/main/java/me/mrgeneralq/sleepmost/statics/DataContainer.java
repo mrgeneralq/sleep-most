@@ -4,23 +4,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.Sets;
-
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class DataContainer {
 
     private static DataContainer instance;
 
-    private final Set<UUID> runningWorldsAnimation;
-    private final Map<UUID, Set<UUID>> sleepingPlayers;
+    private final Set<UUID> runningWorldsAnimation = new HashSet<>();
+    private final Map<UUID, Set<UUID>> sleepingPlayers = new HashMap<>();
 
-    private DataContainer() {
-
-        runningWorldsAnimation = new HashSet<>();
-        sleepingPlayers = new HashMap<>();
-    }
+    private DataContainer(){}
 
     public static DataContainer getContainer() {
         if (instance == null)
@@ -56,6 +51,12 @@ public class DataContainer {
     }
 
     public List<Player> getSleepingPlayers(World world) {
-        return sleepingPlayers.get(world.getUID()).stream().map(Bukkit::getPlayer).collect(Collectors.toList());
+        return sleepingPlayers.getOrDefault(world.getUID(), new HashSet<>()).stream()
+                .map(Bukkit::getPlayer)
+                .filter(Objects::nonNull)
+                .collect(toList());
+    }
+    public void clearSleepingPlayers(World world){
+        this.sleepingPlayers.getOrDefault(world.getUID(), new HashSet<>()).clear();
     }
 }

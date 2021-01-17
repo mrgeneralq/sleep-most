@@ -39,9 +39,7 @@ public class PlayerSleepEventListener implements Listener {
         Player player = e.getPlayer();
         World world = player.getWorld();
 
-        // add the player as sleeping
         sleepService.setSleeping(player, true);
-
 
         if (!sleepService.enabledForWorld(world)) {
             return;
@@ -53,7 +51,6 @@ public class PlayerSleepEventListener implements Listener {
 
         if (dataContainer.animationRunning(world))
             return;
-
 
         if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {
 
@@ -92,22 +89,7 @@ public class PlayerSleepEventListener implements Listener {
         if (!sleepService.sleepPercentageReached(world))
             return;
 
-        String lastSleeperName = e.getPlayer().getName();
-        String lastSleeperDisplayName = e.getPlayer().getDisplayName();
-
-        if (this.flagsRepository.getNightcycleAnimationFlag().getValueAt(world)) {
-        	if(world.isThundering() && !sleepService.isNight(world)){
-        		sleepService.resetDay(world, lastSleeperName, lastSleeperDisplayName);
-        		return;
-			}
-
-            //store running world
-            dataContainer.setAnimationRunning(world, true);
-            new NightcycleAnimationTask(sleepService, messageService, world, lastSleeperName).runTaskTimer(main, 0, 1);
-            return;
-        }
-
-        sleepService.resetDay(world, lastSleeperName, lastSleeperDisplayName);
+        this.sleepService.onSleep(world, player.getName(), player.getDisplayName());
     }
 
     @EventHandler

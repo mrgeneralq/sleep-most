@@ -2,6 +2,9 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
 
+import me.mrgeneralq.sleepmost.flags.NightcycleAnimationFlag;
+import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
+import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Sound;
 import org.bukkit.Statistic;
@@ -20,12 +23,13 @@ public class SleepSkipEventListener implements Listener {
 
 	private final IMessageService messageService;
 	private final IConfigService configService;
-	private final DataContainer dataContainer;
+	private final ISleepService sleepService;
+	private final DataContainer dataContainer = DataContainer.getContainer();
 
-	public SleepSkipEventListener(IMessageService messageService, IConfigService configService) {
+	public SleepSkipEventListener(IMessageService messageService, IConfigService configService, ISleepService sleepService) {
 		this.messageService = messageService;
 		this.configService = configService;
-		this.dataContainer = DataContainer.getContainer();
+		this.sleepService = sleepService;
 	}
 
 	@EventHandler
@@ -40,10 +44,9 @@ public class SleepSkipEventListener implements Listener {
 		sendSkipSound(world, e.getCause());
 
 		if (ServerVersion.CURRENT_VERSION.supportsTitles())
-		{
 			sendSkipTitle(world, e.getCause());
-		}
-		this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(),e.getLastSleeperDisplayName(), e.getCause());
+
+		this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
 	}
 
 	private void resetPhantomCounter(World world) 

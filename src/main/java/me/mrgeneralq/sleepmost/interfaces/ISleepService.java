@@ -22,5 +22,7 @@ public interface ISleepService {
     void disableForWorld(World world);
     void setSleeping(Player player, boolean sleeping);
     boolean isPlayerAsleep(Player player);
+    int getSleepingPlayersAmount(World world);
+    void onSleep(World world, String lastSleeperName, String lastSleeperDisplayName);
 
 }

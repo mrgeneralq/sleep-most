@@ -2,11 +2,9 @@ package me.mrgeneralq.sleepmost.services;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.mrgeneralq.sleepmost.Sleepmost;
-import me.mrgeneralq.sleepmost.flags.CalculationMethodFlag;
-import me.mrgeneralq.sleepmost.flags.PlayersRequiredFlag;
-import me.mrgeneralq.sleepmost.flags.SkipDelayFlag;
-import me.mrgeneralq.sleepmost.flags.UseAfkFlag;
+import me.mrgeneralq.sleepmost.flags.*;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTask;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
@@ -24,38 +22,24 @@ import java.util.List;
 
 public class SleepService implements ISleepService {
 
+    private final Sleepmost plugin;
     private final IConfigRepository configRepository;
     private final IConfigService configService;
-    private final SkipDelayFlag skipDelayFlag;
-
-
-    private final CalculationMethodFlag calculationMethodFlag;
-    private final PlayersRequiredFlag playersRequiredFlag;
-    private final UseAfkFlag useAfkFlag;
-    private final Sleepmost plugin;
+    private final IMessageService messageService;
+    private final IFlagsRepository flagsRepository;
+    private final DataContainer dataContainer = DataContainer.getContainer();
 
     private static final int
             NIGHT_START_TIME = 12541,
             NIGHT_END_TIME = 23850;
 
-    public SleepService(
-            Sleepmost plugin,
-            IConfigService configService,
-            IConfigRepository configRepository,
-            CalculationMethodFlag calculationMethodFlag,
-            PlayersRequiredFlag playersRequiredFlag,
-            UseAfkFlag useAfkFlag,
-            SkipDelayFlag skipDelayFlag)
+    public SleepService(Sleepmost plugin, IConfigService configService, IConfigRepository configRepository, IMessageService messageService, IFlagsRepository flagsRepository)
     {
-
         this.plugin = plugin;
         this.configService = configService;
         this.configRepository = configRepository;
-
-        this.calculationMethodFlag = calculationMethodFlag;
-        this.playersRequiredFlag = playersRequiredFlag;
-        this.useAfkFlag = useAfkFlag;
-        this.skipDelayFlag = skipDelayFlag;
+        this.messageService = messageService;
+        this.flagsRepository = flagsRepository;
     }
 
     @Override
@@ -87,7 +71,7 @@ public class SleepService implements ISleepService {
 
     @Override
     public int getPlayersSleepingCount(World world) {
-            return DataContainer.getContainer().getSleepingPlayers(world).size();
+            return this.dataContainer.getSleepingPlayers(world).size();
     }
 
     @Override
@@ -95,12 +79,12 @@ public class SleepService implements ISleepService {
 
         int requiredCount;
 
-        switch (this.calculationMethodFlag.getValueAt(world)) {
+        switch (this.flagsRepository.getCalculationMethodFlag().getValueAt(world)) {
             case PERCENTAGE_REQUIRED:
                 requiredCount = (int) Math.ceil(getPlayerCountInWorld(world) * getPercentageRequired(world));
                 break;
             case PLAYERS_REQUIRED:
-                int requiredPlayersInConfig = this.playersRequiredFlag.getValueAt(world);
+                int requiredPlayersInConfig = this.flagsRepository.getPlayersRequiredFlag().getValueAt(world);
                 requiredCount = (requiredPlayersInConfig <= getPlayerCountInWorld(world)) ? requiredPlayersInConfig : getPlayerCountInWorld(world);
                 break;
             default:
@@ -122,10 +106,12 @@ public class SleepService implements ISleepService {
                     .filter(p -> !p.hasPermission("sleepmost.exempt"))
                     .collect(toList());
         }
-        boolean afkFlagEnabled = this.useAfkFlag.getValueAt(world);
+        boolean afkFlagEnabled = this.flagsRepository.getUseAfkFlag().getValueAt(world);
+        boolean placeHolderAPIEnabled = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+        boolean essentialsEnabled = Bukkit.getPluginManager().getPlugin("Essentials") != null;
 
         //check if user is afk
-        if (afkFlagEnabled && Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().getPlugin("Essentials") != null)
+        if (afkFlagEnabled && placeHolderAPIEnabled && essentialsEnabled)
             allPlayers = allPlayers.stream()
                     .filter(p -> PlaceholderAPI.setPlaceholders(p, "%essentials_afk%").equalsIgnoreCase("no"))
                     .collect(toList());
@@ -136,25 +122,18 @@ public class SleepService implements ISleepService {
     @Override
     public void resetDay(World world, String lastSleeperName, String lastSleeperDisplayName) {
 
-        /*here we need to add a scheduler that runs all of this code after if the value of the skip-delay flag is higher then 0. If it is,
-         * we run the code to skip the night and reset the time. ALERT: we need to check again in the condition if the required players are asleep, if so we skip.
-         * we also need to check if time is not already skipped, so if time = day, do not run code (return)
-         */
+        if (!resetRequired(world))
+            return;
 
-        int skipDelay = skipDelayFlag.getValueAt(world);
+        if (!sleepPercentageReached(world))
+            return;
+
+        int skipDelay = this.flagsRepository.getSkipDelayFlag().getValueAt(world);
 
         new BukkitRunnable() {
             @Override
             public void run() {
-
-                if (!resetRequired(world))
-                    return;
-
-                if (!sleepPercentageReached(world))
-                    return;
-
                 executeSleepReset(world, lastSleeperName, lastSleeperDisplayName);
-
             }
         }.runTaskLater(plugin, skipDelay * 20L);
     }
@@ -191,12 +170,36 @@ public class SleepService implements ISleepService {
 
     @Override
     public void setSleeping(Player player, boolean sleeping) {
-        DataContainer.getContainer().setPlayerSleeping(player, sleeping);
+        this.dataContainer.setPlayerSleeping(player, sleeping);
     }
 
     @Override
     public boolean isPlayerAsleep(Player player) {
-        return DataContainer.getContainer().getSleepingPlayers(player.getWorld()).contains(player);
+        World world = player.getWorld();
+
+        return this.dataContainer.getSleepingPlayers(world).contains(player);
+    }
+
+    @Override
+    public int getSleepingPlayersAmount(World world)
+    {
+        return this.dataContainer.getSleepingPlayers(world).size();
+    }
+
+    @Override
+    public void onSleep(World world, String lastSleeperName, String lastSleeperDisplayName)
+    {
+        resetDay(world, lastSleeperName, lastSleeperDisplayName);
+        this.dataContainer.clearSleepingPlayers(world);
+
+        if(this.flagsRepository.getNightcycleAnimationFlag().getValueAt(world))
+        {
+            if(world.isThundering() && !isNight(world))
+            {
+                dataContainer.setAnimationRunning(world, true);
+                new NightcycleAnimationTask(this, this.messageService, world, lastSleeperName).runTaskTimer(this.plugin, 0, 1);
+            }
+        }
     }
 
     private void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName) {

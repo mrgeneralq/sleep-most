@@ -13,7 +13,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
     private final ISleepService sleepService;
     private final IMessageService messageService;
-    private final DataContainer dataContainer;
+    private final DataContainer dataContainer = DataContainer.getContainer();
     private final World world;
     private final String lastSleeperName;
 
@@ -22,7 +22,6 @@ public class NightcycleAnimationTask extends BukkitRunnable {
         this.messageService = messageService;
         this.world = world;
         this.lastSleeperName = lastSleeperName;
-        this.dataContainer = DataContainer.getContainer();
     }
 
     @Override

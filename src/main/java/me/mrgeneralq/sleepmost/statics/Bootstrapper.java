@@ -48,13 +48,7 @@ public class Bootstrapper {
         this.configService = new ConfigService(main);
         this.updateService = new UpdateService(this.updateRepository, main, this.configService);
         this.cooldownService = new CooldownService(this.cooldownRepository, this.configRepository);
-
-        this.sleepService = new SleepService(main ,
-                this.configService, this.configRepository,
-                this.flagsRepository.getCalculationMethodFlag(),
-                this.flagsRepository.getPlayersRequiredFlag(),
-                this.flagsRepository.getUseAfkFlag(),
-                this.flagsRepository.getSkipDelayFlag());
+        this.sleepService = new SleepService(main, this.configService, this.configRepository, this.messageService, this.flagsRepository);
 
         this.messageService = new MessageService(this.configRepository, this.sleepService);
         this.flagService = new FlagService(this.flagsRepository, this.configRepository, this.configService, this.messageService);
