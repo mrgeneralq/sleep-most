@@ -39,9 +39,8 @@ public class PlayerSleepEventListener implements Listener {
         Player player = e.getPlayer();
         World world = player.getWorld();
 
-        //used to calculate sleeping players different for lower versions
-        if (ServerVersion.CURRENT_VERSION.sleepCalculatedDifferently())
-            DataContainer.getContainer().addSleepingPlayer(player);
+        // add the player as sleeping
+        sleepService.setSleeping(player, true);
 
 
         if (!sleepService.enabledForWorld(world)) {
@@ -52,8 +51,9 @@ public class PlayerSleepEventListener implements Listener {
             return;
         }
 
-        if (dataContainer.getRunningWorldsAnimation().contains(world))
+        if (dataContainer.animationRunning(world))
             return;
+
 
         if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {
 
@@ -102,7 +102,7 @@ public class PlayerSleepEventListener implements Listener {
 			}
 
             //store running world
-            dataContainer.getRunningWorldsAnimation().add(world);
+            dataContainer.setAnimationRunning(world, true);
             new NightcycleAnimationTask(sleepService, messageService, world, lastSleeperName).runTaskTimer(main, 0, 1);
             return;
         }
@@ -114,10 +114,7 @@ public class PlayerSleepEventListener implements Listener {
     public void onPlayerBedLeave(PlayerBedLeaveEvent e) {
 
         Player player = e.getPlayer();
-
-        //used to calculate sleeping players different for lower versions
-        if (ServerVersion.CURRENT_VERSION.sleepCalculatedDifferently())
-            DataContainer.getContainer().removeSleepingPlayer(player);
+        sleepService.setSleeping(player, false);
 
     }
 }

@@ -1,6 +1,7 @@
 package me.mrgeneralq.sleepmost.interfaces;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 public interface ISleepService {
 
@@ -19,4 +20,7 @@ public interface ISleepService {
     void reloadConfig();
     void enableForWorld(World world);
     void disableForWorld(World world);
+    void setSleeping(Player player, boolean sleeping);
+    boolean PlayerIsAsleep(Player player);
+
 }

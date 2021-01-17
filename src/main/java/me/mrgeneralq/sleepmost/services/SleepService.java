@@ -15,6 +15,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import javax.xml.crypto.Data;
+
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
@@ -78,17 +81,13 @@ public class SleepService implements ISleepService {
 
     @Override
     public double getSleepingPlayerPercentage(World world) {
+
         return getPlayersSleepingCount(world) / getPlayerCountInWorld(world);
     }
 
     @Override
     public int getPlayersSleepingCount(World world) {
-        if (ServerVersion.CURRENT_VERSION.sleepCalculatedDifferently()) {
             return DataContainer.getContainer().getSleepingPlayers(world).size();
-        } else {
-            return (int) (world.getPlayers().stream().filter(Player::isSleeping).count() + 1);
-        }
-
     }
 
     @Override
@@ -188,6 +187,16 @@ public class SleepService implements ISleepService {
     @Override
     public void disableForWorld(World world) {
         configRepository.disableForWorld(world);
+    }
+
+    @Override
+    public void setSleeping(Player player, boolean sleeping) {
+        DataContainer.getContainer().setPlayerSleeping(player, sleeping);
+    }
+
+    @Override
+    public boolean PlayerIsAsleep(Player player) {
+        return DataContainer.getContainer().getSleepingPlayers(player.getWorld()).contains(player);
     }
 
 

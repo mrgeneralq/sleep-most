@@ -33,7 +33,7 @@ public class SleepSkipEventListener implements Listener {
 
 		World world = e.getWorld();
 
-		if(dataContainer.getRunningWorldsAnimation().contains(world))
+		if(dataContainer.animationRunning(world))
 			return;
 		
 		resetPhantomCounter(world);
