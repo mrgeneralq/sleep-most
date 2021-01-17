@@ -1,47 +1,61 @@
 package me.mrgeneralq.sleepmost.statics;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.Sets;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DataContainer {
 
     private static DataContainer instance;
 
-    private Set<World> runningWorldsAnimation;
-    private Map<World, Set<Player>> sleepingPlayers;
+    private final Set<UUID> runningWorldsAnimation;
+    private final Map<UUID, Set<UUID>> sleepingPlayers;
 
-    private DataContainer(){
+    private DataContainer() {
 
         runningWorldsAnimation = new HashSet<>();
         sleepingPlayers = new HashMap<>();
-
     }
 
-    public static DataContainer getContainer(){
-        if(instance == null)
+    public static DataContainer getContainer() {
+        if (instance == null)
             instance = new DataContainer();
         return instance;
     }
 
-    public Set<World> getRunningWorldsAnimation() {
-        return runningWorldsAnimation;
+    public boolean animationRunning(World world) {
+        return this.runningWorldsAnimation.contains(world.getUID());
     }
 
-    public void addSleepingPlayer(Player player)
-    {
-        this.sleepingPlayers.computeIfAbsent(player.getWorld(), p -> Sets.newHashSet()).add(player);
+    public void setAnimationRunning(World world, boolean running) {
+
+        if (running)
+            this.runningWorldsAnimation.add(world.getUID());
+        else
+            this.runningWorldsAnimation.remove(world.getUID());
     }
 
-    public void removeSleepingPlayer(Player player){
-        this.sleepingPlayers.get(player.getWorld()).remove(player);
+    public void setPlayerSleeping(Player player, boolean sleeping) {
+
+        UUID worldID = player.getWorld().getUID();
+        UUID playerID = player.getUniqueId();
+
+        Set<UUID> sleepingPlayers = this.sleepingPlayers.computeIfAbsent(worldID, w -> new HashSet<>());
+
+        if (sleeping)
+            sleepingPlayers.add(playerID);
+        else
+            sleepingPlayers.remove(playerID);
+
+        this.sleepingPlayers.put(worldID, sleepingPlayers);
     }
 
-    public List<Player> getSleepingPlayers(World world)
-    {
-        return new ArrayList<>(sleepingPlayers.get(world));
+    public List<Player> getSleepingPlayers(World world) {
+        return sleepingPlayers.get(world.getUID()).stream().map(Bukkit::getPlayer).collect(Collectors.toList());
     }
 }

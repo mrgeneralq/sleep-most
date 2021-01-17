@@ -31,7 +31,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
         if(!sleepService.isNight(world)){
 
             //remove animation checker
-            this.dataContainer.getRunningWorldsAnimation().remove(world);
+            this.dataContainer.setAnimationRunning(world, false);
 
             world.setThundering(false);
             world.setStorm(false);
