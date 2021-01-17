@@ -25,4 +25,5 @@ public class VersionSubCommand implements ISubCommand {
                 .build());
         return true;
     }
+
 }

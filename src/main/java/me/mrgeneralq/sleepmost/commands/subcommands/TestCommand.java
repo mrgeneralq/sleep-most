@@ -25,6 +25,8 @@ public class TestCommand implements ISubCommand
 
         return true;
     }
+
+
     private static String beautifulize(String text)
     {
         StringBuilder result = new StringBuilder();
@@ -73,4 +75,5 @@ public class TestCommand implements ISubCommand
         //returns a random character between 'min' and 'max'
         return (char) (min + ThreadLocalRandom.current().nextInt(max-min+1));
     }
+
 }

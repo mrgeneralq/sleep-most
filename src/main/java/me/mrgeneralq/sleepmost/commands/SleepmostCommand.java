@@ -72,16 +72,18 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		}
 
 
-		String subCommand = args[0];
+		String subCommandStr = args[0].toLowerCase();
 
 		// check if player has permission of command
-		if(!sender.hasPermission("sleepmost." + subCommand))
+		if(!sender.hasPermission("sleepmost." + subCommandStr))
 		{
 			sender.sendMessage(messageService.fromTemplate(MessageTemplate.NO_PERMISSION));
 			return true;
 		}
 
-		return subCommands.getOrDefault(subCommand, new ErrorCommand(messageService)).executeCommand(sender, command, commandLabel, args);
+		ISubCommand subCommand = subCommands.getOrDefault(subCommandStr, new ErrorCommand(messageService));
+
+		return subCommand.executeCommand(sender, command, commandLabel, args);
 	}
 
 	@Override
