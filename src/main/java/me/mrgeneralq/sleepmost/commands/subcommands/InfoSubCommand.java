@@ -3,6 +3,7 @@ package me.mrgeneralq.sleepmost.commands.subcommands;
 import me.mrgeneralq.sleepmost.messages.MessageTemplate;
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -28,22 +29,16 @@ public class InfoSubCommand implements ISubCommand {
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
-        if(!(sender instanceof Player)){
-
-            sender.sendMessage(messageService.newBuilder(MessageTemplate.ONLY_PLAYERS_COMMAND)
-                    .usePrefix(true)
-                    .build());
+        if(!CommandSenderUtils.hasWorld(sender)){
+            sender.sendMessage(messageService.fromTemplate(MessageTemplate.NO_CONSOLE_COMMAND));
             return true;
         }
-        Player player = (Player) sender;
-        World world = player.getWorld();
+
+        World world = CommandSenderUtils.getWorldOf(sender);
 
         if(!sleepService.enabledForWorld(world))
         {
-            player.sendMessage(messageService.newBuilder(MessageTemplate.CURRENTLY_DISABLED)
-                    .setWorld(world)
-                    .setPlayer(player)
-                    .build());
+            sender.sendMessage(messageService.fromTemplate(MessageTemplate.DISABLED_FOR_WORLD));
             return true;
         }
         sender.sendMessage(colorize("&b*********************************************"));
@@ -53,19 +48,22 @@ public class InfoSubCommand implements ISubCommand {
         this.flagsRepository.getFlags().stream()
                 .sorted(comparing(ISleepFlag::getName))
                 .map(flag -> getValueAtMessage(flag, world))
-                .forEach(player::sendMessage);
+                .forEach(sender::sendMessage);
 
         sender.sendMessage(colorize("&b*********************************************"));
         return true;
     }
+
     private String getValueAtMessage(ISleepFlag<?> flag, World world)
     {
-        return messageService.newBuilder("&e%flagName &b%value")
-                .setPlaceHolder("%flagName", flag.getName())
-                .setPlaceHolder("%value", this.flagService.getValueDisplayName(flag, flag.getValueAt(world)))
+        return messageService.newBuilder("&e%flagName% &b%value%")
+                .setPlaceHolder("%flagName%", flag.getName())
+                .setPlaceHolder("%value%", this.flagService.getValueDisplayName(flag, flag.getValueAt(world)))
                 .build();
 
         //this.flagService.flagAction(flag, f -> f.getSerialization().getDisplayName(f.getValueAt(world)))
         //flag.getSerialization().getDisplayName(flag.getValueAt(world))
     }
+
+
 }

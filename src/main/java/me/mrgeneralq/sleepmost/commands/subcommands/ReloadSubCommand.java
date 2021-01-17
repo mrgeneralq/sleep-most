@@ -23,4 +23,5 @@ public class ReloadSubCommand implements ISubCommand {
         sender.sendMessage(messageService.fromTemplate(MessageTemplate.CONFIG_RELOADED));
         return true;
     }
+
 }

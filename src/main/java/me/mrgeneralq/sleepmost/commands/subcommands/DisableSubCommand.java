@@ -4,10 +4,10 @@ import me.mrgeneralq.sleepmost.messages.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
+import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class DisableSubCommand implements ISubCommand {
 
@@ -23,21 +23,22 @@ public class DisableSubCommand implements ISubCommand {
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(messageService.fromTemplate(MessageTemplate.ONLY_PLAYERS_COMMAND));
+        if(!CommandSenderUtils.hasWorld(sender)){
+            sender.sendMessage(messageService.fromTemplate(MessageTemplate.NO_CONSOLE_COMMAND));
             return true;
         }
 
-        Player player = (Player) sender;
-        World world = player.getWorld();
+
+        World world = CommandSenderUtils.getWorldOf(sender);
+
 
         if (!sleepService.enabledForWorld(world)) {
-            player.sendMessage(messageService.fromTemplate(MessageTemplate.ALREADY_DISABLED_FOR_WORLD));
+            sender.sendMessage(messageService.fromTemplate(MessageTemplate.ALREADY_DISABLED_FOR_WORLD));
             return true;
         }
 
         sleepService.disableForWorld(world);
-        player.sendMessage(messageService.fromTemplate(MessageTemplate.DISABLED_FOR_WORLD));
+        sender.sendMessage(messageService.fromTemplate(MessageTemplate.DISABLED_FOR_WORLD));
         return true;
     }
 }

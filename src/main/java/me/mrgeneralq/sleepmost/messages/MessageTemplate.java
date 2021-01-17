@@ -9,7 +9,8 @@ public enum MessageTemplate {
     ALREADY_DISABLED_FOR_WORLD("&cSleepmost is already disabled for this world!"),
     ENABLED_FOR_WORLD("&bSleepmost is now &aenabled &bfor this world!"),
     DISABLED_FOR_WORLD("&bSleepmost is now &cdisabled &bfor this world!"),
-    CURRENTLY_DISABLED ("&bSleepmost is currently &cdisabled &bfor this world. Type &a/sm enable &bto enable sleepmost for this world.");
+    CURRENTLY_DISABLED ("&bSleepmost is currently &cdisabled &bfor this world. Type &a/sm enable &bto enable sleepmost for this world."),
+    NO_CONSOLE_COMMAND("&cThis command cannot be executed from console!");
 
     private final String rawMessage;
     private final boolean usePrefix;
