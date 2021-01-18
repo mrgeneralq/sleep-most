@@ -38,7 +38,7 @@ public class Sleepmost extends JavaPlugin{
 		bootstrapper.initialize(this);
 		
 		//init commands
-		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagsService(), bootstrapper.getFlagsRepository());
+		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagService(), bootstrapper.getFlagsRepository());
 		Bukkit.getPluginCommand("sleepmost").setExecutor(sleepmostCommand);
 		getCommand("sleepmost").setTabCompleter(sleepmostCommand);
 		getCommand("sleep").setExecutor(new SleepCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService()));

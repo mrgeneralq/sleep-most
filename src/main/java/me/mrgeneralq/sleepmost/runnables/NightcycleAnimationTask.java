@@ -6,6 +6,7 @@ import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class NightcycleAnimationTask extends BukkitRunnable {
@@ -14,11 +15,15 @@ public class NightcycleAnimationTask extends BukkitRunnable {
     private final DataContainer dataContainer = DataContainer.getContainer();
     private final World world;
     private final String lastSleeperName;
+    private final String lastSLeeperDisplayName;
+    private final SleepSkipCause skipCause;
 
-    public NightcycleAnimationTask(ISleepService sleepService, World world, String lastSleeperName) {
+    public NightcycleAnimationTask(ISleepService sleepService, World world, Player lastSleeper, SleepSkipCause sleepSkipCause) {
         this.sleepService = sleepService;
         this.world = world;
-        this.lastSleeperName = lastSleeperName;
+        this.lastSleeperName = lastSleeper.getName();
+        this.lastSLeeperDisplayName = lastSleeper.getDisplayName();
+        this.skipCause = sleepSkipCause;
     }
 
     @Override
@@ -29,10 +34,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
             //remove animation checker
             this.dataContainer.setAnimationRunning(world, false);
 
-            world.setThundering(false);
-            world.setStorm(false);
-
-            Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, SleepSkipCause.NIGHT_TIME, "",""));
+            this.sleepService.executeSleepReset(world, this.lastSleeperName, this.lastSLeeperDisplayName, this.skipCause);
             this.cancel();
         }
 

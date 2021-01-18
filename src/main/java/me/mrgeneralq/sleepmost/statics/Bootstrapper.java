@@ -20,7 +20,7 @@ public class Bootstrapper {
     private IUpdateService updateService;
     private IUpdateRepository updateRepository;
     private IFlagsRepository flagsRepository;
-    private IFlagService flagsService;
+    private IFlagService flagService;
     private IConfigService configService;
 
     private static Bootstrapper instance;
@@ -33,23 +33,23 @@ public class Bootstrapper {
         this.updateRepository = new UpdateRepository("60623");
         this.cooldownRepository = new CooldownRepository();
         this.configRepository = new ConfigRepository(main);
-        this.flagsRepository = new FlagsRepository(this.configRepository);
+        this.flagsRepository = new FlagsRepository(configRepository);
+
+        this.messageService = new MessageService(configRepository, sleepService);
+        this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService);
 
         //services
         this.configService = new ConfigService(main);
-        this.updateService = new UpdateService(this.updateRepository, main, this.configService);
-        this.cooldownService = new CooldownService(this.cooldownRepository, this.configRepository);
-        this.sleepService = new SleepService(main, this.configService, this.configRepository, this.messageService, this.flagsRepository, this.cooldownService, this.flagsService);
-
-        this.messageService = new MessageService(this.configRepository, this.sleepService);
-        this.flagsService = new FlagService(this.flagsRepository, this.configRepository, this.configService, this.messageService);
+        this.updateService = new UpdateService(updateRepository, main, configService);
+        this.cooldownService = new CooldownService(cooldownRepository, configRepository);
+        this.sleepService = new SleepService(main, configService, configRepository, messageService, flagsRepository, cooldownService, flagService);
 
         //mappers
         this.configMessageMapper = ConfigMessageMapper.getMapper();
 
         //independent inits
         this.configMessageMapper.initialize(main);
-        this.flagsService.reportIllegalValues();
+        this.flagService.reportIllegalValues();
     }
 
     public static Bootstrapper getBootstrapper(){
@@ -97,7 +97,7 @@ public class Bootstrapper {
     public IFlagsRepository getFlagsRepository(){
         return this.flagsRepository;
     }
-    public IFlagService getFlagsService() {
-        return this.flagsService;
+    public IFlagService getFlagService() {
+        return this.flagService;
     }
 }

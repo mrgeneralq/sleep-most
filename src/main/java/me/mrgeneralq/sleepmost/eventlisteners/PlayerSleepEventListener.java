@@ -79,17 +79,12 @@ public class PlayerSleepEventListener implements Listener {
             cooldownService.startCooldown(player);
         }
 
-
-        //call the sleep logic + messages + trigger in case percentage is reached
         this.sleepService.setSleeping(player , true);
-
     }
 
     @EventHandler
     public void onPlayerBedLeave(PlayerBedLeaveEvent e) {
-
         Player player = e.getPlayer();
         sleepService.setSleeping(player, false);
-
     }
 }

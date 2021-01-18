@@ -2,7 +2,7 @@ package me.mrgeneralq.sleepmost.services;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.mrgeneralq.sleepmost.Sleepmost;
-import me.mrgeneralq.sleepmost.flags.*;
+import me.mrgeneralq.sleepmost.flags.NightcycleAnimationFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTask;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
@@ -24,49 +24,21 @@ public class SleepService implements ISleepService {
     private final IMessageService messageService;
     private final IFlagsRepository flagsRepository;
     private final ICooldownService cooldownService;
-    private final IFlagService flagsService;
+    private final IFlagService flagService;
     private final DataContainer dataContainer = DataContainer.getContainer();
 
     private static final int
             NIGHT_START_TIME = 12541,
             NIGHT_END_TIME = 23850;
 
-    public SleepService(Sleepmost main, IConfigService configService, IConfigRepository configRepository, IMessageService messageService, IFlagsRepository flagsRepository, ICooldownService cooldownService, IFlagService flagsService) {
+    public SleepService(Sleepmost main, IConfigService configService, IConfigRepository configRepository, IMessageService messageService, IFlagsRepository flagsRepository, ICooldownService cooldownService, IFlagService flagService) {
         this.main = main;
         this.configService = configService;
         this.configRepository = configRepository;
         this.messageService = messageService;
         this.flagsRepository = flagsRepository;
         this.cooldownService = cooldownService;
-        this.flagsService = flagsService;
-    }
-
-    /*
-    General
-     */
-
-    @Override
-    public void resetDay(World world, String lastSleeperName, String lastSleeperDisplayName) {
-
-        if (!canReset(world)){
-            return;
-        }
-        int skipDelay = this.flagsRepository.getSkipDelayFlag().getValueAt(world);
-
-        Bukkit.getScheduler().runTaskLater(main, () -> executeSleepReset(world, lastSleeperName, lastSleeperDisplayName), skipDelay * 20L);
-    }
-
-    @Override
-    public void onSleepSkip(World world, String lastSleeperName, String lastSleeperDisplayName) {
-
-        //do the cycle animation if the world was in night
-        if (!isNight(world) || !this.flagsRepository.getNightcycleAnimationFlag().getValueAt(world)){
-            resetDay(world, lastSleeperName, lastSleeperDisplayName);
-            return;
-        }
-
-        dataContainer.setAnimationRunning(world, true);
-        new NightcycleAnimationTask(this, world, lastSleeperName).runTaskTimer(this.main, 0, 1);
+        this.flagService = flagService;
     }
 
     @Override
@@ -74,9 +46,6 @@ public class SleepService implements ISleepService {
         configRepository.reload();
     }
 
-    /*
-    Worlds
-     */
 
     @Override
     public boolean isEnabledAt(World world) {
@@ -96,9 +65,9 @@ public class SleepService implements ISleepService {
     @Override
     public boolean canReset(World world)
     {
-        if(!resetRequired(world)){
+        if(!resetRequired(world))
             return false;
-        }
+
         return getSleepingPlayersAmount(world) == getRequiredPlayersSleepingCount(world);
     }
 
@@ -109,17 +78,18 @@ public class SleepService implements ISleepService {
 
     @Override
     public int getPlayerCountInWorld(World world) {
+
         Stream<Player> playersStream = world.getPlayers().stream();
 
         if(flagsRepository.getUseExemptFlag().getValueAt(world))
             playersStream = playersStream.filter(p -> !p.hasPermission("sleepmost.exempt"));
 
-        if (flagsService.isAfkFlagUsable() && flagsRepository.getUseAfkFlag().getValueAt(world))
+         if (flagService.isAfkFlagUsable() && flagsRepository.getUseAfkFlag().getValueAt(world))
             playersStream = playersStream.filter(p -> PlaceholderAPI.setPlaceholders(p, "%essentials_afk%").equalsIgnoreCase("no"));
 
-        int players = (int) playersStream.count();
+         int playerCount = (int) playersStream.count();
 
-        return players == 0 ? 1 : players;
+         return playerCount == 0? 1: playerCount;
     }
 
     @Override
@@ -132,11 +102,19 @@ public class SleepService implements ISleepService {
 
         int requiredCount;
 
+
+
         switch (this.flagsRepository.getCalculationMethodFlag().getValueAt(world)) {
 
             case PERCENTAGE_REQUIRED:
+
                 double percentageRequired = this.flagsRepository.getPercentageRequiredFlag().getValueAt(world);
-                requiredCount = (int) Math.ceil(getPlayerCountInWorld(world) * percentageRequired);
+                System.out.println("getPlayerCountInWorld: " + getPlayerCountInWorld(world));
+                System.out.println("percentageRequired: " + percentageRequired);
+                System.out.println("total: " + (int) Math.ceil(getPlayerCountInWorld(world) * percentageRequired));
+
+                requiredCount = 2;
+              //  requiredCount = (int) Math.ceil(getPlayerCountInWorld(world) * percentageRequired);
                 break;
 
             case PLAYERS_REQUIRED:
@@ -149,6 +127,7 @@ public class SleepService implements ISleepService {
         }
 
         return requiredCount;
+
     }
 
     @Override
@@ -163,19 +142,35 @@ public class SleepService implements ISleepService {
         return UNKNOWN;
     }
 
-    /*
-    Players
-     */
+    @Override
+    public boolean isRequiredCountReached(World world) {
+        return this.getSleepingPlayersAmount(world) >= this.getRequiredPlayersSleepingCount(world);
+    }
+
 
     @Override
     public void setSleeping(Player player, boolean sleeping) {
+
+
+        World world = player.getWorld();
+        SleepSkipCause skipCause = this.getCurrentSkipCause(world);
+
 
         this.dataContainer.setPlayerSleeping(player, sleeping);
 
         if (!this.shouldSkip(player))
             return;
 
-        onSleepSkip(player.getWorld(), player.getName(), player.getDisplayName());
+        if(!this.isRequiredCountReached(world))
+            return;
+
+        NightcycleAnimationFlag animationFlag = this.flagsRepository.getNightcycleAnimationFlag();
+        if(animationFlag.getValueAt(world)){
+            runSkipAnimation(player, skipCause);
+            return;
+
+        }
+        this.executeSleepReset(world, player.getName(), player.getDisplayName(), skipCause);
     }
 
     @Override
@@ -185,9 +180,6 @@ public class SleepService implements ISleepService {
         return this.dataContainer.getSleepingPlayers(world).contains(player);
     }
 
-    /*
-    Skip Status
-     */
 
     @Override
     public boolean resetRequired(World world) {
@@ -199,30 +191,26 @@ public class SleepService implements ISleepService {
         return world.getTime() > NIGHT_START_TIME && world.getTime() < NIGHT_END_TIME;
     }
 
-
-
-
-    private void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName) {
+    @Override
+    public void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause skipCause) {
         if(isNight(world))
             world.setTime(configService.getResetTime());
 
         world.setThundering(false);
         world.setStorm(false);
-        Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, getCurrentSkipCause(world), lastSleeperName, lastSleeperDisplayName));
+        Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, skipCause, lastSleeperName, lastSleeperDisplayName));
     }
 
     private boolean shouldSkip(Player lastSleeper) {
-
         World world = lastSleeper.getWorld();
+        return isEnabledAt(world) && resetRequired(world);
+    }
 
-        if (!isEnabledAt(world) || !resetRequired(world))
-            return false;
+    private void runSkipAnimation(Player player, SleepSkipCause sleepSkipCause){
 
-        if (this.cooldownService.cooldownEnabled() && !cooldownService.isCoolingDown(lastSleeper)) {
-            messageService.sendPlayerLeftMessage(lastSleeper, getCurrentSkipCause(world));
-            cooldownService.startCooldown(lastSleeper);
-        }
-        return true;
-        //return sleepPercentageReached(world);
+        World world = player.getWorld();
+        dataContainer.setAnimationRunning(world, true);
+        new NightcycleAnimationTask(this, world, player, sleepSkipCause).runTaskTimer(this.main, 0, 1);
+
     }
 }

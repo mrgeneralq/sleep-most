@@ -7,8 +7,8 @@ public interface ISleepService
 {
     //General
     //boolean canReset(World world);
-    void resetDay(World world, String lastSleeperName, String lastSleeperDisplayName);
-    void onSleepSkip(World world, String lastSleeperName, String lastSleeperDisplayName);
+
+
     void reloadConfig();
 
     //Worlds
@@ -22,6 +22,7 @@ public interface ISleepService
     double getSleepingPlayerPercentage(World world);
     int getRequiredPlayersSleepingCount(World world);
     SleepSkipCause getCurrentSkipCause(World world);
+    boolean isRequiredCountReached(World world);
 
     //Players
     void setSleeping(Player player, boolean sleeping);
@@ -30,6 +31,8 @@ public interface ISleepService
     //Skip Status
     boolean resetRequired(World world);
     boolean isNight(World world);
+
+    void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause skipCause);
 
     /*
     Removed methods
