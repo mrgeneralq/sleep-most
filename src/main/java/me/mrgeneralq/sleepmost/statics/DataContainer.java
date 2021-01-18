@@ -23,7 +23,7 @@ public class DataContainer {
         return instance;
     }
 
-    public boolean animationRunning(World world) {
+    public boolean isAnimationRunningAt(World world) {
         return this.runningWorldsAnimation.contains(world.getUID());
     }
 
@@ -37,17 +37,18 @@ public class DataContainer {
 
     public void setPlayerSleeping(Player player, boolean sleeping) {
 
-        UUID worldID = player.getWorld().getUID();
-        UUID playerID = player.getUniqueId();
+        UUID playerUUID = player.getUniqueId();
+        UUID worldUUID = player.getWorld().getUID();
 
-        Set<UUID> sleepingPlayers = this.sleepingPlayers.computeIfAbsent(worldID, w -> new HashSet<>());
+        if(sleeping)
+           this.sleepingPlayers.computeIfAbsent(worldUUID, w -> new HashSet<>()).add(playerUUID);
 
-        if (sleeping)
-            sleepingPlayers.add(playerID);
-        else
-            sleepingPlayers.remove(playerID);
+        else if(anyoneSleepingAt(player.getWorld()))
+            this.sleepingPlayers.get(worldUUID).remove(playerUUID);
+    }
 
-        this.sleepingPlayers.put(worldID, sleepingPlayers);
+    public boolean anyoneSleepingAt(World world) {
+        return this.sleepingPlayers.containsKey(world.getUID());
     }
 
     public List<Player> getSleepingPlayers(World world) {
@@ -57,6 +58,6 @@ public class DataContainer {
                 .collect(toList());
     }
     public void clearSleepingPlayers(World world){
-        this.sleepingPlayers.getOrDefault(world.getUID(), new HashSet<>()).clear();
+        this.sleepingPlayers.remove(world.getUID());
     }
 }

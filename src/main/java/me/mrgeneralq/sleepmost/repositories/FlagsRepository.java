@@ -13,8 +13,6 @@ public class FlagsRepository implements IFlagsRepository
 {
     private final Map<String, ISleepFlag<?>> flagByName = new HashMap<>();
 
-    private final IConfigRepository configRepository;
-
     //all flags objects(for type safety)
     private final PercentageRequiredFlag percentageRequiredFlag;
     private final MobNoTargetFlag mobNoTargetFlag;
@@ -31,20 +29,18 @@ public class FlagsRepository implements IFlagsRepository
 
     public FlagsRepository(IConfigRepository configRepository)
     {
-        this.configRepository = configRepository;
-
         //setupFlag(this.testFlag = new TestFlag(new ConfigFlagController<>(this.configRepository)));
-        setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(this.configRepository)));
-        setupFlag(this.mobNoTargetFlag = new MobNoTargetFlag(new ConfigFlagController<>(this.configRepository)));
-        setupFlag(this.useExemptFlag = new UseExemptFlag(new ConfigFlagController<>(this.configRepository)));
-        setupFlag(this.preventSleepFlag = new PreventSleepFlag(new ConfigFlagController<>(this.configRepository)));
-        setupFlag(this.preventPhantomFlag = new PreventPhantomFlag(new ConfigFlagController<>(this.configRepository)));
-        setupFlag(this.stormSleepFlag = new StormSleepFlag(new ConfigFlagController<>(this.configRepository)));
-        setupFlag(this.useAfkFlag = new UseAfkFlag(new ConfigFlagController<>(this.configRepository)));
-        setupFlag(this.playersRequiredFlag = new PlayersRequiredFlag(new ConfigFlagController<>(this.configRepository)));
-        setupFlag(this.percentageRequiredFlag = new PercentageRequiredFlag(new ConfigFlagController<>(this.configRepository)));
-        setupFlag(this.calculationMethodFlag = new CalculationMethodFlag(new ConfigFlagController<>(this.configRepository)));
-        setupFlag(this.skipDelayFlag = new SkipDelayFlag(new ConfigFlagController<>(this.configRepository)));
+        setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.mobNoTargetFlag = new MobNoTargetFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.useExemptFlag = new UseExemptFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.preventSleepFlag = new PreventSleepFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.preventPhantomFlag = new PreventPhantomFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.stormSleepFlag = new StormSleepFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.useAfkFlag = new UseAfkFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.playersRequiredFlag = new PlayersRequiredFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.percentageRequiredFlag = new PercentageRequiredFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.calculationMethodFlag = new CalculationMethodFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.skipDelayFlag = new SkipDelayFlag(new ConfigFlagController<>(configRepository)));
     }
 
     @Override

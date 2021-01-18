@@ -12,6 +12,7 @@ public interface IFlagService
     void reportIllegalValues();
     Map<World, Map<ISleepFlag<?>, Object>> getWorldsWithIllegalValues();
     <V> void setStringValueAt(ISleepFlag<V> flag, World world, String stringValue);
+    boolean isAfkFlagUsable();
     List<String> getValuesSuggestions(ISleepFlag<?> flag);
 
     <V> String getValueDisplayName(ISleepFlag<V> flag, Object value);

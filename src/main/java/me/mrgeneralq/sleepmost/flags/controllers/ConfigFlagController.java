@@ -24,8 +24,6 @@ public class ConfigFlagController<V> extends AbstractFlagController<V>
     @Override
     public void setValueAt(World world, V value)
     {
-        Object serializedValue = this.flag.getSerialization().serialize(value);
-
-        this.configRepository.setFlagValue(this.flag, world, serializedValue);
+        this.configRepository.setFlagValue(this.flag, world, value);
     }
 }

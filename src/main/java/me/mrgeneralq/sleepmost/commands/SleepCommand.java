@@ -3,15 +3,11 @@ package me.mrgeneralq.sleepmost.commands;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.messages.MessageTemplate;
-import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
-import me.mrgeneralq.sleepmost.statics.DataContainer;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class SleepCommand implements CommandExecutor {
     private final ISleepService sleepService;

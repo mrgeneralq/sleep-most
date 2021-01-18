@@ -3,7 +3,6 @@ package me.mrgeneralq.sleepmost.runnables;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
-import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -12,14 +11,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class NightcycleAnimationTask extends BukkitRunnable {
 
     private final ISleepService sleepService;
-    private final IMessageService messageService;
     private final DataContainer dataContainer = DataContainer.getContainer();
     private final World world;
     private final String lastSleeperName;
 
-    public NightcycleAnimationTask(ISleepService sleepService, IMessageService messageService, World world, String lastSleeperName) {
+    public NightcycleAnimationTask(ISleepService sleepService, World world, String lastSleeperName) {
         this.sleepService = sleepService;
-        this.messageService = messageService;
         this.world = world;
         this.lastSleeperName = lastSleeperName;
     }
@@ -31,9 +28,6 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
             //remove animation checker
             this.dataContainer.setAnimationRunning(world, false);
-
-
-
 
             world.setThundering(false);
             world.setStorm(false);

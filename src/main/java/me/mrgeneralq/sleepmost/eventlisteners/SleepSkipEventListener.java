@@ -2,9 +2,6 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
 
-import me.mrgeneralq.sleepmost.flags.NightcycleAnimationFlag;
-import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
-import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Sound;
 import org.bukkit.Statistic;
@@ -23,13 +20,11 @@ public class SleepSkipEventListener implements Listener {
 
 	private final IMessageService messageService;
 	private final IConfigService configService;
-	private final ISleepService sleepService;
 	private final DataContainer dataContainer = DataContainer.getContainer();
 
-	public SleepSkipEventListener(IMessageService messageService, IConfigService configService, ISleepService sleepService) {
+	public SleepSkipEventListener(IMessageService messageService, IConfigService configService) {
 		this.messageService = messageService;
 		this.configService = configService;
-		this.sleepService = sleepService;
 	}
 
 	@EventHandler
@@ -37,7 +32,7 @@ public class SleepSkipEventListener implements Listener {
 
 		World world = e.getWorld();
 
-		if(dataContainer.animationRunning(world))
+		if(dataContainer.isAnimationRunningAt(world))
 			return;
 		
 		resetPhantomCounter(world);

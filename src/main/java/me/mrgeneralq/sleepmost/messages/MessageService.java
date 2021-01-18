@@ -52,7 +52,7 @@ public class MessageService implements IMessageService {
 		return newPrefixedBuilder(message)
 				.usePrefix(false)
 				.setPlayer(player)
-				.setPlaceHolder("%sleeping%", Integer.toString(sleepService.getPlayersSleepingCount(world)))
+				.setPlaceHolder("%sleeping%", Integer.toString(sleepService.getSleepingPlayersAmount(world)))
 				.setPlaceHolder("%required%", Integer.toString(Math.round(sleepService.getRequiredPlayersSleepingCount(world))))
 				.build();
 	}

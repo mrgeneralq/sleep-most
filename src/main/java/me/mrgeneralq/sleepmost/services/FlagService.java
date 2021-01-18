@@ -19,6 +19,10 @@ public class FlagService implements IFlagService
     private final IConfigService configService;
     private final IMessageService messageService;
 
+    private static final boolean
+            PLACEHOLDER_API_ENABLED = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null,
+            ESSENTIALS_ENABLED = Bukkit.getPluginManager().getPlugin("Essentials") != null;
+
     public FlagService(IFlagsRepository flagsRepository, IConfigRepository configRepository, IConfigService configService, IMessageService messageService)
     {
         this.flagsRepository = flagsRepository;
@@ -26,6 +30,7 @@ public class FlagService implements IFlagService
         this.configService = configService;
         this.messageService = messageService;
     }
+
     @Override
     public void reportIllegalValues()
     {
@@ -38,6 +43,12 @@ public class FlagService implements IFlagService
         V deserializedValue = flag.getSerialization().parseValueFrom(stringValue);
 
         flag.setValueAt(world, deserializedValue);
+    }
+
+    @Override
+    public boolean isAfkFlagUsable()
+    {
+        return PLACEHOLDER_API_ENABLED && ESSENTIALS_ENABLED;
     }
 
     @Override

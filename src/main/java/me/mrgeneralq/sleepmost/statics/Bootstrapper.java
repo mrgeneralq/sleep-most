@@ -11,8 +11,6 @@ import me.mrgeneralq.sleepmost.Sleepmost;
 
 public class Bootstrapper {
 
-    private Sleepmost main;
-    private static Bootstrapper instance;
     private ISleepService sleepService;
     private IMessageService messageService;
     private IConfigRepository configRepository;
@@ -22,21 +20,14 @@ public class Bootstrapper {
     private IUpdateService updateService;
     private IUpdateRepository updateRepository;
     private IFlagsRepository flagsRepository;
-    private IFlagService flagService;
+    private IFlagService flagsService;
     private IConfigService configService;
 
-    public IConfigRepository getConfigRepository() {
-        return configRepository;
-    }
-
-    public IMessageService getMessageService() {
-        return messageService;
-    }
+    private static Bootstrapper instance;
 
     private Bootstrapper(){ }
 
     public void initialize(Sleepmost main){
-        this.main = main;
 
         //repos
         this.updateRepository = new UpdateRepository("60623");
@@ -48,17 +39,17 @@ public class Bootstrapper {
         this.configService = new ConfigService(main);
         this.updateService = new UpdateService(this.updateRepository, main, this.configService);
         this.cooldownService = new CooldownService(this.cooldownRepository, this.configRepository);
-        this.sleepService = new SleepService(main, this.configService, this.configRepository, this.messageService, this.flagsRepository);
+        this.sleepService = new SleepService(main, this.configService, this.configRepository, this.messageService, this.flagsRepository, this.cooldownService, this.flagsService);
 
         this.messageService = new MessageService(this.configRepository, this.sleepService);
-        this.flagService = new FlagService(this.flagsRepository, this.configRepository, this.configService, this.messageService);
+        this.flagsService = new FlagService(this.flagsRepository, this.configRepository, this.configService, this.messageService);
 
         //mappers
         this.configMessageMapper = ConfigMessageMapper.getMapper();
 
         //independent inits
         this.configMessageMapper.initialize(main);
-        this.flagService.reportIllegalValues();
+        this.flagsService.reportIllegalValues();
     }
 
     public static Bootstrapper getBootstrapper(){
@@ -66,6 +57,14 @@ public class Bootstrapper {
         if(instance == null)
             instance = new Bootstrapper();
         return instance;
+    }
+
+    public IConfigRepository getConfigRepository() {
+        return configRepository;
+    }
+
+    public IMessageService getMessageService() {
+        return messageService;
     }
 
     public ConfigMessageMapper getConfigMessageMapper() {
@@ -98,7 +97,7 @@ public class Bootstrapper {
     public IFlagsRepository getFlagsRepository(){
         return this.flagsRepository;
     }
-    public IFlagService getFlagService() {
-        return this.flagService;
+    public IFlagService getFlagsService() {
+        return this.flagsService;
     }
 }

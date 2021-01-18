@@ -5,29 +5,21 @@ import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import org.bukkit.World;
 
-public class ConfigRepository implements IConfigRepository {
+public class ConfigRepository implements IConfigRepository
+{
     private final Sleepmost main;
 
     public ConfigRepository(Sleepmost main) {
         this.main = main;
     }
 
-    @Override
-    public double getPercentageRequired(World world) {
-        return main.getConfig().getDouble(String.format("sleep.%s.percentage-required", world.getName()));
-    }
-
-
-    @Deprecated
-    @Override
-    public boolean containsWorld(World world) {
-        return main.getConfig().getBoolean(String.format("sleep.%s.enabled", world.getName()));
-    }
-
+    /*
+    General
+     */
 
     @Override
-    public String getString(String string) {
-        return main.getConfig().getString(string);
+    public String getPrefix() {
+        return main.getConfig().getString("messages.prefix");
     }
 
     @Override
@@ -36,40 +28,42 @@ public class ConfigRepository implements IConfigRepository {
     }
 
     @Override
-    public boolean getMobNoTarget(World world) {
-        return main.getConfig().getBoolean(String.format("sleep.%s.mob-no-target", world.getName()));
+    public String getString(String path) {
+        return main.getConfig().getString(path);
     }
 
     @Override
-    public boolean getUseExempt(World world) {
-        return main.getConfig().getBoolean(String.format("sleep.%s.use-exempt", world.getName()));
+    public Object get(String path)
+    {
+        return this.main.getConfig().get(path);
     }
 
     @Override
-    public String getPrefix() {
-        return main.getConfig().getString("messages.prefix");
-    }
-
-    @Override
-    public void reloadConfig() {
+    public void reload() {
         main.reloadConfig();
     }
+
+    /*
+    Worlds
+     */
 
     @Override
     public void addWorld(World world) {
 
-        main.getConfig().createSection(String.format("sleep.%s", world.getName()));
-        main.getConfig().set(String.format("sleep.%s.enabled", world.getName()), true);
-        main.getConfig().set(String.format("sleep.%s.calculation-method", world.getName()), "percentage");
-        main.getConfig().set(String.format("sleep.%s.percentage-required", world.getName()), 0.5);
-        main.getConfig().set(String.format("sleep.%s.players-required", world.getName()), 5);
-        main.getConfig().set(String.format("sleep.%s.mob-no-target", world.getName()), true);
-        main.getConfig().set(String.format("sleep.%s.use-exempt", world.getName()),true);
-        main.getConfig().set(String.format("sleep.%s.use-afk", world.getName()), false);
-        main.getConfig().set(String.format("sleep.%s.prevent-sleep",world.getName()),false);
-        main.getConfig().set(String.format("sleep.%s.prevent-phantom", world.getName()), false);
-        main.getConfig().set(String.format("sleep.%s.nightcycle-animation", world.getName()), false);
-        main.getConfig().set(String.format("sleep.%s.storm-sleep", world.getName()), false);
+        String worldName = world.getName();
+
+        main.getConfig().createSection(String.format("sleep.%s", worldName));
+        main.getConfig().set(String.format("sleep.%s.enabled", worldName), true);
+        main.getConfig().set(getFlagValuePath("calculation-method", worldName), "percentage");
+        main.getConfig().set(getFlagValuePath("percentage-required", worldName), 0.5);
+        main.getConfig().set(getFlagValuePath("players-required", worldName), 5);
+        main.getConfig().set(getFlagValuePath("mob-no-target", worldName), true);
+        main.getConfig().set(getFlagValuePath("use-exempt", worldName), true);
+        main.getConfig().set(getFlagValuePath("use-afk", worldName), false);
+        main.getConfig().set(getFlagValuePath("prevent-sleep", worldName), false);
+        main.getConfig().set(getFlagValuePath("prevent-phantom", worldName), false);
+        main.getConfig().set(getFlagValuePath("nightcycle-animation", worldName), false);
+        main.getConfig().set(getFlagValuePath("storm-sleep", worldName), false);
         main.saveConfig();
     }
 
@@ -80,25 +74,55 @@ public class ConfigRepository implements IConfigRepository {
         main.saveConfig();
     }
 
+    @Deprecated
     @Override
-    public void disableForWorld(World world) {
-        main.getConfig().set(String.format("sleep.%s.enabled", world.getName()), false);
-        main.saveConfig();
+    public boolean containsWorld(World world) {
+        return worldExists(world.getName()) && main.getConfig().getBoolean(String.format("sleep.%s.enabled", world.getName()));
     }
 
     @Override
-    public void setFlagValue(ISleepFlag<?> flag, World world, Object value)
-    {
-        main.getConfig().set(getValuePath(flag, world), value);
+    public void disableForWorld(World world) {
+        setWorldStatus(world, false);
+    }
+
+    @Override
+    public void enableForWorld(World world) {
+        setWorldStatus(world, true);
+    }
+
+    /*
+    Flags
+     */
+
+    @Override
+    public <V> void setFlagValue(ISleepFlag<V> flag, World world, V value) {
+        String valuePath = getFlagValuePath(flag.getName(), world.getName());
+
+        main.getConfig().set(valuePath, value);
         main.saveConfig();
     }
 
     @Override
     public Object getFlagValue(ISleepFlag<?> flag, World world) {
-        return main.getConfig().get(getValuePath(flag, world));
+        String valuePath = getFlagValuePath(flag.getName(), world.getName());
+
+        return main.getConfig().get(valuePath);
     }
 
-    private static String getValuePath(ISleepFlag<?> flag, World world) {
-        return String.format("sleep.%s.%s", world.getName(), flag.getName());
+
+    private boolean worldExists(String worldName){
+        return main.getConfig().isConfigurationSection(String.format("sleep.%s", worldName));
+    }
+    private void setWorldStatus(World world, boolean status){
+        String worldName = world.getName();
+
+        if(!worldExists(worldName)){
+            addWorld(world);
+        }
+        main.getConfig().set(String.format("sleep.%s.enabled", worldName), status);
+        main.saveConfig();
+    }
+    private String getFlagValuePath(String flagName, String worldName) {
+        return String.format("sleep.%s.%s", worldName, flagName);
     }
 }
