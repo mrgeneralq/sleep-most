@@ -29,25 +29,24 @@ public class Bootstrapper {
 
     public void initialize(Sleepmost main){
 
-        //repos
-        this.updateRepository = new UpdateRepository("60623");
-        this.cooldownRepository = new CooldownRepository();
         this.configRepository = new ConfigRepository(main);
-        this.flagsRepository = new FlagsRepository(configRepository);
+        this.configService = new ConfigService(main);
 
-        this.messageService = new MessageService(configRepository, sleepService);
+        this.messageService = new MessageService(configRepository);
+
+        this.updateRepository = new UpdateRepository("60623");
+        this.updateService = new UpdateService(updateRepository, main, configService);
+
+        this.cooldownRepository = new CooldownRepository();
+        this.cooldownService = new CooldownService(cooldownRepository, configRepository);
+
+        this.flagsRepository = new FlagsRepository(configRepository);
         this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService);
 
-        //services
-        this.configService = new ConfigService(main);
-        this.updateService = new UpdateService(updateRepository, main, configService);
-        this.cooldownService = new CooldownService(cooldownRepository, configRepository);
-        this.sleepService = new SleepService(main, configService, configRepository, messageService, flagsRepository, cooldownService, flagService);
+        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService);
 
-        //mappers
+        //inits
         this.configMessageMapper = ConfigMessageMapper.getMapper();
-
-        //independent inits
         this.configMessageMapper.initialize(main);
         this.flagService.reportIllegalValues();
     }

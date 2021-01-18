@@ -3,7 +3,6 @@ import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
-import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.ConfigMessageMapper;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -11,12 +10,10 @@ import org.bukkit.entity.Player;
 public class MessageService implements IMessageService {
 
 	private final IConfigRepository configRepository;
-	private final ISleepService sleepService;
 	private final ConfigMessageMapper messageMapper = ConfigMessageMapper.getMapper();
 
-	public MessageService(IConfigRepository configRepository, ISleepService sleepService) {
+	public MessageService(IConfigRepository configRepository) {
 		this.configRepository = configRepository;
-		this.sleepService = sleepService;
 	}
 
 	@Override
@@ -43,17 +40,20 @@ public class MessageService implements IMessageService {
 	}
 
 	@Override
-	public String getPlayersLeftMessage(Player player, SleepSkipCause cause) {
+	public String getPlayersLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount) {
 
 		World world = player.getWorld();
 		ConfigMessage skipCauseConfigMessage = this.getSleepSkipCauseMessage(cause);
 		String message = this.getConfigMessage(skipCauseConfigMessage);
 
+		//sleepService.getSleepingPlayersAmount(world)
+		//
+
 		return newPrefixedBuilder(message)
 				.usePrefix(false)
 				.setPlayer(player)
-				.setPlaceHolder("%sleeping%", Integer.toString(sleepService.getSleepingPlayersAmount(world)))
-				.setPlaceHolder("%required%", Integer.toString(Math.round(sleepService.getRequiredPlayersSleepingCount(world))))
+				.setPlaceHolder("%sleeping%", String.valueOf(sleepingPlayersAmount))
+				.setPlaceHolder("%required%", String.valueOf(requiredPlayersAmount))
 				.build();
 	}
 
@@ -66,9 +66,9 @@ public class MessageService implements IMessageService {
 	}
 
 	@Override
-	public void sendPlayerLeftMessage(Player player, SleepSkipCause cause) {
+	public void sendPlayerLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount) {
 		World world = player.getWorld();
-		String message = this.getPlayersLeftMessage(player, cause);
+		String message = this.getPlayersLeftMessage(player, cause, sleepingPlayersAmount, requiredPlayersAmount);
 		this.sendMessageToWorld(world, message);
 	}
 	

@@ -13,7 +13,7 @@ public enum MessageTemplate {
     NO_CONSOLE_COMMAND("&cThis command cannot be executed from console!"),
     CANNOT_SLEEP_NOW("&cYou can't sleep now because your world is either not at Night or doesn't have a Storm!"),
     SLEEP_SUCCESS("&aYou are now Sleeping!", true),
-    ALREADY_SLEEPING("&cYou are already sleeping", true);
+    NO_LONGER_SLEEPING("&eYou are no longer Sleeping!", true);
 
     private final String rawMessage;
     private final boolean usePrefix;

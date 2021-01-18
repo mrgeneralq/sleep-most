@@ -6,23 +6,20 @@ import org.bukkit.entity.Player;
 public interface ISleepService
 {
     //General
-    //boolean canReset(World world);
-
-
+    void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause skipCause);
     void reloadConfig();
 
     //Worlds
     boolean isEnabledAt(World world);
     void enableAt(World world);
     void disableAt(World world);
-
-    boolean canReset(World world);
-    int getSleepingPlayersAmount(World world);
+    int getSleepersAmount(World world);
     int getPlayerCountInWorld(World world);
-    double getSleepingPlayerPercentage(World world);
-    int getRequiredPlayersSleepingCount(World world);
+    double getSleepersPercentage(World world);
+    int getRequiredSleepersCount(World world);
     SleepSkipCause getCurrentSkipCause(World world);
     boolean isRequiredCountReached(World world);
+    void clearSleepersAt(World world);
 
     //Players
     void setSleeping(Player player, boolean sleeping);
@@ -31,11 +28,4 @@ public interface ISleepService
     //Skip Status
     boolean resetRequired(World world);
     boolean isNight(World world);
-
-    void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause skipCause);
-
-    /*
-    Removed methods
-     */
-    //boolean sleepPercentageReached(World world);
 }

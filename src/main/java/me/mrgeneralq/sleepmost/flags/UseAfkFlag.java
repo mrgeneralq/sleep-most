@@ -2,7 +2,6 @@ package me.mrgeneralq.sleepmost.flags;
 
 import me.mrgeneralq.sleepmost.flags.controllers.AbstractFlagController;
 import me.mrgeneralq.sleepmost.flags.types.BooleanFlag;
-import org.bukkit.Bukkit;
 
 public class UseAfkFlag extends BooleanFlag
 {

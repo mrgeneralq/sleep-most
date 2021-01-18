@@ -21,9 +21,7 @@ public class SleepService implements ISleepService {
     private final Sleepmost main;
     private final IConfigRepository configRepository;
     private final IConfigService configService;
-    private final IMessageService messageService;
     private final IFlagsRepository flagsRepository;
-    private final ICooldownService cooldownService;
     private final IFlagService flagService;
     private final DataContainer dataContainer = DataContainer.getContainer();
 
@@ -31,13 +29,11 @@ public class SleepService implements ISleepService {
             NIGHT_START_TIME = 12541,
             NIGHT_END_TIME = 23850;
 
-    public SleepService(Sleepmost main, IConfigService configService, IConfigRepository configRepository, IMessageService messageService, IFlagsRepository flagsRepository, ICooldownService cooldownService, IFlagService flagService) {
+    public SleepService(Sleepmost main, IConfigService configService, IConfigRepository configRepository, IFlagsRepository flagsRepository, IFlagService flagService) {
         this.main = main;
         this.configService = configService;
         this.configRepository = configRepository;
-        this.messageService = messageService;
         this.flagsRepository = flagsRepository;
-        this.cooldownService = cooldownService;
         this.flagService = flagService;
     }
 
@@ -63,16 +59,7 @@ public class SleepService implements ISleepService {
     }
 
     @Override
-    public boolean canReset(World world)
-    {
-        if(!resetRequired(world))
-            return false;
-
-        return getSleepingPlayersAmount(world) == getRequiredPlayersSleepingCount(world);
-    }
-
-    @Override
-    public int getSleepingPlayersAmount(World world) {
+    public int getSleepersAmount(World world) {
         return this.dataContainer.getSleepingPlayers(world).size();
     }
 
@@ -93,28 +80,20 @@ public class SleepService implements ISleepService {
     }
 
     @Override
-    public double getSleepingPlayerPercentage(World world) {
-        return getSleepingPlayersAmount(world) / getPlayerCountInWorld(world);
+    public double getSleepersPercentage(World world) {
+        return getSleepersAmount(world) / getPlayerCountInWorld(world);
     }
 
     @Override
-    public int getRequiredPlayersSleepingCount(World world) {
+    public int getRequiredSleepersCount(World world) {
 
         int requiredCount;
-
-
 
         switch (this.flagsRepository.getCalculationMethodFlag().getValueAt(world)) {
 
             case PERCENTAGE_REQUIRED:
-
                 double percentageRequired = this.flagsRepository.getPercentageRequiredFlag().getValueAt(world);
-                System.out.println("getPlayerCountInWorld: " + getPlayerCountInWorld(world));
-                System.out.println("percentageRequired: " + percentageRequired);
-                System.out.println("total: " + (int) Math.ceil(getPlayerCountInWorld(world) * percentageRequired));
-
-                requiredCount = 2;
-              //  requiredCount = (int) Math.ceil(getPlayerCountInWorld(world) * percentageRequired);
+                requiredCount = (int) Math.ceil(getPlayerCountInWorld(world) * percentageRequired);
                 break;
 
             case PLAYERS_REQUIRED:
@@ -123,11 +102,9 @@ public class SleepService implements ISleepService {
                 break;
 
             default:
-                requiredCount = 0;
+                requiredCount = 1;
         }
-
         return requiredCount;
-
     }
 
     @Override
@@ -144,33 +121,40 @@ public class SleepService implements ISleepService {
 
     @Override
     public boolean isRequiredCountReached(World world) {
-        return this.getSleepingPlayersAmount(world) >= this.getRequiredPlayersSleepingCount(world);
+        return this.getSleepersAmount(world) >= this.getRequiredSleepersCount(world);
     }
 
+    @Override
+    public void clearSleepersAt(World world)
+    {
+        this.dataContainer.clearSleepingPlayers(world);
+    }
 
     @Override
     public void setSleeping(Player player, boolean sleeping) {
 
-
         World world = player.getWorld();
-        SleepSkipCause skipCause = this.getCurrentSkipCause(world);
-
 
         this.dataContainer.setPlayerSleeping(player, sleeping);
 
-        if (!this.shouldSkip(player))
+        if (!this.shouldSkip(world))
             return;
 
-        if(!this.isRequiredCountReached(world))
-            return;
+        SleepSkipCause skipCause = this.getCurrentSkipCause(world);
 
-        NightcycleAnimationFlag animationFlag = this.flagsRepository.getNightcycleAnimationFlag();
-        if(animationFlag.getValueAt(world)){
-            runSkipAnimation(player, skipCause);
-            return;
+        int skipDelay = this.flagsRepository.getSkipDelayFlag().getValueAt(world);
 
-        }
-        this.executeSleepReset(world, player.getName(), player.getDisplayName(), skipCause);
+        Bukkit.getScheduler().runTaskLater(main, () ->
+        {
+            if(!shouldSkip(world)){
+                return;
+            }
+            if(this.flagsRepository.getNightcycleAnimationFlag().getValueAt(world)){
+                runSkipAnimation(player, skipCause);
+                return;
+            }
+            this.executeSleepReset(world, player.getName(), player.getDisplayName(), skipCause);
+        }, skipDelay * 20L);
     }
 
     @Override
@@ -201,16 +185,15 @@ public class SleepService implements ISleepService {
         Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, skipCause, lastSleeperName, lastSleeperDisplayName));
     }
 
-    private boolean shouldSkip(Player lastSleeper) {
-        World world = lastSleeper.getWorld();
-        return isEnabledAt(world) && resetRequired(world);
+    private boolean shouldSkip(World world) {
+        return isEnabledAt(world) &&
+                resetRequired(world) &&
+                isRequiredCountReached(world);
     }
 
-    private void runSkipAnimation(Player player, SleepSkipCause sleepSkipCause){
-
+    private void runSkipAnimation(Player player, SleepSkipCause sleepSkipCause) {
         World world = player.getWorld();
         dataContainer.setAnimationRunning(world, true);
         new NightcycleAnimationTask(this, world, player, sleepSkipCause).runTaskTimer(this.main, 0, 1);
-
     }
 }
