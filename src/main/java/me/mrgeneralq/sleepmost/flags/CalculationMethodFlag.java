@@ -11,7 +11,11 @@ import static java.util.stream.Collectors.joining;
 public class CalculationMethodFlag extends EnumFlag<SleepCalculationType>
 {
     public CalculationMethodFlag(AbstractFlagController<SleepCalculationType> controller) {
-        super("calculation-method", createOptionsList(), controller, SleepCalculationTypeSerialization.INSTANCE, SleepCalculationType.class);
+        super("calculation-method", createOptionsList(),
+                controller,
+                SleepCalculationTypeSerialization.INSTANCE,
+                SleepCalculationType.class,
+                SleepCalculationType.PERCENTAGE_REQUIRED);
     }
 
     @Override

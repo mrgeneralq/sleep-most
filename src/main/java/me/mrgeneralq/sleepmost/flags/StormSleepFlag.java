@@ -7,6 +7,6 @@ public class StormSleepFlag extends BooleanFlag
 {
     public StormSleepFlag(AbstractFlagController<Boolean> controller)
     {
-        super("storm-sleep", controller);
+        super("storm-sleep", controller, true);
     }
 }

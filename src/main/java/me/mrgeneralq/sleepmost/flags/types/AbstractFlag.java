@@ -8,15 +8,17 @@ import org.bukkit.World;
 public abstract class AbstractFlag<V> implements ISleepFlag<V>
 {
     private final String name, valueDescription;
+    private final V defaultValue;
     private AbstractFlagController<V> controller;
     private final IValueSerialization<V> serialization;
 
-    public AbstractFlag(String name, String valueDescription, AbstractFlagController<V> controller, IValueSerialization<V> serialization)
+    public AbstractFlag(String name, String valueDescription, AbstractFlagController<V> controller, IValueSerialization<V> serialization, V defaultValue)
     {
         this.name = name;
         this.valueDescription = valueDescription;
         this.controller = controller;
         this.serialization = serialization;
+        this.defaultValue = defaultValue;
     }
 
     @Override
@@ -58,6 +60,12 @@ public abstract class AbstractFlag<V> implements ISleepFlag<V>
     public IValueSerialization<V> getSerialization()
     {
         return this.serialization;
+    }
+
+    @Override
+    public V getDefaultValue()
+    {
+        return this.defaultValue;
     }
 
     public void setController(AbstractFlagController<V> controller)
