@@ -59,10 +59,5 @@ public class InfoSubCommand implements ISubCommand {
                 .setPlaceHolder("%flagName%", flag.getName())
                 .setPlaceHolder("%value%", this.flagService.getValueDisplayName(flag, flag.getValueAt(world)))
                 .build();
-
-        //this.flagService.flagAction(flag, f -> f.getSerialization().getDisplayName(f.getValueAt(world)))
-        //flag.getSerialization().getDisplayName(flag.getValueAt(world))
     }
-
-
 }

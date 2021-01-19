@@ -95,7 +95,7 @@ public class ConfigRepository implements IConfigRepository
      */
 
     @Override
-    public <V> void setFlagValue(ISleepFlag<V> flag, World world, V value) {
+    public void setFlagValue(ISleepFlag<?> flag, World world, Object value) {
         String valuePath = getFlagValuePath(flag.getName(), world.getName());
 
         main.getConfig().set(valuePath, value);
