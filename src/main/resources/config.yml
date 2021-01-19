@@ -23,6 +23,9 @@ sleep:
     nightcycle-animation: false
     storm-sleep: true
     skip-delay: 0
+    heal: false
+    feed: false
+
 
   world2:
     enabled: false
@@ -37,6 +40,8 @@ sleep:
     nightcycle-animation: false
     storm-sleep: true
     skip-delay: 0
+    heal: false
+    feed: false
 
 
 titles:

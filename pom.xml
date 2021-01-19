@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.mrgeneralq</groupId>
     <artifactId>sleep-most</artifactId>
-    <version>4.8.0</version>
+    <version>4.9.0</version>
     <name>SleepMost</name>
 
     <properties>
@@ -16,6 +16,7 @@
         <dir>${project.build.directory}</dir>
     </properties>
     <build>
+        <testSourceDirectory>src/main/tests</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -83,6 +84,18 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.10.19</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
