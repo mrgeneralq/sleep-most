@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Map.Entry;
 
 import java.util.*;
 
@@ -50,13 +51,19 @@ public class FlagService implements IFlagService
         flag.setValueAt(world, deserializedValue);
     }
 
+    @Override
+    public <V> String getValueDisplayName(ISleepFlag<V> flag, Object value)
+    {
+        return flag.getDisplayName((V) value);
+    }
+
     private void notifyAboutIllegalValues(World world, Map<ISleepFlag<?>, Object> illegalValues)
     {
         illegalValues.forEach((flag, value) ->
         {
             Bukkit.getConsoleSender().sendMessage(messageService.newPrefixedBuilder("&cThe value of the &e%flagName &cflag at &b%worldName &cis &4illegal(&c%value&4)")
                     .setPlaceHolder("%flagName", flag.getName())
-                    .setPlaceHolder("%value", String.valueOf(value))
+                    .setPlaceHolder("%value", value.toString())
                     .setPlaceHolder("%worldName", world.getName())
                     .build());
         });
@@ -66,15 +73,15 @@ public class FlagService implements IFlagService
     private Map<World, Map<ISleepFlag<?>, Object>> getWorldsWithIllegalValues()
     {
         return this.configService.getEnabledWorlds().stream()
-                .map(world -> new SimpleEntry<>(world, findIllegalValuesAt(world)))
-                .filter(entry -> !entry.getValue().isEmpty())
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .map(world -> new SimpleEntry<>(world, getIllegalValuesAt(world)))
+                .filter(entry -> !entry.getValue().isEmpty()) //remove the worlds that have no illegal values
+                .collect(toMap(Entry::getKey, Entry::getValue));
     }
-    private Map<ISleepFlag<?>, Object> findIllegalValuesAt(World world)
+    private Map<ISleepFlag<?>, Object> getIllegalValuesAt(World world)
     {
         return this.flagsRepository.getFlags().stream()
-                .map(flag -> new SimpleEntry<>(flag, configRepository.getFlagValue(flag, world)))
+                .map(flag -> new SimpleEntry<>(flag, this.configRepository.getFlagValue(flag, world)))
                 .filter(entry -> !entry.getKey().isValidValue(entry.getValue()))
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(toMap(Entry::getKey, Entry::getValue));
     }
 }

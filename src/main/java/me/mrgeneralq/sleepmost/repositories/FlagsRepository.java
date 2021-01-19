@@ -25,11 +25,9 @@ public class FlagsRepository implements IFlagsRepository
     private final CalculationMethodFlag calculationMethodFlag;
     private final PlayersRequiredFlag playersRequiredFlag;
     private final SkipDelayFlag skipDelayFlag;
-    //private TestFlag testFlag;
 
     public FlagsRepository(IConfigRepository configRepository)
     {
-        //setupFlag(this.testFlag = new TestFlag(new ConfigFlagController<>(this.configRepository)));
         setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.mobNoTargetFlag = new MobNoTargetFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.useExemptFlag = new UseExemptFlag(new ConfigFlagController<>(configRepository)));
@@ -73,51 +71,36 @@ public class FlagsRepository implements IFlagsRepository
     @Override public PercentageRequiredFlag getPercentageRequiredFlag(){
         return this.percentageRequiredFlag;
     }
-
     @Override public MobNoTargetFlag getMobNoTargetFlag(){
         return this.mobNoTargetFlag;
     }
-
     @Override public UseExemptFlag getUseExemptFlag() {
         return this.useExemptFlag;
     }
-
     @Override public PreventSleepFlag getPreventSleepFlag() {
         return this.preventSleepFlag;
     }
-
     @Override public PreventPhantomFlag getPreventPhantomFlag() {
         return this.preventPhantomFlag;
     }
-
     @Override public NightcycleAnimationFlag getNightcycleAnimationFlag() {
         return this.nightcycleAnimationFlag;
     }
-
     @Override public StormSleepFlag getStormSleepFlag() {
         return this.stormSleepFlag;
     }
-
     @Override public UseAfkFlag getUseAfkFlag() {
         return this.useAfkFlag;
     }
-
     @Override public CalculationMethodFlag getCalculationMethodFlag() {
         return this.calculationMethodFlag;
     }
-
     @Override public PlayersRequiredFlag getPlayersRequiredFlag() {
         return this.playersRequiredFlag;
     }
-
-    @Override
-    public SkipDelayFlag getSkipDelayFlag() {
+    @Override public SkipDelayFlag getSkipDelayFlag() {
         return this.skipDelayFlag;
     }
-
-    /*@Override public TestFlag getTestFlag(){
-        return this.testFlag;
-    }*/
 
     private <V> void setupFlag(ISleepFlag<V> flag) {
         //register the flag

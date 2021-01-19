@@ -11,5 +11,8 @@ public interface ISleepFlag<V>
     V getValueAt(World world);
     void setValueAt(World world, V value);
     IValueSerialization<V> getSerialization();
-    String getValueDisplayName(World world);
+
+    default String getDisplayName(V value) {
+        return value.toString();
+    }
 }

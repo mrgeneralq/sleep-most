@@ -6,22 +6,17 @@ import me.mrgeneralq.sleepmost.flags.serialization.DoubleSerialization;
 
 public class PercentageRequiredFlag extends DoubleFlag
 {
-    public PercentageRequiredFlag(AbstractFlagController<Double> controller)
-    {
+    public PercentageRequiredFlag(AbstractFlagController<Double> controller) {
         super("percentage-required", "<0.1 - 1>", controller);
     }
 
     @Override
-    public boolean isValidValue(Object value)
-    {
+    public boolean isValidValue(Object value) {
         Double percentages = DoubleSerialization.INSTANCE.parseValueFrom(value);
 
-        if(percentages == null)
-        {
+        if(percentages == null) {
             return false;
         }
         return percentages >= 0 && percentages <= 1;
-
-        //return parseValueFrom(stringValue).isBetween(0, 1);
     }
 }

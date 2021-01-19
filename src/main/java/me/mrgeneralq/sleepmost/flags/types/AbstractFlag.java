@@ -60,12 +60,6 @@ public abstract class AbstractFlag<V> implements ISleepFlag<V>
         return this.serialization;
     }
 
-    @Override
-    public String getValueDisplayName(World world)
-    {
-        return this.controller.getValueAt(world).toString();
-    }
-
     public void setController(AbstractFlagController<V> controller)
     {
         this.controller = controller;

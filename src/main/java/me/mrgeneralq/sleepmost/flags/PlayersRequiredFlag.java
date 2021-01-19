@@ -7,6 +7,6 @@ public class PlayersRequiredFlag extends IntegerFlag
 {
     public PlayersRequiredFlag(AbstractFlagController<Integer> controller)
     {
-        super("players-required", "<amount>", controller);
+        super("players-required", "<players amount>", controller);
     }
 }
