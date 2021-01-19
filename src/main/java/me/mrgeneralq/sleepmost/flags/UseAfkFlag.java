@@ -9,4 +9,10 @@ public class UseAfkFlag extends BooleanFlag
     {
         super("use-afk", controller);
     }
+
+    /*@Override from ISleepFlag
+    public boolean isUsable()
+    {
+        return PLACEHOLDER_API_ENABLED && ESSENTIALS_ENABLED;
+    }*/
 }

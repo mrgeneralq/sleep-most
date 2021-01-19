@@ -9,7 +9,6 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,7 @@ public class SetFlagCommand implements ISubCommand, TabCompleter {
 
         World world = CommandSenderUtils.getWorldOf(sender);
 
-        if(!sleepService.enabledForWorld(world)){
+        if(!sleepService.isEnabledAt(world)){
             sender.sendMessage(messageService.fromTemplate(MessageTemplate.CURRENTLY_DISABLED));
             return true;
         }

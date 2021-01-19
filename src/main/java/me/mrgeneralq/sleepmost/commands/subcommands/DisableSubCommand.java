@@ -32,12 +32,12 @@ public class DisableSubCommand implements ISubCommand {
         World world = CommandSenderUtils.getWorldOf(sender);
 
 
-        if (!sleepService.enabledForWorld(world)) {
+        if (!sleepService.isEnabledAt(world)) {
             sender.sendMessage(messageService.fromTemplate(MessageTemplate.ALREADY_DISABLED_FOR_WORLD));
             return true;
         }
 
-        sleepService.disableForWorld(world);
+        sleepService.disableAt(world);
         sender.sendMessage(messageService.fromTemplate(MessageTemplate.DISABLED_FOR_WORLD));
         return true;
     }

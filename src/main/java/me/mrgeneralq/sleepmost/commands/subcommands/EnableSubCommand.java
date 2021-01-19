@@ -8,7 +8,6 @@ import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class EnableSubCommand implements ISubCommand {
 
@@ -30,12 +29,12 @@ public class EnableSubCommand implements ISubCommand {
 
         World world = CommandSenderUtils.getWorldOf(sender);
 
-        if(sleepService.enabledForWorld(world)){
+        if(sleepService.isEnabledAt(world)){
             sender.sendMessage(messageService.fromTemplate(MessageTemplate.ALREADY_ENABLED_FOR_WORLD));
            return true;
         }
 
-        sleepService.enableForWorld(world);
+        sleepService.enableAt(world);
         sender.sendMessage(messageService.fromTemplate(MessageTemplate.ENABLED_FOR_WORLD));
         return true;
     }

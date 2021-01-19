@@ -11,8 +11,6 @@ import me.mrgeneralq.sleepmost.Sleepmost;
 
 public class Bootstrapper {
 
-    private Sleepmost main;
-    private static Bootstrapper instance;
     private ISleepService sleepService;
     private IMessageService messageService;
     private IConfigRepository configRepository;
@@ -25,44 +23,30 @@ public class Bootstrapper {
     private IFlagService flagService;
     private IConfigService configService;
 
-    public IConfigRepository getConfigRepository() {
-        return configRepository;
-    }
-
-    public IMessageService getMessageService() {
-        return messageService;
-    }
+    private static Bootstrapper instance;
 
     private Bootstrapper(){ }
 
     public void initialize(Sleepmost main){
-        this.main = main;
 
-        //repos
-        this.updateRepository = new UpdateRepository("60623");
-        this.cooldownRepository = new CooldownRepository();
         this.configRepository = new ConfigRepository(main);
-        this.flagsRepository = new FlagsRepository(this.configRepository);
-
-        //services
         this.configService = new ConfigService(main);
-        this.updateService = new UpdateService(this.updateRepository, main, this.configService);
-        this.cooldownService = new CooldownService(this.cooldownRepository, this.configRepository);
 
-        this.sleepService = new SleepService(main ,
-                this.configService, this.configRepository,
-                this.flagsRepository.getCalculationMethodFlag(),
-                this.flagsRepository.getPlayersRequiredFlag(),
-                this.flagsRepository.getUseAfkFlag(),
-                this.flagsRepository.getSkipDelayFlag());
+        this.messageService = new MessageService(configRepository);
 
-        this.messageService = new MessageService(this.configRepository, this.sleepService);
-        this.flagService = new FlagService(this.flagsRepository, this.configRepository, this.configService, this.messageService);
+        this.updateRepository = new UpdateRepository("60623");
+        this.updateService = new UpdateService(updateRepository, main, configService);
 
-        //mappers
+        this.cooldownRepository = new CooldownRepository();
+        this.cooldownService = new CooldownService(cooldownRepository, configRepository);
+
+        this.flagsRepository = new FlagsRepository(configRepository);
+        this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService);
+
+        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService);
+
+        //inits
         this.configMessageMapper = ConfigMessageMapper.getMapper();
-
-        //independent inits
         this.configMessageMapper.initialize(main);
         this.flagService.reportIllegalValues();
     }
@@ -72,6 +56,14 @@ public class Bootstrapper {
         if(instance == null)
             instance = new Bootstrapper();
         return instance;
+    }
+
+    public IConfigRepository getConfigRepository() {
+        return configRepository;
+    }
+
+    public IMessageService getMessageService() {
+        return messageService;
     }
 
     public ConfigMessageMapper getConfigMessageMapper() {

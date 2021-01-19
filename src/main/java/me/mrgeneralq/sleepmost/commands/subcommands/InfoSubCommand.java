@@ -7,7 +7,6 @@ import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import static java.util.Comparator.comparing;
 import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
@@ -36,7 +35,7 @@ public class InfoSubCommand implements ISubCommand {
 
         World world = CommandSenderUtils.getWorldOf(sender);
 
-        if(!sleepService.enabledForWorld(world))
+        if(!sleepService.isEnabledAt(world))
         {
             sender.sendMessage(messageService.fromTemplate(MessageTemplate.DISABLED_FOR_WORLD));
             return true;
@@ -60,10 +59,5 @@ public class InfoSubCommand implements ISubCommand {
                 .setPlaceHolder("%flagName%", flag.getName())
                 .setPlaceHolder("%value%", this.flagService.getValueDisplayName(flag, flag.getValueAt(world)))
                 .build();
-
-        //this.flagService.flagAction(flag, f -> f.getSerialization().getDisplayName(f.getValueAt(world)))
-        //flag.getSerialization().getDisplayName(flag.getValueAt(world))
     }
-
-
 }

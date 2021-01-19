@@ -2,27 +2,26 @@ package me.mrgeneralq.sleepmost.runnables;
 
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
-import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
-import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class NightcycleAnimationTask extends BukkitRunnable {
 
     private final ISleepService sleepService;
-    private final IMessageService messageService;
-    private final DataContainer dataContainer;
+    private final DataContainer dataContainer = DataContainer.getContainer();
     private final World world;
     private final String lastSleeperName;
+    private final String lastSLeeperDisplayName;
+    private final SleepSkipCause skipCause;
 
-    public NightcycleAnimationTask(ISleepService sleepService, IMessageService messageService, World world, String lastSleeperName) {
+    public NightcycleAnimationTask(ISleepService sleepService, World world, Player lastSleeper, SleepSkipCause sleepSkipCause) {
         this.sleepService = sleepService;
-        this.messageService = messageService;
         this.world = world;
-        this.lastSleeperName = lastSleeperName;
-        this.dataContainer = DataContainer.getContainer();
+        this.lastSleeperName = lastSleeper.getName();
+        this.lastSLeeperDisplayName = lastSleeper.getDisplayName();
+        this.skipCause = sleepSkipCause;
     }
 
     @Override
@@ -33,10 +32,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
             //remove animation checker
             this.dataContainer.setAnimationRunning(world, false);
 
-            world.setThundering(false);
-            world.setStorm(false);
-
-            Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, SleepSkipCause.NIGHT_TIME, "",""));
+            this.sleepService.executeSleepReset(world, this.lastSleeperName, this.lastSLeeperDisplayName, this.skipCause);
             this.cancel();
         }
 

@@ -5,17 +5,21 @@ import org.bukkit.World;
 
 public interface IConfigRepository {
 
-    double getPercentageRequired(World world);
-    boolean containsWorld(World world);
-    String getString(String string);
-    int getCooldown();
-    boolean getMobNoTarget(World world);
-    boolean getUseExempt(World world);
+    //General
     String getPrefix();
-    void reloadConfig();
+    int getCooldown();
+    String getString(String path);
+    Object get(String path);
+    void reload();
+
+    //Worlds
     void addWorld(World world);
-    void removeWorld(World world);
+    @Deprecated void removeWorld(World world);
+    boolean containsWorld(World world);
     void disableForWorld(World world);
+    void enableForWorld(World world);
+
+    //Flags
     void setFlagValue(ISleepFlag<?> flag, World world, Object value);
     Object getFlagValue(ISleepFlag<?> flag, World world);
 }

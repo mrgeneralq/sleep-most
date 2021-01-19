@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.mrgeneralq.sleepmost.flags.PreventPhantomFlag;
+import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -9,11 +9,11 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 
 public class EntitySpawnEventListener implements Listener
 {
-	private final PreventPhantomFlag preventPhantomFlag;
+	private final IFlagsRepository flagsRepository;
 
-	public EntitySpawnEventListener(PreventPhantomFlag preventPhantomFlag)
+	public EntitySpawnEventListener(IFlagsRepository flagsRepository)
 	{
-		this.preventPhantomFlag = preventPhantomFlag;
+		this.flagsRepository = flagsRepository;
 	}
 
 	@EventHandler
@@ -24,7 +24,7 @@ public class EntitySpawnEventListener implements Listener
 		if(!isPhantom(e.getEntityType()))
 			return;
 
-		if(!this.preventPhantomFlag.getValueAt(world))
+		if(!this.flagsRepository.getPreventPhantomFlag().getValueAt(world))
 			return;
 
 		e.setCancelled(true);
