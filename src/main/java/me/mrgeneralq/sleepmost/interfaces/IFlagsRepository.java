@@ -24,5 +24,8 @@ public interface IFlagsRepository
     CalculationMethodFlag getCalculationMethodFlag();
     PlayersRequiredFlag getPlayersRequiredFlag();
     SkipDelayFlag getSkipDelayFlag();
+    HealFlag getHealFlag();
+    FeedFlag getFeedFlag();
+
     //TestFlag getTestFlag();
 }
