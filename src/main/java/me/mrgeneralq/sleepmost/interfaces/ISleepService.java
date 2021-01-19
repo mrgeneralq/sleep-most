@@ -3,6 +3,8 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public interface ISleepService
 {
     //General
@@ -14,6 +16,9 @@ public interface ISleepService
     void enableAt(World world);
     void disableAt(World world);
     int getSleepersAmount(World world);
+
+    List<Player> getSleepers(World world);
+
     int getPlayerCountInWorld(World world);
     double getSleepersPercentage(World world);
     int getRequiredSleepersCount(World world);

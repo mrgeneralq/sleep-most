@@ -47,7 +47,7 @@ public class Sleepmost extends JavaPlugin{
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new PlayerSleepEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository()), this);
 		pm.registerEvents(new PlayerQuitEventListener(bootstrapper.getCooldownService()), this);
-		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getMessageService(), bootstrapper.getConfigService(), bootstrapper.getSleepService()), this);
+		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getMessageService(), bootstrapper.getConfigService(), bootstrapper.getSleepService(), bootstrapper.getFlagsRepository()), this);
 		pm.registerEvents(new EntityTargetLivingEntityEventListener(bootstrapper.getFlagsRepository()), this);
 		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService()), this);
 		pm.registerEvents(new PlayerJoinEventListener(this,bootstrapper.getUpdateService(), bootstrapper.getMessageService()), this);

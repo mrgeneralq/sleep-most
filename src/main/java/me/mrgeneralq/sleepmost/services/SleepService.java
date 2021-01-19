@@ -13,6 +13,9 @@ import org.bukkit.entity.Player;
 
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SleepService implements ISleepService {
@@ -60,6 +63,11 @@ public class SleepService implements ISleepService {
     @Override
     public int getSleepersAmount(World world) {
         return this.dataContainer.getSleepingPlayers(world).size();
+    }
+
+    @Override
+    public List<Player> getSleepers(World world){
+        return new ArrayList<>(this.dataContainer.getSleepingPlayers(world));
     }
 
     @Override
