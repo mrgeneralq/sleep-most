@@ -20,6 +20,6 @@ public interface IConfigRepository {
     void enableForWorld(World world);
 
     //Flags
-    <V> void setFlagValue(ISleepFlag<V> flag, World world, V value);
+    void setFlagValue(ISleepFlag<?> flag, World world, Object value);
     Object getFlagValue(ISleepFlag<?> flag, World world);
 }
