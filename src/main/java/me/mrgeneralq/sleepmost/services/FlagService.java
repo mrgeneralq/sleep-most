@@ -1,15 +1,14 @@
 package me.mrgeneralq.sleepmost.services;
 
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
-import me.mrgeneralq.sleepmost.flags.types.EnumFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.AbstractMap.SimpleEntry;
 
-import static java.util.stream.Collectors.toList;
+import java.util.*;
+
 import static java.util.stream.Collectors.toMap;
 
 public class FlagService implements IFlagService
@@ -32,6 +31,12 @@ public class FlagService implements IFlagService
     }
 
     @Override
+    public boolean isAfkFlagUsable()
+    {
+        return PLACEHOLDER_API_ENABLED && ESSENTIALS_ENABLED;
+    }
+
+    @Override
     public void reportIllegalValues()
     {
         getWorldsWithIllegalValues().forEach(this::notifyAboutIllegalValues);
@@ -45,56 +50,6 @@ public class FlagService implements IFlagService
         flag.setValueAt(world, deserializedValue);
     }
 
-    @Override
-    public boolean isAfkFlagUsable()
-    {
-        return PLACEHOLDER_API_ENABLED && ESSENTIALS_ENABLED;
-    }
-
-    @Override
-    public List<String> getValuesSuggestions(ISleepFlag<?> flag)
-    {
-        if(flag instanceof EnumFlag)
-        {
-            EnumFlag<?> enumFlag = (EnumFlag<?>) flag;
-
-            return Arrays.stream(enumFlag.getEnumClass().getEnumConstants())
-                    .map(enumInstance -> getValueDisplayName(enumFlag, enumInstance))
-                    .collect(toList());
-        }
-        return Collections.emptyList();
-    }
-
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <V> String getValueDisplayName(ISleepFlag<V> flag, Object value)
-    {
-        return flag.getDisplayName((V) value);
-    }
-
-    @Override
-    public <V, R> R flagAction(ISleepFlag<V> flag, Function<ISleepFlag<V>, R> function)
-    {
-        return function.apply(flag);
-    }
-
-    @Override
-    public Map<World, Map<ISleepFlag<?>, Object>> getWorldsWithIllegalValues()
-    {
-        return this.configService.getEnabledWorlds().stream()
-                .map(world -> new AbstractMap.SimpleEntry<>(world, findIllegalValuesAt(world)))
-                .filter(entry -> !entry.getValue().isEmpty())
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
-    private Map<ISleepFlag<?>, Object> findIllegalValuesAt(World world)
-    {
-        return this.flagsRepository.getFlags().stream()
-                .map(flag -> new AbstractMap.SimpleEntry<>(flag, configRepository.getFlagValue(flag, world)))
-                .filter(entry -> !entry.getKey().isValidValue(entry.getValue()))
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
     private void notifyAboutIllegalValues(World world, Map<ISleepFlag<?>, Object> illegalValues)
     {
         illegalValues.forEach((flag, value) ->
@@ -107,5 +62,19 @@ public class FlagService implements IFlagService
         });
         this.configRepository.disableForWorld(world);
         Bukkit.getConsoleSender().sendMessage(messageService.newPrefixedBuilder("&4Therefore the world was &cAuto DISABLED.").build());
+    }
+    private Map<World, Map<ISleepFlag<?>, Object>> getWorldsWithIllegalValues()
+    {
+        return this.configService.getEnabledWorlds().stream()
+                .map(world -> new SimpleEntry<>(world, findIllegalValuesAt(world)))
+                .filter(entry -> !entry.getValue().isEmpty())
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+    private Map<ISleepFlag<?>, Object> findIllegalValuesAt(World world)
+    {
+        return this.flagsRepository.getFlags().stream()
+                .map(flag -> new SimpleEntry<>(flag, configRepository.getFlagValue(flag, world)))
+                .filter(entry -> !entry.getKey().isValidValue(entry.getValue()))
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }
