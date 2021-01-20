@@ -1,6 +1,6 @@
 # WELCOME TO THE OFFICAL SLEEP-MOST PLUGIN
 # AUTHORS: MrGeneralQ, HorrendousEntity
-# VERSION: 4.6.1
+# VERSION: 4.8.0
 # SUPPORT NEEDED? Join our discord at --> https://discord.pseudonova.com/ WE ARE HAPPY TO HELP YOU FURTHER!
 # YOU CAN FIND THE DOCS FOR THIS PLUGIN HERE --> https://mrgeneralq.gitbook.io/sleepmost/
 
@@ -13,7 +13,7 @@ sleep:
   world:
     enabled: true
     calculation-method: percentage
-    percentage-required: 0.50
+    percentage-required: 0.5
     players-required: 5
     mob-no-target: true
     use-exempt: false
@@ -30,7 +30,7 @@ sleep:
   world2:
     enabled: false
     calculation-method: percentage
-    percentage-required: 0.50
+    percentage-required: 0.5
     players-required: 5
     mob-no-target: true
     use-exempt: false

@@ -15,7 +15,6 @@ import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SleepService implements ISleepService {
@@ -200,6 +199,10 @@ public class SleepService implements ISleepService {
 
     private void runSkipAnimation(Player player, SleepSkipCause sleepSkipCause) {
         World world = player.getWorld();
+
+        if(this.dataContainer.isAnimationRunningAt(world))
+            return;
+
         dataContainer.setAnimationRunning(world, true);
         new NightcycleAnimationTask(this, world, player, sleepSkipCause).runTaskTimer(this.main, 0, 1);
     }

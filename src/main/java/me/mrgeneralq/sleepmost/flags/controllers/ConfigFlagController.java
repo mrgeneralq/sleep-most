@@ -18,6 +18,10 @@ public class ConfigFlagController<V> extends AbstractFlagController<V>
     {
         Object configValue = this.configRepository.getFlagValue(this.flag, world);
 
+        if(configValue == null){
+            configValue = this.flag.getDefaultValue();
+        }
+
         return this.flag.getSerialization().parseValueFrom(configValue);
     }
 

@@ -64,6 +64,15 @@ public class ConfigRepository implements IConfigRepository
         main.getConfig().set(getFlagValuePath("prevent-phantom", worldName), false);
         main.getConfig().set(getFlagValuePath("nightcycle-animation", worldName), false);
         main.getConfig().set(getFlagValuePath("storm-sleep", worldName), false);
+        main.getConfig().set(getFlagValuePath("skip-delay", worldName), 0);
+        main.getConfig().set(getFlagValuePath("heal", worldName), false);
+        main.getConfig().set(getFlagValuePath("feed", worldName), false);
+
+        //skip-delay
+        //storm-sleep
+        //use-afk
+        //use-exempt
+
         main.saveConfig();
     }
 
@@ -77,7 +86,8 @@ public class ConfigRepository implements IConfigRepository
     @Deprecated
     @Override
     public boolean containsWorld(World world) {
-        return worldExists(world.getName()) && main.getConfig().getBoolean(String.format("sleep.%s.enabled", world.getName()));
+        return worldExists(world.getName()) &&
+                main.getConfig().getBoolean(String.format("sleep.%s.enabled", world.getName()));
     }
 
     @Override

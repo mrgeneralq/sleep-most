@@ -27,7 +27,6 @@ public class FlagsRepository implements IFlagsRepository
     private final SkipDelayFlag skipDelayFlag;
     private final HealFlag healFlag;
     private final FeedFlag feedFlag;
-    //private TestFlag testFlag;
 
     public FlagsRepository(IConfigRepository configRepository)
     {
@@ -44,7 +43,6 @@ public class FlagsRepository implements IFlagsRepository
         setupFlag(this.skipDelayFlag = new SkipDelayFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.healFlag = new HealFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.feedFlag = new FeedFlag(new ConfigFlagController<>(configRepository)));
-
     }
 
     @Override
@@ -107,14 +105,10 @@ public class FlagsRepository implements IFlagsRepository
     @Override public SkipDelayFlag getSkipDelayFlag() {
         return this.skipDelayFlag;
     }
-
-    @Override
-    public HealFlag getHealFlag() {
+    @Override public HealFlag getHealFlag() {
         return this.healFlag;
     }
-
-    @Override
-    public FeedFlag getFeedFlag() {
+    @Override public FeedFlag getFeedFlag() {
         return this.feedFlag;
     }
 

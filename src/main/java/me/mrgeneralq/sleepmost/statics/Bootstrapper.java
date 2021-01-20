@@ -45,10 +45,11 @@ public class Bootstrapper {
 
         this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService);
 
-        //inits
         this.configMessageMapper = ConfigMessageMapper.getMapper();
         this.configMessageMapper.initialize(main);
-        this.flagService.reportIllegalValues();
+
+        //setups
+        this.flagService.reportProblematicValues();
     }
 
     public static Bootstrapper getBootstrapper(){
