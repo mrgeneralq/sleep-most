@@ -56,6 +56,7 @@ public class Sleepmost extends JavaPlugin{
 		
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
 	}
+
 	private void notifyIfNewUpdateExists(IUpdateService updateService) 
 	{
 		if(updateService.hasUpdate())
