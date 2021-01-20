@@ -26,6 +26,4 @@ public interface IFlagsRepository
     SkipDelayFlag getSkipDelayFlag();
     HealFlag getHealFlag();
     FeedFlag getFeedFlag();
-
-    //TestFlag getTestFlag();
 }

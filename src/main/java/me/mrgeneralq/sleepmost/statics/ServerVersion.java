@@ -16,7 +16,6 @@ public enum ServerVersion
     //settings
     private boolean supportsHexColors;
     private boolean supportsTitles;
-    private boolean sleepCalculatedDifferently;
 
     //the cached current server version
     public static final ServerVersion CURRENT_VERSION;
@@ -32,7 +31,6 @@ public enum ServerVersion
 
         forVersionsFrom(V1_16, version -> version.supportsHexColors = true);
         forVersionsFrom(V1_14, version -> version.supportsTitles = true);
-        forVersionsUntil(V1_13, version -> version.sleepCalculatedDifferently = true);
     }
     ServerVersion()
     {
@@ -49,10 +47,6 @@ public enum ServerVersion
     public boolean supportsTitles()
     {
         return this.supportsTitles;
-    }
-    public boolean sleepCalculatedDifferently()
-    {
-        return this.sleepCalculatedDifferently;
     }
 
     //Setup methods

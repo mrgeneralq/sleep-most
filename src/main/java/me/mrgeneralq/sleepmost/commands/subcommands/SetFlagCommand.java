@@ -8,12 +8,9 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class SetFlagCommand implements ISubCommand, TabCompleter {
+public class SetFlagCommand implements ISubCommand
+{
 
     private final ISleepService sleepService;
     private final IMessageService messageService;
@@ -79,21 +76,6 @@ public class SetFlagCommand implements ISubCommand, TabCompleter {
                 .setPlaceHolder("%world", world.getName())
                 .build());
         return true;
-    }
-
-
-    @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
-
-
-        List<String> list = new ArrayList<>();
-      //  list.add("aaaa");
-      //  list.add("bbbb");
-
-        //if(args.length == 2)
-            return list;
-
-     //   return null;
     }
 
     private String getUsageCommand(ISleepFlag<?> flag)

@@ -6,7 +6,7 @@ import org.bukkit.World;
 public interface IFlagService
 {
     boolean isAfkFlagUsable();
-    void reportIllegalValues();
+    void reportProblematicValues();
     <V> void setStringValueAt(ISleepFlag<V> flag, World world, String stringValue);
     <V> String getValueDisplayName(ISleepFlag<V> flag, Object value);
 }
