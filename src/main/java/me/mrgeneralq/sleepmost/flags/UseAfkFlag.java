@@ -5,9 +5,7 @@ import me.mrgeneralq.sleepmost.flags.types.BooleanFlag;
 
 public class UseAfkFlag extends BooleanFlag
 {
-    public UseAfkFlag(AbstractFlagController<Boolean> controller)
-    {
-        super("use-afk", controller);
+    public UseAfkFlag(AbstractFlagController<Boolean> controller) {
+        super("use-afk", controller, false);
     }
-
 }

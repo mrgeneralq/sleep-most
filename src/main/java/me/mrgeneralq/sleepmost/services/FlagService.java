@@ -61,14 +61,14 @@ public class FlagService implements IFlagService
     {
         illegalValues.forEach((flag, value) ->
         {
-            Bukkit.getConsoleSender().sendMessage(messageService.newPrefixedBuilder("&cThe value of the &e%flagName &cflag at &b%worldName &cis &4illegal(&c%value&4)")
+            Bukkit.getConsoleSender().sendMessage(messageService.newPrefixedBuilder("&cThe value of the &e%flagName &cflag at &b%worldName &cis &4illegal(&c%value&4) and was reset.")
                     .setPlaceHolder("%flagName", flag.getName())
                     .setPlaceHolder("%value", value.toString())
                     .setPlaceHolder("%worldName", world.getName())
                     .build());
+
+            setDefaultValueAt(world, flag);
         });
-        this.configRepository.disableForWorld(world);
-        Bukkit.getConsoleSender().sendMessage(messageService.newPrefixedBuilder("&4Therefore the world was &cAuto DISABLED.").build());
     }
     private Map<World, Map<ISleepFlag<?>, Object>> getWorldsWithIllegalValues()
     {
@@ -79,9 +79,30 @@ public class FlagService implements IFlagService
     }
     private Map<ISleepFlag<?>, Object> getIllegalValuesAt(World world)
     {
-        return this.flagsRepository.getFlags().stream()
+        Map<ISleepFlag<?>, Object> illegalValues = new HashMap<>();
+
+        for(ISleepFlag<?> flag : this.flagsRepository.getFlags()){
+
+            Object configValue = this.configRepository.getFlagValue(flag, world);
+
+            if(configValue == null) {
+                System.out.println(String.format("%s flag wasn't found in the config, it was created with its default value.", flag.getName()));
+                setDefaultValueAt(world, flag);
+                continue;
+            }
+            if(!flag.isValidValue(configValue))
+                illegalValues.put(flag, configValue);
+        }
+        return illegalValues;
+
+        /*return this.flagsRepository.getFlags().stream()
                 .map(flag -> new SimpleEntry<>(flag, this.configRepository.getFlagValue(flag, world)))
                 .filter(entry -> !entry.getKey().isValidValue(entry.getValue()))
-                .collect(toMap(Entry::getKey, Entry::getValue));
+                .collect(toMap(Entry::getKey, Entry::getValue));*/
+    }
+    private <V> void setDefaultValueAt(World world, ISleepFlag<V> flag){
+        V defaultValue = flag.getDefaultValue();
+
+        flag.setValueAt(world, defaultValue);
     }
 }

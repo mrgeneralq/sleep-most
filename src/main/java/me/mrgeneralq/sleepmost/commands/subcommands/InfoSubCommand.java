@@ -37,7 +37,7 @@ public class InfoSubCommand implements ISubCommand {
 
         if(!sleepService.isEnabledAt(world))
         {
-            sender.sendMessage(messageService.fromTemplate(MessageTemplate.DISABLED_FOR_WORLD));
+            sender.sendMessage(messageService.fromTemplate(MessageTemplate.ALREADY_DISABLED_FOR_WORLD));
             return true;
         }
         sender.sendMessage(colorize("&b*********************************************"));

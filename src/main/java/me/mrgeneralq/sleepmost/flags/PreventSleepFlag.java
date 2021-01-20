@@ -7,6 +7,6 @@ public class PreventSleepFlag extends BooleanFlag
 {
     public PreventSleepFlag(AbstractFlagController<Boolean> controller)
     {
-       super("prevent-sleep", controller);
+       super("prevent-sleep", controller, false);
     }
 }

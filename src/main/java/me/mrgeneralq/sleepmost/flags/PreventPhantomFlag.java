@@ -7,6 +7,6 @@ public class PreventPhantomFlag extends BooleanFlag
 {
     public PreventPhantomFlag(AbstractFlagController<Boolean> controller)
     {
-        super("prevent-phantom", controller);
+        super("prevent-phantom", controller, false);
     }
 }

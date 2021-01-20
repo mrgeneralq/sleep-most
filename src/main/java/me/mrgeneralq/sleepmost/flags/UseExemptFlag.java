@@ -7,6 +7,6 @@ public class UseExemptFlag extends BooleanFlag
 {
 	public UseExemptFlag(AbstractFlagController<Boolean> controller)
 	{
-		super("use-exempt", controller);
+		super("use-exempt", controller, false);
 	}
 }

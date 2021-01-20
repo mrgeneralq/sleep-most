@@ -7,7 +7,7 @@ import me.mrgeneralq.sleepmost.flags.serialization.DoubleSerialization;
 public class PercentageRequiredFlag extends DoubleFlag
 {
     public PercentageRequiredFlag(AbstractFlagController<Double> controller) {
-        super("percentage-required", "<0.1 - 1>", controller);
+        super("percentage-required", "<0.1 - 1>", controller, 0.5);
     }
 
     @Override
