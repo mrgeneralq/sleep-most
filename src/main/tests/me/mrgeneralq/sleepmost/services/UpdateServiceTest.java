@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 public class UpdateServiceTest {
 
@@ -27,13 +28,24 @@ public class UpdateServiceTest {
         this.configService = Mockito.mock(IConfigService.class);
 
         this.updateService = new UpdateService(this.updateRepository, this.sleepmost, this.configService);
+
+
+
+
         
     }
 
     @Test
     public void hasUpdate() {
+/*
+        String testRemoteVersion = "3.2.1";
 
+        when(updateRepository.getLatestVersion()).thenReturn(testRemoteVersion);
+        when(sleepmost.getDescription().getVersion()).thenReturn("3.2.0");
 
+        assertEquals(testRemoteVersion, this.updateService.getCurrentVersion());
+
+*/
     }
 
     @Test
