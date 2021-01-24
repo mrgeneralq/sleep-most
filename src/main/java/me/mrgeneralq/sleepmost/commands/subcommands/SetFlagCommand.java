@@ -28,26 +28,26 @@ public class SetFlagCommand implements ISubCommand
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!CommandSenderUtils.hasWorld(sender)){
-            sender.sendMessage(messageService.fromTemplate(MessageTemplate.NO_CONSOLE_COMMAND));
+            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.NO_CONSOLE_COMMAND));
             return true;
         }
 
         World world = CommandSenderUtils.getWorldOf(sender);
 
         if(!sleepService.isEnabledAt(world)){
-            sender.sendMessage(messageService.fromTemplate(MessageTemplate.CURRENTLY_DISABLED));
+            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.CURRENTLY_DISABLED));
             return true;
         }
 
         if(args.length < 2) {
-            sender.sendMessage(messageService.newPrefixedBuilder("&btype &e/sleepmost setflag <flag> <value>").build());
+            this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&btype &e/sleepmost setflag <flag> <value>").build());
             return true;
         }
         String flagName = args[1];
 
         if(!flagsRepository.flagExists(flagName)) {
-            sender.sendMessage(messageService.newPrefixedBuilder("&cThis flag does not exist!").build());
-            sender.sendMessage(messageService.newBuilder("&bPossible flags are: &e%flagsNames")
+            this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&cThis flag does not exist!").build());
+            this.messageService.sendMessage(sender, messageService.newBuilder("&bPossible flags are: &e%flagsNames")
                     .setPlaceHolder("%flagsNames", StringUtils.join(flagsRepository.getFlagsNames(), ", "))
                     .build());
             return true;
@@ -55,7 +55,7 @@ public class SetFlagCommand implements ISubCommand
         ISleepFlag<?> sleepFlag = flagsRepository.getFlag(flagName);
 
         if(args.length < 3){
-            sender.sendMessage(messageService.newPrefixedBuilder("&cMissing value! Use &e%usageCommand")
+            this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&cMissing value! Use &e%usageCommand")
                     .setPlaceHolder("%usageCommand", getUsageCommand(sleepFlag))
                     .build());
             return true;
@@ -63,14 +63,14 @@ public class SetFlagCommand implements ISubCommand
         String stringValue = args[2];
 
         if(!sleepFlag.isValidValue(stringValue)) {
-            sender.sendMessage(messageService.newPrefixedBuilder("&cInvalid format! Use &e%usageCommand")
+            this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&cInvalid format! Use &e%usageCommand")
                     .setPlaceHolder("%usageCommand", getUsageCommand(sleepFlag))
                     .build());
             return true;
         }
         this.sleepFlagService.setStringValueAt(sleepFlag, world, stringValue);
 
-        sender.sendMessage(messageService.newPrefixedBuilder("&bFlag &c%flag &bis now set to &e%value &bfor world &e%world")
+        this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&bFlag &c%flag &bis now set to &e%value &bfor world &e%world")
                 .setPlaceHolder("%flag", sleepFlag.getName())
                 .setPlaceHolder("%value", stringValue)
                 .setPlaceHolder("%world", world.getName())

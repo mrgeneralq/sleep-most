@@ -43,7 +43,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("version", new VersionSubCommand(this.updateService, this.messageService));
 
 		//enable when debugging
-		//subCommands.put("test", new TestCommand());
+		//subCommands.put("test", new TestCommand(this.messageService));
 	}
 
 
@@ -55,7 +55,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		if(args.length == 0){
 
 			if(!sender.hasPermission("sleepmost.help")){
-				sender.sendMessage(messageService.fromTemplate(MessageTemplate.NO_PERMISSION));
+				this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.NO_PERMISSION));
 				return true;
 			}
 			sender.sendMessage(colorize("&b*********************************************"));
@@ -77,7 +77,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		// check if player has permission of command
 		if(!sender.hasPermission("sleepmost." + subCommandStr))
 		{
-			sender.sendMessage(messageService.fromTemplate(MessageTemplate.NO_PERMISSION));
+			this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.NO_PERMISSION));
 			return true;
 		}
 

@@ -1,10 +1,12 @@
 package me.mrgeneralq.sleepmost.messages;
+
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.statics.ConfigMessageMapper;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class MessageService implements IMessageService {
@@ -23,7 +25,7 @@ public class MessageService implements IMessageService {
 	}
 
 	@Override
-	public void sendMessageToWorld(ConfigMessage message, World world) {
+	public void sendWorldMessage(ConfigMessage message, World world) {
 
 		String configMessage = this.messageMapper.getMessagePath(message);
 
@@ -42,12 +44,8 @@ public class MessageService implements IMessageService {
 	@Override
 	public String getPlayersLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount) {
 
-		World world = player.getWorld();
 		ConfigMessage skipCauseConfigMessage = this.getSleepSkipCauseMessage(cause);
 		String message = this.getConfigMessage(skipCauseConfigMessage);
-
-		//sleepService.getSleepingPlayersAmount(world)
-		//
 
 		return newPrefixedBuilder(message)
 				.usePrefix(false)
@@ -58,7 +56,20 @@ public class MessageService implements IMessageService {
 	}
 
 	@Override
-	public void sendMessageToWorld(World world, String message) {
+	public void sendMessage(CommandSender sender, String message)
+	{
+		if(message.isEmpty()) {
+			return;
+		}
+		sender.sendMessage(message);
+	}
+
+	@Override
+	public void sendWorldMessage(World world, String message) {
+
+		if(message.isEmpty())
+			return;
+
 		String finalMessage = newPrefixedBuilder(message).build();
 
 		for(Player p: world.getPlayers())
@@ -69,7 +80,8 @@ public class MessageService implements IMessageService {
 	public void sendPlayerLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount) {
 		World world = player.getWorld();
 		String message = this.getPlayersLeftMessage(player, cause, sleepingPlayersAmount, requiredPlayersAmount);
-		this.sendMessageToWorld(world, message);
+
+		this.sendWorldMessage(world, message);
 	}
 	
 	@Override
@@ -78,8 +90,8 @@ public class MessageService implements IMessageService {
 
 		String skipMessage = ConfigMessageMapper.getMapper().getMessage(message, false)
 				.replace("%player%", lastSleeperName);
-		
-		sendMessageToWorld(world, skipMessage);
+
+		sendWorldMessage(world, skipMessage);
 	}
 
 	@Override

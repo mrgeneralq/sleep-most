@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import org.bukkit.ChatColor;
@@ -11,12 +12,18 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class TestCommand implements ISubCommand
 {
+    private final IMessageService messageService;
+
+    public TestCommand(IMessageService messageService){
+        this.messageService = messageService;
+    }
+
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
         if(!(sender instanceof Player))
         {
-            sender.sendMessage(ChatColor.RED + "You must be a player to run this.");
+            this.messageService.sendMessage(sender, ChatColor.RED + "You must be a player to run this.");
             return false;
         }
         Player player = (Player) sender;
