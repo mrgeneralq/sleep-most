@@ -67,12 +67,6 @@ public class ConfigRepository implements IConfigRepository
         main.getConfig().set(getFlagValuePath("skip-delay", worldName), 0);
         main.getConfig().set(getFlagValuePath("heal", worldName), false);
         main.getConfig().set(getFlagValuePath("feed", worldName), false);
-
-        //skip-delay
-        //storm-sleep
-        //use-afk
-        //use-exempt
-
         main.saveConfig();
     }
 

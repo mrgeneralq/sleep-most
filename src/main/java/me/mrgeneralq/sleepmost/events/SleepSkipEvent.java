@@ -1,6 +1,7 @@
 package me.mrgeneralq.sleepmost.events;
 
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
+import me.mrgeneralq.sleepmost.messages.MessageService;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;

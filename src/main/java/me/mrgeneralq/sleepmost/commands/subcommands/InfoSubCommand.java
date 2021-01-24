@@ -29,7 +29,7 @@ public class InfoSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!CommandSenderUtils.hasWorld(sender)){
-            sender.sendMessage(messageService.fromTemplate(MessageTemplate.NO_CONSOLE_COMMAND));
+            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.NO_CONSOLE_COMMAND));
             return true;
         }
 
@@ -37,7 +37,7 @@ public class InfoSubCommand implements ISubCommand {
 
         if(!sleepService.isEnabledAt(world))
         {
-            sender.sendMessage(messageService.fromTemplate(MessageTemplate.CURRENTLY_DISABLED));
+            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.CURRENTLY_DISABLED));
             return true;
         }
         sender.sendMessage(colorize("&b*********************************************"));

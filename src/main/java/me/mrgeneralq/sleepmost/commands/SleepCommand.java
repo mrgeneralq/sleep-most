@@ -24,19 +24,19 @@ public class SleepCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(messageService.fromTemplate(MessageTemplate.ONLY_PLAYERS_COMMAND));
+            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.ONLY_PLAYERS_COMMAND));
             return true;
         }
         Player player = (Player) sender;
 
         if (!player.hasPermission("sleepmost.sleep")) {
-            player.sendMessage(this.messageService.fromTemplate(MessageTemplate.NO_PERMISSION));
+            this.messageService.sendMessage(player, this.messageService.fromTemplate(MessageTemplate.NO_PERMISSION));
             return true;
         }
         World world = player.getWorld();
 
         if (!this.sleepService.resetRequired(world)) {
-            player.sendMessage(messageService.fromTemplate(MessageTemplate.CANNOT_SLEEP_NOW));
+            this.messageService.sendMessage(player, messageService.fromTemplate(MessageTemplate.CANNOT_SLEEP_NOW));
             return true;
         }
         boolean updatedSleepStatus = !this.sleepService.isPlayerAsleep(player);
@@ -53,7 +53,7 @@ public class SleepCommand implements CommandExecutor {
             cooldownService.startCooldown(player);
         }
 
-        player.sendMessage(this.messageService.fromTemplate(getStatusTemplate(updatedSleepStatus)));
+        this.messageService.sendMessage(player, this.messageService.fromTemplate(getStatusTemplate(updatedSleepStatus)));
         return true;
     }
     private MessageTemplate getStatusTemplate(boolean sleepingStatus){

@@ -50,7 +50,7 @@ public class PlayerSleepEventListener implements Listener {
 
             String preventSleepStormMessage = messageService.getConfigMessage(ConfigMessage.NO_SLEEP_THUNDERSTORM);
 
-            player.sendMessage(messageService.newBuilder(preventSleepStormMessage)
+            this.messageService.sendMessage(player, messageService.newBuilder(preventSleepStormMessage)
                     .usePrefix(false)
                     .setPlayer(player)
                     .setWorld(world)
@@ -64,7 +64,7 @@ public class PlayerSleepEventListener implements Listener {
 
             String sleepPreventedConfigMessage = messageService.getConfigMessage(ConfigMessage.SLEEP_PREVENTED);
 
-            player.sendMessage(messageService.newPrefixedBuilder(sleepPreventedConfigMessage)
+            this.messageService.sendMessage(player, messageService.newPrefixedBuilder(sleepPreventedConfigMessage)
                     .setPlayer(player)
                     .setWorld(world)
                     .build());

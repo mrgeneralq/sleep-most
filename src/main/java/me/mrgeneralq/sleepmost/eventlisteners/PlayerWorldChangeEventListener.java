@@ -37,6 +37,6 @@ public class PlayerWorldChangeEventListener implements Listener {
         if(sleepService.isEnabledAt(world))
             return;
 
-        player.sendMessage(messageService.fromTemplate(MessageTemplate.CURRENTLY_DISABLED));
+        this.messageService.sendMessage(player, messageService.fromTemplate(MessageTemplate.CURRENTLY_DISABLED));
     }
 }

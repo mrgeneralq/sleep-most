@@ -62,7 +62,6 @@ public class SleepSkipEventListener implements Listener {
             if (shouldFeed)
                 p.setFoodLevel(20);
         });
-
         this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
         this.sleepService.clearSleepersAt(world);
     }

@@ -18,6 +18,10 @@ public class MessageBuilder {
     public String build(){
         String finalMessage = this.message.trim();
 
+        if(finalMessage.isEmpty()) {
+            return "";
+        }
+
         if(usePrefix)
             finalMessage = String.format("%s %s", this.prefix, finalMessage).trim();
 
