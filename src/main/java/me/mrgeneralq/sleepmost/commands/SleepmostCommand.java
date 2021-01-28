@@ -23,19 +23,21 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	private final IUpdateService updateService;
 	private final IFlagService flagService;
 	private final IFlagsRepository flagsRepository;
+	private final IConfigRepository configRepository;
 
-	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository){
+	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository, IConfigRepository configRepository){
 		this.sleepService = sleepService;
 		this.messageService = messageService;
 		this.updateService = updateService;
 		this.flagService = flagService;
 		this.flagsRepository = flagsRepository;
+		this.configRepository = configRepository;
 
 		this.registerSubCommands();
 	}
 
 	private void registerSubCommands(){
-		subCommands.put("reload", new ReloadSubCommand(this.sleepService, this.messageService));
+		subCommands.put("reload", new ReloadSubCommand(this.sleepService, this.messageService, this.flagService));
 		subCommands.put("enable", new EnableSubCommand(this.sleepService,this.messageService));
 		subCommands.put("disable", new DisableSubCommand(this.sleepService, this.messageService));
 		subCommands.put("setflag", new SetFlagCommand(this.sleepService, this.messageService, this.flagService, this.flagsRepository));
@@ -43,7 +45,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("version", new VersionSubCommand(this.updateService, this.messageService));
 
 		//enable when debugging
-		//subCommands.put("test", new TestCommand(this.messageService));
+		//subCommands.put("test", new TestCommand(this.messageService, this.flagsRepository, this.configRepository));
 	}
 
 

@@ -5,6 +5,8 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.statics.ConfigMessageMapper;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -74,6 +76,18 @@ public class MessageService implements IMessageService {
 
 		for(Player p: world.getPlayers())
 			p.sendMessage(finalMessage);
+	}
+
+	@Override
+	public void sendOPMessage(String message)
+	{
+		if(message.isEmpty())
+			return;
+
+		Bukkit.getOperators().stream()
+				.filter(OfflinePlayer::isOnline)
+				.map(OfflinePlayer::getPlayer)
+				.forEach(op -> op.sendMessage(message));
 	}
 
 	@Override

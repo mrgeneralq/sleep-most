@@ -2,7 +2,6 @@ package me.mrgeneralq.sleepmost;
 
 import me.mrgeneralq.sleepmost.commands.SleepCommand;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
-import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -28,7 +27,7 @@ public class Sleepmost extends JavaPlugin{
 		bootstrapper.initialize(this);
 		
 		//init commands
-		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagService(), bootstrapper.getFlagsRepository());
+		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagService(), bootstrapper.getFlagsRepository(), bootstrapper.getConfigRepository());
 		getCommand("sleepmost").setExecutor(sleepmostCommand);
 
 		getCommand("sleep").setExecutor(new SleepCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService()));
