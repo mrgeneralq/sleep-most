@@ -33,7 +33,6 @@ public class PlayerSleepEventListener implements Listener {
         Player player = e.getPlayer();
         World world = player.getWorld();
 
-        sleepService.setSleeping(player, true);
 
         if (!sleepService.isEnabledAt(world)) {
             return;

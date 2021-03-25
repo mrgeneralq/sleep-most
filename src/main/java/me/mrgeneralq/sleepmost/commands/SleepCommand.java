@@ -1,6 +1,8 @@
 package me.mrgeneralq.sleepmost.commands;
 
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.interfaces.ICooldownService;
+import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.messages.MessageTemplate;
@@ -14,11 +16,13 @@ public class SleepCommand implements CommandExecutor {
     private final ISleepService sleepService;
     private final IMessageService messageService;
     private final ICooldownService cooldownService;
+    private final IFlagsRepository flagsRepository;
 
-    public SleepCommand(ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService) {
+    public SleepCommand(ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService, IFlagsRepository flagsRepository) {
         this.sleepService = sleepService;
         this.messageService = messageService;
         this.cooldownService = cooldownService;
+        this.flagsRepository = flagsRepository;
     }
 
     @Override
@@ -34,6 +38,18 @@ public class SleepCommand implements CommandExecutor {
             return true;
         }
         World world = player.getWorld();
+
+
+        if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
+
+            String sleepPreventedConfigMessage = messageService.getConfigMessage(ConfigMessage.SLEEP_PREVENTED);
+
+            this.messageService.sendMessage(player, messageService.newPrefixedBuilder(sleepPreventedConfigMessage)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .build());
+            return true;
+        }
 
         if (!this.sleepService.resetRequired(world)) {
             this.messageService.sendMessage(player, messageService.fromTemplate(MessageTemplate.CANNOT_SLEEP_NOW));
