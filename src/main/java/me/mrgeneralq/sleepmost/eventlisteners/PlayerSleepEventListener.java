@@ -33,7 +33,6 @@ public class PlayerSleepEventListener implements Listener {
         Player player = e.getPlayer();
         World world = player.getWorld();
 
-        sleepService.setSleeping(player, true);
 
         if (!sleepService.isEnabledAt(world)) {
             return;
@@ -74,15 +73,16 @@ public class PlayerSleepEventListener implements Listener {
         }
 
         // check if player is cooling down, if not send message to world and start cooldown of player
-        if (cooldownService.cooldownEnabled() && !cooldownService.isCoolingDown(player)) {
-            int sleepingPlayersAmount = sleepService.getSleepersAmount(world);
-            int playersRequiredAmount = Math.round(sleepService.getRequiredSleepersCount(world));
-
-            messageService.sendPlayerLeftMessage(player, sleepService.getCurrentSkipCause(world), sleepingPlayersAmount, playersRequiredAmount);
-            cooldownService.startCooldown(player);
+        if (cooldownService.cooldownEnabled() && cooldownService.isCoolingDown(player)) {
+            e.setCancelled(true);
+            return;
         }
-
+        cooldownService.startCooldown(player);
         this.sleepService.setSleeping(player , true);
+
+        int sleepingPlayersAmount = sleepService.getSleepersAmount(world);
+        int playersRequiredAmount = Math.round(sleepService.getRequiredSleepersCount(world));
+        messageService.sendPlayerLeftMessage(player, sleepService.getCurrentSkipCause(world), sleepingPlayersAmount, playersRequiredAmount);
     }
 
     @EventHandler
