@@ -27,6 +27,7 @@ public class FlagsRepository implements IFlagsRepository
     private final SkipDelayFlag skipDelayFlag;
     private final HealFlag healFlag;
     private final FeedFlag feedFlag;
+    private final ExemptBelowYFlag exemptBelowYFlag;
 
     public FlagsRepository(IConfigRepository configRepository)
     {
@@ -43,6 +44,8 @@ public class FlagsRepository implements IFlagsRepository
         setupFlag(this.skipDelayFlag = new SkipDelayFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.healFlag = new HealFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.feedFlag = new FeedFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.exemptBelowYFlag = new ExemptBelowYFlag(new ConfigFlagController<>(configRepository)));
+
     }
 
     @Override
@@ -111,6 +114,7 @@ public class FlagsRepository implements IFlagsRepository
     @Override public FeedFlag getFeedFlag() {
         return this.feedFlag;
     }
+    @Override public ExemptBelowYFlag getExemptBelowYFlag(){ return this.exemptBelowYFlag; }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {
         //register the flag

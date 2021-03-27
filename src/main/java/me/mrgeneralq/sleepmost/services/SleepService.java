@@ -80,6 +80,10 @@ public class SleepService implements ISleepService {
          if (flagService.isAfkFlagUsable() && flagsRepository.getUseAfkFlag().getValueAt(world))
             playersStream = playersStream.filter(p -> PlaceholderAPI.setPlaceholders(p, "%essentials_afk%").equalsIgnoreCase("no"));
 
+         int belowYFlagValue = flagsRepository.getExemptBelowYFlag().getValueAt(world);
+         if(belowYFlagValue > -1)
+             playersStream = playersStream.filter(p -> p.getLocation().getY() > belowYFlagValue);
+
          int playerCount = (int) playersStream.count();
 
          return playerCount == 0? 1: playerCount;
