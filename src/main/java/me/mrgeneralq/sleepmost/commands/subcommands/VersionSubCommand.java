@@ -20,8 +20,9 @@ public class VersionSubCommand implements ISubCommand {
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
-        this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&bYou are running version &c%version%")
+        this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&bYou are running version &c%version% &band the latest version is &c%latest-version%&b.")
                 .setPlaceHolder("%version%", updateService.getCurrentVersion())
+                .setPlaceHolder("%latest-version%", updateService.getCachedUpdateVersion())
                 .build());
         return true;
     }
