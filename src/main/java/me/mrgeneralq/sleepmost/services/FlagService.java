@@ -48,6 +48,12 @@ public class FlagService implements IFlagService
     }
 
     @Override
+    public void resetFlagsAt(World world)
+    {
+        this.flagsRepository.getFlags().forEach(flag -> setDefaultValueAt(world, flag));
+    }
+
+    @Override
     public <V> void setStringValueAt(ISleepFlag<V> flag, World world, String stringValue) {
         V deserializedValue = flag.getSerialization().parseValueFrom(stringValue);
 

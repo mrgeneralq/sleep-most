@@ -12,6 +12,7 @@ public enum MessageTemplate {
     CURRENTLY_DISABLED ("&bSleepmost is currently &cdisabled &bfor this world. Type &a/sm enable &bto enable sleepmost for this world."),
     NO_CONSOLE_COMMAND("&cThis command cannot be executed from console!"),
     CANNOT_SLEEP_NOW("&cYou can't sleep now because your world is either not at Night or doesn't have a Storm!"),
+    FLAGS_RESET_SUCCESS("&aAll flags have been reset for the world: &b%world%&a."),
     SLEEP_SUCCESS("&aYou are now Sleeping!", true),
     NO_LONGER_SLEEPING("&eYou are no longer Sleeping!", true);
 

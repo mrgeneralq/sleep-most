@@ -43,6 +43,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("setflag", new SetFlagCommand(this.sleepService, this.messageService, this.flagService, this.flagsRepository));
 		subCommands.put("info", new InfoSubCommand(this.sleepService, this.messageService, this.flagService, this.flagsRepository));
 		subCommands.put("version", new VersionSubCommand(this.updateService, this.messageService));
+		this.subCommands.put("reset", new ResetSubCommand(this.messageService, this.flagService));
 
 		//enable when debugging
 		//subCommands.put("test", new TestCommand(this.messageService, this.flagsRepository, this.configRepository));
@@ -69,6 +70,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 			sender.sendMessage(colorize("&e/sm setflag <flagname> <flagvalue> &fset a flag for the current world"));
 			sender.sendMessage(colorize("&e/sm info &fshow a list of all flags set for your world"));
 			sender.sendMessage(colorize("&e/sm version &fshow the current version of sleep most"));
+			sender.sendMessage(colorize("&e/sm reset &fset the flags in your world to their default values"));
 			sender.sendMessage(colorize("&e/sm reload &freload the config file"));
 			return true;
 		}
