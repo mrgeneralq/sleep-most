@@ -52,6 +52,7 @@ public class ConfigRepository implements IConfigRepository
 
         String worldName = world.getName();
 
+        //use a loop for this
         main.getConfig().createSection(String.format("sleep.%s", worldName));
         main.getConfig().set(String.format("sleep.%s.enabled", worldName), true);
         main.getConfig().set(getFlagValuePath("calculation-method", worldName), "percentage");

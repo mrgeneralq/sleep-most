@@ -3,6 +3,7 @@ package me.mrgeneralq.sleepmost.services;
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 
 import java.util.AbstractMap.SimpleEntry;
@@ -10,8 +11,7 @@ import java.util.Map.Entry;
 
 import java.util.*;
 
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.*;
 
 public class FlagService implements IFlagService
 {
@@ -39,65 +39,109 @@ public class FlagService implements IFlagService
     }
 
     @Override
-    public void reportProblematicValues()
+    public void handleProblematicFlags()
     {
         for(World world : this.configService.getEnabledWorlds()) {
-
-            //Log & Create flags at worlds that didn't had them
-            scanForMissingValues(world).forEach(flag ->
-            {
-                setDefaultValueAt(world, flag);
-
-                Bukkit.getConsoleSender().sendMessage(this.messageService.newPrefixedBuilder("&cThe &e%flag% &cflag was missing at &b%world% so it was created with its default value.")
-                        .setPlaceHolder("%flag%", flag.getName())
-                        .setPlaceHolder("%world%", world.getName())
-                        .build());
-            });
-
-            //Log & Reset flags with illegal values
-            scanForIllegalValues(world).forEach((flag, value) ->
-            {
-                setDefaultValueAt(world, flag);
-
-                Bukkit.getConsoleSender().sendMessage(this.messageService.newPrefixedBuilder("&cThe value of the &e%flag% &cflag at &b%world% &cwas &4illegal(&c%value%&4) so it got reset.")
-                        .setPlaceHolder("%flag%", flag.getName())
-                        .setPlaceHolder("%value%", value.toString())
-                        .setPlaceHolder("%world%", world.getName())
-                        .build());
-            });
+            handleMissingFlags(world);
+            handleIllegalValues(world);
         }
     }
 
     @Override
-    public <V> void setStringValueAt(ISleepFlag<V> flag, World world, String stringValue)
-    {
+    public <V> void setStringValueAt(ISleepFlag<V> flag, World world, String stringValue) {
         V deserializedValue = flag.getSerialization().parseValueFrom(stringValue);
 
         flag.setValueAt(world, deserializedValue);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <V> String getValueDisplayName(ISleepFlag<V> flag, Object value)
-    {
-        return flag.getDisplayName((V) value);
+    public <V> String getValueDisplayName(ISleepFlag<V> flag, Object value) {
+        V castedValue = (V) value;
+
+        return flag.getDisplayName(castedValue);
     }
 
-    private Map<ISleepFlag<?>, Object> scanForIllegalValues(World world)
-    {
-        return this.flagsRepository.getFlags().stream()
-                .map(flag -> new SimpleEntry<>(flag, this.configRepository.getFlagValue(flag, world)))
-                .filter(entry -> !entry.getKey().isValidValue(entry.getValue()))
-                .collect(toMap(Entry::getKey, Entry::getValue));
-    }
-    private Set<ISleepFlag<?>> scanForMissingValues(World world){
-        return this.flagsRepository.getFlags().stream()
-                .filter(flag -> this.configRepository.getFlagValue(flag, world) == null)
-                .collect(toSet());
-    }
-
-    private <V> void setDefaultValueAt(World world, ISleepFlag<V> flag){
+    private <V> void setDefaultValueAt(World world, ISleepFlag<V> flag) {
         V defaultValue = flag.getDefaultValue();
 
         flag.setValueAt(world, defaultValue);
+    }
+
+    /*
+    Values Handlers
+     */
+
+    private void handleMissingFlags(World world) {
+
+        Set<ISleepFlag<?>> missingFlags = scanForMissingValues(world);
+
+        if(missingFlags.isEmpty())
+            return;
+
+        //Log the missing flags
+        this.messageService.sendOPMessage(this.messageService.newPrefixedBuilder("&f%flagsAmount% &cMissing Flags at &l&4&l%world% &cwere detected and created in the %storageName%: %flagsNames%")
+                .setPlaceHolder("%flagsAmount%", Integer.toString(missingFlags.size()))
+                .setPlaceHolder("%world%", world.getName())
+                .setPlaceHolder("%storageName%", "config")
+                .setPlaceHolder("%flagsNames%", getMissingFlagsNames(missingFlags))
+                .build());
+
+        //Create & Defaultize the missing flags
+        missingFlags.forEach(flag -> setDefaultValueAt(world, flag));
+    }
+
+    private void handleIllegalValues(World world) {
+
+        Map<ISleepFlag<?>, Object> illegalValues = scanForIllegalValues(world);
+
+        if(illegalValues.isEmpty())
+            return;
+
+        //Log the flags with illegal values
+        this.messageService.sendOPMessage(this.messageService.newPrefixedBuilder("&f%flagsAmount% &cFlags at &l&4&l%world% &cwere detected having &4&lIllegal Values &cin the %storageName%, so they got reset:")
+                .setPlaceHolder("%flagsAmount%", Integer.toString(illegalValues.size()))
+                .setPlaceHolder("%world%", world.getName())
+                .setPlaceHolder("%storageName%", "config")
+                .build());
+        illegalValues.forEach((flag, value) -> this.messageService.sendOPMessage(createIllegalValueMessage(flag.getName(), value)));
+
+        //Defaultize the flags
+        illegalValues.keySet().forEach(flag -> setDefaultValueAt(world, flag));
+    }
+
+    /*
+    Flags Scans
+     */
+
+    private Set<ISleepFlag<?>> scanForMissingValues(World world) {
+        return this.flagsRepository.getFlags().stream()
+                .filter(flag -> this.configRepository.getFlagValue(flag, world) == null) //take the flags without a value in the config
+                .collect(toSet());
+    }
+    private Map<ISleepFlag<?>, Object> scanForIllegalValues(World world)
+    {
+        return this.flagsRepository.getFlags().stream()
+                .map(flag -> new SimpleEntry<>(flag, this.configRepository.getFlagValue(flag, world))) //map the flag to itself & its value at the given world
+                .filter(entry -> !entry.getKey().isValidValue(entry.getValue())) //remove the flags with a valid value
+                .collect(toMap(Entry::getKey, Entry::getValue));
+    }
+
+    /*
+    Flags Messages
+     */
+
+    private String getMissingFlagsNames(Collection<ISleepFlag<?>> missingFlags)
+    {
+        return missingFlags.stream()
+                .map(flag -> ChatColor.GREEN + flag.getName())
+                .collect(joining("&f, ", "", "&f."));
+    }
+    private String createIllegalValueMessage(String flagName, Object value)
+    {
+        return this.messageService.newBuilder("&b> &a%flag% &f(was &c%illegalValue%f&f)")
+                .setPlaceHolder("%flag%", flagName)
+                .setPlaceHolder("%illegalValue%", value.toString())
+                .build();
     }
 }

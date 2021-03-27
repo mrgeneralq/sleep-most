@@ -1,21 +1,29 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
+import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
-import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
+
 public class TestCommand implements ISubCommand
 {
     private final IMessageService messageService;
+    private final IConfigRepository configRepository;
+    private final IFlagsRepository flagsRepository;
 
-    public TestCommand(IMessageService messageService){
+    public TestCommand(IMessageService messageService, IFlagsRepository flagsRepository, IConfigRepository configRepository) {
         this.messageService = messageService;
+        this.flagsRepository = flagsRepository;
+        this.configRepository = configRepository;
     }
 
     @Override
@@ -27,7 +35,15 @@ public class TestCommand implements ISubCommand
             return false;
         }
         Player player = (Player) sender;
-        //player.sendMessage(this.testFlag.getDisplayName(this.testFlag.getValueAt(player.getWorld())));
+        World world = player.getWorld();
+
+        player.performCommand("sm enable");
+        this.configRepository.setFlagValue(this.flagsRepository.getFeedFlag(), world, "hello");
+        this.configRepository.setFlagValue(this.flagsRepository.getHealFlag(), world, "second value");
+        this.configRepository.setFlagValue(this.flagsRepository.getNightcycleAnimationFlag(), world, null);
+        this.configRepository.setFlagValue(this.flagsRepository.getCalculationMethodFlag(), world, null);
+        player.performCommand("sm reload");
+
         //player.sendMessage(beautifulize("Sleepmost was created by ") + ChatColor.GREEN + "MrGeneralQ" + beautifulize(", and ") + ChatColor.GREEN + "Mizrahi" + beautifulize(" helped."));
 
         return true;
@@ -40,12 +56,10 @@ public class TestCommand implements ISubCommand
 
         //add a random hex color before every letter
         for(char letter : text.toCharArray())
-        {
             result.append(randomHexColor()).append(letter);
-        }
 
         //colorize the hex colors
-        return ChatColorUtils.colorize(result.toString());
+        return colorize(result.toString());
     }
     private static String randomHexColor()
     {
@@ -53,9 +67,8 @@ public class TestCommand implements ISubCommand
 
         //add random 6 hex digits
         for(int i = 1; i <= 6; i++)
-        {
             color.append(randomHexLetter());
-        }
+
         return color.toString();
     }
     private static char randomHexLetter()

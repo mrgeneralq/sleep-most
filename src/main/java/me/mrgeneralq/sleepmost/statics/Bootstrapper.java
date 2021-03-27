@@ -49,7 +49,7 @@ public class Bootstrapper {
         this.configMessageMapper.initialize(main);
 
         //setups
-        this.flagService.reportProblematicValues();
+        this.flagService.handleProblematicFlags();
     }
 
     public static Bootstrapper getBootstrapper(){
