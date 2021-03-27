@@ -24,6 +24,9 @@ public class UpdateServiceTest {
     @Before
     public void setUp() throws Exception {
         this.updateRepository = Mockito.mock(IUpdateRepository.class);
+
+
+
         this.sleepmost = Mockito.mock(Sleepmost.class);
         this.configService = Mockito.mock(IConfigService.class);
 
@@ -37,15 +40,14 @@ public class UpdateServiceTest {
 
     @Test
     public void hasUpdate() {
-/*
-        String testRemoteVersion = "3.2.1";
+
+        String testRemoteVersion = "3.10.14";
 
         when(updateRepository.getLatestVersion()).thenReturn(testRemoteVersion);
         when(sleepmost.getDescription().getVersion()).thenReturn("3.2.0");
 
         assertEquals(testRemoteVersion, this.updateService.getCurrentVersion());
 
-*/
     }
 
     @Test
