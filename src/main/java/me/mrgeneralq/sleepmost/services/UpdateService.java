@@ -27,8 +27,14 @@ public class UpdateService implements IUpdateService {
         this.configService = configService;
     }
 
+
     @Override
     public boolean hasUpdate() {
+        return hasUpdate(this.getCurrentVersion());
+    }
+
+    @Override
+    public boolean hasUpdate(String version) {
 
         if(!configService.updateCheckerEnabled()){
             return false;
@@ -50,10 +56,10 @@ public class UpdateService implements IUpdateService {
         }
 
         if(cachedUpdateVersion == null)
-        	return false;
+            return false;
 
 
-        if(cachedUpdateVersion.equals(getCurrentVersion()))
+        if(cachedUpdateVersion.equals(version))
             return false;
 
         try{
@@ -77,6 +83,7 @@ public class UpdateService implements IUpdateService {
         }catch(Exception ex){
             return false;
         }
+
     }
 
     @Override
