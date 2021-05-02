@@ -5,7 +5,11 @@ import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateRepository;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class UpdateService implements IUpdateService {
@@ -23,8 +27,14 @@ public class UpdateService implements IUpdateService {
         this.configService = configService;
     }
 
+
     @Override
     public boolean hasUpdate() {
+        return hasUpdate(this.getCurrentVersion());
+    }
+
+    @Override
+    public boolean hasUpdate(String version) {
 
         if(!configService.updateCheckerEnabled()){
             return false;
@@ -46,18 +56,34 @@ public class UpdateService implements IUpdateService {
         }
 
         if(cachedUpdateVersion == null)
-        	return false;
+            return false;
 
+
+        if(cachedUpdateVersion.equals(version))
+            return false;
 
         try{
-            int currentVersion = Integer.parseInt(getCurrentVersion().replaceAll("\\.",""));
-            int cachedVersion = Integer.parseInt(this.cachedUpdateVersion.replaceAll("\\.",""));
 
-            return cachedVersion > currentVersion;
+            List<Integer> splittedCurrentVersion = Arrays.stream(getCurrentVersion().split("\\.")).map(Integer::parseInt).collect(Collectors.toList());
+            List<Integer> splittedCachedVersion = Arrays.stream(this.cachedUpdateVersion.split("\\.")).map(Integer::parseInt).collect(Collectors.toList());
+
+
+            for(int i = 0; i < splittedCachedVersion.size(); i ++){
+
+                Integer current = splittedCurrentVersion.get(i);
+                Integer cached = splittedCachedVersion.get(i);
+
+                if(current > cached)
+                    return false;
+
+            }
+
+            return true;
 
         }catch(Exception ex){
             return false;
         }
+
     }
 
     @Override
