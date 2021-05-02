@@ -34,8 +34,6 @@ public class UpdateServiceTest {
     private IConfigService configService;
     private PluginDescriptionFile pluginDescriptionFile;
 
-
-
     @Before
     public void setUp() {
         this.updateRepository = mock(IUpdateRepository.class);
@@ -44,21 +42,24 @@ public class UpdateServiceTest {
         this.pluginDescriptionFile = mock(PluginDescriptionFile.class);
 
         this.updateService = new UpdateService(this.updateRepository, this.sleepmost, this.configService);
-
     }
-
 
 
     @Test
     public void hasUpdate() {
 
-
         String testRemoteVersion = "1.8.0";
         String testCurrentVersion = "1.8.0";
 
-        when(updateRepository.getLatestVersion()).thenReturn(testRemoteVersion);
+        //disabling the update checker
+        when(this.configService.updateCheckerEnabled()).thenReturn(false);
+        assertFalse("There is no update when the update checker is disabled", this.updateService.hasUpdate(testCurrentVersion));
 
-        assertFalse("There is no update with equal strings",this.updateService.hasUpdate(testCurrentVersion));
+        //enabling the update checker
+        when(this.configService.updateCheckerEnabled()).thenReturn(true);
+
+        when(updateRepository.getLatestVersion()).thenReturn(testRemoteVersion);
+        assertFalse("There is no update with equal strings", this.updateService.hasUpdate(testCurrentVersion));
 
         testRemoteVersion = "1.8.0";
         testCurrentVersion = "1.9.0";
@@ -66,12 +67,17 @@ public class UpdateServiceTest {
 
         assertFalse("There is no update when you have a more recent version", this.updateService.hasUpdate(testCurrentVersion));
 
-
         testRemoteVersion = "1.12.1";
         testCurrentVersion = "1.12";
         when(updateRepository.getLatestVersion()).thenReturn(testRemoteVersion);
 
-        assertTrue("When the remote update version contains more indentions, it should still evaluate to true.", this.updateService.hasUpdate(testCurrentVersion));
+        assertTrue("When the remote update version contains more dots, it should still evaluate to true.", this.updateService.hasUpdate(testCurrentVersion));
+
+        testRemoteVersion = "2.2";
+        testCurrentVersion = "1.1.5.4";
+        when(updateRepository.getLatestVersion()).thenReturn(testRemoteVersion);
+
+        assertTrue("Remote version has more dots than the current version. Remote version is higher then current version.", this.updateService.hasUpdate(testCurrentVersion));
 
     }
 
