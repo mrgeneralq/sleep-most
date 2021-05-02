@@ -71,27 +71,7 @@ public class UpdateServiceTest {
         testCurrentVersion = "1.12";
         when(updateRepository.getLatestVersion()).thenReturn(testRemoteVersion);
 
-        assertTrue("When the remote updat version contains more levels, it should still evaluate to true.", this.updateService.hasUpdate(testCurrentVersion));
-
-
-
-
-
-
-/*
-        try {
-            PowerMockito.doReturn(pluginDescriptionFile).when(Sleepmost.class, Sleepmost.class.getDeclaredMethod("getDescription"));
-
-        }catch (Exception ex){
-        }
-
- */
-     //   when(sleepmost.toString()).thenReturn("a");
-
-      //  when(this.sleepmost.getDescription()).thenReturn(mock(PluginDescriptionFile.class));
-
-
-    //    assertEquals("Current version matches","1.5.2" , testCurrentVersion);
+        assertTrue("When the remote update version contains more indentions, it should still evaluate to true.", this.updateService.hasUpdate(testCurrentVersion));
 
     }
 
