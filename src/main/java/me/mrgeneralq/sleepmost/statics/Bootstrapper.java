@@ -9,6 +9,11 @@ import me.mrgeneralq.sleepmost.repositories.UpdateRepository;
 import me.mrgeneralq.sleepmost.services.*;
 import me.mrgeneralq.sleepmost.Sleepmost;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+
 public class Bootstrapper {
 
     private ISleepService sleepService;

@@ -1,84 +1,61 @@
 package me.mrgeneralq.sleepmost.services;
 
+import com.sun.xml.internal.ws.encoding.policy.MtomPolicyMapConfigurator;
 import junit.framework.Assert;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.flags.HealFlag;
 import me.mrgeneralq.sleepmost.interfaces.IConfigService;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateRepository;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static junit.framework.TestCase.*;
-import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({PluginDescriptionFile.class})
 public class UpdateServiceTest {
 
     private IUpdateService updateService;
 
     //mock
     private IUpdateRepository updateRepository;
-    private Sleepmost sleepmost;
     private IConfigService configService;
-    private PluginDescriptionFile pluginDescriptionFile;
 
     @Before
     public void setUp() {
         this.updateRepository = mock(IUpdateRepository.class);
-        this.sleepmost = mock(Sleepmost.class);
         this.configService = mock(IConfigService.class);
-        this.pluginDescriptionFile = mock(PluginDescriptionFile.class);
 
-        this.updateService = new UpdateService(this.updateRepository, this.sleepmost, this.configService);
+        this.updateService = new UpdateService(this.updateRepository, mock(Sleepmost.class), this.configService);
+
     }
 
 
     @Test
-    public void hasUpdate() {
+    public void hasUpdate() { //great, I have nothing to add/remove ,the only thing that is a risk right now is the repository. We actually need to create test script for that one to :p
 
-        String testRemoteVersion = "1.8.0";
         String testCurrentVersion = "1.8.0";
+        when(this.updateRepository.getLatestVersion()).thenReturn("1.8.0", "1.12.1", "2.2","2.2.15.5", "1.0");
+        when(this.configService.updateCheckerEnabled()).thenReturn(false, true);
 
-        //disabling the update checker
-        when(this.configService.updateCheckerEnabled()).thenReturn(false);
         assertFalse("There is no update when the update checker is disabled", this.updateService.hasUpdate(testCurrentVersion));
-
-        //enabling the update checker
-        when(this.configService.updateCheckerEnabled()).thenReturn(true);
-
-        when(updateRepository.getLatestVersion()).thenReturn(testRemoteVersion);
         assertFalse("There is no update with equal strings", this.updateService.hasUpdate(testCurrentVersion));
 
-        testRemoteVersion = "1.8.0";
-        testCurrentVersion = "1.9.0";
-        when(updateRepository.getLatestVersion()).thenReturn(testRemoteVersion);
-
-        assertFalse("There is no update when you have a more recent version", this.updateService.hasUpdate(testCurrentVersion));
-
-        testRemoteVersion = "1.12.1";
         testCurrentVersion = "1.12";
-        when(updateRepository.getLatestVersion()).thenReturn(testRemoteVersion);
-
         assertTrue("When the remote update version contains more dots, it should still evaluate to true.", this.updateService.hasUpdate(testCurrentVersion));
 
-        testRemoteVersion = "2.2";
         testCurrentVersion = "1.1.5.4";
-        when(updateRepository.getLatestVersion()).thenReturn(testRemoteVersion);
-
         assertTrue("Remote version has more dots than the current version. Remote version is higher then current version.", this.updateService.hasUpdate(testCurrentVersion));
 
+        testCurrentVersion = "3.5";
+        assertFalse("When the remote version has more dots, and it's lower then the current version, it should still not have an update", this.updateService.hasUpdate(testCurrentVersion));
+
+        testCurrentVersion = "1.2";
+        assertFalse("When the current version is higher then the latest version, there should be no update", this.updateService.hasUpdate(testCurrentVersion));
     }
 
     @Test
