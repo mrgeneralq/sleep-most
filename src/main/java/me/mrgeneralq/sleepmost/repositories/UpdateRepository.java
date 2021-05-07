@@ -14,6 +14,8 @@ public class UpdateRepository implements IUpdateRepository {
     private String cachedUpdateVersion;
     private Date lastChecked;
 
+    private static final int CACHE_TIMER_IN_MS = 7200000;
+
     public UpdateRepository(String resourceId) {
         this.resourceId = resourceId;
     }
@@ -21,24 +23,36 @@ public class UpdateRepository implements IUpdateRepository {
     @Override
     public String getLatestVersion() {
 
-        if (lastChecked == null)
-            lastChecked = new Date();
-
-        double difference = (new Date().getTime() - lastChecked.getTime());
-
-        if (difference < 7200000)
+        if(this.lastChecked != null && !cacheTimeOver())
             return this.cachedUpdateVersion;
 
-        //send a request to spigot's website for the latest version
+        this.lastChecked = new Date();
+
+
+        //call and cache spigot's api version
+        try {
+            this.cachedUpdateVersion = requestSpigotVersion();
+        }
+        catch(IOException e) {
+            this.cachedUpdateVersion = "0";
+        }
+        return this.cachedUpdateVersion;
+    }
+
+    private String requestSpigotVersion() throws IOException {
         try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + resourceId).openStream();
              Scanner scanner = new Scanner(inputStream)) {
 
             if (scanner.hasNext())
-                this.cachedUpdateVersion = scanner.next();
-
-        } catch (IOException exception) {
-            return cachedUpdateVersion;
+                return scanner.next();
         }
-        return cachedUpdateVersion;
+        return null;
+    }
+
+    private boolean cacheTimeOver()
+    {
+        double difference = (new Date().getTime() - this.lastChecked.getTime());
+
+        return difference > CACHE_TIMER_IN_MS;
     }
 }
