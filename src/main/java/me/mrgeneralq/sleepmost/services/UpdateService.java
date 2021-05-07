@@ -4,86 +4,64 @@ import me.mrgeneralq.sleepmost.interfaces.IConfigService;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateRepository;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
+import org.omg.SendingContext.RunTime;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static java.util.stream.Collectors.toList;
 
 
 public class UpdateService implements IUpdateService {
 
-    private String cachedUpdateVersion;
     private final IUpdateRepository updateRepository;
     private final Sleepmost main;
     private final IConfigService configService;
-    private Date lastChecked;
 
     public UpdateService(IUpdateRepository updateRepository, Sleepmost main, IConfigService configService) {
-
         this.updateRepository = updateRepository;
         this.main = main;
         this.configService = configService;
     }
 
-
     @Override
     public boolean hasUpdate() {
+
         return hasUpdate(this.getCurrentVersion());
     }
 
     @Override
-    public boolean hasUpdate(String version) {
+    public boolean hasUpdate(String localVersion) {
 
-        if(!configService.updateCheckerEnabled()){
-            return false;
-        }
-
-        if (lastChecked == null) {
-            lastChecked = new Date();
-        }
-
-        if (cachedUpdateVersion == null) {
-            cachedUpdateVersion = updateRepository.getLatestVersion();
-        }
-
-        double difference = (new Date().getTime() - lastChecked.getTime());
-
-        if (difference > 7200000) {
-            lastChecked = new Date();
-            cachedUpdateVersion = updateRepository.getLatestVersion();
-        }
-
-        if(cachedUpdateVersion == null)
+        if (!configService.updateCheckerEnabled())
             return false;
 
+        String latestVersion = updateRepository.getLatestVersion();
 
-        if(cachedUpdateVersion.equals(version))
+        if (latestVersion.equals(localVersion))
             return false;
 
-        try{
+        List<Integer> splittedCurrentVersion = getComponents(localVersion);
+        List<Integer> splittedCachedVersion = getComponents(latestVersion);
 
-            List<Integer> splittedCurrentVersion = Arrays.stream(getCurrentVersion().split("\\.")).map(Integer::parseInt).collect(Collectors.toList());
-            List<Integer> splittedCachedVersion = Arrays.stream(this.cachedUpdateVersion.split("\\.")).map(Integer::parseInt).collect(Collectors.toList());
+        equalizeSizes(splittedCachedVersion, splittedCurrentVersion);
 
+        for (int i = 0; i < splittedCachedVersion.size(); i++) {
 
-            for(int i = 0; i < splittedCachedVersion.size(); i ++){
+            Integer current = splittedCurrentVersion.get(i);
+            Integer cached = splittedCachedVersion.get(i);
 
-                Integer current = splittedCurrentVersion.get(i);
-                Integer cached = splittedCachedVersion.get(i);
+            // cached is bigger
+            if (cached > current)
+                return true;
 
-                if(current > cached)
-                    return false;
-
-            }
-
-            return true;
-
-        }catch(Exception ex){
-            return false;
+            // cached is lower
+            if (cached < current)
+                return false;
         }
-
+        return false;
     }
 
     @Override
@@ -92,8 +70,24 @@ public class UpdateService implements IUpdateService {
     }
 
     @Override
-    public String getCachedUpdateVersion(){
-        return this.cachedUpdateVersion;
+    public String getCachedUpdateVersion() {
+        return updateRepository.getLatestVersion();
     }
 
+    private static List<Integer> getComponents(String version){
+        return Arrays.stream(version.split("\\."))
+                .map(Integer::parseInt)
+                .collect(toList());
+    }
+
+    private static void equalizeSizes(List<Integer> splittedLocalVersion, List<Integer> splittedRemoteVersion) {
+        int localSize = splittedLocalVersion.size();
+        int cachedSize = splittedRemoteVersion.size();
+
+        int zerosAmount = Math.max(localSize, cachedSize) - Math.min(localSize, cachedSize);
+        List<Integer> smallerList = localSize < cachedSize ? splittedLocalVersion : splittedRemoteVersion;
+
+        for (int i = 1; i <= zerosAmount; i++)
+            smallerList.add(0);
+    }
 }

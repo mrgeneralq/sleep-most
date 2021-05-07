@@ -3,7 +3,7 @@ package me.mrgeneralq.sleepmost.interfaces;
 public interface IUpdateService {
 
     boolean hasUpdate();
-    boolean hasUpdate(String version);
+    boolean hasUpdate(String localVersion);
 
     String getCurrentVersion();
     String getCachedUpdateVersion();

@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost;
 
 import me.mrgeneralq.sleepmost.commands.SleepCommand;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
+import me.mrgeneralq.sleepmost.services.UpdateService;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -54,4 +55,6 @@ public class Sleepmost extends JavaPlugin{
 		if(updateService.hasUpdate())
 			getLogger().info("UPDATE FOUND: A newer version of sleep-most is available to download!");
 	}
+
+
 }
