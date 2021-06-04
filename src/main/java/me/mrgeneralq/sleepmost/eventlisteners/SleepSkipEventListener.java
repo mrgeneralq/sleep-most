@@ -57,7 +57,7 @@ public class SleepSkipEventListener implements Listener {
 
         sleepingPlayers.forEach(p -> {
             if (shouldHeal)
-                p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+                ServerVersion.CURRENT_VERSION.healToMaxHP(p);
 
             if (shouldFeed)
                 p.setFoodLevel(20);
