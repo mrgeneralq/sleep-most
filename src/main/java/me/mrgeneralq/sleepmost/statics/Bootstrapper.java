@@ -1,7 +1,9 @@
 package me.mrgeneralq.sleepmost.statics;
 
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.messages.MessageService;
+import me.mrgeneralq.sleepmost.placeholderapi.PapiExtension;
 import me.mrgeneralq.sleepmost.repositories.ConfigRepository;
 import me.mrgeneralq.sleepmost.repositories.CooldownRepository;
 import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
@@ -27,6 +29,7 @@ public class Bootstrapper {
     private IFlagsRepository flagsRepository;
     private IFlagService flagService;
     private IConfigService configService;
+    private PlaceholderExpansion placeholderExpansion;
 
     private static Bootstrapper instance;
 
@@ -55,6 +58,11 @@ public class Bootstrapper {
 
         //setups
         this.flagService.handleProblematicFlags();
+
+        //setup PAPI
+        this.placeholderExpansion = new PapiExtension(main, flagsRepository,sleepService);
+        this.placeholderExpansion.register();
+
     }
 
     public static Bootstrapper getBootstrapper(){

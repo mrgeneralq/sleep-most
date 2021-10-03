@@ -3,6 +3,7 @@ package me.mrgeneralq.sleepmost;
 import me.mrgeneralq.sleepmost.commands.SleepCommand;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
 import me.mrgeneralq.sleepmost.services.UpdateService;
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -34,12 +35,14 @@ public class Sleepmost extends JavaPlugin{
 		getCommand("sleepmost").setExecutor(sleepmostCommand);
 
 		getCommand("sleep").setExecutor(new SleepCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository()));
-		
 		//init listeners
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new PlayerSleepEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository()), this);
 		pm.registerEvents(new PlayerQuitEventListener(bootstrapper.getCooldownService(), bootstrapper.getSleepService()), this);
+
+		if(ServerVersion.CURRENT_VERSION.hasTimeSkipEvent())
 		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getMessageService(), bootstrapper.getConfigService(), bootstrapper.getSleepService(), bootstrapper.getFlagsRepository()), this);
+
 		pm.registerEvents(new EntityTargetLivingEntityEventListener(bootstrapper.getFlagsRepository()), this);
 		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService()), this);
 		pm.registerEvents(new PlayerJoinEventListener(this,  bootstrapper.getUpdateService(), bootstrapper.getMessageService()), this);
