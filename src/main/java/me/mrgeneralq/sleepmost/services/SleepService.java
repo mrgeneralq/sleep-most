@@ -190,8 +190,10 @@ public class SleepService implements ISleepService {
         if(isNight(world))
             world.setTime(configService.getResetTime());
 
+        if(this.flagsRepository.getSkipStormFlag().getValueAt(world) || skipCause == SleepSkipCause.STORM){
         world.setThundering(false);
         world.setStorm(false);
+        }
         Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, skipCause, lastSleeperName, lastSleeperDisplayName));
     }
 

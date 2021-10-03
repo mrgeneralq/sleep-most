@@ -16,6 +16,7 @@ public enum ServerVersion
     private MaxHPHealer maxHPHealer;
     private boolean supportsHexColors;
     private boolean supportsTitles;
+    private boolean hasTimeSkipEvent;
 
     public static final ServerVersion CURRENT_VERSION;
 
@@ -26,11 +27,11 @@ public enum ServerVersion
 
     static {
         CURRENT_VERSION = computeServerVersion();
-
         forVersionsFrom(V1_16, version -> version.supportsHexColors = true);
         forVersionsFrom(V1_14, version -> version.supportsTitles = true);
         forVersionsUntil(V1_9, version -> version.maxHPHealer = MaxHPHealer.LEGACY_HEALER);
         forVersionsFrom(V1_9, version -> version.maxHPHealer = MaxHPHealer.UPDATED_HEALER);
+        forVersionsFrom(V1_15, version -> version.hasTimeSkipEvent = true);
     }
     ServerVersion() {
         this.name = WordUtils.capitalizeFully(name().substring(1).toLowerCase().replace('_', '.'));
@@ -50,6 +51,10 @@ public enum ServerVersion
 
     public void healToMaxHP(Player player) {
         this.maxHPHealer.heal(player);
+    }
+
+    public boolean hasTimeSkipEvent() {
+        return hasTimeSkipEvent;
     }
 
     //Setup methods

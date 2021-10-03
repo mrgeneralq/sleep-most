@@ -53,6 +53,7 @@ public class UpdateServiceTest {
 
         testCurrentVersion = "1.2";
         assertFalse("When the current version is higher then the latest version, there should be no update", this.updateService.hasUpdate(testCurrentVersion));
+
     }
 
     @Test
