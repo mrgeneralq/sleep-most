@@ -10,6 +10,7 @@ import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
 import me.mrgeneralq.sleepmost.repositories.UpdateRepository;
 import me.mrgeneralq.sleepmost.services.*;
 import me.mrgeneralq.sleepmost.Sleepmost;
+import org.bukkit.Bukkit;
 
 import java.util.Arrays;
 import java.util.List;
@@ -60,8 +61,10 @@ public class Bootstrapper {
         this.flagService.handleProblematicFlags();
 
         //setup PAPI
-        this.placeholderExpansion = new PapiExtension(main, flagsRepository,sleepService);
-        this.placeholderExpansion.register();
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            this.placeholderExpansion = new PapiExtension(main, flagsRepository,sleepService);
+            this.placeholderExpansion.register();
+        }
 
     }
 
