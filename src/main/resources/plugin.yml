@@ -11,5 +11,4 @@ commands:
   sleep:
     usage: /sleep
     description: Allows players to register themselves as sleeping
-softdepend:
-  - PlaceholderAPI
+softdepend: [PlaceholderAPI]
