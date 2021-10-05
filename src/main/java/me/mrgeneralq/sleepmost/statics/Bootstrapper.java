@@ -11,6 +11,7 @@ import me.mrgeneralq.sleepmost.repositories.UpdateRepository;
 import me.mrgeneralq.sleepmost.services.*;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +31,6 @@ public class Bootstrapper {
     private IFlagsRepository flagsRepository;
     private IFlagService flagService;
     private IConfigService configService;
-    private PlaceholderExpansion placeholderExpansion;
 
     private static Bootstrapper instance;
 
@@ -61,9 +61,9 @@ public class Bootstrapper {
         this.flagService.handleProblematicFlags();
 
         //setup PAPI
+
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            this.placeholderExpansion = new PapiExtension(main, flagsRepository,sleepService);
-            this.placeholderExpansion.register();
+            new PapiExtension(main, flagsRepository,sleepService).register();
         }
 
     }
