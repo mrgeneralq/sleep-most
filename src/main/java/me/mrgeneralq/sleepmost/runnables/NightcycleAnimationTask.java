@@ -8,9 +8,12 @@ import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import me.mrgeneralq.sleepmost.utils.TimeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.List;
 
 public class NightcycleAnimationTask extends BukkitRunnable {
 
@@ -21,14 +24,17 @@ public class NightcycleAnimationTask extends BukkitRunnable {
     private final String lastSleeperName;
     private final String lastSLeeperDisplayName;
     private final SleepSkipCause skipCause;
+    private final List<OfflinePlayer> peopleWhoSlept;
 
-    public NightcycleAnimationTask(ISleepService sleepService, IFlagsRepository flagsRepository, World world, Player lastSleeper, SleepSkipCause sleepSkipCause) {
+    public NightcycleAnimationTask(ISleepService sleepService, IFlagsRepository flagsRepository, World world, Player lastSleeper, List<OfflinePlayer> peopleWhoSlept, SleepSkipCause sleepSkipCause) {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.world = world;
         this.lastSleeperName = lastSleeper.getName();
         this.lastSLeeperDisplayName = lastSleeper.getDisplayName();
         this.skipCause = sleepSkipCause;
+        this.peopleWhoSlept = peopleWhoSlept;
+
     }
 
     @Override
@@ -39,14 +45,14 @@ public class NightcycleAnimationTask extends BukkitRunnable {
             //remove animation checker
             this.dataContainer.setAnimationRunning(world, false);
 
-            this.sleepService.executeSleepReset(world, this.lastSleeperName, this.lastSLeeperDisplayName, this.skipCause);
+            this.sleepService.executeSleepReset(world, this.lastSleeperName, this.lastSLeeperDisplayName ,  this.peopleWhoSlept , this.skipCause);
             this.cancel();
 
             if(this.flagsRepository.getClockAnimationFlag().getValueAt(world) && ServerVersion.CURRENT_VERSION.supportsTitles()){
 
                 for(Player p: world.getPlayers()){
                     String timeString = TimeUtils.getTimeStringByTicks(0);
-                    p.sendTitle(ChatColor.AQUA + timeString ,ChatColor.GREEN + "fast forward >>>", 0,70,20);
+                    p.sendTitle(ChatColor.AQUA + timeString ,ChatColor.GREEN + ">>>", 0,70,20);
                 }
             }
 
@@ -55,7 +61,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
                 for(Player p: world.getPlayers()){
                     String timeString = TimeUtils.getTimeStringByTicks(world.getTime());
-                    p.sendTitle(ChatColor.AQUA + timeString ,ChatColor.GREEN + "fast forward >>>", 0,70,20);
+                    p.sendTitle(ChatColor.AQUA + timeString ,ChatColor.GREEN + ">>>", 0,70,20);
                 }
             }
         }

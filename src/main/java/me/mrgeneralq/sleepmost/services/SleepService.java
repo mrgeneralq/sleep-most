@@ -170,7 +170,10 @@ public class SleepService implements ISleepService {
                 runSkipAnimation(player, skipCause);
                 return;
             }
-            this.executeSleepReset(world, player.getName(), player.getDisplayName(), skipCause);
+
+            List<OfflinePlayer> peopleWhoSlept = this.getSleepers(world).stream().map(p -> Bukkit.getOfflinePlayer(p.getUniqueId())).collect(Collectors.toList());
+
+            this.executeSleepReset(world, player.getName(), player.getDisplayName(), peopleWhoSlept, skipCause);
         }, skipDelay * 20L);
     }
 
@@ -193,7 +196,7 @@ public class SleepService implements ISleepService {
     }
 
     @Override
-    public void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause skipCause) {
+    public void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName, List<OfflinePlayer> peopleWhoSlept, SleepSkipCause skipCause) {
         if(isNight(world))
             world.setTime(configService.getResetTime());
 
@@ -202,7 +205,6 @@ public class SleepService implements ISleepService {
         world.setStorm(false);
         }
 
-        List<OfflinePlayer> peopleWhoSlept = this.getSleepers(world).stream().map(p -> Bukkit.getOfflinePlayer(p.getUniqueId())).collect(Collectors.toList());
         Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world,peopleWhoSlept ,skipCause, lastSleeperName, lastSleeperDisplayName));
     }
 
@@ -218,7 +220,9 @@ public class SleepService implements ISleepService {
         if(this.dataContainer.isAnimationRunningAt(world))
             return;
 
+        List<OfflinePlayer> sleepingPlayers = this.getSleepers(world).stream().map(p -> Bukkit.getOfflinePlayer(p.getUniqueId())).collect(Collectors.toList());
+
         dataContainer.setAnimationRunning(world, true);
-        new NightcycleAnimationTask(this, this.flagsRepository , world, player, sleepSkipCause).runTaskTimer(this.main, 0, 1);
+        new NightcycleAnimationTask(this, this.flagsRepository , world, player, sleepingPlayers , sleepSkipCause).runTaskTimer(this.main, 0, 1);
     }
 }
