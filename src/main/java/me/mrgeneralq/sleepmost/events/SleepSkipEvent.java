@@ -1,10 +1,13 @@
 package me.mrgeneralq.sleepmost.events;
 
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.world.WorldEvent;
+
+import java.util.List;
 
 public class SleepSkipEvent extends WorldEvent {
 
@@ -23,7 +26,7 @@ public class SleepSkipEvent extends WorldEvent {
 		this.lastSleeperDisplayName = player.getDisplayName();
 	}
 
-	public SleepSkipEvent(World world, SleepSkipCause cause, String lastSleeperName, String lastSleeperDisplayName){
+	public SleepSkipEvent(World world, List<OfflinePlayer> peopleWhoSlept , SleepSkipCause cause, String lastSleeperName, String lastSleeperDisplayName){
 		super(world);
 		this.cause = cause;
 		this.lastSleeperName = lastSleeperName;

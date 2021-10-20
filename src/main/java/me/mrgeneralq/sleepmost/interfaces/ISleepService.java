@@ -24,6 +24,9 @@ public interface ISleepService
     int getRequiredSleepersCount(World world);
     SleepSkipCause getCurrentSkipCause(World world);
     boolean isRequiredCountReached(World world);
+
+    int getRemainingSleepers(World world);
+
     void clearSleepersAt(World world);
 
     //Players

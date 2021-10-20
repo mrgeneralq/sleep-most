@@ -8,6 +8,7 @@ import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -15,6 +16,7 @@ import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SleepService implements ISleepService {
@@ -135,6 +137,11 @@ public class SleepService implements ISleepService {
     }
 
     @Override
+    public int getRemainingSleepers(World world){
+        return this.getRequiredSleepersCount(world) - this.getSleepersAmount(world);
+    }
+
+    @Override
     public void clearSleepersAt(World world)
     {
         this.dataContainer.clearSleepingPlayers(world);
@@ -194,7 +201,9 @@ public class SleepService implements ISleepService {
         world.setThundering(false);
         world.setStorm(false);
         }
-        Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world, skipCause, lastSleeperName, lastSleeperDisplayName));
+
+        List<OfflinePlayer> peopleWhoSlept = this.getSleepers(world).stream().map(p -> Bukkit.getOfflinePlayer(p.getUniqueId())).collect(Collectors.toList());
+        Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world,peopleWhoSlept ,skipCause, lastSleeperName, lastSleeperDisplayName));
     }
 
     private boolean shouldSkip(World world) {
@@ -210,6 +219,6 @@ public class SleepService implements ISleepService {
             return;
 
         dataContainer.setAnimationRunning(world, true);
-        new NightcycleAnimationTask(this, world, player, sleepSkipCause).runTaskTimer(this.main, 0, 1);
+        new NightcycleAnimationTask(this, this.flagsRepository , world, player, sleepSkipCause).runTaskTimer(this.main, 0, 1);
     }
 }

@@ -18,6 +18,7 @@ public enum MessageTemplate {
     NO_LONGER_SLEEPING("&eYou are no longer Sleeping!", true),
     NO_BED_LOCATION_SET("&cYou don't have a bed location!", true),
     TELEPORTED_TO_BED("&aYou teleported to your bed!", true),
+    SLEEP_CMD_DISABLED("&cYou cannot use the /sleep command in this world!", true),
     ONE_PLAYER_SLEEP_SET("&aOne player sleep has been configured!", true);
 
     private final String rawMessage;

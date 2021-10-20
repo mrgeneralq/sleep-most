@@ -39,6 +39,12 @@ public class SleepCommand implements CommandExecutor {
         }
         World world = player.getWorld();
 
+        if(!this.flagsRepository.getSleepCmdFlag().getValueAt(world)){
+
+            this.messageService.sendMessage(player, this.messageService.fromTemplate(MessageTemplate.SLEEP_CMD_DISABLED));
+            return true;
+        }
+
 
         if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
 

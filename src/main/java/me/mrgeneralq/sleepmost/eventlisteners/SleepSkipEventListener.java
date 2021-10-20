@@ -8,7 +8,6 @@ import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Sound;
 import org.bukkit.Statistic;
 import org.bukkit.World;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +19,7 @@ import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SleepSkipEventListener implements Listener {
 
@@ -53,9 +53,12 @@ public class SleepSkipEventListener implements Listener {
 
         boolean shouldHeal = flagsRepository.getHealFlag().getValueAt(world);
         boolean shouldFeed = flagsRepository.getFeedFlag().getValueAt(world);
-        List<Player> sleepingPlayers = sleepService.getSleepers(world);
+
+        List<Player> sleepingPlayers = this.sleepService.getSleepers(world);
 
         sleepingPlayers.forEach(p -> {
+
+
             if (shouldHeal)
                 ServerVersion.CURRENT_VERSION.healToMaxHP(p);
 
@@ -87,6 +90,7 @@ public class SleepSkipEventListener implements Listener {
         }
         String skippedTitle = (cause == NIGHT_TIME ? configService.getTitleNightSkippedTitle() : configService.getTitleStormSkippedTitle());
         String skippedSubtitle = (cause == NIGHT_TIME ? configService.getTitleNightSkippedSubTitle() : configService.getTitleStormSkippedSubTitle());
+
 
         for (Player p : world.getPlayers()) {
             String playerTitle = skippedTitle = skippedTitle.replaceAll("%player%", p.getName()).replaceAll("%dplayer%", p.getDisplayName());

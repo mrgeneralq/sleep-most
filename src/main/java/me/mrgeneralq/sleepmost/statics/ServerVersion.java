@@ -71,7 +71,7 @@ public enum ServerVersion
     }
     private static void forVersionsUntil(ServerVersion maximum, Consumer<ServerVersion> action) {
         versionsStream()
-                .filter(version -> version.ordinal() <= maximum.ordinal())
+                .filter(version -> version.ordinal() < maximum.ordinal())
                 .forEach(action);
     }
     private static Stream<ServerVersion> versionsStream() {

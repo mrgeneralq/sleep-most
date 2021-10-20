@@ -28,4 +28,8 @@ public interface IFlagsRepository
     FeedFlag getFeedFlag();
     SkipStormFlag getSkipStormFlag();
     ExemptBelowYFlag getExemptBelowYFlag();
+    ClockAnimationFlag getClockAnimationFlag();
+
+    AllowSleepCmdFlag getSleepCmdFlag();
+
 }

@@ -54,6 +54,7 @@ public class MessageService implements IMessageService {
 				.setPlayer(player)
 				.setPlaceHolder("%sleeping%", String.valueOf(sleepingPlayersAmount))
 				.setPlaceHolder("%required%", String.valueOf(requiredPlayersAmount))
+				.setPlaceHolder("%remaining%", String.valueOf(requiredPlayersAmount - sleepingPlayersAmount))
 				.build();
 	}
 

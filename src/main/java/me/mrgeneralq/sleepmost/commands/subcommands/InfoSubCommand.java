@@ -8,6 +8,9 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import java.util.List;
+import java.util.Set;
+
 import static java.util.Comparator.comparing;
 import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
 
@@ -44,11 +47,27 @@ public class InfoSubCommand implements ISubCommand {
         sender.sendMessage(colorize(String.format("&e&lFLAGS &o&7world: &c&l%s", world.getName())));
         sender.sendMessage(colorize("&b*********************************************"));
 
-        this.flagsRepository.getFlags().stream()
+        Set<ISleepFlag<?>> flagList = this.flagsRepository.getFlags();
+
+        int entriesPerPage = 10;
+        int page = 1;
+        int totalPages = (int) Math.ceil( flagList.size() / (double) entriesPerPage);
+
+        try{
+            page = Integer.parseInt(args[1]);
+        }catch (Exception ex){}
+
+        if(page > totalPages)
+            page = totalPages;
+
+        flagList.stream()
                 .sorted(comparing(ISleepFlag::getName))
                 .map(flag -> getValueAtMessage(flag, world))
+                .skip( entriesPerPage * (page - 1))
+                .limit(entriesPerPage)
                 .forEach(sender::sendMessage);
-
+        sender.sendMessage("");
+        sender.sendMessage(colorize(String.format("&b(&c%s&f/&c%s&b)  &7/sm info <page>", page , totalPages)));
         sender.sendMessage(colorize("&b*********************************************"));
         return true;
     }
