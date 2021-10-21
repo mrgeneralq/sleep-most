@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.commands;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +25,16 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	private final IFlagService flagService;
 	private final IFlagsRepository flagsRepository;
 	private final IConfigRepository configRepository;
+	private final ICooldownService cooldownService;
 
-	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository, IConfigRepository configRepository){
+	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository, IConfigRepository configRepository, ICooldownService cooldownService){
 		this.sleepService = sleepService;
 		this.messageService = messageService;
 		this.updateService = updateService;
 		this.flagService = flagService;
 		this.flagsRepository = flagsRepository;
 		this.configRepository = configRepository;
+		this.cooldownService = cooldownService;
 
 		this.registerSubCommands();
 	}
@@ -46,6 +49,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("reset", new ResetSubCommand(this.messageService, this.flagService));
 		subCommands.put("setops", new SetOnePlayerSleepCommand(this.sleepService, this.messageService,this.flagService, this.flagsRepository));
 		subCommands.put("bed", new BedSubCommand(this.sleepService,this.messageService));
+		subCommands.put("sleep", new SleepSubCommand(this.sleepService,this.flagsRepository,this.messageService,this.cooldownService));
 
 		//enable when debugging
 		//subCommands.put("test", new TestCommand(this.messageService, this.flagsRepository, this.configRepository));
@@ -74,6 +78,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 			sender.sendMessage(colorize("&e/sm setops &fenable one player sleep for the current world"));
 			sender.sendMessage(colorize("&e/sm bed &fteleport to your current bed spawn location"));
 			sender.sendMessage(colorize("&e/sm reload &freload the config file"));
+			sender.sendMessage(colorize("&e/sm sleep &fput yourself in sleep status"));
 			return true;
 		}
 

@@ -8,7 +8,4 @@ commands:
     usage: /sleepmost
     description: open the sleepmost help menu
     aliases: [sm]
-  sleep:
-    usage: /sleep
-    description: Allows players to register themselves as sleeping
 softdepend: [PlaceholderAPI]

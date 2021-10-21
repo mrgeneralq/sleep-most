@@ -1,46 +1,38 @@
-package me.mrgeneralq.sleepmost.commands;
+package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
-import me.mrgeneralq.sleepmost.interfaces.ICooldownService;
-import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
-import me.mrgeneralq.sleepmost.interfaces.IMessageService;
-import me.mrgeneralq.sleepmost.interfaces.ISleepService;
+import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.messages.MessageTemplate;
+import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SleepCommand implements CommandExecutor {
+public class SleepSubCommand implements ISubCommand {
+
     private final ISleepService sleepService;
+    private final IFlagsRepository flagsRepository;
     private final IMessageService messageService;
     private final ICooldownService cooldownService;
-    private final IFlagsRepository flagsRepository;
 
-    public SleepCommand(ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService, IFlagsRepository flagsRepository) {
+    public SleepSubCommand(ISleepService sleepService, IFlagsRepository flagsRepository, IMessageService messageService, ICooldownService cooldownService) {
         this.sleepService = sleepService;
+        this.flagsRepository = flagsRepository;
         this.messageService = messageService;
         this.cooldownService = cooldownService;
-        this.flagsRepository = flagsRepository;
     }
 
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
-        if (!(sender instanceof Player)) {
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.ONLY_PLAYERS_COMMAND));
-            return true;
-        }
+    public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+
+
         Player player = (Player) sender;
 
-        if (!player.hasPermission("sleepmost.sleep")) {
-            this.messageService.sendMessage(player, this.messageService.fromTemplate(MessageTemplate.NO_PERMISSION));
-            return true;
-        }
         World world = player.getWorld();
 
         if(!this.flagsRepository.getSleepCmdFlag().getValueAt(world)){
-
             this.messageService.sendMessage(player, this.messageService.fromTemplate(MessageTemplate.SLEEP_CMD_DISABLED));
             return true;
         }
@@ -82,3 +74,4 @@ public class SleepCommand implements CommandExecutor {
         return sleepingStatus ? MessageTemplate.SLEEP_SUCCESS : MessageTemplate.NO_LONGER_SLEEPING;
     }
 }
+

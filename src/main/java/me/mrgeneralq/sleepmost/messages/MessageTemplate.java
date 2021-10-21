@@ -16,8 +16,9 @@ public enum MessageTemplate {
     FLAGS_RESET_SUCCESS("&aAll flags have been reset for the world: &b%world%&a."),
     SLEEP_SUCCESS("&aYou are now Sleeping!", true),
     NO_LONGER_SLEEPING("&eYou are no longer Sleeping!", true),
-    NO_BED_LOCATION_SET("&cYou don't have a bed location!", true),
+    NO_BED_LOCATION_SET("&cYou don't have a bed or it is obstructed!", true),
     TELEPORTED_TO_BED("&aYou teleported to your bed!", true),
+    SLEEP_CMD_DISABLED("&cYou cannot use the /sleep command in this world!", true),
     ONE_PLAYER_SLEEP_SET("&aOne player sleep has been configured!", true);
 
     private final String rawMessage;

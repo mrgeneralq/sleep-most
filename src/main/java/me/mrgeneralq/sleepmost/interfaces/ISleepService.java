@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.interfaces;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -8,7 +9,7 @@ import java.util.List;
 public interface ISleepService
 {
     //General
-    void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause skipCause);
+    void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName, List<OfflinePlayer> peopleWhoSlept , SleepSkipCause skipCause);
     void reloadConfig();
 
     //Worlds
@@ -24,6 +25,9 @@ public interface ISleepService
     int getRequiredSleepersCount(World world);
     SleepSkipCause getCurrentSkipCause(World world);
     boolean isRequiredCountReached(World world);
+
+    int getRemainingSleepers(World world);
+
     void clearSleepersAt(World world);
 
     //Players

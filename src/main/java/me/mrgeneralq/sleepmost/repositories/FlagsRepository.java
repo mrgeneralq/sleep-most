@@ -29,6 +29,8 @@ public class FlagsRepository implements IFlagsRepository
     private final FeedFlag feedFlag;
     private final ExemptBelowYFlag exemptBelowYFlag;
     private final SkipStormFlag skipStormFlag;
+    private final ClockAnimationFlag clockAnimationFlag;
+    private final AllowSleepCmdFlag sleepCmdFlag;
 
     public FlagsRepository(IConfigRepository configRepository)
     {
@@ -47,6 +49,8 @@ public class FlagsRepository implements IFlagsRepository
         setupFlag(this.feedFlag = new FeedFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.exemptBelowYFlag = new ExemptBelowYFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.skipStormFlag = new SkipStormFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.clockAnimationFlag = new ClockAnimationFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.sleepCmdFlag = new AllowSleepCmdFlag(new ConfigFlagController<>(configRepository)));
     }
 
     @Override
@@ -117,7 +121,13 @@ public class FlagsRepository implements IFlagsRepository
     }
     @Override public ExemptBelowYFlag getExemptBelowYFlag(){ return this.exemptBelowYFlag; }
     @Override public SkipStormFlag getSkipStormFlag() {
-        return skipStormFlag;
+        return this.skipStormFlag;
+    }
+    @Override public ClockAnimationFlag getClockAnimationFlag() {
+        return this.clockAnimationFlag;
+    }
+    @Override public AllowSleepCmdFlag getSleepCmdFlag() {
+        return this.sleepCmdFlag;
     }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {

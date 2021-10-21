@@ -5,10 +5,7 @@ import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
-import org.bukkit.Sound;
-import org.bukkit.Statistic;
-import org.bukkit.World;
-import org.bukkit.attribute.Attribute;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -41,6 +38,8 @@ public class SleepSkipEventListener implements Listener {
 
         World world = e.getWorld();
 
+
+
         if (dataContainer.isAnimationRunningAt(world))
             return;
 
@@ -53,14 +52,22 @@ public class SleepSkipEventListener implements Listener {
 
         boolean shouldHeal = flagsRepository.getHealFlag().getValueAt(world);
         boolean shouldFeed = flagsRepository.getFeedFlag().getValueAt(world);
-        List<Player> sleepingPlayers = sleepService.getSleepers(world);
+
+
+        List<OfflinePlayer> sleepingPlayers = e.getPeopleWhoSlept();
 
         sleepingPlayers.forEach(p -> {
-            if (shouldHeal)
-                ServerVersion.CURRENT_VERSION.healToMaxHP(p);
 
-            if (shouldFeed)
-                p.setFoodLevel(20);
+
+            if(p.isOnline()){
+                if (shouldHeal)
+                    ServerVersion.CURRENT_VERSION.healToMaxHP(p.getPlayer());
+
+                if (shouldFeed)
+                    p.getPlayer().setFoodLevel(20);
+            }
+
+
         });
         this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
         this.sleepService.clearSleepersAt(world);
@@ -87,6 +94,7 @@ public class SleepSkipEventListener implements Listener {
         }
         String skippedTitle = (cause == NIGHT_TIME ? configService.getTitleNightSkippedTitle() : configService.getTitleStormSkippedTitle());
         String skippedSubtitle = (cause == NIGHT_TIME ? configService.getTitleNightSkippedSubTitle() : configService.getTitleStormSkippedSubTitle());
+
 
         for (Player p : world.getPlayers()) {
             String playerTitle = skippedTitle = skippedTitle.replaceAll("%player%", p.getName()).replaceAll("%dplayer%", p.getDisplayName());

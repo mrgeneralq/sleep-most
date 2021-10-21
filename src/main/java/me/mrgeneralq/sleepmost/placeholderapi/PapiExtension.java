@@ -70,6 +70,10 @@ public class PapiExtension extends PlaceholderExpansion {
             return String.valueOf(this.sleepService.isPlayerAsleep(player.getPlayer()));
         }
 
+        if(identifier.equalsIgnoreCase("remaining-count")){
+            return String.valueOf(this.sleepService.getRemainingSleepers(player.getPlayer().getWorld()));
+        }
+
         return "";
     }
 
