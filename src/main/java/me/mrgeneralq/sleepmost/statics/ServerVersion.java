@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 public enum ServerVersion
 {
-    UNKNOWN, V1_8, V1_9, V1_10, V1_11, V1_12, V1_13, V1_14, V1_15, V1_16, V1_17;
+    UNKNOWN, V1_8, V1_9, V1_10, V1_11, V1_12, V1_13, V1_14, V1_15, V1_16, V1_17, V1_18;
 
     private final String name;
     private MaxHPHealer maxHPHealer;
@@ -20,7 +20,7 @@ public enum ServerVersion
 
     public static final ServerVersion CURRENT_VERSION;
 
-    public static final String UPDATE_URL = "https://www.spigotmc.org/resources/sleep-most-1-8-1-16-1-configurable-messages-and-percentage.60623/";
+    public static final String UPDATE_URL = "https://www.spigotmc.org/resources/60623/";
 
     //cached for internal usage
     private static final ServerVersion[] VALUES = values();
