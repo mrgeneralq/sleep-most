@@ -8,6 +8,7 @@ import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -75,6 +76,9 @@ public class SleepService implements ISleepService {
     public int getPlayerCountInWorld(World world) {
 
         Stream<Player> playersStream = world.getPlayers().stream();
+
+        if(flagsRepository.getUseNonSurvivalModeFlag().getValueAt(world))
+            playersStream = playersStream.filter(p -> p.getGameMode() == GameMode.SURVIVAL);
 
         if(flagsRepository.getUseExemptFlag().getValueAt(world))
             playersStream = playersStream.filter(p -> !p.hasPermission("sleepmost.exempt"));

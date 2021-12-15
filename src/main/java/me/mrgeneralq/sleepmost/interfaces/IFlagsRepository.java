@@ -16,6 +16,7 @@ public interface IFlagsRepository
     PercentageRequiredFlag getPercentageRequiredFlag();
     MobNoTargetFlag getMobNoTargetFlag();
     UseExemptFlag getUseExemptFlag();
+    UseNonSurvivalModeFlag getUseNonSurvivalModeFlag();
     PreventSleepFlag getPreventSleepFlag();
     PreventPhantomFlag getPreventPhantomFlag();
     NightcycleAnimationFlag getNightcycleAnimationFlag();
