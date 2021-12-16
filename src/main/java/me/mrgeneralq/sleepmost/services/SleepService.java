@@ -77,8 +77,13 @@ public class SleepService implements ISleepService {
 
         Stream<Player> playersStream = world.getPlayers().stream();
 
-        if(flagsRepository.getUseNonSurvivalModeFlag().getValueAt(world))
-            playersStream = playersStream.filter(p -> p.getGameMode() == GameMode.SURVIVAL);
+        // If flag is active, ignore players in spectator mode from sleep count.
+        if (flagsRepository.getExemptSpectatorFlag().getValueAt(world))
+            playersStream = playersStream.filter(p -> p.getGameMode() != GameMode.SPECTATOR);
+
+        // If flag is active, ignore players in creative mode from sleep count.
+        if(flagsRepository.getExemptCreativeFlag().getValueAt(world))
+            playersStream = playersStream.filter(p -> p.getGameMode() != GameMode.CREATIVE);
 
         if(flagsRepository.getUseExemptFlag().getValueAt(world))
             playersStream = playersStream.filter(p -> !p.hasPermission("sleepmost.exempt"));

@@ -18,6 +18,8 @@ sleep:
     mob-no-target: true
     use-exempt: false
     use-afk: false
+    exempt-creative: false
+    exempt-spectator: false
     prevent-sleep: false
     prevent-phantom: false
     nightcycle-animation: false
@@ -35,6 +37,8 @@ sleep:
     mob-no-target: true
     use-exempt: false
     use-afk: false
+    exempt-creative: false
+    exempt-spectator: false
     prevent-sleep: false
     prevent-phantom: false
     nightcycle-animation: false

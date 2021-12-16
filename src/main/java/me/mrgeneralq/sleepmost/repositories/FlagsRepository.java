@@ -17,7 +17,8 @@ public class FlagsRepository implements IFlagsRepository
     private final PercentageRequiredFlag percentageRequiredFlag;
     private final MobNoTargetFlag mobNoTargetFlag;
     private final UseExemptFlag useExemptFlag;
-    private final UseNonSurvivalModeFlag useNonSurvivalModeFlag;
+    private final ExemptCreativeFlag exemptCreativeFlag;
+    private final ExemptSpectatorFlag exemptSpectatorFlag;
     private final PreventSleepFlag preventSleepFlag;
     private final PreventPhantomFlag preventPhantomFlag;
     private final NightcycleAnimationFlag nightcycleAnimationFlag;
@@ -38,7 +39,8 @@ public class FlagsRepository implements IFlagsRepository
         setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.mobNoTargetFlag = new MobNoTargetFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.useExemptFlag = new UseExemptFlag(new ConfigFlagController<>(configRepository)));
-        setupFlag(this.useNonSurvivalModeFlag = new UseNonSurvivalModeFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.exemptCreativeFlag = new ExemptCreativeFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.exemptSpectatorFlag = new ExemptSpectatorFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.preventSleepFlag = new PreventSleepFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.preventPhantomFlag = new PreventPhantomFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.stormSleepFlag = new StormSleepFlag(new ConfigFlagController<>(configRepository)));
@@ -93,8 +95,13 @@ public class FlagsRepository implements IFlagsRepository
     }
 
     @Override
-    public UseNonSurvivalModeFlag getUseNonSurvivalModeFlag() {
-        return this.useNonSurvivalModeFlag;
+    public ExemptCreativeFlag getExemptCreativeFlag() {
+        return this.exemptCreativeFlag;
+    }
+
+    @Override
+    public ExemptSpectatorFlag getExemptSpectatorFlag() {
+        return this.exemptSpectatorFlag;
     }
 
     @Override public PreventSleepFlag getPreventSleepFlag() {
