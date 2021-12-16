@@ -2,7 +2,7 @@ name: sleep-most
 api-version: 1.13
 version: ${project.version}
 main: me.mrgeneralq.sleepmost.Sleepmost
-authors: [MrGeneralQ, PandaCrafter1, HorrendousEntity]
+authors: [MrGeneralQ, HorrendousEntity]
 commands:
   sleepmost:
     usage: /sleepmost
