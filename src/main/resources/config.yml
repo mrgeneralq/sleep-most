@@ -55,11 +55,9 @@ sleep:
 
 titles:
   night-skipped:
-    enabled: false
     title: '&aNight skipped'
     subtitle: '&bGood morning sunshine!'
   storm-skipped:
-    enabled: false
     title: '&eStorm skipped'
     subtitle: '&bWhat a weather...'
 
