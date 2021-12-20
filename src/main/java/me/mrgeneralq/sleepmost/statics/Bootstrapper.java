@@ -4,10 +4,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.messages.MessageService;
 import me.mrgeneralq.sleepmost.placeholderapi.PapiExtension;
-import me.mrgeneralq.sleepmost.repositories.ConfigRepository;
-import me.mrgeneralq.sleepmost.repositories.CooldownRepository;
-import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
-import me.mrgeneralq.sleepmost.repositories.UpdateRepository;
+import me.mrgeneralq.sleepmost.repositories.*;
 import me.mrgeneralq.sleepmost.services.*;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import org.bukkit.Bukkit;
@@ -31,6 +28,8 @@ public class Bootstrapper {
     private IFlagsRepository flagsRepository;
     private IFlagService flagService;
     private IConfigService configService;
+    private BossBarRepository bossBarRepository;
+    private IBossBarService bossBarService;
 
     private static Bootstrapper instance;
 
@@ -56,6 +55,12 @@ public class Bootstrapper {
 
         this.configMessageMapper = ConfigMessageMapper.getMapper();
         this.configMessageMapper.initialize(main);
+
+        //check if boss bars are supported
+        if(ServerVersion.CURRENT_VERSION.supportsBossBars()){
+        this.bossBarRepository = new BossBarRepository();
+        this.bossBarService = new BossBarService(this.bossBarRepository);
+        }
 
         //setups
         this.flagService.handleProblematicFlags();
@@ -115,5 +120,13 @@ public class Bootstrapper {
     }
     public IFlagService getFlagService() {
         return this.flagService;
+    }
+
+    public BossBarRepository getBossBarRepository() {
+        return bossBarRepository;
+    }
+
+    public IBossBarService getBossBarService() {
+        return bossBarService;
     }
 }

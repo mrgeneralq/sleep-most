@@ -34,4 +34,5 @@ public interface IFlagsRepository
 
     AllowSleepCmdFlag getSleepCmdFlag();
 
+    UseBossBarFlag getUseBossBarFlag();
 }

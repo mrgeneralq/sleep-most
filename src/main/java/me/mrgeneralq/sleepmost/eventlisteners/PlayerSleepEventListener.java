@@ -2,8 +2,11 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.messages.MessageBuilder;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.World;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,12 +21,19 @@ public class PlayerSleepEventListener implements Listener {
     private final ICooldownService cooldownService;
     private final DataContainer dataContainer;
     private final IFlagsRepository flagsRepository;
+    private final IBossBarService bossBarService;
 
-    public PlayerSleepEventListener(ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService, IFlagsRepository flagsRepository) {
+    public PlayerSleepEventListener(ISleepService sleepService,
+                                    IMessageService messageService,
+                                    ICooldownService cooldownService,
+                                    IFlagsRepository flagsRepository,
+                                    IBossBarService bossBarService
+    ) {
         this.sleepService = sleepService;
         this.messageService = messageService;
         this.cooldownService = cooldownService;
         this.flagsRepository = flagsRepository;
+        this.bossBarService = bossBarService;
         this.dataContainer = DataContainer.getContainer();
     }
 
@@ -83,6 +93,23 @@ public class PlayerSleepEventListener implements Listener {
         int sleepingPlayersAmount = sleepService.getSleepersAmount(world);
         int playersRequiredAmount = Math.round(sleepService.getRequiredSleepersCount(world));
         messageService.sendPlayerLeftMessage(player, sleepService.getCurrentSkipCause(world), sleepingPlayersAmount, playersRequiredAmount);
+
+        if(ServerVersion.CURRENT_VERSION.supportsBossBars() && this.flagsRepository.getUseBossBarFlag().getValueAt(world)){
+            this.bossBarService.setVisible(world, true);
+            BossBar bossBar = this.bossBarService.getBossBar(world);
+
+            String configBossBarTitle = this.messageService.getConfigMessage(ConfigMessage.BOSS_BAR_TITLE);
+            String bossBarTitle = new MessageBuilder(configBossBarTitle, "")
+                    .usePrefix(false)
+                    .setSleepingCount(sleepingPlayersAmount)
+                    .setSleepingRequiredCount(playersRequiredAmount)
+                    .build();
+
+            bossBar.setTitle(bossBarTitle);
+            bossBar.setProgress(sleepService.getSleepersPercentage(world));
+
+        }
+
     }
 
     @EventHandler

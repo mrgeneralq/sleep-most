@@ -33,6 +33,7 @@ public class FlagsRepository implements IFlagsRepository
     private final SkipStormFlag skipStormFlag;
     private final ClockAnimationFlag clockAnimationFlag;
     private final AllowSleepCmdFlag sleepCmdFlag;
+    private final UseBossBarFlag useBossBarFlag;
 
     public FlagsRepository(IConfigRepository configRepository)
     {
@@ -55,6 +56,7 @@ public class FlagsRepository implements IFlagsRepository
         setupFlag(this.skipStormFlag = new SkipStormFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.clockAnimationFlag = new ClockAnimationFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.sleepCmdFlag = new AllowSleepCmdFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.useBossBarFlag = new UseBossBarFlag(new ConfigFlagController<>(configRepository)));
     }
 
     @Override
@@ -143,6 +145,9 @@ public class FlagsRepository implements IFlagsRepository
     }
     @Override public AllowSleepCmdFlag getSleepCmdFlag() {
         return this.sleepCmdFlag;
+    }
+    @Override public UseBossBarFlag getUseBossBarFlag() {
+        return useBossBarFlag;
     }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {

@@ -50,4 +50,14 @@ public class MessageBuilder {
         this.message = message;
         return this;
     }
+
+    public MessageBuilder setSleepingCount(int count){
+        this.message = message.replaceAll("%sleeping-count%", String.valueOf(count));
+        return this;
+    }
+
+    public MessageBuilder setSleepingRequiredCount(int count){
+        this.message = message.replaceAll("%sleeping-required-count%", String.valueOf(count));
+        return this;
+    }
 }

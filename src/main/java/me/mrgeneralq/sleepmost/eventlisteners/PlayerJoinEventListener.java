@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
+import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
@@ -17,21 +18,26 @@ import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
 public class PlayerJoinEventListener implements Listener {
 
     private final IMessageService messageService;
+    private final IBossBarService bossBarService;
     private final IUpdateService updateService;
     private final Plugin plugin;
 
     private static final String UPDATE_PERMISSION = "sleepmost.alerts.update";
 
-    public PlayerJoinEventListener(Plugin plugin, IUpdateService updateService, IMessageService messageService) {
+    public PlayerJoinEventListener(Plugin plugin, IUpdateService updateService, IMessageService messageService, IBossBarService bossBarService) {
         this.plugin = plugin;
         this.updateService = updateService;
         this.messageService = messageService;
+        this.bossBarService = bossBarService;
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
 
         Player player = e.getPlayer();
+
+        if(ServerVersion.CURRENT_VERSION.supportsBossBars())
+        this.bossBarService.registerPlayer(player.getWorld(), player);
 
         if (!player.hasPermission(UPDATE_PERMISSION))
             return;
