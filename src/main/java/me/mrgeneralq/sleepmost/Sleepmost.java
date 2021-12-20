@@ -31,8 +31,10 @@ public class Sleepmost extends JavaPlugin{
 		bootstrapper.initialize(this);
 
 		//check if boss bars are supported before registered
-		if(ServerVersion.CURRENT_VERSION.supportsBossBars())
-			this.registerBossBars();
+		//if(ServerVersion.CURRENT_VERSION.supportsBossBars())
+		//	this.registerBossBars();
+
+
 
 		//init commands
 		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagService(), bootstrapper.getFlagsRepository(), bootstrapper.getConfigRepository(), bootstrapper.getCooldownService());
@@ -52,7 +54,8 @@ public class Sleepmost extends JavaPlugin{
 		pm.registerEvents(new TimeSkipEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new WorldChangeEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new PlayerBedLeaveEventListener(bootstrapper.getBossBarService(),bootstrapper.getSleepService(),bootstrapper.getMessageService(), bootstrapper.getFlagsRepository()), this);
-		
+		pm.registerEvents(new WorldLoadEventListener(bootstrapper.getBossBarService()),this);
+
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
 	}
 
