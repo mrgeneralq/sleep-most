@@ -20,8 +20,10 @@ sleep:
     use-exempt: false
     use-afk: false
     use-bossbar: false
-    use-sounds: false
-    use-titles: false
+    use-sound-night-skipped: false
+    use-sound-storm-skipped: false
+    use-title-night-skipped: false
+    use-title-storm-skipped: false
     exempt-creative: false
     exempt-spectator: false
     prevent-sleep: false
@@ -41,8 +43,10 @@ sleep:
     use-exempt: false
     use-afk: false
     use-bossbar: false
-    use-sounds: false
-    use-titles: false
+    use-sound-night-skipped: false
+    use-sound-storm-skipped: false
+    use-title-night-skipped: false
+    use-title-storm-skipped: false
     exempt-creative: false
     exempt-spectator: false
     prevent-sleep: false
