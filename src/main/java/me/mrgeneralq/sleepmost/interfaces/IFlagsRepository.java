@@ -35,4 +35,10 @@ public interface IFlagsRepository
     AllowSleepCmdFlag getSleepCmdFlag();
 
     UseBossBarFlag getUseBossBarFlag();
+
+    UseSoundNightSkippedFlag getUseSoundNightSkippedFlag();
+    UseSoundStormSkippedFlag getUseSoundStormSkippedFlag();
+    UseTitleNightSkippedFlag getUseTitleNightSkippedFlag();
+    UseTitleStormSkippedFlag getUseTitleStormSkippedFlag();
+
 }

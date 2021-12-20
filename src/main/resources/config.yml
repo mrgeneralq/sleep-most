@@ -20,6 +20,8 @@ sleep:
     use-exempt: false
     use-afk: false
     use-bossbar: false
+    use-sounds: false
+    use-titles: false
     exempt-creative: false
     exempt-spectator: false
     prevent-sleep: false
@@ -39,6 +41,8 @@ sleep:
     use-exempt: false
     use-afk: false
     use-bossbar: false
+    use-sounds: false
+    use-titles: false
     exempt-creative: false
     exempt-spectator: false
     prevent-sleep: false
@@ -63,10 +67,8 @@ titles:
 # Add sound effects after skipping the night or storm
 sounds:
   night-skipped:
-    enabled: false
     sound: UI_TOAST_CHALLENGE_COMPLETE
   storm-skipped:
-    enabled: false
     sound: ENTITY_WITHER_SPAWN
 
 

@@ -83,14 +83,15 @@ public class SleepSkipEventListener implements Listener {
     }
 
     private void sendSkipTitle(World world, SleepSkipCause cause) {
-        boolean titleEnabled = (cause == NIGHT_TIME ? configService.getTitleNightSkippedEnabled() : configService.getTitleStormSkippedEnabled());
+
+        boolean titleEnabled = (cause == NIGHT_TIME ? this.flagsRepository.getUseTitleNightSkippedFlag().getValueAt(world) :
+                this.flagsRepository.getUseTitleStormSkippedFlag().getValueAt(world));
 
         if (!titleEnabled) {
             return;
         }
         String skippedTitle = (cause == NIGHT_TIME ? configService.getTitleNightSkippedTitle() : configService.getTitleStormSkippedTitle());
         String skippedSubtitle = (cause == NIGHT_TIME ? configService.getTitleNightSkippedSubTitle() : configService.getTitleStormSkippedSubTitle());
-
 
         for (Player p : world.getPlayers()) {
             String playerTitle = skippedTitle = skippedTitle.replaceAll("%player%", p.getName()).replaceAll("%dplayer%", p.getDisplayName());
@@ -101,7 +102,8 @@ public class SleepSkipEventListener implements Listener {
     }
 
     private void sendSkipSound(World world, SleepSkipCause cause) {
-        boolean soundEnabled = (cause == NIGHT_TIME ? configService.getSoundNightSkippedEnabled() : configService.getSoundStormSkippedEnabled());
+        boolean soundEnabled = (cause == NIGHT_TIME ? flagsRepository.getUseSoundNightSkippedFlag().getValueAt(world) :
+                flagsRepository.getUseSoundStormSkippedFlag().getValueAt(world));
 
         if (!soundEnabled) {
             return;
