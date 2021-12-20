@@ -38,8 +38,6 @@ public class SleepSkipEventListener implements Listener {
 
         World world = e.getWorld();
 
-
-
         if (dataContainer.isAnimationRunningAt(world))
             return;
 
@@ -49,10 +47,8 @@ public class SleepSkipEventListener implements Listener {
         if (ServerVersion.CURRENT_VERSION.supportsTitles())
             sendSkipTitle(world, e.getCause());
 
-
         boolean shouldHeal = flagsRepository.getHealFlag().getValueAt(world);
         boolean shouldFeed = flagsRepository.getFeedFlag().getValueAt(world);
-
 
         List<OfflinePlayer> sleepingPlayers = e.getPeopleWhoSlept();
 

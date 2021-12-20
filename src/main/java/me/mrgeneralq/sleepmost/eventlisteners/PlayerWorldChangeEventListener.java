@@ -1,9 +1,11 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
+import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
 import me.mrgeneralq.sleepmost.messages.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,22 +16,25 @@ public class PlayerWorldChangeEventListener implements Listener {
 
     private final ISleepService sleepService;
     private final IMessageService messageService;
+    private final IBossBarService bossBarService;
     private final DataContainer dataContainer = DataContainer.getContainer();
 
-    public PlayerWorldChangeEventListener(ISleepService sleepService, IMessageService messageService){
+    public PlayerWorldChangeEventListener(ISleepService sleepService, IMessageService messageService, IBossBarService bossBarService){
         this.sleepService = sleepService;
         this.messageService = messageService;
+        this.bossBarService = bossBarService;
     }
 
     @EventHandler
-    public void disableSleep(PlayerChangedWorldEvent e){
-        this.dataContainer.setPlayerSleeping(e.getPlayer(), false);
-    }
-
-    @EventHandler
-    public void notifyDisabledWorld(PlayerChangedWorldEvent e){
+    public void onPlayerChangeWorld(PlayerChangedWorldEvent e){
+        
         Player player  = e.getPlayer();
         World world = player.getWorld();
+
+        this.dataContainer.setPlayerSleeping(e.getPlayer(), false);
+
+        if(ServerVersion.CURRENT_VERSION.supportsBossBars())
+            this.bossBarService.unregisterPlayer(world, player);
 
         if(!player.hasPermission("sleepmost.notify"))
             return;

@@ -1,10 +1,11 @@
 package me.mrgeneralq.sleepmost;
 
-import me.mrgeneralq.sleepmost.commands.SleepCommand;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
+import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +15,7 @@ import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 
 public class Sleepmost extends JavaPlugin{
 
+	private Bootstrapper bootstrapper;
 
 	@Override
 	public void onEnable() {
@@ -25,30 +27,35 @@ public class Sleepmost extends JavaPlugin{
 		new Metrics(this, bStatsID);
 		
 		//init bootstrapper
-		Bootstrapper bootstrapper = Bootstrapper.getBootstrapper();
+		this.bootstrapper = Bootstrapper.getBootstrapper();
 		bootstrapper.initialize(this);
-		
+
+		//check if boss bars are supported before registered
+		if(ServerVersion.CURRENT_VERSION.supportsBossBars())
+			this.registerBossBars();
+
+
+
 		//init commands
 		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagService(), bootstrapper.getFlagsRepository(), bootstrapper.getConfigRepository(), bootstrapper.getCooldownService());
 		getCommand("sleepmost").setExecutor(sleepmostCommand);
 
-		//Sleep Command has been transfered to a subcommand
-		//getCommand("sleep").setExecutor(new SleepCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository()));
-		//init listeners
 		PluginManager pm = Bukkit.getPluginManager();
-		pm.registerEvents(new PlayerSleepEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository()), this);
-		pm.registerEvents(new PlayerQuitEventListener(bootstrapper.getCooldownService(), bootstrapper.getSleepService()), this);
+		pm.registerEvents(new PlayerSleepEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService()), this);
+		pm.registerEvents(new PlayerQuitEventListener(bootstrapper.getCooldownService(), bootstrapper.getSleepService(), bootstrapper.getBossBarService()), this);
 
 		if(ServerVersion.CURRENT_VERSION.hasTimeSkipEvent())
 		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getMessageService(), bootstrapper.getConfigService(), bootstrapper.getSleepService(), bootstrapper.getFlagsRepository()), this);
 
 		pm.registerEvents(new EntityTargetLivingEntityEventListener(bootstrapper.getFlagsRepository()), this);
-		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService()), this);
-		pm.registerEvents(new PlayerJoinEventListener(this,  bootstrapper.getUpdateService(), bootstrapper.getMessageService()), this);
+		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getBossBarService()), this);
+		pm.registerEvents(new PlayerJoinEventListener(this,  bootstrapper.getUpdateService(), bootstrapper.getMessageService(), bootstrapper.getBossBarService()), this);
 		pm.registerEvents(new EntitySpawnEventListener(bootstrapper.getFlagsRepository()), this);
 		pm.registerEvents(new TimeSkipEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new WorldChangeEventListener(bootstrapper.getSleepService()), this);
-		
+		pm.registerEvents(new PlayerBedLeaveEventListener(bootstrapper.getBossBarService(),bootstrapper.getSleepService(),bootstrapper.getMessageService(), bootstrapper.getFlagsRepository()), this);
+//		pm.registerEvents(new WorldLoadEventListener(bootstrapper.getBossBarService()),this); not working yet (investigation required)
+
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
 	}
 
@@ -58,5 +65,11 @@ public class Sleepmost extends JavaPlugin{
 			getLogger().info("UPDATE FOUND: A newer version of sleep-most is available to download!");
 	}
 
-
+	void registerBossBars(){
+		for(World world: Bukkit.getWorlds()){
+			IBossBarService bossBarService = this.bootstrapper.getBossBarService();
+			bossBarService.registerBossBar(world);
+			bossBarService.setVisible(world, false);
+		}
+	}
 }

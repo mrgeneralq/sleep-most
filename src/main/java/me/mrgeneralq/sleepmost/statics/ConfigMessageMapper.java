@@ -22,6 +22,7 @@ public class ConfigMessageMapper {
 		configMessages.put(ConfigMessage.PLAYERS_LEFT_TO_SKIP_STORM, "messages.players-left-storm");
 		configMessages.put(ConfigMessage.SLEEP_PREVENTED, "messages.sleep-prevented");
 		configMessages.put(ConfigMessage.NO_SLEEP_THUNDERSTORM, "messages.no-sleep-storm");
+		configMessages.put(ConfigMessage.BOSS_BAR_TITLE, "bossbar.title");
 	}
 	
 	public static ConfigMessageMapper getMapper(){
