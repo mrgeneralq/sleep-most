@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.messages;
 
+import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -58,6 +59,17 @@ public class MessageBuilder {
 
     public MessageBuilder setSleepingRequiredCount(int count){
         this.message = message.replaceAll("%sleeping-required-count%", String.valueOf(count));
+        return this;
+    }
+
+    public MessageBuilder setCause(SleepSkipCause cause){
+
+        if(cause == SleepSkipCause.UNKNOWN)
+            return this;
+
+        String causeMessage = (cause == SleepSkipCause.NIGHT_TIME) ? "night" : "storm";
+        this.message = message.replaceAll("%skip-cause%", causeMessage);
+
         return this;
     }
 }
