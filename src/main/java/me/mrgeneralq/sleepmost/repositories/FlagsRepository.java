@@ -34,6 +34,11 @@ public class FlagsRepository implements IFlagsRepository
     private final ClockAnimationFlag clockAnimationFlag;
     private final AllowSleepCmdFlag sleepCmdFlag;
     private final UseBossBarFlag useBossBarFlag;
+    private final UseSoundNightSkippedFlag useSoundNightSkippedFlag;
+    private final UseSoundStormSkippedFlag useSoundStormSkippedFlag;
+    private final UseTitleNightSkippedFlag useTitleNightSkippedFlag;
+    private final UseTitleStormSkippedFlag useTitleStormSkippedFlag;
+
 
     public FlagsRepository(IConfigRepository configRepository)
     {
@@ -57,6 +62,10 @@ public class FlagsRepository implements IFlagsRepository
         setupFlag(this.clockAnimationFlag = new ClockAnimationFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.sleepCmdFlag = new AllowSleepCmdFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.useBossBarFlag = new UseBossBarFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.useTitleStormSkippedFlag = new UseTitleStormSkippedFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.useTitleNightSkippedFlag = new UseTitleNightSkippedFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.useSoundNightSkippedFlag = new UseSoundNightSkippedFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.useSoundStormSkippedFlag = new UseSoundStormSkippedFlag(new ConfigFlagController<>(configRepository)));
     }
 
     @Override
@@ -148,6 +157,26 @@ public class FlagsRepository implements IFlagsRepository
     }
     @Override public UseBossBarFlag getUseBossBarFlag() {
         return useBossBarFlag;
+    }
+
+    @Override
+    public UseSoundNightSkippedFlag getUseSoundNightSkippedFlag() {
+        return useSoundNightSkippedFlag;
+    }
+
+    @Override
+    public UseSoundStormSkippedFlag getUseSoundStormSkippedFlag() {
+        return useSoundStormSkippedFlag;
+    }
+
+    @Override
+    public UseTitleNightSkippedFlag getUseTitleNightSkippedFlag() {
+        return useTitleNightSkippedFlag;
+    }
+
+    @Override
+    public UseTitleStormSkippedFlag getUseTitleStormSkippedFlag() {
+        return useTitleStormSkippedFlag;
     }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {
