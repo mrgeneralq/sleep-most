@@ -33,8 +33,10 @@ public class PlayerWorldChangeEventListener implements Listener {
 
         this.dataContainer.setPlayerSleeping(e.getPlayer(), false);
 
-        if(ServerVersion.CURRENT_VERSION.supportsBossBars())
-            this.bossBarService.unregisterPlayer(world, player);
+        if(ServerVersion.CURRENT_VERSION.supportsBossBars()){
+            this.bossBarService.unregisterPlayer(e.getFrom(), player);
+            this.bossBarService.registerPlayer(world,player);
+        }
 
         if(!player.hasPermission("sleepmost.notify"))
             return;

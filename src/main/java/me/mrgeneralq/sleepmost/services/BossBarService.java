@@ -20,7 +20,10 @@ public class BossBarService implements IBossBarService {
     @Override
     public void registerBossBar(World world) {
 
+
         BossBar bossBar = Bukkit.createBossBar("", BarColor.BLUE, BarStyle.SOLID);
+        bossBar.setVisible(false);
+
         this.bossBarRepository.set(world, bossBar);
 
     }
@@ -36,6 +39,10 @@ public class BossBarService implements IBossBarService {
     public void registerPlayer(World world, Player player) {
 
         BossBar bossBar = this.bossBarRepository.get(world);
+
+        if(bossBar == null)
+            return;
+
         bossBar.addPlayer(player);
         this.bossBarRepository.set(world, bossBar);
     }
@@ -44,8 +51,11 @@ public class BossBarService implements IBossBarService {
     public void unregisterPlayer(World world, Player player) {
 
         BossBar bossBar = this.bossBarRepository.get(world);
-        bossBar.removePlayer(player);
 
+        if(bossBar == null)
+            return;
+
+        bossBar.removePlayer(player);
     }
 
     @Override
@@ -66,6 +76,7 @@ public class BossBarService implements IBossBarService {
 
     @Override
     public BossBar getBossBar(World world) {
+
         return this.bossBarRepository.get(world);
     }
 }

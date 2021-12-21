@@ -102,7 +102,7 @@ public class SleepService implements ISleepService {
 
     @Override
     public double getSleepersPercentage(World world) {
-        return getSleepersAmount(world) / getPlayerCountInWorld(world);
+        return (double)getSleepersAmount(world) / (double)getPlayerCountInWorld(world);
     }
 
     @Override
