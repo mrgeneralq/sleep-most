@@ -1,6 +1,5 @@
 package me.mrgeneralq.sleepmost.commands;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +25,9 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	private final IFlagsRepository flagsRepository;
 	private final IConfigRepository configRepository;
 	private final ICooldownService cooldownService;
+	private final IBossBarService bossBarService;
 
-	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository, IConfigRepository configRepository, ICooldownService cooldownService){
+	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository, IConfigRepository configRepository, ICooldownService cooldownService, IBossBarService bossBarService){
 		this.sleepService = sleepService;
 		this.messageService = messageService;
 		this.updateService = updateService;
@@ -35,7 +35,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		this.flagsRepository = flagsRepository;
 		this.configRepository = configRepository;
 		this.cooldownService = cooldownService;
-
+		this.bossBarService = bossBarService;
 		this.registerSubCommands();
 	}
 
@@ -49,7 +49,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("reset", new ResetSubCommand(this.messageService, this.flagService));
 		subCommands.put("setops", new SetOnePlayerSleepCommand(this.sleepService, this.messageService,this.flagService, this.flagsRepository));
 		subCommands.put("bed", new BedSubCommand(this.sleepService,this.messageService));
-		subCommands.put("sleep", new SleepSubCommand(this.sleepService,this.flagsRepository,this.messageService,this.cooldownService));
+		subCommands.put("sleep", new SleepSubCommand(this.sleepService,this.flagsRepository,this.messageService,this.cooldownService, this.bossBarService));
 
 		//enable when debugging
 		//subCommands.put("test", new TestCommand(this.messageService, this.flagsRepository, this.configRepository));

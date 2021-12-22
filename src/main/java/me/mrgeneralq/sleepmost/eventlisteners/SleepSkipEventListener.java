@@ -2,8 +2,7 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
 
-import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
-import me.mrgeneralq.sleepmost.interfaces.ISleepService;
+import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -12,8 +11,6 @@ import org.bukkit.event.Listener;
 
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
-import me.mrgeneralq.sleepmost.interfaces.IConfigService;
-import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 
 import java.util.List;
@@ -24,13 +21,22 @@ public class SleepSkipEventListener implements Listener {
     private final IConfigService configService;
     private final ISleepService sleepService;
     private final IFlagsRepository flagsRepository;
+    private final IBossBarService bossBarService;
     private final DataContainer dataContainer = DataContainer.getContainer();
 
-    public SleepSkipEventListener(IMessageService messageService, IConfigService configService, ISleepService sleepService, IFlagsRepository flagsRepository) {
+    public SleepSkipEventListener(IMessageService messageService,
+                                  IConfigService configService,
+                                  ISleepService sleepService,
+                                  IFlagsRepository flagsRepository,
+                                  IBossBarService bossBarService
+    ) {
+
         this.messageService = messageService;
         this.configService = configService;
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
+        this.bossBarService = bossBarService;
+
     }
 
     @EventHandler
@@ -67,6 +73,7 @@ public class SleepSkipEventListener implements Listener {
         });
         this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
         this.sleepService.clearSleepersAt(world);
+        this.bossBarService.setVisible(world, false);
     }
 
     private void resetPhantomCounter(World world) {
