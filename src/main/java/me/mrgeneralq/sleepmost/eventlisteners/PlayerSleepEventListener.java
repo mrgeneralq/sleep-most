@@ -100,6 +100,7 @@ public class PlayerSleepEventListener implements Listener {
 
             this.bossBarService.setVisible(world, true);
             BossBar bossBar = this.bossBarService.getBossBar(world);
+
             SleepSkipCause cause = this.sleepService.getCurrentSkipCause(world);
 
             String configBossBarTitle = this.messageService.getConfigMessage(ConfigMessage.BOSS_BAR_TITLE);
@@ -111,7 +112,6 @@ public class PlayerSleepEventListener implements Listener {
                     .build();
 
             bossBar.setTitle(bossBarTitle);
-
             bossBar.setProgress(sleepService.getSleepersPercentage(world));
 
         }

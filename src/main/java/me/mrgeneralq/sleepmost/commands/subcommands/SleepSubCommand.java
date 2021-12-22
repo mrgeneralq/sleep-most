@@ -1,10 +1,13 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.messages.MessageBuilder;
 import me.mrgeneralq.sleepmost.messages.MessageTemplate;
-import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.World;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,12 +18,14 @@ public class SleepSubCommand implements ISubCommand {
     private final IFlagsRepository flagsRepository;
     private final IMessageService messageService;
     private final ICooldownService cooldownService;
+    private final IBossBarService bossBarService;
 
-    public SleepSubCommand(ISleepService sleepService, IFlagsRepository flagsRepository, IMessageService messageService, ICooldownService cooldownService) {
+    public SleepSubCommand(ISleepService sleepService, IFlagsRepository flagsRepository, IMessageService messageService, ICooldownService cooldownService, IBossBarService bossBarService) {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.messageService = messageService;
         this.cooldownService = cooldownService;
+        this.bossBarService = bossBarService;
     }
 
 
@@ -65,6 +70,31 @@ public class SleepSubCommand implements ISubCommand {
 
             messageService.sendPlayerLeftMessage(player, sleepService.getCurrentSkipCause(world), sleepingPlayersAmount, playersRequiredAmount);
             cooldownService.startCooldown(player);
+        }
+
+        if(ServerVersion.CURRENT_VERSION.supportsBossBars() && this.flagsRepository.getUseBossBarFlag().getValueAt(world)){
+
+            this.bossBarService.setVisible(world, true);
+            BossBar bossBar = this.bossBarService.getBossBar(world);
+
+            SleepSkipCause cause = this.sleepService.getCurrentSkipCause(world);
+            int sleepingPlayersAmount = this.sleepService.getSleepersAmount(world);
+            int playersRequiredAmount = this.sleepService.getRequiredSleepersCount(world);
+
+            String configBossBarTitle = this.messageService.getConfigMessage(ConfigMessage.BOSS_BAR_TITLE);
+            String bossBarTitle = new MessageBuilder(configBossBarTitle, "")
+                    .usePrefix(false)
+                    .setSleepingCount(sleepingPlayersAmount)
+                    .setSleepingRequiredCount(playersRequiredAmount)
+                    .setCause(cause)
+                    .build();
+
+            bossBar.setTitle(bossBarTitle);
+            bossBar.setProgress(sleepService.getSleepersPercentage(world));
+
+            if(sleepingPlayersAmount == 0)
+                this.bossBarService.getBossBar(world).setVisible(false);
+
         }
 
         this.messageService.sendMessage(player, this.messageService.fromTemplate(getStatusTemplate(updatedSleepStatus)));
