@@ -1,12 +1,15 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.SleepState;
+import me.mrgeneralq.sleepmost.events.PlayerSleepStateChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.messages.MessageBuilder;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
@@ -41,6 +44,9 @@ public class PlayerBedLeaveEventListener implements Listener {
         if(!ServerVersion.CURRENT_VERSION.supportsBossBars() || !this.flagsRepository.getUseBossBarFlag().getValueAt(world))
             return;
 
+        Bukkit.getPluginManager().callEvent(new PlayerSleepStateChangeEvent(player, SleepState.AWAKE));
+
+        //TODO move to PlayerSleepStateChangeEventListener
         int sleepingPlayersAmount = sleepService.getSleepersAmount(world);
         int playersRequiredAmount = Math.round(sleepService.getRequiredSleepersCount(world));
 
@@ -57,6 +63,6 @@ public class PlayerBedLeaveEventListener implements Listener {
         BossBar bossBar = this.bossBarService.getBossBar(world);
         bossBar.setTitle(bossBarTitle);
         bossBar.setProgress(sleepService.getSleepersPercentage(world));
-
+        //TODO END
     }
 }

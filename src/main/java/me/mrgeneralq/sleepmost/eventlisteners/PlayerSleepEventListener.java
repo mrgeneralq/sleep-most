@@ -40,7 +40,7 @@ public class PlayerSleepEventListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerSleep(PlayerBedEnterEvent e) {
+    public void onPlayerBedEnter(PlayerBedEnterEvent e) {
 
         Player player = e.getPlayer();
         World world = player.getWorld();
