@@ -37,4 +37,8 @@ public interface ISleepService
     //Skip Status
     boolean resetRequired(World world);
     boolean isNight(World world);
+
+    boolean shouldSkip(World world);
+
+    void runSkipAnimation(Player player, SleepSkipCause sleepSkipCause);
 }

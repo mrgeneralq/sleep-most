@@ -39,7 +39,7 @@ public class Sleepmost extends JavaPlugin{
 		getCommand("sleepmost").setExecutor(sleepmostCommand);
 
 		PluginManager pm = Bukkit.getPluginManager();
-		pm.registerEvents(new PlayerSleepEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService()), this);
+		pm.registerEvents(new PlayerBedEnterEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService()), this);
 		pm.registerEvents(new PlayerQuitEventListener(bootstrapper.getCooldownService(), bootstrapper.getSleepService(), bootstrapper.getBossBarService()), this);
 
 		if(ServerVersion.CURRENT_VERSION.hasTimeSkipEvent())
@@ -47,12 +47,13 @@ public class Sleepmost extends JavaPlugin{
 
 		pm.registerEvents(new EntityTargetLivingEntityEventListener(bootstrapper.getFlagsRepository()), this);
 		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getBossBarService()), this);
-		pm.registerEvents(new PlayerJoinEventListener(this,  bootstrapper.getUpdateService(), bootstrapper.getMessageService(), bootstrapper.getBossBarService()), this);
+		pm.registerEvents(new PlayerJoinEventListener(this, bootstrapper.getUpdateService(), bootstrapper.getMessageService(), bootstrapper.getBossBarService()), this);
 		pm.registerEvents(new EntitySpawnEventListener(bootstrapper.getFlagsRepository()), this);
 		pm.registerEvents(new TimeSkipEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new WorldChangeEventListener(bootstrapper.getSleepService()), this);
-		pm.registerEvents(new PlayerBedLeaveEventListener(bootstrapper.getBossBarService(),bootstrapper.getSleepService(),bootstrapper.getMessageService(), bootstrapper.getFlagsRepository()), this);
+		pm.registerEvents(new PlayerBedLeaveEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new WorldLoadEventListener(bootstrapper.getBossBarService()),this);
+		pm.registerEvents(new PlayerSleepStateChangeEventListener(this, bootstrapper.getSleepService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService()), this);
 
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
 	}
