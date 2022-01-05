@@ -2,6 +2,8 @@ package me.mrgeneralq.sleepmost;
 
 import me.mrgeneralq.sleepmost.eventlisteners.*;
 import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
+import me.mrgeneralq.sleepmost.interfaces.ISleepService;
+import me.mrgeneralq.sleepmost.runnables.Heartbeat;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -56,6 +58,12 @@ public class Sleepmost extends JavaPlugin{
 		pm.registerEvents(new PlayerSleepStateChangeEventListener(this, bootstrapper.getSleepService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService()), this);
 
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
+		runTimers(bootstrapper.getSleepService());
+
+	}
+
+	private void runTimers(ISleepService sleepService){
+		new Heartbeat(sleepService).runTaskTimer(this, 20,20);
 	}
 
 	private void notifyIfNewUpdateExists(IUpdateService updateService) 

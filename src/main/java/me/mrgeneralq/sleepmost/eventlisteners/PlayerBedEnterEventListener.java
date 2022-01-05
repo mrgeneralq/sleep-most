@@ -72,6 +72,7 @@ public class PlayerBedEnterEventListener implements Listener {
             return;
         }
 
+        if(!this.sleepService.isPlayerAsleep(player))
         this.sleepService.setSleeping(player , true);
     }
 

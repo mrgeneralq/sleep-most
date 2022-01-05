@@ -130,7 +130,7 @@ public class PlayerSleepStateChangeEventListener implements Listener {
                 .build();
 
         bossBar.setTitle(bossBarTitle);
-        bossBar.setProgress(Math.min(sleepService.getSleepersPercentage(world), 1));
+        bossBar.setProgress(sleepService.getSleepersPercentage(world));
 
         boolean bossBarVisible = (DataContainer.getContainer().getSleepingPlayers(world).size() > 0);
         this.bossBarService.setVisible(world, bossBarVisible);

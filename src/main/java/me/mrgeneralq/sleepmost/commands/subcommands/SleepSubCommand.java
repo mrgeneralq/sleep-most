@@ -57,6 +57,7 @@ public class SleepSubCommand implements ISubCommand {
         boolean updatedSleepStatus = !this.sleepService.isPlayerAsleep(player);
 
         this.messageService.sendMessage(player, this.messageService.fromTemplate(getStatusTemplate(updatedSleepStatus)));
+
         this.sleepService.setSleeping(player, updatedSleepStatus);
         return true;
     }
