@@ -4,15 +4,11 @@ import me.mrgeneralq.sleepmost.interfaces.IConfigService;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateRepository;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
-import org.omg.SendingContext.RunTime;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
-
 
 public class UpdateService implements IUpdateService {
 
@@ -28,13 +24,11 @@ public class UpdateService implements IUpdateService {
 
     @Override
     public boolean hasUpdate() {
-
         return hasUpdate(this.getCurrentVersion());
     }
 
     @Override
     public boolean hasUpdate(String localVersion) {
-
         if (!configService.updateCheckerEnabled())
             return false;
 
@@ -43,22 +37,21 @@ public class UpdateService implements IUpdateService {
         if (latestVersion.equals(localVersion))
             return false;
 
-        List<Integer> splittedCurrentVersion = getComponents(localVersion);
-        List<Integer> splittedCachedVersion = getComponents(latestVersion);
+        List<Integer> splitCurrentVersion = getComponents(localVersion);
+        List<Integer> splitLatestVersion = getComponents(latestVersion);
 
-        equalizeSizes(splittedCachedVersion, splittedCurrentVersion);
+        equalizeSizes(splitLatestVersion, splitCurrentVersion);
 
-        for (int i = 0; i < splittedCachedVersion.size(); i++) {
+        for (int i = 0; i < splitLatestVersion.size(); i++) {
+            Integer current = splitCurrentVersion.get(i);
+            Integer latest = splitLatestVersion.get(i);
 
-            Integer current = splittedCurrentVersion.get(i);
-            Integer cached = splittedCachedVersion.get(i);
-
-            // cached is bigger
-            if (cached > current)
+            // latest is bigger
+            if (latest > current)
                 return true;
 
-            // cached is lower
-            if (cached < current)
+            // latest is lower
+            if (latest < current)
                 return false;
         }
         return false;
@@ -74,18 +67,18 @@ public class UpdateService implements IUpdateService {
         return updateRepository.getLatestVersion();
     }
 
-    private static List<Integer> getComponents(String version){
+    private static List<Integer> getComponents(String version) {
         return Arrays.stream(version.split("\\."))
                 .map(Integer::parseInt)
                 .collect(toList());
     }
 
-    private static void equalizeSizes(List<Integer> splittedLocalVersion, List<Integer> splittedRemoteVersion) {
-        int localSize = splittedLocalVersion.size();
-        int cachedSize = splittedRemoteVersion.size();
+    private static void equalizeSizes(List<Integer> splitLocalVersion, List<Integer> splitRemoteVersion) {
+        int localSize = splitLocalVersion.size();
+        int cachedSize = splitRemoteVersion.size();
 
         int zerosAmount = Math.max(localSize, cachedSize) - Math.min(localSize, cachedSize);
-        List<Integer> smallerList = localSize < cachedSize ? splittedLocalVersion : splittedRemoteVersion;
+        List<Integer> smallerList = localSize < cachedSize ? splitLocalVersion : splitRemoteVersion;
 
         for (int i = 1; i <= zerosAmount; i++)
             smallerList.add(0);
