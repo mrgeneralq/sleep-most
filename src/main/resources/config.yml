@@ -69,9 +69,9 @@ titles:
 # Add sound effects after skipping the night or storm
 sounds:
   night-skipped:
-    sound: UI_TOAST_CHALLENGE_COMPLETE
+    sound: ui.toast.challenge_complete
   storm-skipped:
-    sound: ENTITY_WITHER_SPAWN
+    sound: entity.wither.spawn
 
 
 # specify the time which the world will be set after reset

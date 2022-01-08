@@ -61,40 +61,14 @@ public class ConfigService implements IConfigService {
         return colorize(main.getConfig().getString("titles.storm-skipped.subtitle"));
     }
 
-
     @Override
-    public boolean getSoundNightSkippedEnabled(){
-        return main.getConfig().getBoolean("sounds.night-skipped.enabled");
+    public String getNightSkippedSound(){
+        return main.getConfig().getString("sounds.night-skipped.sound");
     }
 
     @Override
-    public Sound getSoundNightSkippedSound(){
-
-        try{
-            String soundName = main.getConfig().getString("sounds.night-skipped.sound");
-            return Sound.valueOf(soundName);
-        }catch(Exception ex){
-            return null;
-        }
-
-    }
-
-    @Override
-    public boolean getSoundStormSkippedEnabled(){
-        return main.getConfig().getBoolean("sounds.storm-skipped.enabled");
-    }
-
-
-    @Override
-    public Sound getSoundStormSkippedSound(){
-        try{
-            String soundName = main.getConfig().getString("sounds.storm-skipped.sound");
-            return Sound.valueOf(soundName);
-        }
-        catch(Exception ex)
-        {
-            return null;
-        }
+    public String getStormSkippedSound(){
+        return main.getConfig().getString("sounds.storm-skipped.sound");
     }
 
     @Override
