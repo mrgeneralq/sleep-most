@@ -2,6 +2,8 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
 
+import me.mrgeneralq.sleepmost.exceptions.InvalidSleepSkipCauseOccurredException;
+import me.mrgeneralq.sleepmost.flags.UseSkipSoundFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.*;
@@ -40,7 +42,7 @@ public class SleepSkipEventListener implements Listener {
     }
 
     @EventHandler
-    public void onSleepSkip(SleepSkipEvent e) {
+    public void onSleepSkip(SleepSkipEvent e) throws InvalidSleepSkipCauseOccurredException {
 
         World world = e.getWorld();
 
@@ -108,17 +110,49 @@ public class SleepSkipEventListener implements Listener {
         }
     }
 
-    private void sendSkipSound(World world, SleepSkipCause cause) {
-        boolean soundEnabled = (cause == NIGHT_TIME ? flagsRepository.getUseSoundNightSkippedFlag().getValueAt(world) :
-                flagsRepository.getUseSoundStormSkippedFlag().getValueAt(world));
-
-        if (!soundEnabled) {
-            return;
-        }
-        Sound skipSound = (cause == NIGHT_TIME ? configService.getSoundNightSkippedSound() : configService.getSoundStormSkippedSound());
+    private void sendSkipSound(World world, SleepSkipCause cause) throws InvalidSleepSkipCauseOccurredException {
+        if (this.getSkipSoundEnabledFlag(cause).getValueAt(world)) return;
 
         for (Player p : world.getPlayers()) {
-            p.playSound(p.getLocation(), skipSound, 0.4F, 1F);
+            p.playSound(p.getLocation(), this.getSkipSound(cause), 0.4F, 1F);
         }
+    }
+
+    /**
+     * Get the appropriate sound enabled flag for this cause.
+     *
+     * @param cause Cause of skip event.
+     *
+     * @return UseSkipSoundFlag for this cause. Defaults to flag with false for default.
+     */
+    private UseSkipSoundFlag getSkipSoundEnabledFlag(SleepSkipCause cause) {
+        switch (cause) {
+            case NIGHT_TIME:
+                return flagsRepository.getUseSoundNightSkippedFlag();
+            case STORM:
+                return flagsRepository.getUseSoundStormSkippedFlag();
+            default:
+                return new UseSkipSoundFlag("HARDCODED_FLAG", false, null);
+        }
+    }
+
+    /**
+     * Get the skip sound Minecraft resource key.
+     *
+     * @param cause Cause of skip event.
+     * @return Resource key for the sound used.
+     * @throws InvalidSleepSkipCauseOccurredException because no valid cause were found.
+     */
+    private String getSkipSound(SleepSkipCause cause) throws InvalidSleepSkipCauseOccurredException {
+        switch (cause) {
+            case NIGHT_TIME:
+                return configService.getNightSkippedSound();
+            case STORM:
+                return configService.getStormSkippedSound();
+            default:
+                break;
+        }
+
+        throw new InvalidSleepSkipCauseOccurredException("");
     }
 }

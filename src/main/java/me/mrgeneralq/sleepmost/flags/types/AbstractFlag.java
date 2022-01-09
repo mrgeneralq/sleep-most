@@ -39,8 +39,11 @@ public abstract class AbstractFlag<V> implements ISleepFlag<V>
     }
 
     @Override
-    public V getValueAt(World world)
-    {
+    public V getValueAt(World world) {
+        if (this.controller == null) {
+            return this.defaultValue;
+        }
+
         return this.controller.getValueAt(world);
     }
 
