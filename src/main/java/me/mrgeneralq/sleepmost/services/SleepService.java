@@ -161,7 +161,6 @@ public class SleepService implements ISleepService {
     @Override
     public void setSleeping(Player player, boolean sleeping) {
 
-        World world = player.getWorld();
         SleepState sleepState = (sleeping) ? SleepState.SLEEPING: SleepState.AWAKE;
 
         PlayerSleepStateChangeEvent sleepStateChangeEvent = new PlayerSleepStateChangeEvent(player, sleepState);
