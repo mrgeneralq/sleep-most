@@ -90,6 +90,9 @@ public class SleepService implements ISleepService {
         if(flagsRepository.getUseExemptFlag().getValueAt(world))
             playersStream = playersStream.filter(p -> !p.hasPermission("sleepmost.exempt"));
 
+        if(flagsRepository.getExemptFlyingFlag().getValueAt(world))
+            playersStream = playersStream.filter(p -> !p.isFlying());
+
          if (flagService.isAfkFlagUsable() && flagsRepository.getUseAfkFlag().getValueAt(world))
             playersStream = playersStream.filter(p -> PlaceholderAPI.setPlaceholders(p, "%essentials_afk%").equalsIgnoreCase("no"));
 

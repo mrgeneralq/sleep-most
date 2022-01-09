@@ -42,6 +42,7 @@ public class FlagsRepository implements IFlagsRepository {
     private final NonSleepingClockAnimationFlag nonSleepingClockAnimationFlag;
     private final NonSleepingSoundFlag nonSleepingSoundFlag;
     private final NonSleepingTitleFlag nonSleepingTitleFlag;
+    private final ExemptFlyingFlag exemptFlyingFlag;
 
     public FlagsRepository(IConfigRepository configRepository) {
         setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));
@@ -73,7 +74,7 @@ public class FlagsRepository implements IFlagsRepository {
         setupFlag(this.nonSleepingClockAnimationFlag = new NonSleepingClockAnimationFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.nonSleepingSoundFlag = new NonSleepingSoundFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.nonSleepingTitleFlag = new NonSleepingTitleFlag(new ConfigFlagController<>(configRepository)));
-
+        setupFlag(this.exemptFlyingFlag = new ExemptFlyingFlag(new ConfigFlagController<>(configRepository)));
     }
 
     @Override
@@ -243,6 +244,11 @@ public class FlagsRepository implements IFlagsRepository {
     @Override
     public NonSleepingTitleFlag getNonSleepingTitleFlag() {
         return nonSleepingTitleFlag;
+    }
+
+    @Override
+    public ExemptFlyingFlag getExemptFlyingFlag() {
+        return exemptFlyingFlag;
     }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {

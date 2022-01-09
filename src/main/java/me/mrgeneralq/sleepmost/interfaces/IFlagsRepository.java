@@ -48,4 +48,6 @@ public interface IFlagsRepository
     NonSleepingClockAnimationFlag getNonSleepingClockAnimationFlag();
     NonSleepingSoundFlag getNonSleepingSoundFlag();
     NonSleepingTitleFlag getNonSleepingTitleFlag();
+
+    ExemptFlyingFlag getExemptFlyingFlag();
 }
