@@ -68,7 +68,7 @@ public class Sleepmost extends JavaPlugin{
 
 	private void notifyIfNewUpdateExists(IUpdateService updateService) 
 	{
-		//test
+		//testa
 		if(updateService.hasUpdate())
 			getLogger().info("UPDATE FOUND: A newer version of sleep-most is available to download!");
 	}
