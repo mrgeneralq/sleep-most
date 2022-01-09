@@ -14,7 +14,5 @@ public interface IConfigService {
     boolean getTitleStormSkippedEnabled();
     String getTitleStormSkippedTitle();
     String getTitleStormSkippedSubTitle();
-    String getNightSkippedSound();
-    String getStormSkippedSound();
     Set<World> getEnabledWorlds();
 }

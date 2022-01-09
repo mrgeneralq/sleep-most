@@ -1,17 +1,27 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.flags.types.AbstractFlag;
+import me.mrgeneralq.sleepmost.flags.types.TabCompletedFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.messages.MessageTemplate;
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
-public class SetFlagCommand implements ISubCommand
-{
+import javax.swing.text.html.Option;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
+public class SetFlagCommand implements ISubCommand {
     private final ISleepService sleepService;
     private final IMessageService messageService;
     private final IFlagService sleepFlagService;
@@ -27,25 +37,25 @@ public class SetFlagCommand implements ISubCommand
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
-        if(!CommandSenderUtils.hasWorld(sender)){
+        if (!CommandSenderUtils.hasWorld(sender)) {
             this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.NO_CONSOLE_COMMAND));
             return true;
         }
 
         World world = CommandSenderUtils.getWorldOf(sender);
 
-        if(!sleepService.isEnabledAt(world)){
+        if (!sleepService.isEnabledAt(world)) {
             this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.CURRENTLY_DISABLED));
             return true;
         }
 
-        if(args.length < 2) {
+        if (args.length < 2) {
             this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&btype &e/sleepmost setflag <flag> <value>").build());
             return true;
         }
         String flagName = args[1];
 
-        if(!flagsRepository.flagExists(flagName)) {
+        if (!flagsRepository.flagExists(flagName)) {
             this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&cThis flag does not exist!").build());
             this.messageService.sendMessage(sender, messageService.newBuilder("&bPossible flags are: &e%flagsNames")
                     .setPlaceHolder("%flagsNames", StringUtils.join(flagsRepository.getFlagsNames(), ", "))
@@ -54,7 +64,7 @@ public class SetFlagCommand implements ISubCommand
         }
         ISleepFlag<?> sleepFlag = flagsRepository.getFlag(flagName);
 
-        if(args.length < 3){
+        if (args.length < 3) {
             this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&cMissing value! Use &e%usageCommand")
                     .setPlaceHolder("%usageCommand", getUsageCommand(sleepFlag))
                     .build());
@@ -62,7 +72,7 @@ public class SetFlagCommand implements ISubCommand
         }
         String stringValue = args[2];
 
-        if(!sleepFlag.isValidValue(stringValue)) {
+        if (!sleepFlag.isValidValue(stringValue)) {
             this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&cInvalid format! Use &e%usageCommand")
                     .setPlaceHolder("%usageCommand", getUsageCommand(sleepFlag))
                     .build());
@@ -78,8 +88,28 @@ public class SetFlagCommand implements ISubCommand
         return true;
     }
 
-    private String getUsageCommand(ISleepFlag<?> flag)
-    {
+    @Override
+    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, List<String> args) {
+        if (args.size() == 1) {
+            return this.flagsRepository.getFlagsNames().stream()
+                    .filter(flag -> flag.contains(args.get(0)) || flag.equalsIgnoreCase(args.get(0)))
+                    .collect(Collectors.toList());
+        }
+
+        if (args.size() == 2) {
+            ISleepFlag<?> flag = flagsRepository.getFlags().stream()
+                    .filter(f -> f.getName().equalsIgnoreCase(args.get(0)))
+                    .findFirst().orElse(null);
+
+            if (flag instanceof TabCompletedFlag<?>) {
+                return ((TabCompletedFlag<?>) flag).tabComplete(sender, command, alias, args.subList(1, args.size()));
+            }
+        }
+
+        return new ArrayList<>();
+    }
+
+    private String getUsageCommand(ISleepFlag<?> flag) {
         return String.format("/sleepmost setflag %s %s", flag.getName(), flag.getValueDescription());
     }
 }

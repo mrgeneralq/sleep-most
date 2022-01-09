@@ -3,6 +3,7 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
 
 import me.mrgeneralq.sleepmost.exceptions.InvalidSleepSkipCauseOccurredException;
+import me.mrgeneralq.sleepmost.flags.SkipSoundFlag;
 import me.mrgeneralq.sleepmost.flags.UseSkipSoundFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
@@ -113,8 +114,10 @@ public class SleepSkipEventListener implements Listener {
     private void sendSkipSound(World world, SleepSkipCause cause) throws InvalidSleepSkipCauseOccurredException {
         if (this.getSkipSoundEnabledFlag(cause).getValueAt(world)) return;
 
+        String skipSound = this.getSkipSoundFlag(cause).getValueAt(world);
+
         for (Player p : world.getPlayers()) {
-            p.playSound(p.getLocation(), this.getSkipSound(cause), 0.4F, 1F);
+            p.playSound(p.getLocation(), skipSound, 0.4F, 1F);
         }
     }
 
@@ -132,7 +135,7 @@ public class SleepSkipEventListener implements Listener {
             case STORM:
                 return flagsRepository.getUseSoundStormSkippedFlag();
             default:
-                return new UseSkipSoundFlag("HARDCODED_FLAG", false, null);
+                return new UseSkipSoundFlag("HARDCODED_FLAG", false, null) {};
         }
     }
 
@@ -143,16 +146,14 @@ public class SleepSkipEventListener implements Listener {
      * @return Resource key for the sound used.
      * @throws InvalidSleepSkipCauseOccurredException because no valid cause were found.
      */
-    private String getSkipSound(SleepSkipCause cause) throws InvalidSleepSkipCauseOccurredException {
+    private SkipSoundFlag getSkipSoundFlag(SleepSkipCause cause) throws InvalidSleepSkipCauseOccurredException {
         switch (cause) {
             case NIGHT_TIME:
-                return configService.getNightSkippedSound();
+                return flagsRepository.getSkipNightSoundFlag();
             case STORM:
-                return configService.getStormSkippedSound();
+                return flagsRepository.getSkipStormSoundFlag();
             default:
-                break;
+                throw new InvalidSleepSkipCauseOccurredException("Skip was not caused by storm or night.");
         }
-
-        throw new InvalidSleepSkipCauseOccurredException("");
     }
 }
