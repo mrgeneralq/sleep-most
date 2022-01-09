@@ -13,8 +13,7 @@ import java.util.*;
 
 import static java.util.stream.Collectors.*;
 
-public class FlagService implements IFlagService
-{
+public class FlagService implements IFlagService {
     private final IFlagsRepository flagsRepository;
     private final IConfigRepository configRepository;
     private final IConfigService configService;
@@ -24,8 +23,7 @@ public class FlagService implements IFlagService
             PLACEHOLDER_API_ENABLED = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null,
             ESSENTIALS_ENABLED = Bukkit.getPluginManager().getPlugin("Essentials") != null;
 
-    public FlagService(IFlagsRepository flagsRepository, IConfigRepository configRepository, IConfigService configService, IMessageService messageService)
-    {
+    public FlagService(IFlagsRepository flagsRepository, IConfigRepository configRepository, IConfigService configService, IMessageService messageService) {
         this.flagsRepository = flagsRepository;
         this.configRepository = configRepository;
         this.configService = configService;
@@ -33,45 +31,36 @@ public class FlagService implements IFlagService
     }
 
     @Override
-    public boolean isAfkFlagUsable()
-    {
+    public boolean isAfkFlagUsable() {
         return PLACEHOLDER_API_ENABLED && ESSENTIALS_ENABLED;
     }
 
     @Override
-    public void handleProblematicFlags()
-    {
-        for(World world : this.configService.getEnabledWorlds()) {
+    public void handleProblematicFlags() {
+        for (World world : this.configService.getEnabledWorlds()) {
             handleMissingFlags(world);
             handleIllegalValues(world);
         }
     }
 
     @Override
-    public void resetFlagsAt(World world)
-    {
+    public void resetFlagsAt(World world) {
         this.flagsRepository.getFlags().forEach(flag -> setDefaultValueAt(world, flag));
     }
 
     @Override
     public <V> void setStringValueAt(ISleepFlag<V> flag, World world, String stringValue) {
-        V deserializedValue = flag.getSerialization().parseValueFrom(stringValue);
-
-        flag.setValueAt(world, deserializedValue);
+        flag.setValueAt(world, flag.getSerialization().parseValueFrom(stringValue));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public <V> String getValueDisplayName(ISleepFlag<V> flag, Object value) {
-        V castedValue = (V) value;
-
-        return flag.getDisplayName(castedValue);
+        return flag.getDisplayName((V) value);
     }
 
     private <V> void setDefaultValueAt(World world, ISleepFlag<V> flag) {
-        V defaultValue = flag.getDefaultValue();
-
-        flag.setValueAt(world, defaultValue);
+        flag.setValueAt(world, flag.getDefaultValue());
     }
 
     /*
@@ -82,7 +71,7 @@ public class FlagService implements IFlagService
 
         Set<ISleepFlag<?>> missingFlags = scanForMissingValues(world);
 
-        if(missingFlags.isEmpty())
+        if (missingFlags.isEmpty())
             return;
 
         //Log the missing flags
@@ -101,7 +90,7 @@ public class FlagService implements IFlagService
 
         Map<ISleepFlag<?>, Object> illegalValues = scanForIllegalValues(world);
 
-        if(illegalValues.isEmpty())
+        if (illegalValues.isEmpty())
             return;
 
         //Log the flags with illegal values
@@ -125,8 +114,8 @@ public class FlagService implements IFlagService
                 .filter(flag -> this.configRepository.getFlagValue(flag, world) == null) //take the flags without a value in the config
                 .collect(toSet());
     }
-    private Map<ISleepFlag<?>, Object> scanForIllegalValues(World world)
-    {
+
+    private Map<ISleepFlag<?>, Object> scanForIllegalValues(World world) {
         return this.flagsRepository.getFlags().stream()
                 .map(flag -> new SimpleEntry<>(flag, this.configRepository.getFlagValue(flag, world))) //map the flag to itself & its value at the given world
                 .filter(entry -> !entry.getKey().isValidValue(entry.getValue())) //remove the flags with a valid value
@@ -137,14 +126,13 @@ public class FlagService implements IFlagService
     Flags Messages
      */
 
-    private String getMissingFlagsNames(Collection<ISleepFlag<?>> missingFlags)
-    {
+    private String getMissingFlagsNames(Collection<ISleepFlag<?>> missingFlags) {
         return missingFlags.stream()
                 .map(flag -> ChatColor.GREEN + flag.getName())
                 .collect(joining("&f, ", "", "&f."));
     }
-    private String createIllegalValueMessage(String flagName, Object value)
-    {
+
+    private String createIllegalValueMessage(String flagName, Object value) {
         return this.messageService.newBuilder("&b> &a%flag% &f(was &c%illegalValue%f&f)")
                 .setPlaceHolder("%flag%", flagName)
                 .setPlaceHolder("%illegalValue%", value.toString())

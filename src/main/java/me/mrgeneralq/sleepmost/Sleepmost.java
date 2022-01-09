@@ -15,7 +15,7 @@ import me.mrgeneralq.sleepmost.commands.SleepmostCommand;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 
-public class Sleepmost extends JavaPlugin{
+public class Sleepmost extends JavaPlugin {
 
 	private Bootstrapper bootstrapper;
 

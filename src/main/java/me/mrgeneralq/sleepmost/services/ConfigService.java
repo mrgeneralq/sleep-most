@@ -62,16 +62,6 @@ public class ConfigService implements IConfigService {
     }
 
     @Override
-    public String getNightSkippedSound(){
-        return main.getConfig().getString("sounds.night-skipped.sound");
-    }
-
-    @Override
-    public String getStormSkippedSound(){
-        return main.getConfig().getString("sounds.storm-skipped.sound");
-    }
-
-    @Override
     public Set<World> getEnabledWorlds()
     {
         return main.getConfig().getConfigurationSection("sleep").getKeys(false).stream()

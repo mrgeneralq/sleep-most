@@ -1,7 +1,18 @@
 package me.mrgeneralq.sleepmost.enums;
 
-public enum SleepCalculationType {
+public enum SleepCalculationType implements FlagEnum {
+    PERCENTAGE_REQUIRED("percentage"),
+    PLAYERS_REQUIRED("players"),
+    ;
 
-    PERCENTAGE_REQUIRED,
-    PLAYERS_REQUIRED,
+    private final String friendlyName;
+
+    SleepCalculationType(String friendlyName) {
+        this.friendlyName = friendlyName;
+    }
+
+    @Override
+    public String friendlyName() {
+        return friendlyName;
+    }
 }

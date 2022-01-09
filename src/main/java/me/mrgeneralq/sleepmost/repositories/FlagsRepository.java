@@ -9,8 +9,7 @@ import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
-public class FlagsRepository implements IFlagsRepository
-{
+public class FlagsRepository implements IFlagsRepository {
     private final Map<String, ISleepFlag<?>> flagByName = new HashMap<>();
 
     //all flags objects(for type safety)
@@ -38,10 +37,10 @@ public class FlagsRepository implements IFlagsRepository
     private final UseSoundStormSkippedFlag useSoundStormSkippedFlag;
     private final UseTitleNightSkippedFlag useTitleNightSkippedFlag;
     private final UseTitleStormSkippedFlag useTitleStormSkippedFlag;
+    private final SkipNightSoundFlag skipNightSoundFlag;
+    private final SkipStormSoundFlag skipStormSoundFlag;
 
-
-    public FlagsRepository(IConfigRepository configRepository)
-    {
+    public FlagsRepository(IConfigRepository configRepository) {
         setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.mobNoTargetFlag = new MobNoTargetFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.useExemptFlag = new UseExemptFlag(new ConfigFlagController<>(configRepository)));
@@ -66,28 +65,27 @@ public class FlagsRepository implements IFlagsRepository
         setupFlag(this.useTitleNightSkippedFlag = new UseTitleNightSkippedFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.useSoundNightSkippedFlag = new UseSoundNightSkippedFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.useSoundStormSkippedFlag = new UseSoundStormSkippedFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.skipNightSoundFlag = new SkipNightSoundFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.skipStormSoundFlag = new SkipStormSoundFlag(new ConfigFlagController<>(configRepository)));
     }
 
     @Override
-    public ISleepFlag<?> getFlag(String flagName)
-    {
+    public ISleepFlag<?> getFlag(String flagName) {
         return this.flagByName.get(flagName);
     }
 
     @Override
-    public boolean flagExists(String flagName)
-    {
+    public boolean flagExists(String flagName) {
         return this.flagByName.containsKey(flagName);
     }
 
     @Override
-    public Set<ISleepFlag<?>> getFlags()
-    {
+    public Set<ISleepFlag<?>> getFlags() {
         return new HashSet<>(this.flagByName.values());
     }
 
     @Override
-    public List<String> getFlagsNames(){
+    public List<String> getFlagsNames() {
         return flagByName.values().stream()
                 .map(ISleepFlag::getName)
                 .sorted()
@@ -95,13 +93,18 @@ public class FlagsRepository implements IFlagsRepository
     }
 
     //Flags Getters
-    @Override public PercentageRequiredFlag getPercentageRequiredFlag(){
+    @Override
+    public PercentageRequiredFlag getPercentageRequiredFlag() {
         return this.percentageRequiredFlag;
     }
-    @Override public MobNoTargetFlag getMobNoTargetFlag(){
+
+    @Override
+    public MobNoTargetFlag getMobNoTargetFlag() {
         return this.mobNoTargetFlag;
     }
-    @Override public UseExemptFlag getUseExemptFlag() {
+
+    @Override
+    public UseExemptFlag getUseExemptFlag() {
         return this.useExemptFlag;
     }
 
@@ -115,47 +118,78 @@ public class FlagsRepository implements IFlagsRepository
         return this.exemptSpectatorFlag;
     }
 
-    @Override public PreventSleepFlag getPreventSleepFlag() {
+    @Override
+    public PreventSleepFlag getPreventSleepFlag() {
         return this.preventSleepFlag;
     }
-    @Override public PreventPhantomFlag getPreventPhantomFlag() {
+
+    @Override
+    public PreventPhantomFlag getPreventPhantomFlag() {
         return this.preventPhantomFlag;
     }
-    @Override public NightcycleAnimationFlag getNightcycleAnimationFlag() {
+
+    @Override
+    public NightcycleAnimationFlag getNightcycleAnimationFlag() {
         return this.nightcycleAnimationFlag;
     }
-    @Override public StormSleepFlag getStormSleepFlag() {
+
+    @Override
+    public StormSleepFlag getStormSleepFlag() {
         return this.stormSleepFlag;
     }
-    @Override public UseAfkFlag getUseAfkFlag() {
+
+    @Override
+    public UseAfkFlag getUseAfkFlag() {
         return this.useAfkFlag;
     }
-    @Override public CalculationMethodFlag getCalculationMethodFlag() {
+
+    @Override
+    public CalculationMethodFlag getCalculationMethodFlag() {
         return this.calculationMethodFlag;
     }
-    @Override public PlayersRequiredFlag getPlayersRequiredFlag() {
+
+    @Override
+    public PlayersRequiredFlag getPlayersRequiredFlag() {
         return this.playersRequiredFlag;
     }
-    @Override public SkipDelayFlag getSkipDelayFlag() {
+
+    @Override
+    public SkipDelayFlag getSkipDelayFlag() {
         return this.skipDelayFlag;
     }
-    @Override public HealFlag getHealFlag() {
+
+    @Override
+    public HealFlag getHealFlag() {
         return this.healFlag;
     }
-    @Override public FeedFlag getFeedFlag() {
+
+    @Override
+    public FeedFlag getFeedFlag() {
         return this.feedFlag;
     }
-    @Override public ExemptBelowYFlag getExemptBelowYFlag(){ return this.exemptBelowYFlag; }
-    @Override public SkipStormFlag getSkipStormFlag() {
+
+    @Override
+    public ExemptBelowYFlag getExemptBelowYFlag() {
+        return this.exemptBelowYFlag;
+    }
+
+    @Override
+    public SkipStormFlag getSkipStormFlag() {
         return this.skipStormFlag;
     }
-    @Override public ClockAnimationFlag getClockAnimationFlag() {
+
+    @Override
+    public ClockAnimationFlag getClockAnimationFlag() {
         return this.clockAnimationFlag;
     }
-    @Override public AllowSleepCmdFlag getSleepCmdFlag() {
+
+    @Override
+    public AllowSleepCmdFlag getSleepCmdFlag() {
         return this.sleepCmdFlag;
     }
-    @Override public UseBossBarFlag getUseBossBarFlag() {
+
+    @Override
+    public UseBossBarFlag getUseBossBarFlag() {
         return useBossBarFlag;
     }
 
@@ -179,13 +213,22 @@ public class FlagsRepository implements IFlagsRepository
         return useTitleStormSkippedFlag;
     }
 
+    @Override
+    public SkipNightSoundFlag getSkipNightSoundFlag() {
+        return skipNightSoundFlag;
+    }
+
+    @Override
+    public SkipStormSoundFlag getSkipStormSoundFlag() {
+        return skipStormSoundFlag;
+    }
+
     private <V> void setupFlag(ISleepFlag<V> flag) {
         //register the flag
         this.flagByName.put(flag.getName(), flag);
 
         //update the controller about which flag it controls
-        if(flag instanceof AbstractFlag)
-        {
+        if (flag instanceof AbstractFlag) {
             ((AbstractFlag<V>) flag).getController().setFlag(flag);
         }
     }

@@ -1,8 +1,6 @@
 package me.mrgeneralq.sleepmost.commands;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import me.mrgeneralq.sleepmost.commands.subcommands.*;
 import me.mrgeneralq.sleepmost.interfaces.*;
@@ -11,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.jetbrains.annotations.NotNull;
 
 import static java.util.stream.Collectors.toList;
 import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
@@ -98,32 +97,28 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
+	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+		if (args.length < 1) return null;
 
-
-		if(args.length < 1)
-			return null;
-
-
-		String arg1 = args[0];
-
-		//if(!commandSender.hasPermission(String.format("sleepmost.%s", arg1)))
-		//    return null;
-
-
-		if(args.length == 1){
+		if (args.length == 1) {
 			//return the subcommands the player has permissions to execute
 			return this.subCommands.keySet().stream()
-					.filter(subCmd -> commandSender.hasPermission("sleepmost." + subCmd))
+					.filter(subCmd -> sender.hasPermission("sleepmost." + subCmd))
+					.filter(subCmd -> subCmd.contains(args[0]) || subCmd.equalsIgnoreCase(args[0]))
 					.sorted()
 					.collect(toList());
 		}
 
+		String cmdName = this.subCommands.keySet().stream()
+				.filter(subCmd -> subCmd.equalsIgnoreCase(args[0]))
+				.findFirst().orElse(null);
 
-		if(args[0].equalsIgnoreCase("setflag") && args.length == 2)
-		{
-			return this.flagsRepository.getFlagsNames();
+		if (cmdName == null) return new ArrayList<>();
+
+		if (this.subCommands.containsKey(cmdName)) {
+			return this.subCommands.get(cmdName).tabComplete(sender, command, alias, Arrays.asList(args).subList(1, args.length));
 		}
-		return null;
+
+		return new ArrayList<>();
 	}
 }
