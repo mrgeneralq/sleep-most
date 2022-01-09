@@ -1,8 +1,11 @@
 package me.mrgeneralq.sleepmost.flags.serialization;
 
-import java.util.Arrays;
+import me.mrgeneralq.sleepmost.enums.FriendlyNamed;
 
-public class EnumSerialization<E extends Enum<E>> implements IValueSerialization<E> {
+import java.util.Arrays;
+import java.util.stream.Stream;
+
+public class EnumSerialization<E extends Enum<?>> implements IValueSerialization<E> {
     private final Class<E> enumClass;
 
     public EnumSerialization(Class<E> enumClass) {
@@ -10,7 +13,10 @@ public class EnumSerialization<E extends Enum<E>> implements IValueSerialization
     }
 
     @Override
-    public Object serialize(E value) {
+    public String serialize(E value) {
+        if (FriendlyNamed.class.isAssignableFrom(enumClass)) {
+            return ((FriendlyNamed) value).friendlyName();
+        }
         return value.name();
     }
 
@@ -23,11 +29,16 @@ public class EnumSerialization<E extends Enum<E>> implements IValueSerialization
         if (object instanceof String) {
             String enumName = (String) object;
 
-            return Arrays.stream(this.enumClass.getEnumConstants())
-                    .filter(enumInstance -> enumInstance.name().equals(enumName))
-                    .findFirst()
-                    .orElse(null);
+            Stream<E> stream = Arrays.stream(this.enumClass.getEnumConstants());
+            if (FriendlyNamed.class.isAssignableFrom(enumClass)) {
+                stream = stream.filter(enumInstance -> ((FriendlyNamed) enumInstance).friendlyName().equalsIgnoreCase(enumName));
+            } else {
+                stream = stream.filter(enumInstance -> enumInstance.name().equalsIgnoreCase(enumName));
+            }
+
+            return stream.findFirst().orElse(null);
         }
+
         return null;
     }
 }

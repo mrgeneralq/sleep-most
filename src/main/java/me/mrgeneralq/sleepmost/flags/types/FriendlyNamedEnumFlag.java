@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.flags.types;
 
-import me.mrgeneralq.sleepmost.enums.FlagEnum;
+import me.mrgeneralq.sleepmost.enums.FriendlyNamed;
 import me.mrgeneralq.sleepmost.flags.controllers.AbstractFlagController;
 import me.mrgeneralq.sleepmost.flags.serialization.IValueSerialization;
 import org.bukkit.command.Command;
@@ -11,10 +11,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class EnumFlag<T extends Enum<?>> extends TabCompletedFlag<T> {
-    private final FlagEnum[] enumValues;
+/**
+ * EnumFlag needs to have a FriendlyNamed enum. We use the friendlyName for presentation in game.
+ * @param <T> An enum that implements FriendlyNamed interface.
+ */
+public abstract class FriendlyNamedEnumFlag<T extends FriendlyNamed> extends TabCompletedFlag<T> {
+    private final FriendlyNamed[] enumValues;
 
-    public EnumFlag(String name, String valueDescription, AbstractFlagController<T> controller, IValueSerialization<T> serialization, FlagEnum[] enumValues, T defaultValue) {
+    public FriendlyNamedEnumFlag(String name, String valueDescription, AbstractFlagController<T> controller, IValueSerialization<T> serialization, FriendlyNamed[] enumValues, T defaultValue) {
         super(name, valueDescription, controller, serialization, defaultValue);
         this.enumValues = enumValues;
     }
@@ -22,8 +26,13 @@ public abstract class EnumFlag<T extends Enum<?>> extends TabCompletedFlag<T> {
     @Override
     public List<String> tabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, List<String> args) {
         return Arrays.stream(enumValues)
-                .map(FlagEnum::friendlyName)
+                .map(FriendlyNamed::friendlyName)
                 .filter(it -> it.contains(args.get(0)) || it.equalsIgnoreCase(args.get(0)))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getDisplayName(T value) {
+        return value.friendlyName();
     }
 }
