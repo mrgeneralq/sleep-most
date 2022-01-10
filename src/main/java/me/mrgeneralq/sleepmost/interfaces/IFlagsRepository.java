@@ -41,4 +41,6 @@ public interface IFlagsRepository
     UseTitleNightSkippedFlag getUseTitleNightSkippedFlag();
     UseTitleStormSkippedFlag getUseTitleStormSkippedFlag();
 
+    SkipNightSoundFlag getSkipNightSoundFlag();
+    SkipStormSoundFlag getSkipStormSoundFlag();
 }

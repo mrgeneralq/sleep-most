@@ -33,6 +33,8 @@ sleep:
     skip-delay: 0
     heal: false
     feed: false
+    skip-night-sound: ui.toast.challenge_complete
+    skip-storm-sound: entity.wither.spawn
 
   world2:
     enabled: false
@@ -56,6 +58,8 @@ sleep:
     skip-delay: 0
     heal: false
     feed: false
+    skip-night-sound: ui.toast.challenge_complete
+    skip-storm-sound: entity.wither.spawn
 
 titles:
   night-skipped:
@@ -64,14 +68,6 @@ titles:
   storm-skipped:
     title: '&eStorm skipped'
     subtitle: '&bWhat a weather...'
-
-
-# Add sound effects after skipping the night or storm
-sounds:
-  night-skipped:
-    sound: UI_TOAST_CHALLENGE_COMPLETE
-  storm-skipped:
-    sound: ENTITY_WITHER_SPAWN
 
 
 # specify the time which the world will be set after reset

@@ -3,8 +3,7 @@ package me.mrgeneralq.sleepmost.flags;
 import me.mrgeneralq.sleepmost.flags.serialization.IValueSerialization;
 import org.bukkit.World;
 
-public interface ISleepFlag<V>
-{
+public interface ISleepFlag<V> {
     String getName();
     String getValueDescription();
     boolean isValidValue(Object value);
