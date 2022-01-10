@@ -1,10 +1,7 @@
 package me.mrgeneralq.sleepmost.services;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
-import me.mrgeneralq.sleepmost.flags.ExemptBelowYFlag;
-import me.mrgeneralq.sleepmost.flags.ExemptCreativeFlag;
-import me.mrgeneralq.sleepmost.flags.ExemptSpectatorFlag;
-import me.mrgeneralq.sleepmost.flags.UseExemptFlag;
+import me.mrgeneralq.sleepmost.flags.*;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -92,16 +89,19 @@ public class SleepServiceTest {
         ExemptSpectatorFlag exemptSpectatorFlag = Mockito.mock(ExemptSpectatorFlag.class);
         ExemptBelowYFlag exemptBelowYFlag = Mockito.mock(ExemptBelowYFlag.class);
         UseExemptFlag useExemptFlag = Mockito.mock(UseExemptFlag.class);
+        ExemptFlyingFlag exemptFlyingFlag = Mockito.mock(ExemptFlyingFlag.class);
 
         when(this.mockFlagRepository.getExemptCreativeFlag()).thenReturn(exemptCreativeFlag);
         when(this.mockFlagRepository.getExemptSpectatorFlag()).thenReturn(exemptSpectatorFlag);
         when(this.mockFlagRepository.getExemptBelowYFlag()).thenReturn(exemptBelowYFlag);
         when(this.mockFlagRepository.getUseExemptFlag()).thenReturn(useExemptFlag);
+        when(this.mockFlagRepository.getExemptFlyingFlag()).thenReturn(exemptFlyingFlag);
 
         when(exemptCreativeFlag.getValueAt(mockWorld)).thenReturn(true);
         when(exemptSpectatorFlag.getValueAt(mockWorld)).thenReturn(false);
         when(exemptBelowYFlag.getValueAt(mockWorld)).thenReturn(-1);
         when(useExemptFlag.getValueAt(mockWorld)).thenReturn(false);
+        when(exemptFlyingFlag.getValueAt(mockWorld)).thenReturn(false);
 
         when(player1.getGameMode()).thenReturn(GameMode.CREATIVE);
         when(player2.getGameMode()).thenReturn(GameMode.SURVIVAL);
@@ -117,8 +117,6 @@ public class SleepServiceTest {
         when(player2.getGameMode()).thenReturn(GameMode.SURVIVAL);
         when(player3.getGameMode()).thenReturn(GameMode.SURVIVAL);
         assertEquals("Exempt players that are in Spectator mode", 2, this.sleepService.getPlayerCountInWorld(mockWorld));
-
-
 
     }
 }

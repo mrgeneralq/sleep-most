@@ -39,12 +39,14 @@ public class PlayerBedEnterEventListener implements Listener {
         this.dataContainer = DataContainer.getContainer();
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerBedEnter(PlayerBedEnterEvent e) {
 
         Player player = e.getPlayer();
         World world = player.getWorld();
 
+        if(e.isCancelled())
+            return;
 
         //check if sleeping during storms is allowed
         if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {

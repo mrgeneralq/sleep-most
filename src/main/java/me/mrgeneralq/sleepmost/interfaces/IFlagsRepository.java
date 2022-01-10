@@ -43,4 +43,11 @@ public interface IFlagsRepository
 
     SkipNightSoundFlag getSkipNightSoundFlag();
     SkipStormSoundFlag getSkipStormSoundFlag();
+
+    //non-sleeping flags (all flags related to not showing stuff for non sleepers)
+    NonSleepingClockAnimationFlag getNonSleepingClockAnimationFlag();
+    NonSleepingSoundFlag getNonSleepingSoundFlag();
+    NonSleepingTitleFlag getNonSleepingTitleFlag();
+
+    ExemptFlyingFlag getExemptFlyingFlag();
 }

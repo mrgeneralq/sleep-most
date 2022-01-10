@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NightcycleAnimationTask extends BukkitRunnable {
 
@@ -50,16 +51,29 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
             if(this.flagsRepository.getClockAnimationFlag().getValueAt(world) && ServerVersion.CURRENT_VERSION.supportsTitles()){
 
-                for(Player p: world.getPlayers()){
+                List<Player> playerList = (flagsRepository.getNonSleepingTitleFlag().getValueAt(world) ?
+                        world.getPlayers():
+                        peopleWhoSlept.stream().filter(OfflinePlayer::isOnline).map(OfflinePlayer::getPlayer).collect(Collectors.toList()));
+
+                for(Player p: playerList){
                     String timeString = TimeUtils.getTimeStringByTicks(0);
                     p.sendTitle(ChatColor.AQUA + timeString ,ChatColor.GREEN + ">>>", 0,70,20);
                 }
             }
 
         }else{
+
+            /*
+             *  All code in this block only runs during the night
+             */
+
             if(this.flagsRepository.getClockAnimationFlag().getValueAt(world) && ServerVersion.CURRENT_VERSION.supportsTitles()){
 
-                for(Player p: world.getPlayers()){
+                List<Player> playerList = (flagsRepository.getNonSleepingTitleFlag().getValueAt(world) ?
+                        world.getPlayers():
+                        peopleWhoSlept.stream().filter(OfflinePlayer::isOnline).map(OfflinePlayer::getPlayer).collect(Collectors.toList()));
+
+                for(Player p: playerList){
                     String timeString = TimeUtils.getTimeStringByTicks(world.getTime());
                     p.sendTitle(ChatColor.AQUA + timeString ,ChatColor.GREEN + ">>>", 0,70,20);
                 }

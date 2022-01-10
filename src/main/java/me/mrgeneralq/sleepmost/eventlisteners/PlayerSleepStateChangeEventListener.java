@@ -61,6 +61,9 @@ public class PlayerSleepStateChangeEventListener implements Listener {
             return;
 
 
+        /*
+         * When the player is waking up, we always want to update the bossbar. Also if the world is getting disabled!
+         */
         if(sleepState == SleepState.AWAKE){
             if(ServerVersion.CURRENT_VERSION.supportsBossBars() && this.flagsRepository.getUseBossBarFlag().getValueAt(world))
                 this.updateBossBar(world);
@@ -70,8 +73,6 @@ public class PlayerSleepStateChangeEventListener implements Listener {
         /*
          * All below code runs when a player went to Sleep
          */
-
-        //do nothing when the world is not enabled
         if (!sleepService.isEnabledAt(world)) {
             return;
         }
@@ -91,7 +92,6 @@ public class PlayerSleepStateChangeEventListener implements Listener {
             this.cooldownService.startCooldown(player);
         }
 
-
         //duration check before executing any skip methods
         Bukkit.getScheduler().runTaskLater(sleepmost, () ->
         {
@@ -99,18 +99,15 @@ public class PlayerSleepStateChangeEventListener implements Listener {
             if(!this.sleepService.shouldSkip(world)){
                 return;
             }
-
             //if animation is enabled, run animation instead
             if(this.flagsRepository.getNightcycleAnimationFlag().getValueAt(world)){
                 this.sleepService.runSkipAnimation(player, skipCause);
                 return;
         }
-
             //retrieve a list of all players currently asleep and send them to the SleepSkipEvent (in service)
             List<OfflinePlayer> peopleWhoSlept = this.sleepService.getSleepers(world).stream().map(p -> Bukkit.getOfflinePlayer(p.getUniqueId())).collect(Collectors.toList());
             this.sleepService.executeSleepReset(world, player.getName(), player.getDisplayName(), peopleWhoSlept, skipCause);
         }, skipDelay * 20L);
-
     }
 
     private void updateBossBar(World world){
