@@ -17,11 +17,12 @@ import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 
 public class Sleepmost extends JavaPlugin {
 
+	private static Sleepmost instance;
 	private Bootstrapper bootstrapper;
 
 	@Override
 	public void onEnable() {
-
+                instance = this;
 		saveDefaultConfig();
 		
 		//init metrics
@@ -62,6 +63,10 @@ public class Sleepmost extends JavaPlugin {
 		runTimers(bootstrapper.getSleepService());
 
 	}
+	
+        public static Sleepmost getInstance() {
+                return instance;
+        }
 
 	private void runTimers(ISleepService sleepService){
 		new Heartbeat(sleepService).runTaskTimer(this, 20,20);
