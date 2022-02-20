@@ -29,7 +29,7 @@ public enum ServerVersion
     static {
         CURRENT_VERSION = computeServerVersion();
         forVersionsFrom(V1_16, version -> version.supportsHexColors = true);
-        forVersionsFrom(V1_14, version -> version.supportsTitles = true);
+        forVersionsFrom(V1_12, version -> version.supportsTitles = true);
         forVersionsUntil(V1_9, version -> version.maxHPHealer = MaxHPHealer.LEGACY_HEALER);
         forVersionsFrom(V1_9, version -> version.maxHPHealer = MaxHPHealer.UPDATED_HEALER);
         forVersionsFrom(V1_15, version -> version.hasTimeSkipEvent = true);
