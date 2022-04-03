@@ -58,6 +58,7 @@ public class Sleepmost extends JavaPlugin {
 		pm.registerEvents(new PlayerBedLeaveEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new WorldLoadEventListener(bootstrapper.getBossBarService()),this);
 		pm.registerEvents(new PlayerSleepStateChangeEventListener(this, bootstrapper.getSleepService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService()), this);
+		pm.registerEvents(new TimeCycleChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService(), bootstrapper.getFlagsRepository()),this );
 
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
 
@@ -71,8 +72,6 @@ public class Sleepmost extends JavaPlugin {
 	}
 
 	private void runTimers(ISleepService sleepService, IWorldPropertyService worldPropertyService){
-
-
 
 		new Heartbeat(sleepService, worldPropertyService).runTaskTimer(this, 20,20);
 	}

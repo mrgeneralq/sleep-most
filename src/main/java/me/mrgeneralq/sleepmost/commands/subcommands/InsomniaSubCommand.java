@@ -9,6 +9,8 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
@@ -56,19 +58,17 @@ public class InsomniaSubCommand implements ISubCommand {
         this.worldPropertyService.setWorldProperty(world, property);
 
         String insomniaMessage = this.messageService.fromTemplate(MessageTemplate.INSOMNIA_ENABLED);
-
         List<Player> sleepingPlayers = this.sleepService.getSleepers(world);
 
         for(Player p: sleepingPlayers){
+            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60,1));
             p.teleport(p.getLocation());
             String targetInsomniaMessage = this.messageService.fromTemplate(MessageTemplate.INSOMNIA_NOT_SLEEPY);
-            player.sendMessage(targetInsomniaMessage);
+            p.sendMessage(targetInsomniaMessage);
         }
 
         player.sendMessage(insomniaMessage);
         return true;
-
-
 
     }
 }

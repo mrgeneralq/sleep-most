@@ -18,6 +18,7 @@ public enum ServerVersion
     private boolean supportsTitles;
     private boolean supportsBossBars;
     private boolean hasTimeSkipEvent;
+    private boolean supportsClickableText;
 
     public static final ServerVersion CURRENT_VERSION;
 
@@ -30,6 +31,7 @@ public enum ServerVersion
         CURRENT_VERSION = computeServerVersion();
         forVersionsFrom(V1_16, version -> version.supportsHexColors = true);
         forVersionsFrom(V1_14, version -> version.supportsTitles = true);
+        forVersionsFrom(V1_17, version -> version.supportsClickableText = true);
         forVersionsUntil(V1_9, version -> version.maxHPHealer = MaxHPHealer.LEGACY_HEALER);
         forVersionsFrom(V1_9, version -> version.maxHPHealer = MaxHPHealer.UPDATED_HEALER);
         forVersionsFrom(V1_15, version -> version.hasTimeSkipEvent = true);
@@ -63,6 +65,10 @@ public enum ServerVersion
         return hasTimeSkipEvent;
     }
 
+    public boolean supportsClickableText() {
+        return supportsClickableText;
+    }
+
     //Setup methods
     private static ServerVersion computeServerVersion() {
         return Arrays.stream(VALUES)
@@ -84,4 +90,5 @@ public enum ServerVersion
         return Arrays.stream(VALUES)
                 .filter(version -> version != UNKNOWN);
     }
+
 }

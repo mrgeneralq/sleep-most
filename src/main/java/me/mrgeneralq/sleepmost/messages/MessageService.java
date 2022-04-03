@@ -5,6 +5,7 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.statics.ConfigMessageMapper;
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -121,7 +122,7 @@ public class MessageService implements IMessageService {
 
 		//TODO change to check compatible
 
-		if(0 == 0){
+		if(ServerVersion.CURRENT_VERSION.supportsClickableText()){
 
 			for(Player p: Bukkit.getOnlinePlayers().stream().filter(p -> p.getWorld() == world).collect(Collectors.toList())){
 

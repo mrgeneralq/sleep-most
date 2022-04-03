@@ -50,4 +50,6 @@ public interface IFlagsRepository
     NonSleepingTitleFlag getNonSleepingTitleFlag();
 
     ExemptFlyingFlag getExemptFlyingFlag();
+
+    InsomniaChanceFlag getInsomniaChanceFlag();
 }
