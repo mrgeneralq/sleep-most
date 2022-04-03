@@ -19,7 +19,14 @@ public enum MessageTemplate {
     NO_BED_LOCATION_SET("&cYou don't have a bed or it is obstructed!", true),
     TELEPORTED_TO_BED("&aYou teleported to your bed!", true),
     SLEEP_CMD_DISABLED("&cYou cannot use the /sleep command in this world!", true),
-    ONE_PLAYER_SLEEP_SET("&aOne player sleep has been configured!", true);
+    ONE_PLAYER_SLEEP_SET("&aOne player sleep has been configured!", true),
+    SPECIFY_PLAYER("&cPlease specify a player!"),
+    TARGET_NOT_SLEEPING("&cThis player is not asleep!"),
+    TARGET_NOT_ONLINE("&cThe target player is not online!"),
+    INSOMNIA_NOT_SLEEPY("&cYou don't feel sleepy at the moment"),
+    INSOMNIA_ALREADY_ENABLED("&cInsomnia is already enabled for this night", true),
+    INSOMNIA_ENABLED("&aInsomnia enabled for the night", true),
+    CMD_ONLY_DURING_NIGHT("&cThis command can only be used during the night!");
 
     private final String rawMessage;
     private final boolean usePrefix;
