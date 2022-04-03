@@ -17,6 +17,11 @@ public interface IMessageService
 	String getPlayersLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount);
 	void sendMessage(CommandSender sender, String message);
 	void sendWorldMessage(World world, String message);
+
+	void sendWorldMessageWithPermission(World world, String permission, String message);
+
+	void sendWorldMessageWithPermission(World world, String permission, String messageWithPermission, String messageWithoutPermission);
+
 	void sendOPMessage(String message);
 	void sendPlayerLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount);
 	void sendNightSkippedMessage(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause);

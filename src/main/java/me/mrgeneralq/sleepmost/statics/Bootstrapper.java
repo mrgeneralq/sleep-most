@@ -31,6 +31,9 @@ public class Bootstrapper {
     private BossBarRepository bossBarRepository;
     private IBossBarService bossBarService;
 
+    private WorldPropertyRepository worldPropertyRepository;
+    private IWorldPropertyService worldPropertyService;
+
     private static Bootstrapper instance;
 
     private Bootstrapper(){ }
@@ -52,6 +55,9 @@ public class Bootstrapper {
         this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService);
 
         this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService);
+
+        this.worldPropertyRepository = new WorldPropertyRepository();
+        this.worldPropertyService = new WorldPropertyService(this.worldPropertyRepository);
 
         this.configMessageMapper = ConfigMessageMapper.getMapper();
         this.configMessageMapper.initialize(main);
@@ -128,5 +134,9 @@ public class Bootstrapper {
 
     public IBossBarService getBossBarService() {
         return bossBarService;
+    }
+
+    public IWorldPropertyService getWorldPropertyService() {
+        return worldPropertyService;
     }
 }

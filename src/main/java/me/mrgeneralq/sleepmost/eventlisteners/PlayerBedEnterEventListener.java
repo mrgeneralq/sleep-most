@@ -4,6 +4,7 @@ import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.messages.MessageBuilder;
+import me.mrgeneralq.sleepmost.messages.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Bukkit;
@@ -24,18 +25,21 @@ public class PlayerBedEnterEventListener implements Listener {
     private final DataContainer dataContainer;
     private final IFlagsRepository flagsRepository;
     private final IBossBarService bossBarService;
+    private final IWorldPropertyService worldPropertyService;
 
     public PlayerBedEnterEventListener(ISleepService sleepService,
                                        IMessageService messageService,
                                        ICooldownService cooldownService,
                                        IFlagsRepository flagsRepository,
-                                       IBossBarService bossBarService
+                                       IBossBarService bossBarService,
+                                       IWorldPropertyService worldPropertyService
     ) {
         this.sleepService = sleepService;
         this.messageService = messageService;
         this.cooldownService = cooldownService;
         this.flagsRepository = flagsRepository;
         this.bossBarService = bossBarService;
+        this.worldPropertyService = worldPropertyService;
         this.dataContainer = DataContainer.getContainer();
     }
 
@@ -74,8 +78,18 @@ public class PlayerBedEnterEventListener implements Listener {
             return;
         }
 
+
+        if(this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()){
+            String insomniaMessage = this.messageService.fromTemplate(MessageTemplate.INSOMNIA_NOT_SLEEPY);
+            player.sendMessage(insomniaMessage);
+            e.setCancelled(true);
+            return;
+        }
+
+
         if(!this.sleepService.isPlayerAsleep(player))
         this.sleepService.setSleeping(player , true);
+
     }
 
 }

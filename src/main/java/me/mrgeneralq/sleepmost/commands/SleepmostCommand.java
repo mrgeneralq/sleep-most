@@ -25,8 +25,9 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	private final IConfigRepository configRepository;
 	private final ICooldownService cooldownService;
 	private final IBossBarService bossBarService;
+	private final IWorldPropertyService worldPropertyService;
 
-	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository, IConfigRepository configRepository, ICooldownService cooldownService, IBossBarService bossBarService){
+	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository, IConfigRepository configRepository, ICooldownService cooldownService, IBossBarService bossBarService, IWorldPropertyService worldPropertyService){
 		this.sleepService = sleepService;
 		this.messageService = messageService;
 		this.updateService = updateService;
@@ -35,6 +36,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		this.configRepository = configRepository;
 		this.cooldownService = cooldownService;
 		this.bossBarService = bossBarService;
+		this.worldPropertyService = worldPropertyService;
 		this.registerSubCommands();
 	}
 
@@ -48,7 +50,9 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("reset", new ResetSubCommand(this.messageService, this.flagService));
 		subCommands.put("setops", new SetOnePlayerSleepCommand(this.sleepService, this.messageService,this.flagService, this.flagsRepository));
 		subCommands.put("bed", new BedSubCommand(this.sleepService,this.messageService));
-		subCommands.put("sleep", new SleepSubCommand(this.sleepService,this.flagsRepository,this.messageService,this.cooldownService, this.bossBarService));
+		subCommands.put("sleep", new SleepSubCommand(this.sleepService,this.flagsRepository,this.messageService,this.cooldownService, this.bossBarService, this.worldPropertyService));
+		subCommands.put("kick", new KickSubCommand(this.sleepService,this.messageService));
+		subCommands.put("insomnia", new InsomniaSubCommand(this.sleepService, this.flagsRepository, this.messageService, this.worldPropertyService));
 
 		//enable when debugging
 		//subCommands.put("test", new TestCommand(this.messageService, this.flagsRepository, this.configRepository));
@@ -78,6 +82,8 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 			sender.sendMessage(colorize("&e/sm bed &fteleport to your current bed spawn location"));
 			sender.sendMessage(colorize("&e/sm reload &freload the config file"));
 			sender.sendMessage(colorize("&e/sm sleep &fput yourself in sleep status"));
+			sender.sendMessage(colorize("&e/sm kick &fkick a player from the bed"));
+			sender.sendMessage(colorize("&e/sm insomnia &fBlock sleeping for the current night"));
 			return true;
 		}
 
