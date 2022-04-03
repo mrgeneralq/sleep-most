@@ -19,11 +19,12 @@ import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 
 public class Sleepmost extends JavaPlugin {
 
+	private static Sleepmost instance;
 	private Bootstrapper bootstrapper;
 
 	@Override
 	public void onEnable() {
-
+                instance = this;
 		saveDefaultConfig();
 		
 		//init metrics
@@ -47,13 +48,14 @@ public class Sleepmost extends JavaPlugin {
 		pm.registerEvents(new PlayerQuitEventListener(bootstrapper.getCooldownService(), bootstrapper.getSleepService(), bootstrapper.getBossBarService()), this);
 
 		if(ServerVersion.CURRENT_VERSION.hasTimeSkipEvent())
-		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getMessageService(), bootstrapper.getConfigService(), bootstrapper.getSleepService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService()), this);
+		pm.registerEvents(new TimeSkipEventListener(bootstrapper.getSleepService()), this);
 
 		pm.registerEvents(new EntityTargetLivingEntityEventListener(bootstrapper.getFlagsRepository()), this);
 		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getBossBarService()), this);
 		pm.registerEvents(new PlayerJoinEventListener(this, bootstrapper.getUpdateService(), bootstrapper.getMessageService(), bootstrapper.getBossBarService()), this);
 		pm.registerEvents(new EntitySpawnEventListener(bootstrapper.getFlagsRepository()), this);
 		pm.registerEvents(new TimeSkipEventListener(bootstrapper.getSleepService()), this);
+		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getMessageService(), bootstrapper.getConfigService(), bootstrapper.getSleepService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService()), this);
 		pm.registerEvents(new WorldChangeEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new PlayerBedLeaveEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new WorldLoadEventListener(bootstrapper.getBossBarService()),this);
@@ -65,6 +67,10 @@ public class Sleepmost extends JavaPlugin {
 		runPreTimerTasks();
 		runTimers(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService());
 	}
+	
+        public static Sleepmost getInstance() {
+                return instance;
+        }
 
 	private void runPreTimerTasks(){
 		for(World world: Bukkit.getWorlds())

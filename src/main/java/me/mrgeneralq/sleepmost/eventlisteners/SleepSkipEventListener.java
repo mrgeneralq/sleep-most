@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
 import me.mrgeneralq.sleepmost.exceptions.InvalidSleepSkipCauseOccurredException;
+import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.flags.SkipSoundFlag;
 import me.mrgeneralq.sleepmost.flags.UseSkipSoundFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
@@ -11,6 +12,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
@@ -54,9 +56,15 @@ public class SleepSkipEventListener implements Listener {
         resetPhantomCounter(world);
         sendSkipSound(world, e);
 
-        if (ServerVersion.CURRENT_VERSION.supportsTitles())
-            sendSkipTitle(world, e);
-
+        if (ServerVersion.CURRENT_VERSION.supportsTitles()) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    sendSkipTitle(world, e);
+                }
+            }.runTaskLater(Sleepmost.getInstance(), 5);
+        }
+        
         boolean shouldHeal = flagsRepository.getHealFlag().getValueAt(world);
         boolean shouldFeed = flagsRepository.getFeedFlag().getValueAt(world);
 
