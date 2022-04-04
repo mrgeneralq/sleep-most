@@ -8,5 +8,5 @@ public interface IWorldPropertyService {
     WorldProperty getWorldProperties(World world);
     void createNewWorldProperty(World world);
     void setWorldProperty(World world, WorldProperty property);
-
+    boolean propertyExists(World world);
 }
