@@ -49,11 +49,12 @@ public class SleepSkipEventListener implements Listener {
     public void onSleepSkip(SleepSkipEvent e) throws InvalidSleepSkipCauseOccurredException {
 
         World world = e.getWorld();
+        List<OfflinePlayer> sleepers = e.getPeopleWhoSlept();
 
         if (dataContainer.isAnimationRunningAt(world))
             return;
 
-        resetPhantomCounter(world);
+        resetPhantomCounter(world, sleepers);
         sendSkipSound(world, e);
 
         if (ServerVersion.CURRENT_VERSION.supportsTitles()) {
@@ -86,13 +87,13 @@ public class SleepSkipEventListener implements Listener {
         this.bossBarService.setVisible(world, false);
     }
 
-    private void resetPhantomCounter(World world) {
+    private void resetPhantomCounter(World world, List<OfflinePlayer> playersWhoSlept) {
         /*
          * DISCLAIMER: Statistic and TIME_SINCE_REST Does not exist
          * in older versions of Minecraft
          */
         try {
-            for (Player p : world.getPlayers())
+            for (Player p : playersWhoSlept.stream().filter(OfflinePlayer::isOnline).map(OfflinePlayer::getPlayer).collect(Collectors.toList()))
                 p.setStatistic(Statistic.TIME_SINCE_REST, 0);
         } catch (NoSuchFieldError error) {
             // statistic did not exist yet in some versions
