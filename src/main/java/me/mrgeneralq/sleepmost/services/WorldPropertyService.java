@@ -28,4 +28,10 @@ public class WorldPropertyService implements IWorldPropertyService{
     public void setWorldProperty(World world, WorldProperty property) {
         this.worldPropertyRepository.set(world, property);
     }
+
+
+    @Override
+    public boolean propertyExists(World world){
+        return this.worldPropertyRepository.exists(world);
+    }
 }
