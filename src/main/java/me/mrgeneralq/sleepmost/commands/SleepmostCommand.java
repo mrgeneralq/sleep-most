@@ -53,6 +53,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("sleep", new SleepSubCommand(this.sleepService,this.flagsRepository,this.messageService,this.cooldownService, this.bossBarService, this.worldPropertyService));
 		subCommands.put("kick", new KickSubCommand(this.sleepService,this.messageService));
 		subCommands.put("insomnia", new InsomniaSubCommand(this.sleepService, this.flagsRepository, this.messageService, this.worldPropertyService));
+		subCommands.put("getflag", new GetFlagSubCommand(this.messageService, this.flagsRepository));
 
 		//enable when debugging
 		//subCommands.put("test", new TestCommand(this.messageService, this.flagsRepository, this.configRepository));
@@ -84,6 +85,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 			sender.sendMessage(colorize("&e/sm sleep &fput yourself in sleep status"));
 			sender.sendMessage(colorize("&e/sm kick &fkick a player from the bed"));
 			sender.sendMessage(colorize("&e/sm insomnia &fBlock sleeping for the current night"));
+			sender.sendMessage(colorize("&e/sm getflag &fQuickly grab a flag's value in your world"));
 			return true;
 		}
 
