@@ -9,6 +9,7 @@ import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTask;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
+import me.mrgeneralq.sleepmost.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
@@ -78,6 +79,9 @@ public class SleepService implements ISleepService {
     public int getPlayerCountInWorld(World world) {
 
         Stream<Player> playersStream = world.getPlayers().stream();
+
+        //exclude fake players
+        playersStream = world.getPlayers().stream().filter(PlayerUtils::isRealPlayer);
 
         // If flag is active, ignore players in spectator mode from sleep count.
         if (flagsRepository.getExemptSpectatorFlag().getValueAt(world))
@@ -222,5 +226,9 @@ public class SleepService implements ISleepService {
 
         dataContainer.setAnimationRunning(world, true);
         new NightcycleAnimationTask(this, this.flagsRepository , world, player, sleepingPlayers , sleepSkipCause).runTaskTimer(this.main, 0, 1);
+    }
+
+    private Stream<Player> getRealPlayers(World world){
+        return world.getPlayers().stream().filter(p -> Bukkit.getPlayer(p.getUniqueId()) != null);
     }
 }
