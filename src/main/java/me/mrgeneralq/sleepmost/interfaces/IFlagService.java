@@ -10,4 +10,5 @@ public interface IFlagService
     <V> void setStringValueAt(ISleepFlag<V> flag, World world, String stringValue);
     <V> String getValueDisplayName(ISleepFlag<V> flag, Object value);
     void resetFlagsAt(World world);
+    <V> void resetFlagAt(World world, ISleepFlag<V> flag);
 }
