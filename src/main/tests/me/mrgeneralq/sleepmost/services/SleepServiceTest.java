@@ -3,21 +3,20 @@ import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.flags.*;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class SleepServiceTest {
@@ -35,11 +34,11 @@ public class SleepServiceTest {
     public void setUp() throws Exception {
 
 
-        this.mockSleepmost = Mockito.mock(Sleepmost.class);
-        this.mockConfigService = Mockito.mock(IConfigService.class);
-        this.mockConfigRepository = Mockito.mock(IConfigRepository.class);
-        this.mockFlagRepository = Mockito.mock(IFlagsRepository.class);
-        this.mockFlagService = Mockito.mock(IFlagService.class);
+        this.mockSleepmost = mock(Sleepmost.class);
+        this.mockConfigService = mock(IConfigService.class);
+        this.mockConfigRepository = mock(IConfigRepository.class);
+        this.mockFlagRepository = mock(IFlagsRepository.class);
+        this.mockFlagService = mock(IFlagService.class);
 
         this.sleepService = new SleepService(this.mockSleepmost, this.mockConfigService, this.mockConfigRepository,this.mockFlagRepository,this.mockFlagService);
     }
@@ -47,7 +46,7 @@ public class SleepServiceTest {
     @Test
     public void getCurrentSkipCause() {
 
-        World world = Mockito.mock(World.class);
+        World world = mock(World.class);
 
         when(world.getTime()).thenReturn(20000L);
         when(world.isThundering()).thenReturn(true);
@@ -67,15 +66,16 @@ public class SleepServiceTest {
     }
 
 
-    @Test
+
     public void getPlayerCountInWorld() {
 
-        Player player1 = Mockito.mock(Player.class);
-        Player player2 = Mockito.mock(Player.class);
-        Player player3 = Mockito.mock(Player.class);
+
+        Player player1 = mock(Player.class);
+        Player player2 = mock(Player.class);
+        Player player3 = mock(Player.class);
 
         List<Player> playerList = Arrays.asList(player1,player2,player3);
-        World mockWorld = Mockito.mock(World.class);
+        World mockWorld = mock(World.class);
 
         Location location = new Location(mockWorld, 5.0,-5.0, 10.0);
 
@@ -85,17 +85,18 @@ public class SleepServiceTest {
 
         when(mockWorld.getPlayers()).thenReturn(playerList);
 
-        ExemptCreativeFlag exemptCreativeFlag = Mockito.mock(ExemptCreativeFlag.class);
-        ExemptSpectatorFlag exemptSpectatorFlag = Mockito.mock(ExemptSpectatorFlag.class);
-        ExemptBelowYFlag exemptBelowYFlag = Mockito.mock(ExemptBelowYFlag.class);
-        UseExemptFlag useExemptFlag = Mockito.mock(UseExemptFlag.class);
-        ExemptFlyingFlag exemptFlyingFlag = Mockito.mock(ExemptFlyingFlag.class);
+        ExemptCreativeFlag exemptCreativeFlag = mock(ExemptCreativeFlag.class);
+        ExemptSpectatorFlag exemptSpectatorFlag = mock(ExemptSpectatorFlag.class);
+        ExemptBelowYFlag exemptBelowYFlag = mock(ExemptBelowYFlag.class);
+        UseExemptFlag useExemptFlag = mock(UseExemptFlag.class);
+        ExemptFlyingFlag exemptFlyingFlag = mock(ExemptFlyingFlag.class);
 
         when(this.mockFlagRepository.getExemptCreativeFlag()).thenReturn(exemptCreativeFlag);
         when(this.mockFlagRepository.getExemptSpectatorFlag()).thenReturn(exemptSpectatorFlag);
         when(this.mockFlagRepository.getExemptBelowYFlag()).thenReturn(exemptBelowYFlag);
         when(this.mockFlagRepository.getUseExemptFlag()).thenReturn(useExemptFlag);
         when(this.mockFlagRepository.getExemptFlyingFlag()).thenReturn(exemptFlyingFlag);
+
 
         when(exemptCreativeFlag.getValueAt(mockWorld)).thenReturn(true);
         when(exemptSpectatorFlag.getValueAt(mockWorld)).thenReturn(false);
