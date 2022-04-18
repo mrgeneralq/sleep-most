@@ -52,4 +52,6 @@ public interface IFlagsRepository
     ExemptFlyingFlag getExemptFlyingFlag();
 
     InsomniaChanceFlag getInsomniaChanceFlag();
+
+    PhantomResetAudienceFlag getPhantomResetAudienceFlag();
 }
