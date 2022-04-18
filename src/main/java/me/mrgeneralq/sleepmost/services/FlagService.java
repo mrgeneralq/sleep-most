@@ -45,7 +45,12 @@ public class FlagService implements IFlagService {
 
     @Override
     public void resetFlagsAt(World world) {
-        this.flagsRepository.getFlags().forEach(flag -> setDefaultValueAt(world, flag));
+        this.flagsRepository.getFlags().forEach(flag -> resetFlagAt(world, flag));
+    }
+    
+    @Override
+    public <V> void resetFlagAt(World world, ISleepFlag<V> flag) {
+    	flag.setValueAt(world, flag.getDefaultValue());
     }
 
     @Override
@@ -57,10 +62,6 @@ public class FlagService implements IFlagService {
     @SuppressWarnings("unchecked")
     public <V> String getValueDisplayName(ISleepFlag<V> flag, Object value) {
         return flag.getDisplayName((V) value);
-    }
-
-    private <V> void setDefaultValueAt(World world, ISleepFlag<V> flag) {
-        flag.setValueAt(world, flag.getDefaultValue());
     }
 
     /*
@@ -83,7 +84,7 @@ public class FlagService implements IFlagService {
                 .build());
 
         //Create & Defaultize the missing flags
-        missingFlags.forEach(flag -> setDefaultValueAt(world, flag));
+        missingFlags.forEach(flag -> resetFlagAt(world, flag));
     }
 
     private void handleIllegalValues(World world) {
@@ -102,7 +103,7 @@ public class FlagService implements IFlagService {
         illegalValues.forEach((flag, value) -> this.messageService.sendOPMessage(createIllegalValueMessage(flag.getName(), value)));
 
         //Defaultize the flags
-        illegalValues.keySet().forEach(flag -> setDefaultValueAt(world, flag));
+        illegalValues.keySet().forEach(flag -> resetFlagAt(world, flag));
     }
 
     /*

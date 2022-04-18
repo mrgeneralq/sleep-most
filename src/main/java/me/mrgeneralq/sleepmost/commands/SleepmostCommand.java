@@ -54,7 +54,8 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("kick", new KickSubCommand(this.sleepService,this.messageService));
 		subCommands.put("insomnia", new InsomniaSubCommand(this.sleepService, this.flagsRepository, this.messageService, this.worldPropertyService));
 		subCommands.put("getflag", new GetFlagSubCommand(this.messageService, this.flagsRepository));
-
+		subCommands.put("resetflag", new ResetFlagSubCommand(this.messageService, this.flagsRepository, this.flagService));
+		
 		//enable when debugging
 		//subCommands.put("test", new TestCommand(this.messageService, this.flagsRepository, this.configRepository));
 	}
