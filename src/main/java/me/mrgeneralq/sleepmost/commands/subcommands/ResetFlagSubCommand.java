@@ -52,9 +52,9 @@ public class ResetFlagSubCommand implements ISubCommand
 		
 		this.flagService.resetFlagAt(world, sleepFlag);
 
-		this.messageService.sendMessage(sender, this.messageService.newPrefixedBuilder("&bThe &e%flag% &bflag was reset to its default value &e%default value%&b.")
+		this.messageService.sendMessage(sender, this.messageService.newPrefixedBuilder("&bThe &e%flag% &bflag was reset to its default value &e%default-value%&b.")
 				.setPlaceHolder("%flag%", sleepFlag.getName())
-				.setPlaceHolder("%default value%", sleepFlag.getValueAt(world).toString())
+				.setPlaceHolder("%default-value%", sleepFlag.getValueAt(world).toString())
 				.build());
 
 		
