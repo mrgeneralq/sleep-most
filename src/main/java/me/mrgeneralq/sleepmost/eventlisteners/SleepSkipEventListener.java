@@ -1,6 +1,8 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
+
+import me.mrgeneralq.sleepmost.enums.SleepersOrAllType;
 import me.mrgeneralq.sleepmost.exceptions.InvalidSleepSkipCauseOccurredException;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.flags.SkipSoundFlag;
@@ -18,6 +20,7 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,11 +54,25 @@ public class SleepSkipEventListener implements Listener {
         World world = e.getWorld();
         List<OfflinePlayer> sleepers = e.getPeopleWhoSlept();
 
+
         if (dataContainer.isAnimationRunningAt(world))
             return;
 
-        resetPhantomCounter(world, sleepers);
+
+        /*
+        * Decide which players should be phantom reset when the night skips
+        */
+        SleepersOrAllType resetAudience = this.flagsRepository.getPhantomResetAudienceFlag().getValueAt(world);
+
+        List<OfflinePlayer> playersToResetPhantom;
+        if(resetAudience == SleepersOrAllType.SLEEPERS)
+            playersToResetPhantom = e.getPeopleWhoSlept();
+        else
+            playersToResetPhantom = e.getWorld().getPlayers().stream().map(p -> Bukkit.getOfflinePlayer(p.getUniqueId())).collect(Collectors.toList());
+
+        resetPhantomCounter(world, playersToResetPhantom);
         sendSkipSound(world, e);
+
 
         if (ServerVersion.CURRENT_VERSION.supportsTitles()) {
             new BukkitRunnable() {
@@ -92,7 +109,9 @@ public class SleepSkipEventListener implements Listener {
          * DISCLAIMER: Statistic and TIME_SINCE_REST Does not exist
          * in older versions of Minecraft
          */
+
         try {
+
             for (Player p : playersWhoSlept.stream().filter(OfflinePlayer::isOnline).map(OfflinePlayer::getPlayer).collect(Collectors.toList()))
                 p.setStatistic(Statistic.TIME_SINCE_REST, 0);
         } catch (NoSuchFieldError error) {
