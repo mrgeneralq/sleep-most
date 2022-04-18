@@ -1,7 +1,7 @@
 package me.mrgeneralq.sleepmost.interfaces;
 
-import me.mrgeneralq.sleepmost.messages.MessageBuilder;
-import me.mrgeneralq.sleepmost.messages.MessageTemplate;
+import me.mrgeneralq.sleepmost.builders.MessageBuilder;
+import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

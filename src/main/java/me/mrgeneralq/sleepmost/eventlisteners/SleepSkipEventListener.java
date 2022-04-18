@@ -8,7 +8,7 @@ import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.flags.SkipSoundFlag;
 import me.mrgeneralq.sleepmost.flags.UseSkipSoundFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.messages.MessageBuilder;
+import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -20,7 +20,6 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,7 +1,7 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.interfaces.IFlagService;
-import me.mrgeneralq.sleepmost.messages.MessageTemplate;
+import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;

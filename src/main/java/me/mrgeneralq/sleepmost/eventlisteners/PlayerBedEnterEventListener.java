@@ -1,21 +1,15 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
-import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.messages.MessageBuilder;
-import me.mrgeneralq.sleepmost.messages.MessageTemplate;
+import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
-import me.mrgeneralq.sleepmost.statics.ServerVersion;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
-import org.bukkit.event.player.PlayerBedLeaveEvent;
 
 public class PlayerBedEnterEventListener implements Listener {
 

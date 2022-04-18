@@ -1,4 +1,4 @@
-package me.mrgeneralq.sleepmost.messages;
+package me.mrgeneralq.sleepmost.builders;
 
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;

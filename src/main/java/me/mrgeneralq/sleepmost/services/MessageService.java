@@ -1,14 +1,15 @@
-package me.mrgeneralq.sleepmost.messages;
+package me.mrgeneralq.sleepmost.services;
 
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
+import me.mrgeneralq.sleepmost.builders.MessageBuilder;
+import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.ConfigMessageMapper;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -16,7 +17,6 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import javax.xml.soap.Text;
 import java.util.stream.Collectors;
 
 public class MessageService implements IMessageService {

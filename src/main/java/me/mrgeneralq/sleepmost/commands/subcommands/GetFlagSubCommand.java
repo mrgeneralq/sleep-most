@@ -9,7 +9,7 @@ import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
-import me.mrgeneralq.sleepmost.messages.MessageTemplate;
+import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 
 public class GetFlagSubCommand implements ISubCommand

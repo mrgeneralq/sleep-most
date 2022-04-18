@@ -6,7 +6,7 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.enums.SleepState;
 import me.mrgeneralq.sleepmost.events.PlayerSleepStateChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.messages.MessageBuilder;
+import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Bukkit;

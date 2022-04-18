@@ -1,19 +1,12 @@
 package me.mrgeneralq.sleepmost.statics;
 
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.messages.MessageService;
+import me.mrgeneralq.sleepmost.services.MessageService;
 import me.mrgeneralq.sleepmost.placeholderapi.PapiExtension;
 import me.mrgeneralq.sleepmost.repositories.*;
 import me.mrgeneralq.sleepmost.services.*;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 public class Bootstrapper {
 

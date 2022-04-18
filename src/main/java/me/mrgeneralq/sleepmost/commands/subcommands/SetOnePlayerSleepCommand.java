@@ -3,7 +3,7 @@ package me.mrgeneralq.sleepmost.commands.subcommands;
 import me.mrgeneralq.sleepmost.flags.CalculationMethodFlag;
 import me.mrgeneralq.sleepmost.flags.PlayersRequiredFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.messages.MessageTemplate;
+import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
