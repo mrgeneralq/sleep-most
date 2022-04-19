@@ -5,6 +5,8 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
+import me.mrgeneralq.sleepmost.interfaces.IRepository;
+import me.mrgeneralq.sleepmost.repositories.MessageRepository;
 import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.ConfigMessageMapper;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
@@ -22,10 +24,13 @@ import java.util.stream.Collectors;
 public class MessageService implements IMessageService {
 
 	private final IConfigRepository configRepository;
+	private final MessageRepository messageRepository;
 	private final ConfigMessageMapper messageMapper = ConfigMessageMapper.getMapper();
 
-	public MessageService(IConfigRepository configRepository) {
+	//TODO remove IConfigRepo
+	public MessageService(IConfigRepository configRepository, MessageRepository messageRepository) {
 		this.configRepository = configRepository;
+		this.messageRepository = messageRepository;
 	}
 
 	@Override

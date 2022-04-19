@@ -1,6 +1,7 @@
 package me.mrgeneralq.sleepmost.statics;
 
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.models.Message;
 import me.mrgeneralq.sleepmost.services.MessageService;
 import me.mrgeneralq.sleepmost.placeholderapi.PapiExtension;
 import me.mrgeneralq.sleepmost.repositories.*;
@@ -27,16 +28,21 @@ public class Bootstrapper {
     private WorldPropertyRepository worldPropertyRepository;
     private IWorldPropertyService worldPropertyService;
 
+    private MessageRepository messageRepository;
+
+
     private static Bootstrapper instance;
 
     private Bootstrapper(){ }
 
     public void initialize(Sleepmost main){
 
+        this.messageRepository = new MessageRepository();
+
         this.configRepository = new ConfigRepository(main);
         this.configService = new ConfigService(main);
 
-        this.messageService = new MessageService(configRepository);
+        this.messageService = new MessageService(configRepository, messageRepository);
 
         this.updateRepository = new UpdateRepository("60623");
         this.updateService = new UpdateService(updateRepository, main, configService);
