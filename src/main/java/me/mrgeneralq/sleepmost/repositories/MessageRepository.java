@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.repositories;
 
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.interfaces.IRepository;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,6 +19,10 @@ public class MessageRepository implements IRepository<String, String> {
 
     public MessageRepository() {
         this.createConfig();
+
+        Bukkit.getLogger().info("Test String: " + this.getRandomMessage(this.config.get("messages.test")));
+        Bukkit.getLogger().info("Test List: " + this.getRandomMessage(this.config.get("messages.test2")));
+
     }
 
     private File file;
@@ -26,7 +31,7 @@ public class MessageRepository implements IRepository<String, String> {
 
     @Override
     public String get(String path) {
-        return getRandomMessage(this.config.getString(path));
+        return getRandomMessage(this.config.get(path));
     }
 
     @Override
@@ -48,17 +53,15 @@ public class MessageRepository implements IRepository<String, String> {
 
     private String getRandomMessage(Object object){
 
-        List<String> stringList = new ArrayList<>();
 
-        Object messageSection = stringList;
-
-        if(messageSection instanceof List){
-            List<String> messageList = (List<String>) messageSection;
-            return messageList.get(new Random(messageList.stream().count()).nextInt());
+        if(object instanceof List){
+            List<String> messageList = (List<String>) object;
+            if(messageList.size() > 0)
+            return messageList.get(new Random().nextInt(messageList.size()));
         }
 
-        if(messageSection instanceof String)
-            return (String) messageSection;
+        if(object instanceof String)
+            return (String) object;
 
         return "";
     }

@@ -37,11 +37,11 @@ public class Bootstrapper {
 
     public void initialize(Sleepmost main){
 
-        this.messageRepository = new MessageRepository();
 
         this.configRepository = new ConfigRepository(main);
         this.configService = new ConfigService(main);
 
+        this.messageRepository = new MessageRepository();
         this.messageService = new MessageService(configRepository, messageRepository);
 
         this.updateRepository = new UpdateRepository("60623");

@@ -8,14 +8,25 @@ import java.util.Map;
 
 public class MessageMapper {
 
-    Map<ConfigMessage, Message> messages = new HashMap<ConfigMessage, Message>(){{
+    private static MessageMapper mapper;
+    private Map<ConfigMessage, Message> messages = new HashMap<>();
+
+    private MessageMapper() {
+        loadMessages();
+    }
+
+    public static MessageMapper getMapper(){
+        if(mapper == null)
+            mapper = new MessageMapper();
+        return mapper;
+    }
 
 
-        //TODO work in progress by Malin
-     put(ConfigMessage.BOSS_BAR_TITLE , new Message("", ""));
+    private void loadMessages(){
+        this.messages.put(ConfigMessage.BOSS_BAR_TITLE, new Message("bossbar.title", ""));
+    }
 
+    public Message getMessage(ConfigMessage message){
 
-
-    }};
-
+    }
 }

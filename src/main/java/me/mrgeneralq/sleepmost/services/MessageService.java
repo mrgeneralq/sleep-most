@@ -6,6 +6,8 @@ import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.interfaces.IRepository;
+import me.mrgeneralq.sleepmost.mappers.MessageMapper;
+import me.mrgeneralq.sleepmost.models.Message;
 import me.mrgeneralq.sleepmost.repositories.MessageRepository;
 import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.ConfigMessageMapper;
@@ -182,5 +184,14 @@ public class MessageService implements IMessageService {
 		return newBuilder(messageTemplate.getRawMessage())
 				.usePrefix(messageTemplate.usesPrefix())
 				.build();
+	}
+
+	@Override
+	public MessageBuilder getMessageFromConfig(ConfigMessage configMessage){
+
+		Message messageObject = MessageMapper.getMapper().getMessage(configMessage);
+		String messageStr = this.messageRepository.get(messageObject.getPath());
+		return new MessageBuilder(messageStr, configRepository.getPrefix());
+
 	}
 }

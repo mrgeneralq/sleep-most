@@ -29,4 +29,6 @@ public interface IMessageService
 	MessageBuilder newBuilder(MessageTemplate messageTemplate);
 	MessageBuilder newPrefixedBuilder(String rawMessage);
 	String fromTemplate(MessageTemplate messageTemplate);
+
+    MessageBuilder getMessageFromConfig(ConfigMessage configMessage);
 }
