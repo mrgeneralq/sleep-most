@@ -4,6 +4,7 @@ import me.mrgeneralq.sleepmost.eventlisteners.*;
 import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.IWorldPropertyService;
+import me.mrgeneralq.sleepmost.mappers.MessageMapper;
 import me.mrgeneralq.sleepmost.runnables.Heartbeat;
 import me.mrgeneralq.sleepmost.services.WorldPropertyService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
@@ -30,6 +31,9 @@ public class Sleepmost extends JavaPlugin {
 		//init metrics
 		final int bStatsID = 6212;
 		new Metrics(this, bStatsID);
+
+		//load the messages at start
+		MessageMapper.getMapper().loadMessages();
 		
 		//init bootstrapper
 		this.bootstrapper = Bootstrapper.getBootstrapper();
@@ -66,6 +70,7 @@ public class Sleepmost extends JavaPlugin {
 
 		runPreTimerTasks();
 		runTimers(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService());
+
 	}
 	
         public static Sleepmost getInstance() {
