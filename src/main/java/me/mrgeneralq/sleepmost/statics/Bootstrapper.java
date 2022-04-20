@@ -1,7 +1,7 @@
 package me.mrgeneralq.sleepmost.statics;
 
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.models.Message;
+import me.mrgeneralq.sleepmost.mappers.ConfigMessageMapper;
 import me.mrgeneralq.sleepmost.services.MessageService;
 import me.mrgeneralq.sleepmost.placeholderapi.PapiExtension;
 import me.mrgeneralq.sleepmost.repositories.*;
@@ -24,6 +24,7 @@ public class Bootstrapper {
     private IConfigService configService;
     private BossBarRepository bossBarRepository;
     private IBossBarService bossBarService;
+    private IPlayerService playerService;
 
     private WorldPropertyRepository worldPropertyRepository;
     private IWorldPropertyService worldPropertyService;
@@ -53,7 +54,9 @@ public class Bootstrapper {
         this.flagsRepository = new FlagsRepository(configRepository);
         this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService);
 
-        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService);
+        this.playerService = new PlayerService();
+
+        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService);
 
         this.worldPropertyRepository = new WorldPropertyRepository();
         this.worldPropertyService = new WorldPropertyService(this.worldPropertyRepository);
@@ -137,5 +140,9 @@ public class Bootstrapper {
 
     public IWorldPropertyService getWorldPropertyService() {
         return worldPropertyService;
+    }
+
+    public IPlayerService getPlayerService() {
+        return playerService;
     }
 }

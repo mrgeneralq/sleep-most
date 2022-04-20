@@ -9,7 +9,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -19,10 +18,6 @@ public class MessageRepository implements IRepository<String, String> {
 
     public MessageRepository() {
         this.createConfig();
-
-        Bukkit.getLogger().info("Test String: " + this.getRandomMessage(this.config.get("messages.test")));
-        Bukkit.getLogger().info("Test List: " + this.getRandomMessage(this.config.get("messages.test2")));
-
     }
 
     private File file;

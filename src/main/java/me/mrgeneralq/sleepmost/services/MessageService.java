@@ -5,12 +5,11 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
-import me.mrgeneralq.sleepmost.interfaces.IRepository;
 import me.mrgeneralq.sleepmost.mappers.MessageMapper;
 import me.mrgeneralq.sleepmost.models.Message;
 import me.mrgeneralq.sleepmost.repositories.MessageRepository;
 import me.mrgeneralq.sleepmost.templates.MessageTemplate;
-import me.mrgeneralq.sleepmost.statics.ConfigMessageMapper;
+import me.mrgeneralq.sleepmost.mappers.ConfigMessageMapper;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -21,36 +20,30 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class MessageService implements IMessageService {
 
 	private final IConfigRepository configRepository;
 	private final MessageRepository messageRepository;
-	private final ConfigMessageMapper messageMapper = ConfigMessageMapper.getMapper();
+	private final MessageMapper messageMapper;
+	private final String prefix;
 
 	//TODO remove IConfigRepo
 	public MessageService(IConfigRepository configRepository, MessageRepository messageRepository) {
 		this.configRepository = configRepository;
 		this.messageRepository = messageRepository;
+		this.messageMapper = MessageMapper.getMapper();
+
+		Message prefixMessage = this.messageMapper.getMessage(ConfigMessage.PREFIX);
+		this.prefix = this.messageRepository.get(prefixMessage.getPath());
 	}
 
 	@Override
 	public String getConfigMessage(ConfigMessage message) {
-		String path = this.messageMapper.getMessagePath(message);
+		String path = this.messageMapper.getMessage(message).getPath();
 		return configRepository.getString(path);
-	}
-
-	@Override
-	public void sendWorldMessage(ConfigMessage message, World world) {
-
-		String configMessage = this.messageMapper.getMessagePath(message);
-
-		String newMessage = newPrefixedBuilder(configMessage).build();
-
-		for(Player p: world.getPlayers())
-			p.sendMessage(newMessage);
-
 	}
 
 	@Override
@@ -95,20 +88,6 @@ public class MessageService implements IMessageService {
 	}
 
 	@Override
-	public void sendWorldMessageWithPermission(World world, String permission, String message){
-		for(Player p: world.getPlayers().stream().filter(p -> p.hasPermission(permission)).collect(Collectors.toList()))
-			this.sendWorldMessage(world,message);
-	}
-
-	@Override
-	public void sendWorldMessageWithPermission(World world, String permission, String messageWithPermission, String messageWithoutPermission){
-		for(Player p: world.getPlayers()){
-			String message = p.hasPermission(permission) ? messageWithPermission: messageWithoutPermission;
-			this.sendWorldMessage(world, message);
-		}
-	}
-
-	@Override
 	public void sendOPMessage(String message)
 	{
 		if(message.isEmpty())
@@ -122,7 +101,6 @@ public class MessageService implements IMessageService {
 
 	@Override
 	public void sendPlayerLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount) {
-
 
 		World world = player.getWorld();
 		String playersLeftMessage = this.getPlayersLeftMessage(player, cause, sleepingPlayersAmount, requiredPlayersAmount);
@@ -191,7 +169,32 @@ public class MessageService implements IMessageService {
 
 		Message messageObject = MessageMapper.getMapper().getMessage(configMessage);
 		String messageStr = this.messageRepository.get(messageObject.getPath());
-		return new MessageBuilder(messageStr, configRepository.getPrefix());
+		return new MessageBuilder(messageStr, this.prefix);
 
+	}
+
+	@Override
+	public List<Message> getMessages(){
+		return this.messageMapper.getAllMessages();
+	}
+
+	@Override
+	public boolean messagePathExists(String path){
+		return this.messageRepository.exists(path);
+	}
+
+	@Override
+	public void createMessage(Message message){
+		this.messageRepository.set(message.getPath(), message.getDefaultValue());
+	}
+
+	@Override
+	public void createMissingMessages(){
+			for(Message message : this.getMessages()){
+				if(this.messagePathExists(message.getPath()))
+					continue;
+
+				this.createMessage(message);
+			}
 	}
 }

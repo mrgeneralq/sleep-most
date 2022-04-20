@@ -10,6 +10,5 @@ public enum ConfigMessage {
     SLEEP_PREVENTED,
     NO_SLEEP_THUNDERSTORM,
     BOSS_BAR_TITLE,
-
     NO_CONSOLE_COMMAND
 }
