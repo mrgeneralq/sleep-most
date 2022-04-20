@@ -78,13 +78,6 @@ public class Sleepmost extends JavaPlugin {
 		runPreTimerTasks();
 		runTimers(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService());
 
-		String testMessage = this.messageService.getMessageFromConfig(ConfigMessage.BOSS_BAR_TITLE).usePrefix(false).build();
-		Bukkit.getLogger().info("NO PREFIX >>>" + testMessage);
-		String testMessage2 = this.messageService.getMessageFromConfig(ConfigMessage.BOSS_BAR_TITLE).usePrefix(true).build();
-		Bukkit.getLogger().info("PREFIX >>>" + testMessage2);
-		String testMessage3 = this.messageService.getMessageFromConfig(ConfigMessage.PREFIX).usePrefix(true).build();
-		Bukkit.getLogger().info("PREFIXX >>>" + testMessage3);
-
 	}
 	
 	public static Sleepmost getInstance() {

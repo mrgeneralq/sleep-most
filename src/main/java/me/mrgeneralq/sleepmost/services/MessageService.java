@@ -193,8 +193,8 @@ public class MessageService implements IMessageService {
 			for(Message message : this.getMessages()){
 				if(this.messagePathExists(message.getPath()))
 					continue;
-
 				this.createMessage(message);
 			}
+			this.messageRepository.saveConfig();
 	}
 }

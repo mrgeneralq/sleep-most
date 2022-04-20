@@ -32,7 +32,6 @@ public class MessageRepository implements IRepository<String, String> {
     @Override
     public void set(String path, String value) {
         this.config.set(path, value);
-        this.saveConfig();
     }
 
     @Override
@@ -47,7 +46,6 @@ public class MessageRepository implements IRepository<String, String> {
     }
 
     private String getRandomMessage(Object object){
-
 
         if(object instanceof List){
             List<String> messageList = (List<String>) object;
@@ -78,7 +76,7 @@ public class MessageRepository implements IRepository<String, String> {
         }
     }
 
-    private void saveConfig(){
+    public void saveConfig(){
         try {
             this.config.save(this.file);
         } catch (IOException e) {
