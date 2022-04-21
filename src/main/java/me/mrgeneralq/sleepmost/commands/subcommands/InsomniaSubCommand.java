@@ -41,13 +41,13 @@ public class InsomniaSubCommand implements ISubCommand {
 
         if (!sleepService.isNight(world)) {
             String notNightMessage = this.messageService.getMessage(ConfigMessage.CMD_ONLY_DURING_NIGHT).build();
-            player.sendMessage(notNightMessage);
+            this.messageService.sendMessage(player, notNightMessage);
             return true;
         }
 
         if (this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()) {
             String insomniaMessage = this.messageService.getMessage(ConfigMessage.INSOMNIA_ALREADY_ENABLED).build();
-            player.sendMessage(insomniaMessage);
+            this.messageService.sendMessage(player, insomniaMessage);
             return true;
         }
 
@@ -63,10 +63,10 @@ public class InsomniaSubCommand implements ISubCommand {
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60,1));
             p.teleport(p.getLocation());
             String targetInsomniaMessage = this.messageService.getMessage(ConfigMessage.INSOMNIA_NOT_SLEEPY).build();
-            p.sendMessage(targetInsomniaMessage);
+            this.messageService.sendMessage(p, targetInsomniaMessage);
         }
 
-        player.sendMessage(insomniaMessage);
+        this.messageService.sendMessage(sender, insomniaMessage);
         return true;
 
     }

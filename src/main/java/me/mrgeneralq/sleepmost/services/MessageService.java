@@ -78,7 +78,7 @@ public class MessageService implements IMessageService {
 				.usePrefix(true);
 
 		for(Player p: world.getPlayers())
-			p.sendMessage(builder.build());
+			this.sendMessage(p, builder.build());
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class MessageService implements IMessageService {
 		Bukkit.getOperators().stream()
 				.filter(OfflinePlayer::isOnline)
 				.map(OfflinePlayer::getPlayer)
-				.forEach(op -> op.sendMessage(message));
+				.forEach(op -> this.sendMessage(op, message));
 	}
 
 	@Override
