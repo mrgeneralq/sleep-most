@@ -24,7 +24,7 @@ public class EnableSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!CommandSenderUtils.hasWorld(sender)){
-            String noConsoleCommand = messageService.getMessageFromConfig(ConfigMessage.NO_CONSOLE_COMMAND).build();
+            String noConsoleCommand = messageService.getMessage(ConfigMessage.NO_CONSOLE_COMMAND).build();
             sender.sendMessage(noConsoleCommand);
             return true;
         }
@@ -32,12 +32,12 @@ public class EnableSubCommand implements ISubCommand {
         World world = CommandSenderUtils.getWorldOf(sender);
 
         if(this.sleepService.isEnabledAt(world)){
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.ALREADY_ENABLED_FOR_WORLD));
+            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.ALREADY_ENABLED_FOR_WORLD).build());
            return true;
         }
 
         this.sleepService.enableAt(world);
-        this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.ENABLED_FOR_WORLD));
+        this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.ENABLED_FOR_WORLD).build());
         return true;
     }
 }

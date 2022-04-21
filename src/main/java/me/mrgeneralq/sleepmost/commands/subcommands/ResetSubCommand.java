@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.interfaces.IFlagService;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
@@ -23,16 +24,16 @@ public class ResetSubCommand implements ISubCommand
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
         if(!CommandSenderUtils.hasWorld(sender)){
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.NO_CONSOLE_COMMAND));
+            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.NO_CONSOLE_COMMAND).build());
             return true;
         }
         World world = CommandSenderUtils.getWorldOf(sender);
         this.flagService.resetFlagsAt(world);
 
-        this.messageService.sendMessage(sender, this.messageService.newBuilder(MessageTemplate.FLAGS_RESET_SUCCESS)
-                .usePrefix(true)
-                .setWorld(world)
-                .build());
+        this.messageService.sendMessage(sender,
+                this.messageService.getMessagePrefixed(ConfigMessage.FLAGS_RESET_SUCCESS)
+                        .setWorld(world)
+                        .build());
         return true;
     }
 }

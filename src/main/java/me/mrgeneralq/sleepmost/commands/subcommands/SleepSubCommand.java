@@ -31,15 +31,15 @@ public class SleepSubCommand implements ISubCommand {
         World world = player.getWorld();
 
         if(!this.flagsRepository.getSleepCmdFlag().getValueAt(world)){
-            this.messageService.sendMessage(player, this.messageService.fromTemplate(MessageTemplate.SLEEP_CMD_DISABLED));
+            this.messageService.sendMessage(player, this.messageService.getMessage(ConfigMessage.SLEEP_CMD_DISABLED).build());
             return true;
         }
 
         //check if sleep is allowed
         if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
-            String sleepPreventedConfigMessage = messageService.getConfigMessage(ConfigMessage.SLEEP_PREVENTED);
+            String sleepPreventedConfigMessage = messageService.getMessage(ConfigMessage.SLEEP_PREVENTED).build();
 
-            this.messageService.sendMessage(player, messageService.newPrefixedBuilder(sleepPreventedConfigMessage)
+            this.messageService.sendMessage(player, messageService.getMessage(sleepPreventedConfigMessage)
                     .setPlayer(player)
                     .setWorld(world)
                     .build());
@@ -48,21 +48,22 @@ public class SleepSubCommand implements ISubCommand {
 
         //check if reset is required
         if (!this.sleepService.resetRequired(world)) {
-            this.messageService.sendMessage(player, messageService.fromTemplate(MessageTemplate.CANNOT_SLEEP_NOW));
+            this.messageService.sendMessage(player, messageService.getMessage(ConfigMessage.CANNOT_SLEEP_NOW).build());
             return true;
         }
 
 
         if(this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()){
-            String insomniaMessage = this.messageService.fromTemplate(MessageTemplate.INSOMNIA_NOT_SLEEPY);
-            player.sendMessage(insomniaMessage);
+            String insomniaMessage = this.messageService.getMessage(ConfigMessage.INSOMNIA_NOT_SLEEPY).build();
+            this.messageService.sendMessage(player, insomniaMessage);
             return true;
         }
 
 
         boolean updatedSleepStatus = !this.sleepService.isPlayerAsleep(player);
 
-        this.messageService.sendMessage(player, this.messageService.fromTemplate(getStatusTemplate(updatedSleepStatus)));
+        //TODO check this what the original getStatusTemplate is
+      //  this.messageService.sendMessage(player, this.messageService.getMessage(getStatusTemplate(updatedSleepStatus)).build());
 
         this.sleepService.setSleeping(player, updatedSleepStatus);
         return true;

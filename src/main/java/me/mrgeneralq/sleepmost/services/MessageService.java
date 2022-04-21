@@ -8,7 +8,6 @@ import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.mappers.MessageMapper;
 import me.mrgeneralq.sleepmost.models.Message;
 import me.mrgeneralq.sleepmost.repositories.MessageRepository;
-import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.mappers.ConfigMessageMapper;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import net.md_5.bungee.api.ChatColor;
@@ -40,11 +39,6 @@ public class MessageService implements IMessageService {
 		this.prefix = this.messageRepository.get(prefixMessage.getPath());
 	}
 
-	@Override
-	public String getConfigMessage(ConfigMessage message) {
-		String path = this.messageMapper.getMessage(message).getPath();
-		return configRepository.getString(path);
-	}
 
 	@Override
 	public ConfigMessage getSleepSkipCauseMessage(SleepSkipCause cause) {
@@ -55,15 +49,14 @@ public class MessageService implements IMessageService {
 	public String getPlayersLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount) {
 
 		ConfigMessage skipCauseConfigMessage = this.getSleepSkipCauseMessage(cause);
-		String message = this.getConfigMessage(skipCauseConfigMessage);
-
-		return newPrefixedBuilder(message)
+		MessageBuilder skipConfigMessageBuilder = this.getMessage(skipCauseConfigMessage)
 				.usePrefix(false)
 				.setPlayer(player)
 				.setPlaceHolder("%sleeping%", String.valueOf(sleepingPlayersAmount))
 				.setPlaceHolder("%required%", String.valueOf(requiredPlayersAmount))
-				.setPlaceHolder("%remaining%", String.valueOf(requiredPlayersAmount - sleepingPlayersAmount))
-				.build();
+				.setPlaceHolder("%remaining%", String.valueOf(requiredPlayersAmount - sleepingPlayersAmount));
+
+		return skipConfigMessageBuilder.build();
 	}
 
 	@Override
@@ -81,10 +74,11 @@ public class MessageService implements IMessageService {
 		if(message.isEmpty())
 			return;
 
-		String finalMessage = newPrefixedBuilder(message).build();
+		MessageBuilder builder = new MessageBuilder(message, this.prefix)
+				.usePrefix(true);
 
 		for(Player p: world.getPlayers())
-			p.sendMessage(finalMessage);
+			p.sendMessage(builder.build());
 	}
 
 	@Override
@@ -141,36 +135,27 @@ public class MessageService implements IMessageService {
 	}
 
 	@Override
-	public MessageBuilder newBuilder(String rawMessage) {
-		return new MessageBuilder(rawMessage, this.configRepository.getPrefix());
-	}
-
-	@Override
-	public MessageBuilder newBuilder(MessageTemplate messageTemplate){
-		return newBuilder(messageTemplate.getRawMessage());
-	}
-
-	@Override
-	public MessageBuilder newPrefixedBuilder(String rawMessage)
-	{
-		return newBuilder(rawMessage)
-				.usePrefix(true);
-	}
-
-	@Override
-	public String fromTemplate(MessageTemplate messageTemplate){
-		return newBuilder(messageTemplate.getRawMessage())
-				.usePrefix(messageTemplate.usesPrefix())
-				.build();
-	}
-
-	@Override
-	public MessageBuilder getMessageFromConfig(ConfigMessage configMessage){
+	public MessageBuilder getMessage(ConfigMessage configMessage){
 
 		Message messageObject = MessageMapper.getMapper().getMessage(configMessage);
 		String messageStr = this.messageRepository.get(messageObject.getPath());
 		return new MessageBuilder(messageStr, this.prefix);
 
+	}
+
+	@Override
+	public MessageBuilder getMessage(String message){
+		return new MessageBuilder(message, this.prefix);
+	}
+
+	@Override
+	public MessageBuilder getMessagePrefixed(ConfigMessage configMessage) {
+		return this.getMessage(configMessage).usePrefix(true);
+	}
+
+	@Override
+	public MessageBuilder getMessagePrefixed(String message) {
+		return this.getMessage(message).usePrefix(true);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.interfaces.IFlagService;
 import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
@@ -25,7 +26,7 @@ public class ReloadSubCommand implements ISubCommand {
 
         //reload the config
         sleepService.reloadConfig();
-        sender.sendMessage(messageService.fromTemplate(MessageTemplate.CONFIG_RELOADED));
+        sender.sendMessage(messageService.getMessage(ConfigMessage.CONFIG_RELOADED).build());
 
         //handle somehow illegal flags values
         this.flagService.handleProblematicFlags();

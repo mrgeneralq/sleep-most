@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
@@ -24,7 +25,7 @@ public class DisableSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!CommandSenderUtils.hasWorld(sender)){
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.NO_CONSOLE_COMMAND));
+            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.NO_CONSOLE_COMMAND).build());
             return true;
         }
 
@@ -33,12 +34,12 @@ public class DisableSubCommand implements ISubCommand {
 
 
         if (!sleepService.isEnabledAt(world)) {
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.ALREADY_DISABLED_FOR_WORLD));
+            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.ALREADY_DISABLED_FOR_WORLD).build());
             return true;
         }
 
         sleepService.disableAt(world);
-        this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.DISABLED_FOR_WORLD));
+        this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.DISABLED_FOR_WORLD).build());
         return true;
     }
 }
