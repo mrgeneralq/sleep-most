@@ -2,9 +2,13 @@ package me.mrgeneralq.sleepmost.services;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.mrgeneralq.sleepmost.Sleepmost;
+import me.mrgeneralq.sleepmost.builders.MessageBuilder;
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.enums.SleepState;
 import me.mrgeneralq.sleepmost.events.PlayerSleepStateChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.mappers.MessageMapper;
+import me.mrgeneralq.sleepmost.models.Message;
 import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTask;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
@@ -30,18 +34,28 @@ public class SleepService implements ISleepService {
     private final IConfigService configService;
     private final IFlagsRepository flagsRepository;
     private final IFlagService flagService;
+    private final IPlayerService playerService;
     private final DataContainer dataContainer = DataContainer.getContainer();
 
     private static final int
             NIGHT_START_TIME = 12541,
             NIGHT_END_TIME = 23850;
 
-    public SleepService(Sleepmost main, IConfigService configService, IConfigRepository configRepository, IFlagsRepository flagsRepository, IFlagService flagService) {
+    public SleepService(
+            Sleepmost main,
+            IConfigService configService,
+            IConfigRepository configRepository,
+            IFlagsRepository flagsRepository,
+            IFlagService flagService,
+            IPlayerService playerService
+    ) {
+
         this.main = main;
         this.configService = configService;
         this.configRepository = configRepository;
         this.flagsRepository = flagsRepository;
         this.flagService = flagService;
+        this.playerService = playerService;
     }
 
     @Override
@@ -81,7 +95,7 @@ public class SleepService implements ISleepService {
         Stream<Player> playersStream = world.getPlayers().stream();
 
         //exclude fake players
-        playersStream = world.getPlayers().stream().filter(PlayerUtils::isRealPlayer);
+        playersStream = world.getPlayers().stream().filter(this.playerService::isRealPlayer);
 
         // If flag is active, ignore players in spectator mode from sleep count.
         if (flagsRepository.getExemptSpectatorFlag().getValueAt(world))
@@ -227,6 +241,7 @@ public class SleepService implements ISleepService {
         dataContainer.setAnimationRunning(world, true);
         new NightcycleAnimationTask(this, this.flagsRepository , world, player, sleepingPlayers , sleepSkipCause).runTaskTimer(this.main, 0, 1);
     }
+
 
     private Stream<Player> getRealPlayers(World world){
         return world.getPlayers().stream().filter(p -> Bukkit.getPlayer(p.getUniqueId()) != null);

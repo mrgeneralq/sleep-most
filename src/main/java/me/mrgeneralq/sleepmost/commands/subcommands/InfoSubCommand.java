@@ -1,6 +1,7 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.messages.MessageTemplate;
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
@@ -8,7 +9,6 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import java.util.List;
 import java.util.Set;
 
 import static java.util.Comparator.comparing;
@@ -32,7 +32,7 @@ public class InfoSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!CommandSenderUtils.hasWorld(sender)){
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.NO_CONSOLE_COMMAND));
+            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.NO_CONSOLE_COMMAND).build());
             return true;
         }
 
@@ -40,7 +40,7 @@ public class InfoSubCommand implements ISubCommand {
 
         if(!sleepService.isEnabledAt(world))
         {
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.CURRENTLY_DISABLED));
+            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.CURRENTLY_DISABLED).build());
             return true;
         }
         sender.sendMessage(colorize("&b*********************************************"));
@@ -74,7 +74,7 @@ public class InfoSubCommand implements ISubCommand {
 
     private String getValueAtMessage(ISleepFlag<?> flag, World world)
     {
-        return messageService.newBuilder("&e%flagName% &b%value%")
+        return messageService.getMessage("&e%flagName% &b%value%")
                 .setPlaceHolder("%flagName%", flag.getName())
                 .setPlaceHolder("%value%", this.flagService.getValueDisplayName(flag, flag.getValueAt(world)))
                 .build();

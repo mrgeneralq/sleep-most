@@ -3,14 +3,15 @@ import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.flags.*;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import org.bukkit.Bukkit;
+import me.mrgeneralq.sleepmost.utils.PlayerUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,18 +30,18 @@ public class SleepServiceTest {
     private IConfigRepository mockConfigRepository;
     private IFlagsRepository mockFlagRepository;
     private IFlagService mockFlagService;
+    private IPlayerService playerService;
 
-    @Before
-    public void setUp() throws Exception {
-
+    @BeforeEach
+    public void setUp() {
 
         this.mockSleepmost = mock(Sleepmost.class);
         this.mockConfigService = mock(IConfigService.class);
         this.mockConfigRepository = mock(IConfigRepository.class);
         this.mockFlagRepository = mock(IFlagsRepository.class);
         this.mockFlagService = mock(IFlagService.class);
-
-        this.sleepService = new SleepService(this.mockSleepmost, this.mockConfigService, this.mockConfigRepository,this.mockFlagRepository,this.mockFlagService);
+        this.playerService = mock(IPlayerService.class);
+        this.sleepService = new SleepService(this.mockSleepmost, this.mockConfigService, this.mockConfigRepository,this.mockFlagRepository,this.mockFlagService, this.playerService);
     }
 
     @Test
@@ -67,12 +68,13 @@ public class SleepServiceTest {
 
 
 
+    @Test
     public void getPlayerCountInWorld() {
-
 
         Player player1 = mock(Player.class);
         Player player2 = mock(Player.class);
         Player player3 = mock(Player.class);
+
 
         List<Player> playerList = Arrays.asList(player1,player2,player3);
         World mockWorld = mock(World.class);
@@ -97,6 +99,9 @@ public class SleepServiceTest {
         when(this.mockFlagRepository.getUseExemptFlag()).thenReturn(useExemptFlag);
         when(this.mockFlagRepository.getExemptFlyingFlag()).thenReturn(exemptFlyingFlag);
 
+        when(this.playerService.isRealPlayer(player1)).thenReturn(true);
+        when(this.playerService.isRealPlayer(player2)).thenReturn(true);
+        when(this.playerService.isRealPlayer(player3)).thenReturn(true);
 
         when(exemptCreativeFlag.getValueAt(mockWorld)).thenReturn(true);
         when(exemptSpectatorFlag.getValueAt(mockWorld)).thenReturn(false);
@@ -107,6 +112,7 @@ public class SleepServiceTest {
         when(player1.getGameMode()).thenReturn(GameMode.CREATIVE);
         when(player2.getGameMode()).thenReturn(GameMode.SURVIVAL);
         when(player3.getGameMode()).thenReturn(GameMode.SURVIVAL);
+
         assertEquals("Exempt players that are in creative mode",2,this.sleepService.getPlayerCountInWorld(mockWorld));
 
         when(exemptCreativeFlag.getValueAt(mockWorld)).thenReturn(false);
@@ -119,5 +125,15 @@ public class SleepServiceTest {
         when(player3.getGameMode()).thenReturn(GameMode.SURVIVAL);
         assertEquals("Exempt players that are in Spectator mode", 2, this.sleepService.getPlayerCountInWorld(mockWorld));
 
+
+        when(exemptCreativeFlag.getValueAt(mockWorld)).thenReturn(false);
+        when(exemptSpectatorFlag.getValueAt(mockWorld)).thenReturn(false);
+        when(exemptBelowYFlag.getValueAt(mockWorld)).thenReturn(-1);
+        when(useExemptFlag.getValueAt(mockWorld)).thenReturn(false);
+
+        when(this.playerService.isRealPlayer(player1)).thenReturn(true);
+        when(this.playerService.isRealPlayer(player2)).thenReturn(false);
+        when(this.playerService.isRealPlayer(player3)).thenReturn(true);
+        assertEquals("Make sure that only real players are included", 2, this.sleepService.getPlayerCountInWorld(mockWorld));
     }
 }

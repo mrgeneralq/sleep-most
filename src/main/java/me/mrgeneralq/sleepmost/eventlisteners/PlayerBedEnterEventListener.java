@@ -1,21 +1,15 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
-import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.messages.MessageBuilder;
-import me.mrgeneralq.sleepmost.messages.MessageTemplate;
+import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
-import me.mrgeneralq.sleepmost.statics.ServerVersion;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
-import org.bukkit.event.player.PlayerBedLeaveEvent;
 
 public class PlayerBedEnterEventListener implements Listener {
 
@@ -55,10 +49,9 @@ public class PlayerBedEnterEventListener implements Listener {
         //check if sleeping during storms is allowed
         if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {
 
-            String preventSleepStormMessage = messageService.getConfigMessage(ConfigMessage.NO_SLEEP_THUNDERSTORM);
+            String preventSleepStormMessage = messageService.getMessage(ConfigMessage.NO_SLEEP_THUNDERSTORM).build();
 
-            this.messageService.sendMessage(player, messageService.newBuilder(preventSleepStormMessage)
-                    .usePrefix(false)
+            this.messageService.sendMessage(player, messageService.getMessage(preventSleepStormMessage)
                     .setPlayer(player)
                     .setWorld(world)
                     .build());
@@ -69,8 +62,8 @@ public class PlayerBedEnterEventListener implements Listener {
 
         //check if sleep is allowed in world
         if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
-            String sleepPreventedConfigMessage = messageService.getConfigMessage(ConfigMessage.SLEEP_PREVENTED);
-            this.messageService.sendMessage(player, messageService.newPrefixedBuilder(sleepPreventedConfigMessage)
+            String sleepPreventedConfigMessage = messageService.getMessage(ConfigMessage.SLEEP_PREVENTED).build();
+            this.messageService.sendMessage(player, messageService.getMessage(sleepPreventedConfigMessage)
                     .setPlayer(player)
                     .setWorld(world)
                     .build());
@@ -80,16 +73,14 @@ public class PlayerBedEnterEventListener implements Listener {
 
 
         if(this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()){
-            String insomniaMessage = this.messageService.fromTemplate(MessageTemplate.INSOMNIA_NOT_SLEEPY);
-            player.sendMessage(insomniaMessage);
+            String insomniaMessage = this.messageService.getMessage(ConfigMessage.INSOMNIA_NOT_SLEEPY).build();
+            this.messageService.sendMessage(player,insomniaMessage);
             e.setCancelled(true);
             return;
         }
-
 
         if(!this.sleepService.isPlayerAsleep(player))
         this.sleepService.setSleeping(player , true);
 
     }
-
 }

@@ -76,7 +76,7 @@ public class FlagService implements IFlagService {
             return;
 
         //Log the missing flags
-        this.messageService.sendOPMessage(this.messageService.newPrefixedBuilder("&f%flagsAmount% &cMissing Flags at &l&4&l%world% &cwere detected and created in the %storageName%: %flagsNames%")
+        this.messageService.sendOPMessage(this.messageService.getMessagePrefixed("&f%flagsAmount% &cMissing Flags at &l&4&l%world% &cwere detected and created in the %storageName%: %flagsNames%")
                 .setPlaceHolder("%flagsAmount%", Integer.toString(missingFlags.size()))
                 .setPlaceHolder("%world%", world.getName())
                 .setPlaceHolder("%storageName%", "config")
@@ -95,7 +95,7 @@ public class FlagService implements IFlagService {
             return;
 
         //Log the flags with illegal values
-        this.messageService.sendOPMessage(this.messageService.newPrefixedBuilder("&f%flagsAmount% &cFlags at &l&4&l%world% &cwere detected having &4&lIllegal Values &cin the %storageName%, so they got reset:")
+        this.messageService.sendOPMessage(this.messageService.getMessagePrefixed("&f%flagsAmount% &cFlags at &l&4&l%world% &cwere detected having &4&lIllegal Values &cin the %storageName%, so they got reset:")
                 .setPlaceHolder("%flagsAmount%", Integer.toString(illegalValues.size()))
                 .setPlaceHolder("%world%", world.getName())
                 .setPlaceHolder("%storageName%", "config")
@@ -134,7 +134,7 @@ public class FlagService implements IFlagService {
     }
 
     private String createIllegalValueMessage(String flagName, Object value) {
-        return this.messageService.newBuilder("&b> &a%flag% &f(was &c%illegalValue%f&f)")
+        return this.messageService.getMessage("&b> &a%flag% &f(was &c%illegalValue%f&f)")
                 .setPlaceHolder("%flag%", flagName)
                 .setPlaceHolder("%illegalValue%", value.toString())
                 .build();

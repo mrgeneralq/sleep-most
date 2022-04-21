@@ -44,8 +44,6 @@ public class TestCommand implements ISubCommand
         this.configRepository.setFlagValue(this.flagsRepository.getCalculationMethodFlag(), world, null);
         player.performCommand("sm reload");
 
-        //player.sendMessage(beautifulize("Sleepmost was created by ") + ChatColor.GREEN + "MrGeneralQ" + beautifulize(", and ") + ChatColor.GREEN + "Mizrahi" + beautifulize(" helped."));
-
         return true;
     }
 

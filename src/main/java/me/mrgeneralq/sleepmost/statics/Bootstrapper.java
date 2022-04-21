@@ -1,19 +1,13 @@
 package me.mrgeneralq.sleepmost.statics;
 
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.messages.MessageService;
+import me.mrgeneralq.sleepmost.mappers.ConfigMessageMapper;
+import me.mrgeneralq.sleepmost.services.MessageService;
 import me.mrgeneralq.sleepmost.placeholderapi.PapiExtension;
 import me.mrgeneralq.sleepmost.repositories.*;
 import me.mrgeneralq.sleepmost.services.*;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 public class Bootstrapper {
 
@@ -30,9 +24,13 @@ public class Bootstrapper {
     private IConfigService configService;
     private BossBarRepository bossBarRepository;
     private IBossBarService bossBarService;
+    private IPlayerService playerService;
 
     private WorldPropertyRepository worldPropertyRepository;
     private IWorldPropertyService worldPropertyService;
+
+    private MessageRepository messageRepository;
+
 
     private static Bootstrapper instance;
 
@@ -40,10 +38,12 @@ public class Bootstrapper {
 
     public void initialize(Sleepmost main){
 
+
         this.configRepository = new ConfigRepository(main);
         this.configService = new ConfigService(main);
 
-        this.messageService = new MessageService(configRepository);
+        this.messageRepository = new MessageRepository();
+        this.messageService = new MessageService(configRepository, messageRepository);
 
         this.updateRepository = new UpdateRepository("60623");
         this.updateService = new UpdateService(updateRepository, main, configService);
@@ -54,7 +54,9 @@ public class Bootstrapper {
         this.flagsRepository = new FlagsRepository(configRepository);
         this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService);
 
-        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService);
+        this.playerService = new PlayerService();
+
+        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService);
 
         this.worldPropertyRepository = new WorldPropertyRepository();
         this.worldPropertyService = new WorldPropertyService(this.worldPropertyRepository);
@@ -138,5 +140,9 @@ public class Bootstrapper {
 
     public IWorldPropertyService getWorldPropertyService() {
         return worldPropertyService;
+    }
+
+    public IPlayerService getPlayerService() {
+        return playerService;
     }
 }

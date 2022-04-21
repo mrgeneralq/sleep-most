@@ -1,4 +1,4 @@
-package me.mrgeneralq.sleepmost.messages;
+package me.mrgeneralq.sleepmost.templates;
 
 public enum MessageTemplate {
     NO_PERMISSION("&cYou don't have permission to that command!"),

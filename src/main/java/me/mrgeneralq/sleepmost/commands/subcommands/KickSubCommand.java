@@ -1,12 +1,12 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
-import me.mrgeneralq.sleepmost.messages.MessageTemplate;
+import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,7 +26,7 @@ public class KickSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!CommandSenderUtils.hasWorld(sender)){
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.NO_CONSOLE_COMMAND));
+            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.NO_CONSOLE_COMMAND).build());
             return true;
         }
 
@@ -35,21 +35,21 @@ public class KickSubCommand implements ISubCommand {
         World world = CommandSenderUtils.getWorldOf(sender);
 
         if(args.length < 2){
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.SPECIFY_PLAYER));
+            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.SPECIFY_PLAYER).build());
             return true;
         }
 
         String targetPlayerName = args[1];
 
         if(Bukkit.getPlayer(targetPlayerName) == null){
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.TARGET_NOT_ONLINE));
+            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.TARGET_NOT_ONLINE).build());
             return true;
         }
 
         Player targetPlayer = Bukkit.getPlayer(targetPlayerName);
 
         if(!this.sleepService.isPlayerAsleep(targetPlayer)){
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.TARGET_NOT_SLEEPING));
+            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.TARGET_NOT_SLEEPING).build());
             return true;
         }
 

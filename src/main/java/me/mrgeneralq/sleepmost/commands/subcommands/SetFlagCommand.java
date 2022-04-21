@@ -1,24 +1,19 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.flags.types.AbstractFlag;
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.flags.types.TabCompletedFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.messages.MessageTemplate;
+import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class SetFlagCommand implements ISubCommand {
@@ -38,26 +33,26 @@ public class SetFlagCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if (!CommandSenderUtils.hasWorld(sender)) {
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.NO_CONSOLE_COMMAND));
+            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.NO_CONSOLE_COMMAND).build());
             return true;
         }
 
         World world = CommandSenderUtils.getWorldOf(sender);
 
         if (!sleepService.isEnabledAt(world)) {
-            this.messageService.sendMessage(sender, messageService.fromTemplate(MessageTemplate.CURRENTLY_DISABLED));
+            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.CURRENTLY_DISABLED).build());
             return true;
         }
 
         if (args.length < 2) {
-            this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&btype &e/sleepmost setflag <flag> <value>").build());
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed("&btype &e/sleepmost setflag <flag> <value>").build());
             return true;
         }
         String flagName = args[1];
 
         if (!flagsRepository.flagExists(flagName)) {
-            this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&cThis flag does not exist!").build());
-            this.messageService.sendMessage(sender, messageService.newBuilder("&bPossible flags are: &e%flagsNames")
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed("&cThis flag does not exist!").build());
+            this.messageService.sendMessage(sender, messageService.getMessage("&bPossible flags are: &e%flagsNames")
                     .setPlaceHolder("%flagsNames", StringUtils.join(flagsRepository.getFlagsNames(), ", "))
                     .build());
             return true;
@@ -65,7 +60,7 @@ public class SetFlagCommand implements ISubCommand {
         ISleepFlag<?> sleepFlag = flagsRepository.getFlag(flagName);
 
         if (args.length < 3) {
-            this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&cMissing value! Use &e%usageCommand")
+            this.messageService.sendMessage(sender, messageService.getMessage("&cMissing value! Use &e%usageCommand")
                     .setPlaceHolder("%usageCommand", getUsageCommand(sleepFlag))
                     .build());
             return true;
@@ -73,14 +68,14 @@ public class SetFlagCommand implements ISubCommand {
         String stringValue = args[2];
 
         if (!sleepFlag.isValidValue(stringValue)) {
-            this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&cInvalid format! Use &e%usageCommand")
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed("&cInvalid format! Use &e%usageCommand")
                     .setPlaceHolder("%usageCommand", getUsageCommand(sleepFlag))
                     .build());
             return true;
         }
         this.sleepFlagService.setStringValueAt(sleepFlag, world, stringValue);
 
-        this.messageService.sendMessage(sender, messageService.newPrefixedBuilder("&bFlag &c%flag &bis now set to &e%value &bfor world &e%world")
+        this.messageService.sendMessage(sender, messageService.getMessagePrefixed("&bFlag &c%flag &bis now set to &e%value &bfor world &e%world")
                 .setPlaceHolder("%flag", sleepFlag.getName())
                 .setPlaceHolder("%value", stringValue)
                 .setPlaceHolder("%world", world.getName())

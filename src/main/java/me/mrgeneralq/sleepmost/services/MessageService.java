@@ -1,14 +1,17 @@
-package me.mrgeneralq.sleepmost.messages;
+package me.mrgeneralq.sleepmost.services;
 
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
-import me.mrgeneralq.sleepmost.statics.ConfigMessageMapper;
+import me.mrgeneralq.sleepmost.builders.MessageBuilder;
+import me.mrgeneralq.sleepmost.mappers.MessageMapper;
+import me.mrgeneralq.sleepmost.models.Message;
+import me.mrgeneralq.sleepmost.repositories.MessageRepository;
+import me.mrgeneralq.sleepmost.mappers.ConfigMessageMapper;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -16,35 +19,26 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import javax.xml.soap.Text;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class MessageService implements IMessageService {
 
 	private final IConfigRepository configRepository;
-	private final ConfigMessageMapper messageMapper = ConfigMessageMapper.getMapper();
+	private final MessageRepository messageRepository;
+	private final MessageMapper messageMapper;
+	private final String prefix;
 
-	public MessageService(IConfigRepository configRepository) {
+	//TODO remove IConfigRepo
+	public MessageService(IConfigRepository configRepository, MessageRepository messageRepository) {
 		this.configRepository = configRepository;
+		this.messageRepository = messageRepository;
+		this.messageMapper = MessageMapper.getMapper();
+
+		Message prefixMessage = this.messageMapper.getMessage(ConfigMessage.PREFIX);
+		this.prefix = this.messageRepository.get(prefixMessage.getPath());
 	}
 
-	@Override
-	public String getConfigMessage(ConfigMessage message) {
-		String path = this.messageMapper.getMessagePath(message);
-		return configRepository.getString(path);
-	}
-
-	@Override
-	public void sendWorldMessage(ConfigMessage message, World world) {
-
-		String configMessage = this.messageMapper.getMessagePath(message);
-
-		String newMessage = newPrefixedBuilder(configMessage).build();
-
-		for(Player p: world.getPlayers())
-			p.sendMessage(newMessage);
-
-	}
 
 	@Override
 	public ConfigMessage getSleepSkipCauseMessage(SleepSkipCause cause) {
@@ -55,15 +49,14 @@ public class MessageService implements IMessageService {
 	public String getPlayersLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount) {
 
 		ConfigMessage skipCauseConfigMessage = this.getSleepSkipCauseMessage(cause);
-		String message = this.getConfigMessage(skipCauseConfigMessage);
-
-		return newPrefixedBuilder(message)
+		MessageBuilder skipConfigMessageBuilder = this.getMessage(skipCauseConfigMessage)
 				.usePrefix(false)
 				.setPlayer(player)
 				.setPlaceHolder("%sleeping%", String.valueOf(sleepingPlayersAmount))
 				.setPlaceHolder("%required%", String.valueOf(requiredPlayersAmount))
-				.setPlaceHolder("%remaining%", String.valueOf(requiredPlayersAmount - sleepingPlayersAmount))
-				.build();
+				.setPlaceHolder("%remaining%", String.valueOf(requiredPlayersAmount - sleepingPlayersAmount));
+
+		return skipConfigMessageBuilder.build();
 	}
 
 	@Override
@@ -81,24 +74,11 @@ public class MessageService implements IMessageService {
 		if(message.isEmpty())
 			return;
 
-		String finalMessage = newPrefixedBuilder(message).build();
+		MessageBuilder builder = new MessageBuilder(message, this.prefix)
+				.usePrefix(true);
 
 		for(Player p: world.getPlayers())
-			p.sendMessage(finalMessage);
-	}
-
-	@Override
-	public void sendWorldMessageWithPermission(World world, String permission, String message){
-		for(Player p: world.getPlayers().stream().filter(p -> p.hasPermission(permission)).collect(Collectors.toList()))
-			this.sendWorldMessage(world,message);
-	}
-
-	@Override
-	public void sendWorldMessageWithPermission(World world, String permission, String messageWithPermission, String messageWithoutPermission){
-		for(Player p: world.getPlayers()){
-			String message = p.hasPermission(permission) ? messageWithPermission: messageWithoutPermission;
-			this.sendWorldMessage(world, message);
-		}
+			this.sendMessage(p, builder.build());
 	}
 
 	@Override
@@ -110,12 +90,11 @@ public class MessageService implements IMessageService {
 		Bukkit.getOperators().stream()
 				.filter(OfflinePlayer::isOnline)
 				.map(OfflinePlayer::getPlayer)
-				.forEach(op -> op.sendMessage(message));
+				.forEach(op -> this.sendMessage(op, message));
 	}
 
 	@Override
 	public void sendPlayerLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount) {
-
 
 		World world = player.getWorld();
 		String playersLeftMessage = this.getPlayersLeftMessage(player, cause, sleepingPlayersAmount, requiredPlayersAmount);
@@ -156,26 +135,51 @@ public class MessageService implements IMessageService {
 	}
 
 	@Override
-	public MessageBuilder newBuilder(String rawMessage) {
-		return new MessageBuilder(rawMessage, this.configRepository.getPrefix());
+	public MessageBuilder getMessage(ConfigMessage configMessage){
+
+		Message messageObject = MessageMapper.getMapper().getMessage(configMessage);
+		String messageStr = this.messageRepository.get(messageObject.getPath());
+		return new MessageBuilder(messageStr, this.prefix);
+
 	}
 
 	@Override
-	public MessageBuilder newBuilder(MessageTemplate messageTemplate){
-		return newBuilder(messageTemplate.getRawMessage());
+	public MessageBuilder getMessage(String message){
+		return new MessageBuilder(message, this.prefix);
 	}
 
 	@Override
-	public MessageBuilder newPrefixedBuilder(String rawMessage)
-	{
-		return newBuilder(rawMessage)
-				.usePrefix(true);
+	public MessageBuilder getMessagePrefixed(ConfigMessage configMessage) {
+		return this.getMessage(configMessage).usePrefix(true);
 	}
 
 	@Override
-	public String fromTemplate(MessageTemplate messageTemplate){
-		return newBuilder(messageTemplate.getRawMessage())
-				.usePrefix(messageTemplate.usesPrefix())
-				.build();
+	public MessageBuilder getMessagePrefixed(String message) {
+		return this.getMessage(message).usePrefix(true);
+	}
+
+	@Override
+	public List<Message> getMessages(){
+		return this.messageMapper.getAllMessages();
+	}
+
+	@Override
+	public boolean messagePathExists(String path){
+		return this.messageRepository.exists(path);
+	}
+
+	@Override
+	public void createMessage(Message message){
+		this.messageRepository.set(message.getPath(), message.getDefaultValue());
+	}
+
+	@Override
+	public void createMissingMessages(){
+			for(Message message : this.getMessages()){
+				if(this.messagePathExists(message.getPath()))
+					continue;
+				this.createMessage(message);
+			}
+			this.messageRepository.saveConfig();
 	}
 }

@@ -1,9 +1,10 @@
 package me.mrgeneralq.sleepmost;
 
+import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
-import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
-import me.mrgeneralq.sleepmost.interfaces.ISleepService;
-import me.mrgeneralq.sleepmost.interfaces.IWorldPropertyService;
+import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.mappers.MessageMapper;
+import me.mrgeneralq.sleepmost.models.Message;
 import me.mrgeneralq.sleepmost.runnables.Heartbeat;
 import me.mrgeneralq.sleepmost.services.WorldPropertyService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
@@ -14,7 +15,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.mrgeneralq.sleepmost.commands.SleepmostCommand;
-import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 
 public class Sleepmost extends JavaPlugin {
@@ -22,18 +22,29 @@ public class Sleepmost extends JavaPlugin {
 	private static Sleepmost instance;
 	private Bootstrapper bootstrapper;
 
+	private IMessageService messageService;
+
 	@Override
 	public void onEnable() {
-                instance = this;
+
+		instance = this;
 		saveDefaultConfig();
 		
 		//init metrics
 		final int bStatsID = 6212;
 		new Metrics(this, bStatsID);
+
+		//load the messages at start
+		MessageMapper.getMapper().loadMessages();
 		
 		//init bootstrapper
 		this.bootstrapper = Bootstrapper.getBootstrapper();
 		bootstrapper.initialize(this);
+
+		this.messageService = bootstrapper.getMessageService();
+
+		//creating missing messages
+		this.messageService.createMissingMessages();
 
 		//check if boss bars are supported before registered
 		if(ServerVersion.CURRENT_VERSION.supportsBossBars())
@@ -66,11 +77,12 @@ public class Sleepmost extends JavaPlugin {
 
 		runPreTimerTasks();
 		runTimers(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService());
+
 	}
 	
-        public static Sleepmost getInstance() {
+	public static Sleepmost getInstance() {
                 return instance;
-        }
+	}
 
 	private void runPreTimerTasks(){
 		for(World world: Bukkit.getWorlds())
