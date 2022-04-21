@@ -23,18 +23,40 @@ public class MessageMapper {
 
     public void loadMessages(){
 
-        this.messages.put(ConfigMessage.NO_CONSOLE_COMMAND, new Message("command.no-console-command", "here is a default no console command"));
-        this.messages.put(ConfigMessage.PREFIX,new Message("messages.prefix", ""));
-        this.messages.put(ConfigMessage.NIGHT_SKIPPED,new Message("messages.night-skipped", ""));
-        this.messages.put(ConfigMessage.STORM_SKIPPED, new Message("messages.storm-skipped", ""));
-        this.messages.put(ConfigMessage.PLAYERS_LEFT_TO_SKIP_NIGHT, new Message("messages.players-left-night", ""));
-        this.messages.put(ConfigMessage.PLAYERS_LEFT_TO_SKIP_STORM, new Message("messages.players-left-storm", ""));
-        this.messages.put(ConfigMessage.SLEEP_PREVENTED, new Message("messages.sleep-prevented", ""));
-        this.messages.put(ConfigMessage.NO_SLEEP_THUNDERSTORM, new Message("messages.no-sleep-storm", ""));
-        this.messages.put(ConfigMessage.BOSS_BAR_TITLE, new Message("bossbar.title", ""));
-
-
-
+        this.messages.put(ConfigMessage.PREFIX, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.NIGHT_SKIPPED, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.STORM_SKIPPED, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.PLAYERS_LEFT_TO_SKIP_NIGHT, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.PLAYERS_LEFT_TO_SKIP_STORM, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.SLEEP_PREVENTED, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.NO_SLEEP_THUNDERSTORM, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.BOSS_BAR_TITLE, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.NO_CONSOLE_COMMAND, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.NO_PERMISSION_COMMAND, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.UNKNOWN_COMMAND, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.CONFIG_RELOADED, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.ONLY_PLAYERS_COMMAND, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.ALREADY_ENABLED_FOR_WORLD, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.ALREADY_DISABLED_FOR_WORLD, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.ENABLED_FOR_WORLD, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.DISABLED_FOR_WORLD, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.NOT_ENABLED_FOR_WORLD, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.CURRENTLY_DISABLED, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.CANNOT_SLEEP_NOW, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.FLAGS_RESET_SUCCESS, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.SLEEP_SUCCESS, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.NO_LONGER_SLEEPING, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.NO_BED_LOCATION_SET, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.TELEPORTED_TO_BED, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.SLEEP_CMD_DISABLED, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.ONE_PLAYER_SLEEP_SET, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.SPECIFY_PLAYER, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.TARGET_NOT_SLEEPING, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.TARGET_NOT_ONLINE, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.INSOMNIA_NOT_SLEEPY, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.INSOMNIA_ALREADY_ENABLED, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.INSOMNIA_ENABLED, new Message("path", "default message"));
+        this.messages.put(ConfigMessage.CMD_ONLY_DURING_NIGHT, new Message("path", "default message"));
 
 
     }
