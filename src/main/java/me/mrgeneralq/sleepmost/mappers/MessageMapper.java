@@ -57,7 +57,7 @@ public class MessageMapper {
         this.messages.put(ConfigMessage.INSOMNIA_ALREADY_ENABLED, new Message("path", "default message"));
         this.messages.put(ConfigMessage.INSOMNIA_ENABLED, new Message("path", "default message"));
         this.messages.put(ConfigMessage.CMD_ONLY_DURING_NIGHT, new Message("path", "default message"));
-
+        this.messages.put(ConfigMessage.KICK_OUT_BED, new Message("path", "default message"));
 
     }
 

@@ -108,7 +108,10 @@ public class MessageService implements IMessageService {
 				TextComponent playersLeftMessageComponent = new TextComponent(playersLeftMessage);
 
 				if(p.hasPermission("sleepmost.kick")){
-					TextComponent component = new TextComponent(" [kick out]");
+
+					MessageBuilder kickMessage = this.getMessage(ConfigMessage.KICK_OUT_BED);
+
+					TextComponent component = new TextComponent(kickMessage.build());
 					component.setColor(ChatColor.RED);
 					component.setBold(true);
 					component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/sm kick %s", player.getName())));
