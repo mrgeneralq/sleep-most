@@ -69,6 +69,10 @@ public class MessageRepository implements IRepository<String, String> {
         }
 
         this.config = new YamlConfiguration();
+        this.loadConfig();
+    }
+
+    public void loadConfig(){
         try{
             this.config.load(this.file);
         }catch (IOException |InvalidConfigurationException e){

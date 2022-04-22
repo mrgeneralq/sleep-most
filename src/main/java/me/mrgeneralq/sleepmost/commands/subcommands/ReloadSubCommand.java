@@ -25,7 +25,8 @@ public class ReloadSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         //reload the config
-        sleepService.reloadConfig();
+        this.sleepService.reloadConfig();
+        this.messageService.reloadConfig();
         sender.sendMessage(messageService.getMessage(ConfigMessage.CONFIG_RELOADED).build());
 
         //handle somehow illegal flags values

@@ -32,4 +32,5 @@ public interface IMessageService
 	void createMissingMessages();
 
 
+    void reloadConfig();
 }

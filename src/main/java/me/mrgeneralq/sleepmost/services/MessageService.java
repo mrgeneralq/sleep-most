@@ -188,4 +188,9 @@ public class MessageService implements IMessageService {
 			}
 			this.messageRepository.saveConfig();
 	}
+
+	@Override
+	public void reloadConfig(){
+		this.messageRepository.loadConfig();
+	}
 }

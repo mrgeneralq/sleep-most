@@ -63,7 +63,6 @@ public class SleepService implements ISleepService {
         configRepository.reload();
     }
 
-
     @Override
     public boolean isEnabledAt(World world) {
         return configRepository.containsWorld(world);
@@ -95,7 +94,7 @@ public class SleepService implements ISleepService {
         Stream<Player> playersStream = world.getPlayers().stream();
 
         //exclude fake players
-        playersStream = world.getPlayers().stream().filter(this.playerService::isRealPlayer);
+        playersStream = playersStream.filter(this.playerService::isRealPlayer);
 
         // If flag is active, ignore players in spectator mode from sleep count.
         if (flagsRepository.getExemptSpectatorFlag().getValueAt(world))
