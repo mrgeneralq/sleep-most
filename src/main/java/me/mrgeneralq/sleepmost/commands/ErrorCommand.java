@@ -1,7 +1,6 @@
 package me.mrgeneralq.sleepmost.commands;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
-import me.mrgeneralq.sleepmost.templates.MessageTemplate;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
 import org.bukkit.command.Command;
@@ -17,7 +16,7 @@ public class ErrorCommand implements ISubCommand {
 
     @Override
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.UNKNOWN_COMMAND).build());
+        this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.UNKNOWN_COMMAND).build());
         return true;
     }
 }

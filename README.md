@@ -69,7 +69,7 @@ To fetch the message, you can use the `IMessageService.getMessage(ConfigMessage 
 
 ```java
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 
 public class A {
@@ -82,7 +82,7 @@ public class A {
 
     public void helloWorld(Player player) {
         //fetching the message builder object (this can be used to modify placeholders)
-        MessageBuilder helloWorldMsg = this.messageService.getMessage(ConfigMessage.HELLO_WORLD);
+        MessageBuilder helloWorldMsg = this.messageService.getMessage(MessageKey.HELLO_WORLD);
         this.messageService.sendMessage(player, helloWorldMsg.build());
     }
 }

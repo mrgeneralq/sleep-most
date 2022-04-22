@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -29,7 +29,7 @@ public class ResetFlagSubCommand implements ISubCommand
 	public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		
 		if(!CommandSenderUtils.hasWorld(sender)) {
-			this.messageService.sendMessage(sender, this.messageService.getMessage(ConfigMessage.NO_CONSOLE_COMMAND).build());
+			this.messageService.sendMessage(sender, this.messageService.getMessage(MessageKey.NO_CONSOLE_COMMAND).build());
 			return true;
 		}
 		

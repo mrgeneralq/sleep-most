@@ -1,8 +1,7 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -49,7 +48,7 @@ public class PlayerBedEnterEventListener implements Listener {
         //check if sleeping during storms is allowed
         if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {
 
-            String preventSleepStormMessage = messageService.getMessage(ConfigMessage.NO_SLEEP_THUNDERSTORM).build();
+            String preventSleepStormMessage = messageService.getMessage(MessageKey.NO_SLEEP_THUNDERSTORM).build();
 
             this.messageService.sendMessage(player, messageService.getMessage(preventSleepStormMessage)
                     .setPlayer(player)
@@ -62,7 +61,7 @@ public class PlayerBedEnterEventListener implements Listener {
 
         //check if sleep is allowed in world
         if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
-            String sleepPreventedConfigMessage = messageService.getMessage(ConfigMessage.SLEEP_PREVENTED).build();
+            String sleepPreventedConfigMessage = messageService.getMessage(MessageKey.SLEEP_PREVENTED).build();
             this.messageService.sendMessage(player, messageService.getMessage(sleepPreventedConfigMessage)
                     .setPlayer(player)
                     .setWorld(world)
@@ -73,7 +72,7 @@ public class PlayerBedEnterEventListener implements Listener {
 
 
         if(this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()){
-            String insomniaMessage = this.messageService.getMessage(ConfigMessage.INSOMNIA_NOT_SLEEPY).build();
+            String insomniaMessage = this.messageService.getMessage(MessageKey.INSOMNIA_NOT_SLEEPY).build();
             this.messageService.sendMessage(player,insomniaMessage);
             e.setCancelled(true);
             return;

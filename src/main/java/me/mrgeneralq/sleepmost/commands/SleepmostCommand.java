@@ -3,9 +3,8 @@ package me.mrgeneralq.sleepmost.commands;
 import java.util.*;
 
 import me.mrgeneralq.sleepmost.commands.subcommands.*;
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -68,7 +67,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		if(args.length == 0){
 
 			if(!sender.hasPermission("sleepmost.help")){
-				this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.NO_PERMISSION_COMMAND).build());
+				this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_PERMISSION_COMMAND).build());
 				return true;
 			}
 			sender.sendMessage(colorize("&b*********************************************"));
@@ -97,7 +96,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		// check if player has permission of command
 		if(!sender.hasPermission("sleepmost." + subCommandStr))
 		{
-			this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.NO_PERMISSION_COMMAND).build());
+			this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_PERMISSION_COMMAND).build());
 			return true;
 		}
 

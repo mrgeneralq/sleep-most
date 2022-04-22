@@ -1,8 +1,7 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
-import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
@@ -45,6 +44,6 @@ public class PlayerWorldChangeEventListener implements Listener {
         if(sleepService.isEnabledAt(world))
             return;
 
-        this.messageService.sendMessage(player, messageService.getMessage(ConfigMessage.CURRENTLY_DISABLED).build());
+        this.messageService.sendMessage(player, messageService.getMessage(MessageKey.CURRENTLY_DISABLED).build());
     }
 }
