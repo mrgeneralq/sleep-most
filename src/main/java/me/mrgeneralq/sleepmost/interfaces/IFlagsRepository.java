@@ -54,4 +54,6 @@ public interface IFlagsRepository
     InsomniaChanceFlag getInsomniaChanceFlag();
 
     PhantomResetAudienceFlag getPhantomResetAudienceFlag();
+
+    AllowKickFlag getAllowKickFlag();
 }

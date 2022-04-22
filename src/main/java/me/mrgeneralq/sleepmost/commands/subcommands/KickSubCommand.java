@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
@@ -17,10 +18,12 @@ public class KickSubCommand implements ISubCommand {
 
     private final ISleepService sleepService;
     private final IMessageService messageService;
+    private final IFlagsRepository flagsRepository;
 
-    public KickSubCommand(ISleepService sleepService, IMessageService messageService) {
+    public KickSubCommand(ISleepService sleepService, IMessageService messageService, IFlagsRepository flagsRepository) {
     this.sleepService = sleepService;
     this.messageService = messageService;
+        this.flagsRepository = flagsRepository;
     }
 
     @Override
@@ -32,8 +35,18 @@ public class KickSubCommand implements ISubCommand {
         }
 
         Player player = (Player) sender;
-
         World world = CommandSenderUtils.getWorldOf(sender);
+
+
+        boolean kickingEnabled = this.flagsRepository.getAllowKickFlag().getValueAt(world);
+
+        if(!kickingEnabled){
+            MessageBuilder kickNotAllowedMsg = this.messageService.getMessagePrefixed(ConfigMessage.KICKING_NOT_ALLOWED)
+                    .setWorld(world);
+
+            this.messageService.sendMessage(player , kickNotAllowedMsg.build());
+            return true;
+        }
 
         if(args.length < 2){
             this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.SPECIFY_PLAYER).build());
@@ -53,6 +66,8 @@ public class KickSubCommand implements ISubCommand {
             this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.TARGET_NOT_SLEEPING).build());
             return true;
         }
+
+
 
         MessageBuilder targetKickedFromBedMsg = this.messageService.getMessagePrefixed(ConfigMessage.KICKED_PLAYER_FROM_BED)
                 .setPlayer(targetPlayer)

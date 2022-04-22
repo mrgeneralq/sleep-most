@@ -60,7 +60,7 @@ public class MessageMapper {
         this.messages.put(ConfigMessage.KICK_OUT_BED, new Message("path", "default message"));
         this.messages.put(ConfigMessage.KICKED_PLAYER_FROM_BED, new Message("path", "default message"));
         this.messages.put(ConfigMessage.YOU_ARE_KICKED_FROM_BED, new Message("path", "default message"));
-
+        this.messages.put(ConfigMessage.KICKING_NOT_ALLOWED, new Message("path", "default message"));
     }
 
     public Message getMessage(ConfigMessage message){

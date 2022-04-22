@@ -43,7 +43,7 @@ public class Bootstrapper {
         this.configService = new ConfigService(main);
 
         this.messageRepository = new MessageRepository();
-        this.messageService = new MessageService(configRepository, messageRepository);
+        this.messageService = new MessageService(configRepository, messageRepository, flagsRepository);
 
         this.updateRepository = new UpdateRepository("60623");
         this.updateService = new UpdateService(updateRepository, main, configService);

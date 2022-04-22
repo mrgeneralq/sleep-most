@@ -45,6 +45,7 @@ public class FlagsRepository implements IFlagsRepository {
     private final ExemptFlyingFlag exemptFlyingFlag;
     private final InsomniaChanceFlag insomniaChanceFlag;
     private final PhantomResetAudienceFlag phantomResetAudienceFlag;
+    private final AllowKickFlag allowKickFlag;
 
     public FlagsRepository(IConfigRepository configRepository) {
         setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));
@@ -79,6 +80,7 @@ public class FlagsRepository implements IFlagsRepository {
         setupFlag(this.exemptFlyingFlag = new ExemptFlyingFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.insomniaChanceFlag = new InsomniaChanceFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.phantomResetAudienceFlag = new PhantomResetAudienceFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.allowKickFlag = new AllowKickFlag(new ConfigFlagController<>(configRepository)));
     }
 
     @Override
@@ -263,6 +265,11 @@ public class FlagsRepository implements IFlagsRepository {
     @Override
     public PhantomResetAudienceFlag getPhantomResetAudienceFlag() {
         return phantomResetAudienceFlag;
+    }
+
+    @Override
+    public AllowKickFlag getAllowKickFlag() {
+        return allowKickFlag;
     }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {

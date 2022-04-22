@@ -3,6 +3,7 @@ package me.mrgeneralq.sleepmost.services;
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
+import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.mappers.MessageMapper;
@@ -26,13 +27,15 @@ public class MessageService implements IMessageService {
 
 	private final IConfigRepository configRepository;
 	private final MessageRepository messageRepository;
+	private final IFlagsRepository flagsRepository;
 	private final MessageMapper messageMapper;
 	private final String prefix;
 
 	//TODO remove IConfigRepo
-	public MessageService(IConfigRepository configRepository, MessageRepository messageRepository) {
+	public MessageService(IConfigRepository configRepository, MessageRepository messageRepository, IFlagsRepository flagsRepository) {
 		this.configRepository = configRepository;
 		this.messageRepository = messageRepository;
+		this.flagsRepository = flagsRepository;
 		this.messageMapper = MessageMapper.getMapper();
 
 		Message prefixMessage = this.messageMapper.getMessage(ConfigMessage.PREFIX);
@@ -99,9 +102,9 @@ public class MessageService implements IMessageService {
 		World world = player.getWorld();
 		String playersLeftMessage = this.getPlayersLeftMessage(player, cause, sleepingPlayersAmount, requiredPlayersAmount);
 
-		//TODO change to check compatible
+		boolean kickingAllowed = this.flagsRepository.getAllowKickFlag().getValueAt(world);
 
-		if(ServerVersion.CURRENT_VERSION.supportsClickableText()){
+		if(ServerVersion.CURRENT_VERSION.supportsClickableText() && kickingAllowed){
 
 			for(Player p: Bukkit.getOnlinePlayers().stream().filter(p -> p.getWorld() == world).collect(Collectors.toList())){
 
