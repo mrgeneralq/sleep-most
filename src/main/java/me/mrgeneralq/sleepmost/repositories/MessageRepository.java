@@ -2,7 +2,6 @@ package me.mrgeneralq.sleepmost.repositories;
 
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.interfaces.IRepository;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
