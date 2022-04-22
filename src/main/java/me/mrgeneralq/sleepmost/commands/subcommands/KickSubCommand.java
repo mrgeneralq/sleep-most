@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
+import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
@@ -53,8 +54,16 @@ public class KickSubCommand implements ISubCommand {
             return true;
         }
 
+        MessageBuilder targetKickedFromBedMsg = this.messageService.getMessagePrefixed(ConfigMessage.KICKED_PLAYER_FROM_BED)
+                .setPlayer(targetPlayer)
+                .setWorld(targetPlayer.getWorld());
+
+        MessageBuilder youAreKickedMsg = this.messageService.getMessage(ConfigMessage.YOU_ARE_KICKED_FROM_BED)
+                .setPlayer(player);
+
         targetPlayer.teleport(targetPlayer.getLocation());
-        this.messageService.sendMessage(sender,"Player has been kicked from the bed");
+        this.messageService.sendMessage(sender,targetKickedFromBedMsg.build());
+        this.messageService.sendMessage(targetPlayer, youAreKickedMsg.build());
         this.sleepService.setSleeping(targetPlayer, false);
         return true;
     }
