@@ -27,7 +27,7 @@ public class SleepCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if (!(sender instanceof Player)) {
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.ONLY_PLAYERS_COMMAND).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_CONSOLE_COMMAND).build());
             return true;
         }
         Player player = (Player) sender;
