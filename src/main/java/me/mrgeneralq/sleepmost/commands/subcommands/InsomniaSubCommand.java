@@ -34,18 +34,24 @@ public class InsomniaSubCommand implements ISubCommand {
         World world = player.getWorld();
 
         if(!sleepService.isEnabledAt(world)){
-            this.messageService.sendMessage(player, messageService.getMessage(MessageKey.NOT_ENABLED_FOR_WORLD).build());
+            this.messageService.sendMessage(player, messageService.getMessage(MessageKey.NOT_ENABLED_FOR_WORLD)
+                    .setWorld(world)
+                    .build());
             return true;
         }
 
         if (!sleepService.isNight(world)) {
-            String notNightMessage = this.messageService.getMessage(MessageKey.CMD_ONLY_DURING_NIGHT).build();
+            String notNightMessage = this.messageService.getMessage(MessageKey.CMD_ONLY_DURING_NIGHT)
+                    .setWorld(world)
+                    .build();
             this.messageService.sendMessage(player, notNightMessage);
             return true;
         }
 
         if (this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()) {
-            String insomniaMessage = this.messageService.getMessage(MessageKey.INSOMNIA_ALREADY_ENABLED).build();
+            String insomniaMessage = this.messageService.getMessage(MessageKey.INSOMNIA_ALREADY_ENABLED)
+                    .setWorld(world)
+                    .build();
             this.messageService.sendMessage(player, insomniaMessage);
             return true;
         }
@@ -55,13 +61,17 @@ public class InsomniaSubCommand implements ISubCommand {
 
         this.worldPropertyService.setWorldProperty(world, property);
 
-        String insomniaMessage = this.messageService.getMessage(MessageKey.INSOMNIA_ENABLED).build();
+        String insomniaMessage = this.messageService.getMessage(MessageKey.INSOMNIA_ENABLED)
+                .setWorld(world)
+                .build();
         List<Player> sleepingPlayers = this.sleepService.getSleepers(world);
 
         for(Player p: sleepingPlayers){
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60,1));
             p.teleport(p.getLocation());
-            String targetInsomniaMessage = this.messageService.getMessage(MessageKey.INSOMNIA_NOT_SLEEPY).build();
+            String targetInsomniaMessage = this.messageService.getMessage(MessageKey.INSOMNIA_NOT_SLEEPY)
+                    .setWorld(world)
+                    .build();
             this.messageService.sendMessage(p, targetInsomniaMessage);
         }
 

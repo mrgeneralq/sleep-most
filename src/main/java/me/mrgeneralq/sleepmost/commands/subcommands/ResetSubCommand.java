@@ -30,7 +30,7 @@ public class ResetSubCommand implements ISubCommand
         this.flagService.resetFlagsAt(world);
 
         this.messageService.sendMessage(sender,
-                this.messageService.getMessagePrefixed(MessageKey.FLAGS_RESET_SUCCESS)
+                this.messageService.getMessagePrefixed(MessageKey.ALL_FLAGS_RESET_SUCCESS)
                         .setWorld(world)
                         .build());
         return true;

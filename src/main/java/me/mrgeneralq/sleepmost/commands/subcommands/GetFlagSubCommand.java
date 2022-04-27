@@ -27,9 +27,8 @@ public class GetFlagSubCommand implements ISubCommand
 	{
 
 		if(!CommandSenderUtils.hasWorld(sender)) {
-
-			String noConsoleCmd = this.messageService.getMessagePrefixed(MessageKey.NO_CONSOLE_COMMAND).build();
-
+			String noConsoleCmd = this.messageService.getMessagePrefixed(MessageKey.NO_CONSOLE_COMMAND)
+					.build();
 			this.messageService.sendMessage(sender, noConsoleCmd);
 			return true;
 		}
@@ -42,7 +41,9 @@ public class GetFlagSubCommand implements ISubCommand
 		}
 
 		if (!this.flagsRepository.flagExists(args[1])) {
-			this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed("&cThis flag does not exist!").build());
+			this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed(MessageKey.FLAG_DOES_NOT_EXIST)
+					.setFlag(args[1])
+					.build());
 
 			this.messageService.sendMessage(sender, this.messageService.getMessage("&bPossible flags are: &e%flagsNames")
 					.setPlaceHolder("%flagsNames", StringUtils.join(this.flagsRepository.getFlagsNames(), ", "))
@@ -52,8 +53,9 @@ public class GetFlagSubCommand implements ISubCommand
 		
 		ISleepFlag<?> sleepFlag = this.flagsRepository.getFlag(args[1]);
 
-		this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed("&bThe &e%flag% &bflag value in your world is &e%value%&b.")
-				.setPlaceHolder("%flag%", sleepFlag.getName())
+		this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed(MessageKey.FLAG_SET_IN_WORLD)
+				.setFlag(sleepFlag.getName())
+				.setWorld(world)
 				.setPlaceHolder("%value%", sleepFlag.getValueAt(world).toString())
 				.build());
 

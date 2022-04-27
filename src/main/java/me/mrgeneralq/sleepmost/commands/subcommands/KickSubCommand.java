@@ -55,14 +55,18 @@ public class KickSubCommand implements ISubCommand {
         String targetPlayerName = args[1];
 
         if(Bukkit.getPlayer(targetPlayerName) == null){
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.TARGET_NOT_ONLINE).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.TARGET_NOT_ONLINE)
+                    .setPlayer(player)
+                    .build());
             return true;
         }
 
         Player targetPlayer = Bukkit.getPlayer(targetPlayerName);
 
         if(!this.sleepService.isPlayerAsleep(targetPlayer)){
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.TARGET_NOT_SLEEPING).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.TARGET_NOT_SLEEPING)
+                    .setPlayer(targetPlayer)
+                    .build());
             return true;
         }
 
@@ -76,8 +80,8 @@ public class KickSubCommand implements ISubCommand {
                 .setPlayer(player);
 
         targetPlayer.teleport(targetPlayer.getLocation());
-        this.messageService.sendMessage(sender,targetKickedFromBedMsg.build());
-        this.messageService.sendMessage(targetPlayer, youAreKickedMsg.build());
+        this.messageService.sendMessage(sender,targetKickedFromBedMsg.setPlayer(targetPlayer).build());
+        this.messageService.sendMessage(targetPlayer, youAreKickedMsg.setPlayer(player).build());
         this.sleepService.setSleeping(targetPlayer, false);
         return true;
     }

@@ -39,7 +39,9 @@ public class InfoSubCommand implements ISubCommand {
 
         if(!sleepService.isEnabledAt(world))
         {
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.CURRENTLY_DISABLED).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.CURRENTLY_DISABLED)
+                    .setWorld(world)
+                    .build());
             return true;
         }
         sender.sendMessage(colorize("&b*********************************************"));
@@ -74,7 +76,7 @@ public class InfoSubCommand implements ISubCommand {
     private String getValueAtMessage(ISleepFlag<?> flag, World world)
     {
         return messageService.getMessage("&e%flagName% &b%value%")
-                .setPlaceHolder("%flagName%", flag.getName())
+                .setFlag(flag.getName())
                 .setPlaceHolder("%value%", this.flagService.getValueDisplayName(flag, flag.getValueAt(world)))
                 .build();
     }

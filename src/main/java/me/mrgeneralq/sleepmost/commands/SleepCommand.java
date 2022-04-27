@@ -47,7 +47,10 @@ public class SleepCommand implements CommandExecutor {
 
         if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
 
-            String sleepPreventedConfigMessage = messageService.getMessage(MessageKey.SLEEP_PREVENTED).build();
+            String sleepPreventedConfigMessage = messageService.getMessage(MessageKey.SLEEP_PREVENTED)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .build();
 
             this.messageService.sendMessage(player, messageService.getMessage(sleepPreventedConfigMessage)
                     .setPlayer(player)
@@ -57,7 +60,10 @@ public class SleepCommand implements CommandExecutor {
         }
 
         if (!this.sleepService.resetRequired(world)) {
-            this.messageService.sendMessage(player, messageService.getMessage(MessageKey.CANNOT_SLEEP_NOW).build());
+            this.messageService.sendMessage(player, messageService.getMessage(MessageKey.CANNOT_SLEEP_NOW)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .build());
             return true;
         }
         boolean updatedSleepStatus = !this.sleepService.isPlayerAsleep(player);
@@ -74,7 +80,10 @@ public class SleepCommand implements CommandExecutor {
             cooldownService.startCooldown(player);
         }
 
-        this.messageService.sendMessage(player, this.messageService.getMessage(getConfigMessage(updatedSleepStatus)).build());
+        this.messageService.sendMessage(player, this.messageService.getMessage(getConfigMessage(updatedSleepStatus))
+                .setPlayer(player)
+                .setWorld(world)
+                .build());
         return true;
     }
     private MessageKey getConfigMessage(boolean sleepingStatus){

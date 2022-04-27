@@ -41,12 +41,18 @@ public class BedSubCommand implements ISubCommand {
         Player player = (Player) sender;
 
         if (player.getBedSpawnLocation() == null) {
-            this.messageService.sendMessage(player, messageService.getMessage(MessageKey.NO_BED_LOCATION_SET).build());
+            this.messageService.sendMessage(player, messageService.getMessage(MessageKey.NO_BED_LOCATION_SET)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .build());
             return true;
         }
 
         player.teleport(player.getBedSpawnLocation());
-        this.messageService.sendMessage(player, messageService.getMessage(MessageKey.TELEPORTED_TO_BED).build());
+        this.messageService.sendMessage(player, messageService.getMessage(MessageKey.TELEPORTED_TO_BED)
+                .setPlayer(player)
+                .setWorld(world)
+                .build());
         return true;
     }
 }

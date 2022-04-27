@@ -114,7 +114,7 @@ public class MessageService implements IMessageService {
 
 					MessageBuilder kickMessage = this.getMessage(MessageKey.KICK_OUT_BED);
 
-					TextComponent component = new TextComponent(kickMessage.build());
+					TextComponent component = new TextComponent(kickMessage.build() + " ");
 					component.setColor(ChatColor.RED);
 					component.setBold(true);
 					component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/sm kick %s", player.getName())));
@@ -134,8 +134,10 @@ public class MessageService implements IMessageService {
 	public void sendNightSkippedMessage(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause) {
 		MessageKey message = (cause == SleepSkipCause.STORM ? MessageKey.STORM_SKIPPED : MessageKey.NIGHT_SKIPPED);
 
-		String skipMessage = ConfigMessageMapper.getMapper().getMessage(message, false)
-				.replace("%player%", lastSleeperName);
+		String skipMessage = this.getMessage(message)
+				.setPlayer(lastSleeperName)
+				.setWorld(world)
+				.build();
 
 		sendWorldMessage(world, skipMessage);
 	}

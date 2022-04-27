@@ -118,7 +118,9 @@ public class PlayerSleepStateChangeEventListener implements Listener {
         int playersRequiredAmount = Math.round(sleepService.getRequiredSleepersCount(world));
         int sleepingPlayersAmount = sleepService.getSleepersAmount(world);
 
-        String configBossBarTitle = this.messageService.getMessage(MessageKey.BOSS_BAR_TITLE).build();
+        String configBossBarTitle = this.messageService.getMessage(MessageKey.BOSS_BAR_TITLE)
+                .setWorld(world)
+                .build();
         String bossBarTitle = new MessageBuilder(configBossBarTitle, "")
                 .usePrefix(false)
                 .setSleepingCount(Math.min(sleepingPlayersAmount, playersRequiredAmount))

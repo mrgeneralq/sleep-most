@@ -8,6 +8,7 @@ import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class DisableSubCommand implements ISubCommand {
 
@@ -28,17 +29,20 @@ public class DisableSubCommand implements ISubCommand {
             return true;
         }
 
-
         World world = CommandSenderUtils.getWorldOf(sender);
 
 
         if (!sleepService.isEnabledAt(world)) {
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.ALREADY_DISABLED_FOR_WORLD).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.ALREADY_DISABLED_FOR_WORLD)
+                    .setWorld(world)
+                    .build());
             return true;
         }
 
         sleepService.disableAt(world);
-        this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.DISABLED_FOR_WORLD).build());
+        this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.DISABLED_FOR_WORLD)
+                .setWorld(world)
+                .build());
         return true;
     }
 }

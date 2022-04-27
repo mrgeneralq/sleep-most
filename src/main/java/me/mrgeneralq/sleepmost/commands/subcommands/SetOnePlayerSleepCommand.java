@@ -38,7 +38,9 @@ public class SetOnePlayerSleepCommand implements ISubCommand {
         World world = CommandSenderUtils.getWorldOf(sender);
 
         if (!sleepService.isEnabledAt(world)) {
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NOT_ENABLED_FOR_WORLD).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NOT_ENABLED_FOR_WORLD)
+                    .setWorld(world)
+                    .build());
             return true;
         }
 
@@ -48,7 +50,9 @@ public class SetOnePlayerSleepCommand implements ISubCommand {
         this.flagService.setStringValueAt(calculationMethodFlag, world, "players");
         this.flagService.setStringValueAt(playersRequiredFlag, world, "1");
 
-        this.messageService.sendMessage(player, this.messageService.getMessage(MessageKey.ONE_PLAYER_SLEEP_SET).build());
+        this.messageService.sendMessage(player, this.messageService.getMessage(MessageKey.ONE_PLAYER_SLEEP_SET)
+                .setWorld(world)
+                .build());
         return true;
     }
 }
