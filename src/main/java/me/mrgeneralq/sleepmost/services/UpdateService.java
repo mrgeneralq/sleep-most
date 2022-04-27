@@ -20,7 +20,7 @@ public class UpdateService implements IUpdateService {
 
     @Override
     public boolean hasUpdate() {
-        return hasUpdate(this.getCurrentVersion());
+        return hasUpdate(main.getDescription().getVersion());
     }
 
     @Override
@@ -38,6 +38,11 @@ public class UpdateService implements IUpdateService {
 
     @Override
     public String getCurrentVersion() {
+
+        if(this.main.earlyAccessModeEnabled()){
+            return this.main.getEarlyAccessVersion();
+        }
+
         return main.getDescription().getVersion();
     }
 

@@ -19,6 +19,7 @@ public class Version {
     }
 
     public boolean isBiggerThan(@NotNull Version other) {
+
         String[] thisNodes = this.get().split("\\.");
         String[] otherNodes = other.get().split("\\.");
 
