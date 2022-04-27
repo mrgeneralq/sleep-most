@@ -1,6 +1,7 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.flags.types.TabCompletedFlag;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -11,6 +12,11 @@ import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GetFlagSubCommand implements ISubCommand
 {
@@ -60,5 +66,17 @@ public class GetFlagSubCommand implements ISubCommand
 				.build());
 
 		return true;
+	}
+
+
+	@Override
+	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, List<String> args) {
+
+			if (args.size() == 1) {
+				return this.flagsRepository.getFlagsNames().stream()
+						.filter(flag -> flag.contains(args.get(0)) || flag.equalsIgnoreCase(args.get(0)))
+						.collect(Collectors.toList());
+			}
+		return new ArrayList<>();
 	}
 }

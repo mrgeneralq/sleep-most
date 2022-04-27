@@ -75,7 +75,7 @@ public class InfoSubCommand implements ISubCommand {
 
     private String getValueAtMessage(ISleepFlag<?> flag, World world)
     {
-        return messageService.getMessage("&e%flagName% &b%value%")
+        return messageService.getMessage("&e%flag% &b%value%")
                 .setFlag(flag.getName())
                 .setPlaceHolder("%value%", this.flagService.getValueDisplayName(flag, flag.getValueAt(world)))
                 .build();

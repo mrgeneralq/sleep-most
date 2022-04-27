@@ -60,7 +60,7 @@ public class MessageMapper {
         this.messages.put(MessageKey.KICKING_NOT_ALLOWED, new ConfigMessage("user.kicking-not-allowed", "&cYou do not have permission to kick this player out of their bed"));
         this.messages.put(MessageKey.FLAG_SET_IN_WORLD, new ConfigMessage("flag.set-in-world", "&bThe &e%flag% &bflag value in your world is &e%value%&b."));
         this.messages.put(MessageKey.FLAG_RESET_IN_WORLD, new ConfigMessage("flag.reset-in-world", "&bThe &e%flag% &bflag has been reset to &e%default-value%"));
-
+        this.messages.put(MessageKey.FLAG_DOES_NOT_EXIST, new ConfigMessage("flag.not-exist", "&cThis flag does not exist"));
         //TITLES
         this.messages.put(MessageKey.NIGHT_SKIPPED_TITLE, new ConfigMessage("user.night-skipped.title", "&aNight skipped"));
         this.messages.put(MessageKey.NIGHT_SKIPPED_SUBTITLE, new ConfigMessage("user.night-skipped.subtitle", "&bGood morning sunshine!"));

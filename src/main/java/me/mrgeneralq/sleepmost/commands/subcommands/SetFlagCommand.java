@@ -79,7 +79,7 @@ public class SetFlagCommand implements ISubCommand {
         this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.FLAG_SET_IN_WORLD)
                 .setFlag(flagName)
                 .setWorld(world)
-                .setPlaceHolder("%value", stringValue)
+                .setPlaceHolder("%value%", stringValue)
                 .build());
         return true;
     }

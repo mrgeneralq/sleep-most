@@ -34,7 +34,9 @@ public class BedSubCommand implements ISubCommand {
 
 
         if (!sleepService.isEnabledAt(world)) {
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.ALREADY_DISABLED_FOR_WORLD).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NOT_ENABLED_FOR_WORLD)
+                    .setWorld(world)
+                    .build());
             return true;
         }
 
