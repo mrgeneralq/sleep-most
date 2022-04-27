@@ -1,7 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
-import me.mrgeneralq.sleepmost.templates.MessageTemplate;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
@@ -32,7 +31,7 @@ public class InfoSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!CommandSenderUtils.hasWorld(sender)){
-            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.NO_CONSOLE_COMMAND).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_CONSOLE_COMMAND).build());
             return true;
         }
 
@@ -40,7 +39,9 @@ public class InfoSubCommand implements ISubCommand {
 
         if(!sleepService.isEnabledAt(world))
         {
-            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.CURRENTLY_DISABLED).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.CURRENTLY_DISABLED)
+                    .setWorld(world)
+                    .build());
             return true;
         }
         sender.sendMessage(colorize("&b*********************************************"));
@@ -74,8 +75,8 @@ public class InfoSubCommand implements ISubCommand {
 
     private String getValueAtMessage(ISleepFlag<?> flag, World world)
     {
-        return messageService.getMessage("&e%flagName% &b%value%")
-                .setPlaceHolder("%flagName%", flag.getName())
+        return messageService.getMessage("&e%flag% &b%value%")
+                .setFlag(flag.getName())
                 .setPlaceHolder("%value%", this.flagService.getValueDisplayName(flag, flag.getValueAt(world)))
                 .build();
     }

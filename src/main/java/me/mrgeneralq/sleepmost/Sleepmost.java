@@ -1,15 +1,13 @@
 package me.mrgeneralq.sleepmost;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.mappers.MessageMapper;
-import me.mrgeneralq.sleepmost.models.Message;
 import me.mrgeneralq.sleepmost.runnables.Heartbeat;
-import me.mrgeneralq.sleepmost.services.WorldPropertyService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +16,9 @@ import me.mrgeneralq.sleepmost.commands.SleepmostCommand;
 import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 
 public class Sleepmost extends JavaPlugin {
+
+	private boolean EARLY_ACCESS_MODE = true;
+	private String EARLY_ACCESS_VERSION = "5.0.0-beta1";
 
 	private static Sleepmost instance;
 	private Bootstrapper bootstrapper;
@@ -78,6 +79,9 @@ public class Sleepmost extends JavaPlugin {
 		runPreTimerTasks();
 		runTimers(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService());
 
+		if(earlyAccessModeEnabled())
+			Bukkit.getConsoleSender().sendMessage(  "[Sleep-most]" + ChatColor.RED + "WARNING: This is an early access build. This build may contain bugs and untested features. Please update when this is available.");
+
 	}
 	
 	public static Sleepmost getInstance() {
@@ -108,5 +112,14 @@ public class Sleepmost extends JavaPlugin {
 			bossBarService.registerBossBar(world);
 			bossBarService.setVisible(world, false);
 		}
+	}
+
+
+	public boolean earlyAccessModeEnabled(){
+		return this.EARLY_ACCESS_MODE;
+	}
+
+	public String getEarlyAccessVersion(){
+		return this.EARLY_ACCESS_VERSION;
 	}
 }

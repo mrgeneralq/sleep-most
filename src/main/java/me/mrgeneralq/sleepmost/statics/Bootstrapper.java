@@ -41,6 +41,7 @@ public class Bootstrapper {
 
         this.configRepository = new ConfigRepository(main);
         this.configService = new ConfigService(main);
+        this.flagsRepository = new FlagsRepository(configRepository);
 
         this.messageRepository = new MessageRepository();
         this.messageService = new MessageService(configRepository, messageRepository, flagsRepository);
@@ -51,7 +52,7 @@ public class Bootstrapper {
         this.cooldownRepository = new CooldownRepository();
         this.cooldownService = new CooldownService(cooldownRepository, configRepository);
 
-        this.flagsRepository = new FlagsRepository(configRepository);
+
         this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService);
 
         this.playerService = new PlayerService();

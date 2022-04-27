@@ -1,9 +1,8 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.flags.types.TabCompletedFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.apache.commons.lang.StringUtils;
@@ -33,14 +32,16 @@ public class SetFlagCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if (!CommandSenderUtils.hasWorld(sender)) {
-            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.NO_CONSOLE_COMMAND).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_CONSOLE_COMMAND).build());
             return true;
         }
 
         World world = CommandSenderUtils.getWorldOf(sender);
 
         if (!sleepService.isEnabledAt(world)) {
-            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.CURRENTLY_DISABLED).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.CURRENTLY_DISABLED)
+                    .setWorld(world)
+                    .build());
             return true;
         }
 
@@ -51,7 +52,7 @@ public class SetFlagCommand implements ISubCommand {
         String flagName = args[1];
 
         if (!flagsRepository.flagExists(flagName)) {
-            this.messageService.sendMessage(sender, messageService.getMessagePrefixed("&cThis flag does not exist!").build());
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.FLAG_DOES_NOT_EXIST).setFlag(flagName).build());
             this.messageService.sendMessage(sender, messageService.getMessage("&bPossible flags are: &e%flagsNames")
                     .setPlaceHolder("%flagsNames", StringUtils.join(flagsRepository.getFlagsNames(), ", "))
                     .build());
@@ -75,10 +76,10 @@ public class SetFlagCommand implements ISubCommand {
         }
         this.sleepFlagService.setStringValueAt(sleepFlag, world, stringValue);
 
-        this.messageService.sendMessage(sender, messageService.getMessagePrefixed("&bFlag &c%flag &bis now set to &e%value &bfor world &e%world")
-                .setPlaceHolder("%flag", sleepFlag.getName())
-                .setPlaceHolder("%value", stringValue)
-                .setPlaceHolder("%world", world.getName())
+        this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.FLAG_SET_IN_WORLD)
+                .setFlag(flagName)
+                .setWorld(world)
+                .setPlaceHolder("%value%", stringValue)
                 .build());
         return true;
     }

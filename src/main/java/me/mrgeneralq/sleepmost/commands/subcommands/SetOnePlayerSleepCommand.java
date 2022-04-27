@@ -1,10 +1,9 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.flags.CalculationMethodFlag;
 import me.mrgeneralq.sleepmost.flags.PlayersRequiredFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -30,7 +29,7 @@ public class SetOnePlayerSleepCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!CommandSenderUtils.hasWorld(sender)){
-            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.NO_CONSOLE_COMMAND).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_CONSOLE_COMMAND).build());
             return true;
         }
 
@@ -39,7 +38,9 @@ public class SetOnePlayerSleepCommand implements ISubCommand {
         World world = CommandSenderUtils.getWorldOf(sender);
 
         if (!sleepService.isEnabledAt(world)) {
-            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.NOT_ENABLED_FOR_WORLD).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NOT_ENABLED_FOR_WORLD)
+                    .setWorld(world)
+                    .build());
             return true;
         }
 
@@ -49,7 +50,9 @@ public class SetOnePlayerSleepCommand implements ISubCommand {
         this.flagService.setStringValueAt(calculationMethodFlag, world, "players");
         this.flagService.setStringValueAt(playersRequiredFlag, world, "1");
 
-        this.messageService.sendMessage(player, this.messageService.getMessage(ConfigMessage.ONE_PLAYER_SLEEP_SET).build());
+        this.messageService.sendMessage(player, this.messageService.getMessage(MessageKey.ONE_PLAYER_SLEEP_SET)
+                .setWorld(world)
+                .build());
         return true;
     }
 }

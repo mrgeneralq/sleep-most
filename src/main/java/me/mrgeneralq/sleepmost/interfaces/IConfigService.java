@@ -8,11 +8,6 @@ public interface IConfigService {
 
     int getResetTime();
     boolean updateCheckerEnabled();
-    boolean getTitleNightSkippedEnabled();
-    String getTitleNightSkippedTitle();
-    String getTitleNightSkippedSubTitle();
-    boolean getTitleStormSkippedEnabled();
-    String getTitleStormSkippedTitle();
-    String getTitleStormSkippedSubTitle();
     Set<World> getEnabledWorlds();
+
 }

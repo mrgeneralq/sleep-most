@@ -1,12 +1,11 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
-import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -30,7 +29,7 @@ public class KickSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!CommandSenderUtils.hasWorld(sender)){
-            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.NO_CONSOLE_COMMAND).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_CONSOLE_COMMAND).build());
             return true;
         }
 
@@ -41,7 +40,7 @@ public class KickSubCommand implements ISubCommand {
         boolean kickingEnabled = this.flagsRepository.getAllowKickFlag().getValueAt(world);
 
         if(!kickingEnabled){
-            MessageBuilder kickNotAllowedMsg = this.messageService.getMessagePrefixed(ConfigMessage.KICKING_NOT_ALLOWED)
+            MessageBuilder kickNotAllowedMsg = this.messageService.getMessagePrefixed(MessageKey.KICKING_NOT_ALLOWED)
                     .setWorld(world);
 
             this.messageService.sendMessage(player , kickNotAllowedMsg.build());
@@ -49,36 +48,40 @@ public class KickSubCommand implements ISubCommand {
         }
 
         if(args.length < 2){
-            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.SPECIFY_PLAYER).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.SPECIFY_PLAYER).build());
             return true;
         }
 
         String targetPlayerName = args[1];
 
         if(Bukkit.getPlayer(targetPlayerName) == null){
-            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.TARGET_NOT_ONLINE).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.TARGET_NOT_ONLINE)
+                    .setPlayer(player)
+                    .build());
             return true;
         }
 
         Player targetPlayer = Bukkit.getPlayer(targetPlayerName);
 
         if(!this.sleepService.isPlayerAsleep(targetPlayer)){
-            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.TARGET_NOT_SLEEPING).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.TARGET_NOT_SLEEPING)
+                    .setPlayer(targetPlayer)
+                    .build());
             return true;
         }
 
 
 
-        MessageBuilder targetKickedFromBedMsg = this.messageService.getMessagePrefixed(ConfigMessage.KICKED_PLAYER_FROM_BED)
+        MessageBuilder targetKickedFromBedMsg = this.messageService.getMessagePrefixed(MessageKey.KICKED_PLAYER_FROM_BED)
                 .setPlayer(targetPlayer)
                 .setWorld(targetPlayer.getWorld());
 
-        MessageBuilder youAreKickedMsg = this.messageService.getMessage(ConfigMessage.YOU_ARE_KICKED_FROM_BED)
+        MessageBuilder youAreKickedMsg = this.messageService.getMessage(MessageKey.YOU_ARE_KICKED_FROM_BED)
                 .setPlayer(player);
 
         targetPlayer.teleport(targetPlayer.getLocation());
-        this.messageService.sendMessage(sender,targetKickedFromBedMsg.build());
-        this.messageService.sendMessage(targetPlayer, youAreKickedMsg.build());
+        this.messageService.sendMessage(sender,targetKickedFromBedMsg.setPlayer(targetPlayer).build());
+        this.messageService.sendMessage(targetPlayer, youAreKickedMsg.setPlayer(player).build());
         this.sleepService.setSleeping(targetPlayer, false);
         return true;
     }

@@ -1,6 +1,7 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.flags.types.TabCompletedFlag;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -11,6 +12,11 @@ import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GetFlagSubCommand implements ISubCommand
 {
@@ -27,9 +33,8 @@ public class GetFlagSubCommand implements ISubCommand
 	{
 
 		if(!CommandSenderUtils.hasWorld(sender)) {
-
-			String noConsoleCmd = this.messageService.getMessagePrefixed(ConfigMessage.NO_CONSOLE_COMMAND).build();
-
+			String noConsoleCmd = this.messageService.getMessagePrefixed(MessageKey.NO_CONSOLE_COMMAND)
+					.build();
 			this.messageService.sendMessage(sender, noConsoleCmd);
 			return true;
 		}
@@ -42,7 +47,9 @@ public class GetFlagSubCommand implements ISubCommand
 		}
 
 		if (!this.flagsRepository.flagExists(args[1])) {
-			this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed("&cThis flag does not exist!").build());
+			this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed(MessageKey.FLAG_DOES_NOT_EXIST)
+					.setFlag(args[1])
+					.build());
 
 			this.messageService.sendMessage(sender, this.messageService.getMessage("&bPossible flags are: &e%flagsNames")
 					.setPlaceHolder("%flagsNames", StringUtils.join(this.flagsRepository.getFlagsNames(), ", "))
@@ -52,11 +59,24 @@ public class GetFlagSubCommand implements ISubCommand
 		
 		ISleepFlag<?> sleepFlag = this.flagsRepository.getFlag(args[1]);
 
-		this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed("&bThe &e%flag% &bflag value in your world is &e%value%&b.")
-				.setPlaceHolder("%flag%", sleepFlag.getName())
+		this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed(MessageKey.FLAG_SET_IN_WORLD)
+				.setFlag(sleepFlag.getName())
+				.setWorld(world)
 				.setPlaceHolder("%value%", sleepFlag.getValueAt(world).toString())
 				.build());
 
 		return true;
+	}
+
+
+	@Override
+	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, List<String> args) {
+
+			if (args.size() == 1) {
+				return this.flagsRepository.getFlagsNames().stream()
+						.filter(flag -> flag.contains(args.get(0)) || flag.equalsIgnoreCase(args.get(0)))
+						.collect(Collectors.toList());
+			}
+		return new ArrayList<>();
 	}
 }

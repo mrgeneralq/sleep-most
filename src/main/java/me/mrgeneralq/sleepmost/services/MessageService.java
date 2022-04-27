@@ -1,13 +1,13 @@
 package me.mrgeneralq.sleepmost.services;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.mappers.MessageMapper;
-import me.mrgeneralq.sleepmost.models.Message;
+import me.mrgeneralq.sleepmost.models.ConfigMessage;
 import me.mrgeneralq.sleepmost.repositories.MessageRepository;
 import me.mrgeneralq.sleepmost.mappers.ConfigMessageMapper;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
@@ -38,20 +38,20 @@ public class MessageService implements IMessageService {
 		this.flagsRepository = flagsRepository;
 		this.messageMapper = MessageMapper.getMapper();
 
-		Message prefixMessage = this.messageMapper.getMessage(ConfigMessage.PREFIX);
+		ConfigMessage prefixMessage = this.messageMapper.getMessage(MessageKey.PREFIX);
 		this.prefix = this.messageRepository.get(prefixMessage.getPath());
 	}
 
 
 	@Override
-	public ConfigMessage getSleepSkipCauseMessage(SleepSkipCause cause) {
-		return cause == SleepSkipCause.STORM ? ConfigMessage.PLAYERS_LEFT_TO_SKIP_STORM : ConfigMessage.PLAYERS_LEFT_TO_SKIP_NIGHT;
+	public MessageKey getSleepSkipCauseMessage(SleepSkipCause cause) {
+		return cause == SleepSkipCause.STORM ? MessageKey.PLAYERS_LEFT_TO_SKIP_STORM : MessageKey.PLAYERS_LEFT_TO_SKIP_NIGHT;
 	}
 
 	@Override
 	public String getPlayersLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount) {
 
-		ConfigMessage skipCauseConfigMessage = this.getSleepSkipCauseMessage(cause);
+		MessageKey skipCauseConfigMessage = this.getSleepSkipCauseMessage(cause);
 		MessageBuilder skipConfigMessageBuilder = this.getMessage(skipCauseConfigMessage)
 				.usePrefix(false)
 				.setPlayer(player)
@@ -112,9 +112,9 @@ public class MessageService implements IMessageService {
 
 				if(p.hasPermission("sleepmost.kick")){
 
-					MessageBuilder kickMessage = this.getMessage(ConfigMessage.KICK_OUT_BED);
+					MessageBuilder kickMessage = this.getMessage(MessageKey.KICK_OUT_BED);
 
-					TextComponent component = new TextComponent(kickMessage.build());
+					TextComponent component = new TextComponent(kickMessage.build() + " ");
 					component.setColor(ChatColor.RED);
 					component.setBold(true);
 					component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/sm kick %s", player.getName())));
@@ -132,18 +132,20 @@ public class MessageService implements IMessageService {
 	
 	@Override
 	public void sendNightSkippedMessage(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause) {
-		ConfigMessage message = (cause == SleepSkipCause.STORM ? ConfigMessage.STORM_SKIPPED : ConfigMessage.NIGHT_SKIPPED);
+		MessageKey message = (cause == SleepSkipCause.STORM ? MessageKey.STORM_SKIPPED : MessageKey.NIGHT_SKIPPED);
 
-		String skipMessage = ConfigMessageMapper.getMapper().getMessage(message, false)
-				.replace("%player%", lastSleeperName);
+		String skipMessage = this.getMessage(message)
+				.setPlayer(lastSleeperName)
+				.setWorld(world)
+				.build();
 
 		sendWorldMessage(world, skipMessage);
 	}
 
 	@Override
-	public MessageBuilder getMessage(ConfigMessage configMessage){
+	public MessageBuilder getMessage(MessageKey configMessage){
 
-		Message messageObject = MessageMapper.getMapper().getMessage(configMessage);
+		ConfigMessage messageObject = MessageMapper.getMapper().getMessage(configMessage);
 		String messageStr = this.messageRepository.get(messageObject.getPath());
 		return new MessageBuilder(messageStr, this.prefix);
 
@@ -155,7 +157,7 @@ public class MessageService implements IMessageService {
 	}
 
 	@Override
-	public MessageBuilder getMessagePrefixed(ConfigMessage configMessage) {
+	public MessageBuilder getMessagePrefixed(MessageKey configMessage) {
 		return this.getMessage(configMessage).usePrefix(true);
 	}
 
@@ -165,7 +167,7 @@ public class MessageService implements IMessageService {
 	}
 
 	@Override
-	public List<Message> getMessages(){
+	public List<ConfigMessage> getMessages(){
 		return this.messageMapper.getAllMessages();
 	}
 
@@ -175,13 +177,13 @@ public class MessageService implements IMessageService {
 	}
 
 	@Override
-	public void createMessage(Message message){
+	public void createMessage(ConfigMessage message){
 		this.messageRepository.set(message.getPath(), message.getDefaultValue());
 	}
 
 	@Override
 	public void createMissingMessages(){
-			for(Message message : this.getMessages()){
+			for(ConfigMessage message : this.getMessages()){
 				if(this.messagePathExists(message.getPath()))
 					continue;
 				this.createMessage(message);

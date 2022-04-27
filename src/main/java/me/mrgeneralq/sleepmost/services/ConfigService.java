@@ -32,36 +32,6 @@ public class ConfigService implements IConfigService {
 
 
     @Override
-    public boolean getTitleNightSkippedEnabled() {
-        return main.getConfig().getBoolean("titles.night-skipped.enabled");
-    }
-
-    @Override
-    public String getTitleNightSkippedTitle() {
-        return colorize(main.getConfig().getString("titles.night-skipped.title"));
-    }
-
-    @Override
-    public String getTitleNightSkippedSubTitle() {
-        return colorize(main.getConfig().getString("titles.night-skipped.subtitle"));
-    }
-
-    @Override
-    public boolean getTitleStormSkippedEnabled() {
-        return main.getConfig().getBoolean("titles.storm-skipped.enabled");
-    }
-
-    @Override
-    public String getTitleStormSkippedTitle() {
-        return colorize(main.getConfig().getString("titles.storm-skipped.title"));
-    }
-
-    @Override
-    public String getTitleStormSkippedSubTitle() {
-        return colorize(main.getConfig().getString("titles.storm-skipped.subtitle"));
-    }
-
-    @Override
     public Set<World> getEnabledWorlds()
     {
         return main.getConfig().getConfigurationSection("sleep").getKeys(false).stream()

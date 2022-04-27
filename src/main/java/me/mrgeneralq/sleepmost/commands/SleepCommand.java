@@ -1,11 +1,10 @@
 package me.mrgeneralq.sleepmost.commands;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.ICooldownService;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
-import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,27 +27,30 @@ public class SleepCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if (!(sender instanceof Player)) {
-            this.messageService.sendMessage(sender, messageService.getMessage(ConfigMessage.ONLY_PLAYERS_COMMAND).build());
+            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_CONSOLE_COMMAND).build());
             return true;
         }
         Player player = (Player) sender;
 
         if (!player.hasPermission("sleepmost.sleep")) {
-            this.messageService.sendMessage(player, this.messageService.getMessage(ConfigMessage.NO_PERMISSION_COMMAND).build());
+            this.messageService.sendMessage(player, this.messageService.getMessage(MessageKey.NO_PERMISSION_COMMAND).build());
             return true;
         }
         World world = player.getWorld();
 
         if(!this.flagsRepository.getSleepCmdFlag().getValueAt(world)){
 
-            this.messageService.sendMessage(player, this.messageService.getMessage(ConfigMessage.SLEEP_CMD_DISABLED).build());
+            this.messageService.sendMessage(player, this.messageService.getMessage(MessageKey.SLEEP_CMD_DISABLED).build());
             return true;
         }
 
 
         if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
 
-            String sleepPreventedConfigMessage = messageService.getMessage(ConfigMessage.SLEEP_PREVENTED).build();
+            String sleepPreventedConfigMessage = messageService.getMessage(MessageKey.SLEEP_PREVENTED)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .build();
 
             this.messageService.sendMessage(player, messageService.getMessage(sleepPreventedConfigMessage)
                     .setPlayer(player)
@@ -58,7 +60,10 @@ public class SleepCommand implements CommandExecutor {
         }
 
         if (!this.sleepService.resetRequired(world)) {
-            this.messageService.sendMessage(player, messageService.getMessage(ConfigMessage.CANNOT_SLEEP_NOW).build());
+            this.messageService.sendMessage(player, messageService.getMessage(MessageKey.CANNOT_SLEEP_NOW)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .build());
             return true;
         }
         boolean updatedSleepStatus = !this.sleepService.isPlayerAsleep(player);
@@ -75,10 +80,13 @@ public class SleepCommand implements CommandExecutor {
             cooldownService.startCooldown(player);
         }
 
-        this.messageService.sendMessage(player, this.messageService.getMessage(getConfigMessage(updatedSleepStatus)).build());
+        this.messageService.sendMessage(player, this.messageService.getMessage(getConfigMessage(updatedSleepStatus))
+                .setPlayer(player)
+                .setWorld(world)
+                .build());
         return true;
     }
-    private ConfigMessage getConfigMessage(boolean sleepingStatus){
-        return sleepingStatus ? ConfigMessage.SLEEP_SUCCESS : ConfigMessage.NO_LONGER_SLEEPING;
+    private MessageKey getConfigMessage(boolean sleepingStatus){
+        return sleepingStatus ? MessageKey.SLEEP_SUCCESS : MessageKey.NO_LONGER_SLEEPING;
     }
 }

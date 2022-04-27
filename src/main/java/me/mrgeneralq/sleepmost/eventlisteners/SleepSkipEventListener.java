@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
 
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.enums.SleepersOrAllType;
 import me.mrgeneralq.sleepmost.exceptions.InvalidSleepSkipCauseOccurredException;
 import me.mrgeneralq.sleepmost.Sleepmost;
@@ -9,6 +10,7 @@ import me.mrgeneralq.sleepmost.flags.SkipSoundFlag;
 import me.mrgeneralq.sleepmost.flags.UseSkipSoundFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
+import me.mrgeneralq.sleepmost.models.ConfigMessage;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -128,8 +130,15 @@ public class SleepSkipEventListener implements Listener {
         if (!titleEnabled) {
             return;
         }
-        String skippedTitle = (cause == NIGHT_TIME ? configService.getTitleNightSkippedTitle() : configService.getTitleStormSkippedTitle());
-        String skippedSubtitle = (cause == NIGHT_TIME ? configService.getTitleNightSkippedSubTitle() : configService.getTitleStormSkippedSubTitle());
+
+        String nightSkippedTitle = messageService.getMessage(MessageKey.NIGHT_SKIPPED_TITLE).setWorld(world).build();
+        String nightSkippedSubtitle = messageService.getMessage(MessageKey.NIGHT_SKIPPED_SUBTITLE).setWorld(world).build();
+        String stormSkippedTitle = messageService.getMessage(MessageKey.STORM_SKIPPED_TITLE).setWorld(world).build();
+        String stormSkippedSubtitle = messageService.getMessage(MessageKey.STORM_SKIPPED_SUBTITLE).setWorld(world).build();
+
+
+        String skippedTitle = (cause == NIGHT_TIME ? nightSkippedTitle : stormSkippedTitle);
+        String skippedSubtitle = (cause == NIGHT_TIME ? nightSkippedSubtitle : stormSkippedSubtitle);
 
         List<Player> playerList = (flagsRepository.getNonSleepingTitleFlag().getValueAt(world) ?
                 world.getPlayers():
@@ -137,7 +146,7 @@ public class SleepSkipEventListener implements Listener {
 
         for (Player p : playerList) {
 
-            MessageBuilder titleMessageBuilder = new MessageBuilder(skippedTitle, "")
+            MessageBuilder titleMessageBuilder = this.messageService.getMessage(skippedTitle)
                     .setPlayer(p)
                     .usePrefix(false)
                     .setWorld(world);

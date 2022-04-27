@@ -1,11 +1,11 @@
 package me.mrgeneralq.sleepmost.models;
 
-public class Message {
+public class ConfigMessage {
 
     private final String path;
     private final String defaultValue;
 
-    public Message(String path, String defaultValue) {
+    public ConfigMessage(String path, String defaultValue) {
         this.path = path;
         this.defaultValue = defaultValue;
     }

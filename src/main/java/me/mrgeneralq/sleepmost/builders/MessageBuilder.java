@@ -72,4 +72,14 @@ public class MessageBuilder {
 
         return this;
     }
+
+    public MessageBuilder setFlag(String flagName){
+        this.message = message.replaceAll("%flag%", flagName);
+        return this;
+    }
+
+    public MessageBuilder setPlayer(String playerName){
+        this.message = message.replaceAll("%player%", playerName);
+        return this;
+    }
 }

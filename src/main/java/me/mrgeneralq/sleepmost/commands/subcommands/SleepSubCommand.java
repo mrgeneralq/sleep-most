@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.enums.ConfigMessage;
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import org.bukkit.World;
@@ -31,13 +31,16 @@ public class SleepSubCommand implements ISubCommand {
         World world = player.getWorld();
 
         if(!this.flagsRepository.getSleepCmdFlag().getValueAt(world)){
-            this.messageService.sendMessage(player, this.messageService.getMessage(ConfigMessage.SLEEP_CMD_DISABLED).build());
+            this.messageService.sendMessage(player, this.messageService.getMessage(MessageKey.SLEEP_CMD_DISABLED).build());
             return true;
         }
 
         //check if sleep is allowed
         if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
-            String sleepPreventedConfigMessage = messageService.getMessage(ConfigMessage.SLEEP_PREVENTED).build();
+            String sleepPreventedConfigMessage = messageService.getMessage(MessageKey.SLEEP_PREVENTED)
+                    .setWorld(world)
+                    .setPlayer(player)
+                    .build();
 
             this.messageService.sendMessage(player, messageService.getMessage(sleepPreventedConfigMessage)
                     .setPlayer(player)
@@ -48,13 +51,17 @@ public class SleepSubCommand implements ISubCommand {
 
         //check if reset is required
         if (!this.sleepService.resetRequired(world)) {
-            this.messageService.sendMessage(player, messageService.getMessage(ConfigMessage.CANNOT_SLEEP_NOW).build());
+            this.messageService.sendMessage(player, messageService.getMessage(MessageKey.CANNOT_SLEEP_NOW)
+                    .setWorld(world)
+                    .build());
             return true;
         }
 
 
         if(this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()){
-            String insomniaMessage = this.messageService.getMessage(ConfigMessage.INSOMNIA_NOT_SLEEPY).build();
+            String insomniaMessage = this.messageService.getMessage(MessageKey.INSOMNIA_NOT_SLEEPY)
+                    .setWorld(world)
+                    .build();
             this.messageService.sendMessage(player, insomniaMessage);
             return true;
         }
