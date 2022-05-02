@@ -29,20 +29,20 @@ public class ResetFlagSubCommand implements ISubCommand
 	public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		
 		if(!CommandSenderUtils.hasWorld(sender)) {
-			this.messageService.sendMessage(sender, this.messageService.getMessage(MessageKey.NO_CONSOLE_COMMAND).build());
+			this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed(MessageKey.NO_CONSOLE_COMMAND).build());
 			return true;
 		}
 		
 		World world = CommandSenderUtils.getWorldOf(sender);
 
 		if(args.length != 2) {
-			this.messageService.sendMessage(sender, this.messageService.getMessage("&btype &e/sleepmost resetflag <flag>").build());
+			this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed("&btype &e/sleepmost resetflag <flag>").build());
 			return true;
 		}
 
 		if (!this.flagsRepository.flagExists(args[1])) {
 			this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed(MessageKey.FLAG_DOES_NOT_EXIST).setFlag(args[1]).build());
-			this.messageService.sendMessage(sender, this.messageService.getMessage("&bPossible flags are: &e%flagsNames")
+			this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed("&bPossible flags are: &e%flagsNames")
 					.setPlaceHolder("%flagsNames", StringUtils.join(this.flagsRepository.getFlagsNames(), ", "))
 					.build());
 			return true;

@@ -31,18 +31,18 @@ public class SleepSubCommand implements ISubCommand {
         World world = player.getWorld();
 
         if(!this.flagsRepository.getSleepCmdFlag().getValueAt(world)){
-            this.messageService.sendMessage(player, this.messageService.getMessage(MessageKey.SLEEP_CMD_DISABLED).build());
+            this.messageService.sendMessage(player, this.messageService.getMessagePrefixed(MessageKey.SLEEP_CMD_DISABLED).build());
             return true;
         }
 
         //check if sleep is allowed
         if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
-            String sleepPreventedConfigMessage = messageService.getMessage(MessageKey.SLEEP_PREVENTED)
+            String sleepPreventedConfigMessage = messageService.getMessagePrefixed(MessageKey.SLEEP_PREVENTED)
                     .setWorld(world)
                     .setPlayer(player)
                     .build();
 
-            this.messageService.sendMessage(player, messageService.getMessage(sleepPreventedConfigMessage)
+            this.messageService.sendMessage(player, messageService.getMessagePrefixed(sleepPreventedConfigMessage)
                     .setPlayer(player)
                     .setWorld(world)
                     .build());
@@ -51,7 +51,7 @@ public class SleepSubCommand implements ISubCommand {
 
         //check if reset is required
         if (!this.sleepService.resetRequired(world)) {
-            this.messageService.sendMessage(player, messageService.getMessage(MessageKey.CANNOT_SLEEP_NOW)
+            this.messageService.sendMessage(player, messageService.getMessagePrefixed(MessageKey.CANNOT_SLEEP_NOW)
                     .setWorld(world)
                     .build());
             return true;
@@ -59,7 +59,7 @@ public class SleepSubCommand implements ISubCommand {
 
 
         if(this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()){
-            String insomniaMessage = this.messageService.getMessage(MessageKey.INSOMNIA_NOT_SLEEPY)
+            String insomniaMessage = this.messageService.getMessagePrefixed(MessageKey.INSOMNIA_NOT_SLEEPY)
                     .setWorld(world)
                     .build();
             this.messageService.sendMessage(player, insomniaMessage);

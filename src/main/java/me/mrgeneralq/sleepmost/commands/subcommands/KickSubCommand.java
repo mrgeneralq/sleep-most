@@ -29,7 +29,7 @@ public class KickSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!CommandSenderUtils.hasWorld(sender)){
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_CONSOLE_COMMAND).build());
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.NO_CONSOLE_COMMAND).build());
             return true;
         }
 
@@ -48,14 +48,14 @@ public class KickSubCommand implements ISubCommand {
         }
 
         if(args.length < 2){
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.SPECIFY_PLAYER).build());
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.SPECIFY_PLAYER).build());
             return true;
         }
 
         String targetPlayerName = args[1];
 
         if(Bukkit.getPlayer(targetPlayerName) == null){
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.TARGET_NOT_ONLINE)
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.TARGET_NOT_ONLINE)
                     .setPlayer(player)
                     .build());
             return true;
@@ -64,7 +64,7 @@ public class KickSubCommand implements ISubCommand {
         Player targetPlayer = Bukkit.getPlayer(targetPlayerName);
 
         if(!this.sleepService.isPlayerAsleep(targetPlayer)){
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.TARGET_NOT_SLEEPING)
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.TARGET_NOT_SLEEPING)
                     .setPlayer(targetPlayer)
                     .build());
             return true;
@@ -76,7 +76,7 @@ public class KickSubCommand implements ISubCommand {
                 .setPlayer(targetPlayer)
                 .setWorld(targetPlayer.getWorld());
 
-        MessageBuilder youAreKickedMsg = this.messageService.getMessage(MessageKey.YOU_ARE_KICKED_FROM_BED)
+        MessageBuilder youAreKickedMsg = this.messageService.getMessagePrefixed(MessageKey.YOU_ARE_KICKED_FROM_BED)
                 .setPlayer(player);
 
         targetPlayer.teleport(targetPlayer.getLocation());
