@@ -29,7 +29,7 @@ public class MessageService implements IMessageService {
 	private final MessageRepository messageRepository;
 	private final IFlagsRepository flagsRepository;
 	private final MessageMapper messageMapper;
-	private final String prefix;
+	private String prefix;
 
 	//TODO remove IConfigRepo
 	public MessageService(IConfigRepository configRepository, MessageRepository messageRepository, IFlagsRepository flagsRepository) {
@@ -37,9 +37,7 @@ public class MessageService implements IMessageService {
 		this.messageRepository = messageRepository;
 		this.flagsRepository = flagsRepository;
 		this.messageMapper = MessageMapper.getMapper();
-
-		ConfigMessage prefixMessage = this.messageMapper.getMessage(MessageKey.PREFIX);
-		this.prefix = this.messageRepository.get(prefixMessage.getPath());
+		loadPrefix();
 	}
 
 
@@ -193,6 +191,14 @@ public class MessageService implements IMessageService {
 
 	@Override
 	public void reloadConfig(){
+
 		this.messageRepository.loadConfig();
+		loadPrefix();
+
+	}
+
+	private void loadPrefix(){
+		ConfigMessage prefixMessage = this.messageMapper.getMessage(MessageKey.PREFIX);
+		this.prefix = this.messageRepository.get(prefixMessage.getPath());
 	}
 }

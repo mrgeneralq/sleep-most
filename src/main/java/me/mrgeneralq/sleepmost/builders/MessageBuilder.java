@@ -24,7 +24,8 @@ public class MessageBuilder {
         }
 
         if(usePrefix)
-            finalMessage = String.format("%s %s", this.prefix, finalMessage).trim();
+            finalMessage = String.format("%s %s", this.prefix.trim(), finalMessage).trim();
+
 
         return ChatColorUtils.colorize(finalMessage);
     }

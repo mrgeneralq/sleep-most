@@ -18,7 +18,7 @@ import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 public class Sleepmost extends JavaPlugin {
 
 	private boolean EARLY_ACCESS_MODE = true;
-	private String EARLY_ACCESS_VERSION = "5.0.0-beta1";
+	private String EARLY_ACCESS_VERSION = "5.0.0-beta2";
 
 	private static Sleepmost instance;
 	private Bootstrapper bootstrapper;
