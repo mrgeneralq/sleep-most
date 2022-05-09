@@ -1,0 +1,10 @@
+# CUSTOMIZE MESSAGES FOR SLEEP-MOST.
+# To disable messages set the message to ''
+# Placeholders are available here --> https://sleepmost.pseudonova.com/placeholders/sleepmost-config
+# You need support? Join our Discord server --> https://discord.com/invite/KJ3kYX9
+
+
+# Add multiple messages to randomly select by doing the following:
+# message-type:
+#  - 'message1'
+#  - 'message2'
