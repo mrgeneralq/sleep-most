@@ -112,7 +112,7 @@ public class MessageService implements IMessageService {
 
 				if(p.hasPermission("sleepmost.kick")){
 
-					MessageBuilder kickMessage = this.getMessagePrefixed(MessageKey.KICK_OUT_BED);
+					MessageBuilder kickMessage = this.getMessage(MessageKey.KICK_OUT_BED);
 
 					TextComponent component = new TextComponent(kickMessage.build() + " ");
 					component.setColor(ChatColor.RED);
