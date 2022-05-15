@@ -23,21 +23,21 @@ public class EnableSubCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!CommandSenderUtils.hasWorld(sender)){
-            this.messageService.sendMessage(sender,messageService.getMessage(MessageKey.NO_CONSOLE_COMMAND).build());
+            this.messageService.sendMessage(sender,messageService.getMessagePrefixed(MessageKey.NO_CONSOLE_COMMAND).build());
             return true;
         }
 
         World world = CommandSenderUtils.getWorldOf(sender);
 
         if(this.sleepService.isEnabledAt(world)){
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.ALREADY_ENABLED_FOR_WORLD)
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.ALREADY_ENABLED_FOR_WORLD)
                     .setWorld(world)
                     .build());
            return true;
         }
 
         this.sleepService.enableAt(world);
-        this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.ENABLED_FOR_WORLD)
+        this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.ENABLED_FOR_WORLD)
                 .setWorld(world)
                 .build());
         return true;

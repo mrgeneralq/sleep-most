@@ -32,14 +32,14 @@ public class SetFlagCommand implements ISubCommand {
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if (!CommandSenderUtils.hasWorld(sender)) {
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_CONSOLE_COMMAND).build());
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.NO_CONSOLE_COMMAND).build());
             return true;
         }
 
         World world = CommandSenderUtils.getWorldOf(sender);
 
         if (!sleepService.isEnabledAt(world)) {
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.CURRENTLY_DISABLED)
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.CURRENTLY_DISABLED)
                     .setWorld(world)
                     .build());
             return true;
@@ -61,7 +61,7 @@ public class SetFlagCommand implements ISubCommand {
         ISleepFlag<?> sleepFlag = flagsRepository.getFlag(flagName);
 
         if (args.length < 3) {
-            this.messageService.sendMessage(sender, messageService.getMessage("&cMissing value! Use &e%usageCommand")
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed("&cMissing value! Use &e%usageCommand")
                     .setPlaceHolder("%usageCommand", getUsageCommand(sleepFlag))
                     .build());
             return true;
