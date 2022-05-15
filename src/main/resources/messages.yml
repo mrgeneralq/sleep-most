@@ -1,0 +1,10 @@
+# Customise messages for Sleep-Most.
+# To disable messages set the message to ''
+# Placeholders are available here --> https://
+# How do I use this file? Take a look at this page --> https://
+
+
+# Add multiple messages to randomly select by doing the following:
+# messagetype:
+#  - 'message1'
+#  - 'message2'

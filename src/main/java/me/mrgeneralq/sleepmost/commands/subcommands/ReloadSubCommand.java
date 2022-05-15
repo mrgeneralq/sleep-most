@@ -26,7 +26,7 @@ public class ReloadSubCommand implements ISubCommand {
         //reload the config
         this.sleepService.reloadConfig();
         this.messageService.reloadConfig();
-        sender.sendMessage(messageService.getMessage(MessageKey.CONFIG_RELOADED).build());
+        sender.sendMessage(messageService.getMessagePrefixed(MessageKey.CONFIG_RELOADED).build());
 
         //handle somehow illegal flags values
         this.flagService.handleProblematicFlags();

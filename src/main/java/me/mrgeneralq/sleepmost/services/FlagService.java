@@ -134,7 +134,7 @@ public class FlagService implements IFlagService {
     }
 
     private String createIllegalValueMessage(String flagName, Object value) {
-        return this.messageService.getMessage("&b> &a%flag% &f(was &c%illegalValue%f&f)")
+        return this.messageService.getMessagePrefixed("&b> &a%flag% &f(was &c%illegalValue%f&f)")
                 .setPlaceHolder("%flag%", flagName)
                 .setPlaceHolder("%illegalValue%", value.toString())
                 .build();

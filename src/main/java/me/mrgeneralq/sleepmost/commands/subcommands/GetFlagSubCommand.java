@@ -51,7 +51,7 @@ public class GetFlagSubCommand implements ISubCommand
 					.setFlag(args[1])
 					.build());
 
-			this.messageService.sendMessage(sender, this.messageService.getMessage("&bPossible flags are: &e%flagsNames")
+			this.messageService.sendMessage(sender, this.messageService.getMessagePrefixed("&bPossible flags are: &e%flagsNames")
 					.setPlaceHolder("%flagsNames", StringUtils.join(this.flagsRepository.getFlagsNames(), ", "))
 					.build());
 			return true;

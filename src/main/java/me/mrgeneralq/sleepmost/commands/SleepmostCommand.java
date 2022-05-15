@@ -67,7 +67,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		if(args.length == 0){
 
 			if(!sender.hasPermission("sleepmost.help")){
-				this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_PERMISSION_COMMAND).build());
+				this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.NO_PERMISSION_COMMAND).build());
 				return true;
 			}
 			sender.sendMessage(colorize("&b*********************************************"));
@@ -96,7 +96,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		// check if player has permission of command
 		if(!sender.hasPermission("sleepmost." + subCommandStr))
 		{
-			this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_PERMISSION_COMMAND).build());
+			this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.NO_PERMISSION_COMMAND).build());
 			return true;
 		}
 

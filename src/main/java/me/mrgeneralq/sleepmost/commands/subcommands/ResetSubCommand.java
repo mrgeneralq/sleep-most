@@ -23,7 +23,7 @@ public class ResetSubCommand implements ISubCommand
     public boolean executeCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
         if(!CommandSenderUtils.hasWorld(sender)){
-            this.messageService.sendMessage(sender, messageService.getMessage(MessageKey.NO_CONSOLE_COMMAND).build());
+            this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.NO_CONSOLE_COMMAND).build());
             return true;
         }
         World world = CommandSenderUtils.getWorldOf(sender);
