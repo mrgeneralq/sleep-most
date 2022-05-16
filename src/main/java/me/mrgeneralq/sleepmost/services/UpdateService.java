@@ -38,11 +38,6 @@ public class UpdateService implements IUpdateService {
 
     @Override
     public String getCurrentVersion() {
-
-        if(this.main.earlyAccessModeEnabled()){
-            return this.main.getEarlyAccessVersion();
-        }
-
         return main.getDescription().getVersion();
     }
 
