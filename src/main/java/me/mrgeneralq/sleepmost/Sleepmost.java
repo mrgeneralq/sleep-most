@@ -17,7 +17,6 @@ import me.mrgeneralq.sleepmost.statics.Bootstrapper;
 
 public class Sleepmost extends JavaPlugin {
 
-	private boolean EARLY_ACCESS_MODE = false;
 	private String EARLY_ACCESS_VERSION = "";
 
 	private static Sleepmost instance;
@@ -30,7 +29,7 @@ public class Sleepmost extends JavaPlugin {
 
 		instance = this;
 		saveDefaultConfig();
-		
+
 		//init metrics
 		final int bStatsID = 6212;
 		new Metrics(this, bStatsID);
@@ -79,9 +78,6 @@ public class Sleepmost extends JavaPlugin {
 		runPreTimerTasks();
 		runTimers(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService());
 
-		if(earlyAccessModeEnabled())
-			Bukkit.getConsoleSender().sendMessage(  "[Sleep-most]" + ChatColor.RED + "WARNING: This is an early access build. This build may contain bugs and untested features. Please update when this is available.");
-
 	}
 	
 	public static Sleepmost getInstance() {
@@ -112,11 +108,6 @@ public class Sleepmost extends JavaPlugin {
 			bossBarService.registerBossBar(world);
 			bossBarService.setVisible(world, false);
 		}
-	}
-
-
-	public boolean earlyAccessModeEnabled(){
-		return this.EARLY_ACCESS_MODE;
 	}
 
 	public String getEarlyAccessVersion(){

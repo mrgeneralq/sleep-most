@@ -151,9 +151,13 @@ public class SleepSkipEventListener implements Listener {
                     .usePrefix(false)
                     .setWorld(world);
 
+            MessageBuilder subTitleMessageBuilder = this.messageService.getMessage(skippedSubtitle)
+                    .setPlayer(p)
+                    .usePrefix(false)
+                    .setWorld(world);
+
             String playerTitle = titleMessageBuilder.build();
-            titleMessageBuilder.setMessage(skippedSubtitle);
-            String playerSubTitle = titleMessageBuilder.build();
+            String playerSubTitle = subTitleMessageBuilder.build();
 
             p.sendTitle(playerTitle, playerSubTitle, 10, 70, 20);
         }
