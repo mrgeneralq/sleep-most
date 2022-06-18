@@ -26,6 +26,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
     private final String lastSLeeperDisplayName;
     private final SleepSkipCause skipCause;
     private final List<OfflinePlayer> peopleWhoSlept;
+    private int iterationCount = 1;
 
     public NightcycleAnimationTask(ISleepService sleepService, IFlagsRepository flagsRepository, World world, Player lastSleeper, List<OfflinePlayer> peopleWhoSlept, SleepSkipCause sleepSkipCause) {
         this.sleepService = sleepService;

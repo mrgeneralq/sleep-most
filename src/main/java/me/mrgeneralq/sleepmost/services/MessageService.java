@@ -132,12 +132,17 @@ public class MessageService implements IMessageService {
 	public void sendNightSkippedMessage(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause) {
 		MessageKey message = (cause == SleepSkipCause.STORM ? MessageKey.STORM_SKIPPED : MessageKey.NIGHT_SKIPPED);
 
-		String skipMessage = this.getMessage(message)
-				.setPlayer(lastSleeperName)
-				.setWorld(world)
-				.build();
+		for(Player p: world.getPlayers()){
 
-		sendWorldMessage(world, skipMessage);
+			String skipMessage = this.getMessage(message)
+					.setPlayer(lastSleeperName)
+					.setWorld(world)
+					.build();
+
+			this.sendMessage(p , skipMessage);
+
+		}
+
 	}
 
 	@Override
@@ -194,6 +199,7 @@ public class MessageService implements IMessageService {
 
 		this.messageRepository.loadConfig();
 		loadPrefix();
+		this.createMissingMessages();
 
 	}
 
