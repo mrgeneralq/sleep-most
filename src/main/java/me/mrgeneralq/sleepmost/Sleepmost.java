@@ -65,7 +65,12 @@ public class Sleepmost extends JavaPlugin {
 		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getBossBarService()), this);
 		pm.registerEvents(new PlayerJoinEventListener(this, bootstrapper.getUpdateService(), bootstrapper.getMessageService(), bootstrapper.getBossBarService()), this);
 		pm.registerEvents(new EntitySpawnEventListener(bootstrapper.getFlagsRepository()), this);
-		pm.registerEvents(new TimeSkipEventListener(bootstrapper.getSleepService()), this);
+
+		if(ServerVersion.CURRENT_VERSION.hasTimeSkipEvent()){
+			pm.registerEvents(new TimeSkipEventListener(bootstrapper.getSleepService()), this);
+		}
+
+
 		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getMessageService(), bootstrapper.getConfigService(), bootstrapper.getSleepService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService()), this);
 		pm.registerEvents(new WorldChangeEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new PlayerBedLeaveEventListener(bootstrapper.getSleepService()), this);
