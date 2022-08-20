@@ -18,12 +18,19 @@ public class InsomniaSubCommand implements ISubCommand {
     private final IFlagsRepository flagsRepository;
     private final IMessageService messageService;
     private final IWorldPropertyService worldPropertyService;
+    private final ISleepMostPlayerService sleepMostPlayerService;
 
-    public InsomniaSubCommand(ISleepService sleepService, IFlagsRepository flagsRepository, IMessageService messageService, IWorldPropertyService worldPropertyService) {
+    public InsomniaSubCommand(ISleepService sleepService,
+                              IFlagsRepository flagsRepository,
+                              IMessageService messageService,
+                              IWorldPropertyService worldPropertyService,
+                              ISleepMostPlayerService sleepMostPlayerService
+    ) {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.messageService = messageService;
         this.worldPropertyService = worldPropertyService;
+        this.sleepMostPlayerService = sleepMostPlayerService;
     }
 
 
@@ -47,6 +54,7 @@ public class InsomniaSubCommand implements ISubCommand {
             this.messageService.sendMessage(player, notNightMessage);
             return true;
         }
+
 
         if (this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()) {
             String insomniaMessage = this.messageService.getMessagePrefixed(MessageKey.INSOMNIA_ALREADY_ENABLED)
