@@ -21,8 +21,8 @@ public class MessageMapper {
     public void loadMessages(){
 
         this.messages.put(MessageKey.PREFIX, new ConfigMessage("prefix", "&7[&bSleep-Most&7]"));
-        this.messages.put(MessageKey.NIGHT_SKIPPED, new ConfigMessage("user.night-skipped", "&aNight skipped"));
-        this.messages.put(MessageKey.STORM_SKIPPED, new ConfigMessage("user.storm-skipped", "&eStorm skipped"));
+        this.messages.put(MessageKey.NIGHT_SKIPPED, new ConfigMessage("user.night-skipped-chat", "&aNight skipped"));
+        this.messages.put(MessageKey.STORM_SKIPPED, new ConfigMessage("user.storm-skipped-chat", "&eStorm skipped"));
         this.messages.put(MessageKey.PLAYERS_LEFT_TO_SKIP_NIGHT, new ConfigMessage("user.players-left-night", "&bSleeping to skip night &f[&c%sleeping%/%required%&f]&b!"));
         this.messages.put(MessageKey.PLAYERS_LEFT_TO_SKIP_STORM, new ConfigMessage("user.players-left-storm", "&bSleeping to skip the storm &f[&c%sleeping%/%required%&f]&b!"));
         this.messages.put(MessageKey.SLEEP_PREVENTED, new ConfigMessage("user.sleep-prevented", "&cYou cannot sleep in this world!"));
@@ -61,10 +61,11 @@ public class MessageMapper {
         this.messages.put(MessageKey.FLAG_RESET_IN_WORLD, new ConfigMessage("flag.reset-in-world", "&bThe &e%flag% &bflag has been reset to &e%default-value%"));
         this.messages.put(MessageKey.FLAG_DOES_NOT_EXIST, new ConfigMessage("flag.not-exist", "&cThis flag does not exist"));
         //TITLES
-        this.messages.put(MessageKey.NIGHT_SKIPPED_TITLE, new ConfigMessage("user.night-skipped.title", "&aNight skipped"));
-        this.messages.put(MessageKey.NIGHT_SKIPPED_SUBTITLE, new ConfigMessage("user.night-skipped.subtitle", "&bGood morning sunshine!"));
-        this.messages.put(MessageKey.STORM_SKIPPED_TITLE, new ConfigMessage("user.storm-skipped.title", "&eStorm skipped"));
-        this.messages.put(MessageKey.STORM_SKIPPED_SUBTITLE, new ConfigMessage("user.storm-skipped.subtitle", "&bWhat a weather..."));
+        this.messages.put(MessageKey.NIGHT_SKIPPED_TITLE, new ConfigMessage("user.night-skipped-title", "&aNight skipped"));
+        this.messages.put(MessageKey.NIGHT_SKIPPED_SUBTITLE, new ConfigMessage("user.night-skipped-subtitle", "&bGood morning sunshine!"));
+        this.messages.put(MessageKey.STORM_SKIPPED_TITLE, new ConfigMessage("user.storm-skipped-title", "&eStorm skipped"));
+        this.messages.put(MessageKey.STORM_SKIPPED_SUBTITLE, new ConfigMessage("user.storm-skipped-subtitle", "&bWhat a weather..."));
+
 
     }
 
