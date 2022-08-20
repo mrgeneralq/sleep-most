@@ -25,6 +25,7 @@ public class Bootstrapper {
     private BossBarRepository bossBarRepository;
     private IBossBarService bossBarService;
     private IPlayerService playerService;
+    private ISleepMostPlayerService sleepMostPlayerService;
 
     private WorldPropertyRepository worldPropertyRepository;
     private IWorldPropertyService worldPropertyService;
@@ -38,6 +39,8 @@ public class Bootstrapper {
 
     public void initialize(Sleepmost main){
 
+
+        this.sleepMostPlayerService = new SleepMostPlayerService(new SleepMostPlayerRepository());
 
         this.configRepository = new ConfigRepository(main);
         this.configService = new ConfigService(main);
@@ -64,6 +67,8 @@ public class Bootstrapper {
 
         this.configMessageMapper = ConfigMessageMapper.getMapper();
         this.configMessageMapper.initialize(main);
+
+
 
         //check if boss bars are supported
         if(ServerVersion.CURRENT_VERSION.supportsBossBars()){
@@ -145,5 +150,9 @@ public class Bootstrapper {
 
     public IPlayerService getPlayerService() {
         return playerService;
+    }
+
+    public ISleepMostPlayerService getSleepMostPlayerService() {
+        return sleepMostPlayerService;
     }
 }
