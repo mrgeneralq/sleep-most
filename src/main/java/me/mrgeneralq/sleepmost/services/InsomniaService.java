@@ -34,4 +34,9 @@ public class InsomniaService implements IInsomniaService {
         for(Player p: world.getPlayers())
             this.disableInsomnia(p, world);
     }
+
+    @Override
+    public boolean hasInsomniaEnabled(Player player){
+        return this.sleepMostPlayerService.getPlayer(player).getInsomniaStatus(player.getWorld());
+    }
 }

@@ -3,6 +3,7 @@ package me.mrgeneralq.sleepmost.runnables;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.enums.TimeCycle;
 import me.mrgeneralq.sleepmost.events.TimeCycleChangeEvent;
+import me.mrgeneralq.sleepmost.interfaces.IInsomniaService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.IWorldPropertyService;
 import me.mrgeneralq.sleepmost.models.WorldProperty;
@@ -18,10 +19,12 @@ public class Heartbeat extends BukkitRunnable {
 
     private final ISleepService sleepService;
     private final IWorldPropertyService worldPropertyService;
+    private final IInsomniaService insomniaService;
 
-    public Heartbeat(ISleepService sleepService, IWorldPropertyService worldPropertyService) {
+    public Heartbeat(ISleepService sleepService, IWorldPropertyService worldPropertyService, IInsomniaService insomniaService) {
         this.sleepService = sleepService;
         this.worldPropertyService = worldPropertyService;
+        this.insomniaService = insomniaService;
     }
 
     @Override
@@ -31,7 +34,6 @@ public class Heartbeat extends BukkitRunnable {
         {
 
             updateTimeCycle(world);
-
             checkInsomniaResetRequired(world);
 
             SleepSkipCause cause = this.sleepService.getCurrentSkipCause(world);
@@ -47,9 +49,8 @@ public class Heartbeat extends BukkitRunnable {
 
         WorldProperty properties = this.worldPropertyService.getWorldProperties(world);
 
-        if(!sleepService.isNight(world) && properties.isInsomniaEnabled()) {
-            properties.setInsomniaEnabled(false);
-            this.worldPropertyService.setWorldProperty(world, properties);
+        if(!sleepService.isNight(world)) {
+            this.insomniaService.disableInsomnia(world);
         }
     }
 

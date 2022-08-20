@@ -3,6 +3,7 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 import me.mrgeneralq.sleepmost.enums.TimeCycle;
 import me.mrgeneralq.sleepmost.events.TimeCycleChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
+import me.mrgeneralq.sleepmost.interfaces.IInsomniaService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.IWorldPropertyService;
 import me.mrgeneralq.sleepmost.models.WorldProperty;
@@ -20,12 +21,14 @@ public class TimeCycleChangeEventListener implements Listener {
     private final ISleepService sleepService;
     private final IWorldPropertyService worldPropertyService;
     private final IFlagsRepository flagsRepository;
+    private final IInsomniaService insomniaService;
 
-    public TimeCycleChangeEventListener(ISleepService sleepService, IWorldPropertyService worldPropertyService, IFlagsRepository flagsRepository) {
+    public TimeCycleChangeEventListener(ISleepService sleepService, IWorldPropertyService worldPropertyService, IFlagsRepository flagsRepository, IInsomniaService insomniaService) {
 
         this.sleepService = sleepService;
         this.worldPropertyService = worldPropertyService;
         this.flagsRepository = flagsRepository;
+        this.insomniaService = insomniaService;
     }
 
     @EventHandler
@@ -65,8 +68,9 @@ public class TimeCycleChangeEventListener implements Listener {
         if(!randomInsomnia)
             return;
 
-            properties.setInsomniaEnabled(true);
-            this.worldPropertyService.setWorldProperty(world, properties);
+            this.insomniaService.enableInsomnia(world);
+            //properties.setInsomniaEnabled(true);
+            //this.worldPropertyService.setWorldProperty(world, properties);
     }
 
 }

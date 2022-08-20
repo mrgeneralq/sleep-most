@@ -9,6 +9,7 @@ public class WorldProperty {
     private TimeCycle timeCycle = TimeCycle.UNKNOWN;
 
 
+    /*
     public boolean isInsomniaEnabled() {
         return insomniaEnabled;
     }
@@ -16,6 +17,8 @@ public class WorldProperty {
     public void setInsomniaEnabled(boolean insomniaEnabled) {
         this.insomniaEnabled = insomniaEnabled;
     }
+
+     */
 
     public TimeCycle getTimeCycle() {
         return timeCycle;

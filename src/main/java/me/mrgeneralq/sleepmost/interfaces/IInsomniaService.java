@@ -10,4 +10,5 @@ public interface IInsomniaService {
     void disableInsomnia(Player player, World world);
     void disableInsomnia(World world);
 
+    boolean hasInsomniaEnabled(Player player);
 }

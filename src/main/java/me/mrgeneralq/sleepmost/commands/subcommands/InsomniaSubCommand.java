@@ -19,18 +19,21 @@ public class InsomniaSubCommand implements ISubCommand {
     private final IMessageService messageService;
     private final IWorldPropertyService worldPropertyService;
     private final ISleepMostPlayerService sleepMostPlayerService;
+    private final IInsomniaService insomniaService;
 
     public InsomniaSubCommand(ISleepService sleepService,
                               IFlagsRepository flagsRepository,
                               IMessageService messageService,
                               IWorldPropertyService worldPropertyService,
-                              ISleepMostPlayerService sleepMostPlayerService
+                              ISleepMostPlayerService sleepMostPlayerService,
+                              IInsomniaService insomniaService
     ) {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.messageService = messageService;
         this.worldPropertyService = worldPropertyService;
         this.sleepMostPlayerService = sleepMostPlayerService;
+        this.insomniaService = insomniaService;
     }
 
 
@@ -56,6 +59,7 @@ public class InsomniaSubCommand implements ISubCommand {
         }
 
 
+        /*
         if (this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()) {
             String insomniaMessage = this.messageService.getMessagePrefixed(MessageKey.INSOMNIA_ALREADY_ENABLED)
                     .setWorld(world)
@@ -63,11 +67,9 @@ public class InsomniaSubCommand implements ISubCommand {
             this.messageService.sendMessage(player, insomniaMessage);
             return true;
         }
+         */
 
-        WorldProperty property = this.worldPropertyService.getWorldProperties(world);
-        property.setInsomniaEnabled(true);
-
-        this.worldPropertyService.setWorldProperty(world, property);
+        this.insomniaService.enableInsomnia(world);
 
         String insomniaMessage = this.messageService.getMessagePrefixed(MessageKey.INSOMNIA_ENABLED)
                 .setWorld(world)

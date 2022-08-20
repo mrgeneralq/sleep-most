@@ -27,8 +27,9 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	private final IBossBarService bossBarService;
 	private final IWorldPropertyService worldPropertyService;
 	private final ISleepMostPlayerService sleepMostPlayerService;
+	private final IInsomniaService insomniaService;
 
-	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository, IConfigRepository configRepository, ICooldownService cooldownService, IBossBarService bossBarService, IWorldPropertyService worldPropertyService, ISleepMostPlayerService sleepMostPlayerService){
+	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository, IConfigRepository configRepository, ICooldownService cooldownService, IBossBarService bossBarService, IWorldPropertyService worldPropertyService, ISleepMostPlayerService sleepMostPlayerService, IInsomniaService insomniaService){
 		this.sleepService = sleepService;
 		this.messageService = messageService;
 		this.updateService = updateService;
@@ -39,6 +40,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		this.bossBarService = bossBarService;
 		this.worldPropertyService = worldPropertyService;
 		this.sleepMostPlayerService = sleepMostPlayerService;
+		this.insomniaService = insomniaService;
 		this.registerSubCommands();
 	}
 
@@ -52,9 +54,9 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("reset", new ResetSubCommand(this.messageService, this.flagService));
 		subCommands.put("setops", new SetOnePlayerSleepCommand(this.sleepService, this.messageService,this.flagService, this.flagsRepository));
 		subCommands.put("bed", new BedSubCommand(this.sleepService,this.messageService));
-		subCommands.put("sleep", new SleepSubCommand(this.sleepService,this.flagsRepository,this.messageService,this.cooldownService, this.bossBarService, this.worldPropertyService));
+		subCommands.put("sleep", new SleepSubCommand(this.sleepService,this.flagsRepository,this.messageService,this.cooldownService, this.bossBarService, this.worldPropertyService, this.insomniaService));
 		subCommands.put("kick", new KickSubCommand(this.sleepService,this.messageService, this.flagsRepository));
-		subCommands.put("insomnia", new InsomniaSubCommand(this.sleepService, this.flagsRepository, this.messageService, this.worldPropertyService, this.sleepMostPlayerService));
+		subCommands.put("insomnia", new InsomniaSubCommand(this.sleepService, this.flagsRepository, this.messageService, this.worldPropertyService, this.sleepMostPlayerService, this.insomniaService));
 		subCommands.put("getflag", new GetFlagSubCommand(this.messageService, this.flagsRepository));
 		subCommands.put("resetflag", new ResetFlagSubCommand(this.messageService, this.flagsRepository, this.flagService));
 		

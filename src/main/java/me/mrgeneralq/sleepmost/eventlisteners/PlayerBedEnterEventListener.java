@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.services.InsomniaService;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -19,13 +20,15 @@ public class PlayerBedEnterEventListener implements Listener {
     private final IFlagsRepository flagsRepository;
     private final IBossBarService bossBarService;
     private final IWorldPropertyService worldPropertyService;
+    private final IInsomniaService insomniaService;
 
     public PlayerBedEnterEventListener(ISleepService sleepService,
                                        IMessageService messageService,
                                        ICooldownService cooldownService,
                                        IFlagsRepository flagsRepository,
                                        IBossBarService bossBarService,
-                                       IWorldPropertyService worldPropertyService
+                                       IWorldPropertyService worldPropertyService,
+                                       IInsomniaService insomniaService
     ) {
         this.sleepService = sleepService;
         this.messageService = messageService;
@@ -33,6 +36,7 @@ public class PlayerBedEnterEventListener implements Listener {
         this.flagsRepository = flagsRepository;
         this.bossBarService = bossBarService;
         this.worldPropertyService = worldPropertyService;
+        this.insomniaService = insomniaService;
         this.dataContainer = DataContainer.getContainer();
     }
 
@@ -74,7 +78,7 @@ public class PlayerBedEnterEventListener implements Listener {
         }
 
 
-        if(this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()){
+        if(this.insomniaService.hasInsomniaEnabled(player)){
             String insomniaMessage = this.messageService.getMessagePrefixed(MessageKey.INSOMNIA_NOT_SLEEPY)
                     .setWorld(world)
                     .setPlayer(player)

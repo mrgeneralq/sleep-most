@@ -12,4 +12,5 @@ public interface ISleepMostPlayerService {
     void unregisterPlayer(OfflinePlayer playerId);
     void registerNewPlayer(OfflinePlayer offlinePlayer);
 
+    boolean playerExists(OfflinePlayer offlinePlayer);
 }

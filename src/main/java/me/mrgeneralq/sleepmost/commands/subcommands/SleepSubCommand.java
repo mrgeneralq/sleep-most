@@ -14,12 +14,14 @@ public class SleepSubCommand implements ISubCommand {
     private final IFlagsRepository flagsRepository;
     private final IMessageService messageService;
     private final IWorldPropertyService worldPropertyService;
+    private final IInsomniaService insomniaService;
 
-    public SleepSubCommand(ISleepService sleepService, IFlagsRepository flagsRepository, IMessageService messageService, ICooldownService cooldownService, IBossBarService bossBarService, IWorldPropertyService worldPropertyService) {
+    public SleepSubCommand(ISleepService sleepService, IFlagsRepository flagsRepository, IMessageService messageService, ICooldownService cooldownService, IBossBarService bossBarService, IWorldPropertyService worldPropertyService, IInsomniaService insomniaService) {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.messageService = messageService;
         this.worldPropertyService = worldPropertyService;
+        this.insomniaService = insomniaService;
     }
 
 
@@ -58,7 +60,7 @@ public class SleepSubCommand implements ISubCommand {
         }
 
 
-        if(this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()){
+        if(this.insomniaService.hasInsomniaEnabled(player)){
             String insomniaMessage = this.messageService.getMessagePrefixed(MessageKey.INSOMNIA_NOT_SLEEPY)
                     .setWorld(world)
                     .build();

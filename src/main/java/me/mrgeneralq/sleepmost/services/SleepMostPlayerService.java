@@ -33,4 +33,9 @@ public class SleepMostPlayerService implements ISleepMostPlayerService {
         SleepMostPlayer player = new SleepMostPlayer(offlinePlayer);
         this.repository.set(offlinePlayer.getUniqueId(), player);
     }
+
+    @Override
+    public boolean playerExists(OfflinePlayer offlinePlayer){
+        return this.repository.exists(offlinePlayer.getUniqueId());
+    }
 }

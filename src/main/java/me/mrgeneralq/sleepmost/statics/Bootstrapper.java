@@ -26,6 +26,7 @@ public class Bootstrapper {
     private IBossBarService bossBarService;
     private IPlayerService playerService;
     private ISleepMostPlayerService sleepMostPlayerService;
+    private IInsomniaService insomniaService;
 
     private WorldPropertyRepository worldPropertyRepository;
     private IWorldPropertyService worldPropertyService;
@@ -41,7 +42,7 @@ public class Bootstrapper {
 
 
         this.sleepMostPlayerService = new SleepMostPlayerService(new SleepMostPlayerRepository());
-
+        this.insomniaService = new InsomniaService(this.sleepMostPlayerService);
         this.configRepository = new ConfigRepository(main);
         this.configService = new ConfigService(main);
         this.flagsRepository = new FlagsRepository(configRepository);
@@ -154,5 +155,9 @@ public class Bootstrapper {
 
     public ISleepMostPlayerService getSleepMostPlayerService() {
         return sleepMostPlayerService;
+    }
+
+    public IInsomniaService getInsomniaService() {
+        return insomniaService;
     }
 }

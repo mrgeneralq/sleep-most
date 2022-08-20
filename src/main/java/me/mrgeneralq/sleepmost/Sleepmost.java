@@ -7,7 +7,6 @@ import me.mrgeneralq.sleepmost.runnables.Heartbeat;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -54,11 +53,11 @@ public class Sleepmost extends JavaPlugin {
 			this.registerBossBars();
 
 		//init commands
-		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagService(), bootstrapper.getFlagsRepository(), bootstrapper.getConfigRepository(), bootstrapper.getCooldownService(), bootstrapper.getBossBarService(), bootstrapper.getWorldPropertyService(), bootstrapper.getSleepMostPlayerService());
+		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagService(), bootstrapper.getFlagsRepository(), bootstrapper.getConfigRepository(), bootstrapper.getCooldownService(), bootstrapper.getBossBarService(), bootstrapper.getWorldPropertyService(), bootstrapper.getSleepMostPlayerService(), bootstrapper.getInsomniaService());
 		getCommand("sleepmost").setExecutor(sleepmostCommand);
 
 		PluginManager pm = Bukkit.getPluginManager();
-		pm.registerEvents(new PlayerBedEnterEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getWorldPropertyService()), this);
+		pm.registerEvents(new PlayerBedEnterEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getWorldPropertyService(), bootstrapper.getInsomniaService()), this);
 		pm.registerEvents(new PlayerQuitEventListener(bootstrapper.getCooldownService(), bootstrapper.getSleepService(), bootstrapper.getBossBarService(), bootstrapper.getSleepMostPlayerService()), this);
 
 		if(ServerVersion.CURRENT_VERSION.hasTimeSkipEvent())
@@ -79,12 +78,12 @@ public class Sleepmost extends JavaPlugin {
 		pm.registerEvents(new PlayerBedLeaveEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new WorldLoadEventListener(bootstrapper.getBossBarService(), bootstrapper.getWorldPropertyService()),this);
 		pm.registerEvents(new PlayerSleepStateChangeEventListener(this, bootstrapper.getSleepService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService()), this);
-		pm.registerEvents(new TimeCycleChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService(), bootstrapper.getFlagsRepository()),this );
+		pm.registerEvents(new TimeCycleChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService(), bootstrapper.getFlagsRepository(), bootstrapper.getInsomniaService()),this );
 
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
 
 		runPreTimerTasks();
-		runTimers(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService());
+		runTimers(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService(), bootstrapper.getInsomniaService());
 
 
 	}
@@ -104,9 +103,9 @@ public class Sleepmost extends JavaPlugin {
 		}
 	}
 
-	private void runTimers(ISleepService sleepService, IWorldPropertyService worldPropertyService){
+	private void runTimers(ISleepService sleepService, IWorldPropertyService worldPropertyService, IInsomniaService insomniaService){
 
-		new Heartbeat(sleepService, worldPropertyService).runTaskTimer(this, 20,20);
+		new Heartbeat(sleepService, worldPropertyService, insomniaService).runTaskTimer(this, 20,20);
 	}
 
 	private void notifyIfNewUpdateExists(IUpdateService updateService) 
