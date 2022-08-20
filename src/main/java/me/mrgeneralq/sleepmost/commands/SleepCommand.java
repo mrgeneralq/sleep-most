@@ -30,7 +30,14 @@ public class SleepCommand implements CommandExecutor {
             this.messageService.sendMessage(sender, messageService.getMessagePrefixed(MessageKey.NO_CONSOLE_COMMAND).build());
             return true;
         }
+
         Player player = (Player) sender;
+
+        if(this.sleepService.isEnabledAt(player.getWorld())){
+            this.messageService.sendMessage(player, this.messageService.getMessagePrefixed(MessageKey.NOT_ENABLED_FOR_WORLD).build());
+            return true;
+        }
+
 
         if (!player.hasPermission("sleepmost.sleep")) {
             this.messageService.sendMessage(player, this.messageService.getMessagePrefixed(MessageKey.NO_PERMISSION_COMMAND).build());
