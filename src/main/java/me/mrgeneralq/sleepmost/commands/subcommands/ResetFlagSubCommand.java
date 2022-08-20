@@ -1,6 +1,7 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.flags.types.TabCompletedFlag;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -12,6 +13,11 @@ import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ResetFlagSubCommand implements ISubCommand
 {
@@ -57,7 +63,26 @@ public class ResetFlagSubCommand implements ISubCommand
 				.setPlaceHolder("%default-value%", sleepFlag.getValueAt(world).toString())
 				.build());
 
-		
 		return true;
+	}
+
+	@Override
+	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, List<String> args) {
+		if (args.size() == 1) {
+			return this.flagsRepository.getFlagsNames().stream()
+					.filter(flag -> flag.contains(args.get(0)) || flag.equalsIgnoreCase(args.get(0)))
+					.collect(Collectors.toList());
+		}
+
+		if (args.size() == 2) {
+			ISleepFlag<?> flag = flagsRepository.getFlags().stream()
+					.filter(f -> f.getName().equalsIgnoreCase(args.get(0)))
+					.findFirst().orElse(null);
+
+			if (flag instanceof TabCompletedFlag<?>) {
+				return ((TabCompletedFlag<?>) flag).tabComplete(sender, command, alias, args.subList(1, args.size()));
+			}
+		}
+		return new ArrayList<>();
 	}
 }
