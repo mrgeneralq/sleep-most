@@ -40,7 +40,7 @@ public class PlayerJoinEventListener implements Listener {
         Player player = e.getPlayer();
 
         //if player does not exist yet, register. Avoid players disconnecting and reconnecting to reset their profile
-        if(this.sleepMostPlayerService.playerExists(player))
+        if(!this.sleepMostPlayerService.playerExists(player))
         this.sleepMostPlayerService.registerNewPlayer(player);
 
 
