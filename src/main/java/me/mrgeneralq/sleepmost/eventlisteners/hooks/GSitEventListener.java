@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.eventlisteners.hooks;
 
+import dev.geco.gsit.api.event.PlayerGetUpPoseEvent;
 import dev.geco.gsit.api.event.PlayerPoseEvent;
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
@@ -46,8 +47,26 @@ public class GSitEventListener implements Listener {
         World world = player.getWorld();
         Pose pose = e.getPoseSeat().getPose();
 
+
+        if(!this.sleepService.isEnabledAt(world))
+            return;
+
+        if(!this.sleepService.isSleepingPossible(world))
+            return;
+
+        if(!this.flagsRepository.getGSitHookFlag().getValueAt(world))
+            return;
+
+        if(!this.flagsRepository.getGSitSleepFlag().getValueAt(world))
+            return;
+
         if(pose != Pose.SLEEPING)
             return;
+
+
+        if(!this.sleepService.isSleepingPossible(world))
+            return;
+
 
         //check if sleeping during storms is allowed
         if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {
@@ -87,6 +106,11 @@ public class GSitEventListener implements Listener {
 
         if(!this.sleepService.isPlayerAsleep(player))
             this.sleepService.setSleeping(player , true);
+    }
 
+    @EventHandler
+    public void onGetUpPose(PlayerGetUpPoseEvent e){
+        Player player = e.getPlayer();
+        this.sleepService.setSleeping(player, false);
     }
 }

@@ -1,6 +1,8 @@
 package me.mrgeneralq.sleepmost.interfaces;
 
 import me.mrgeneralq.sleepmost.flags.*;
+import me.mrgeneralq.sleepmost.flags.gsit.GSitHookFlag;
+import me.mrgeneralq.sleepmost.flags.gsit.GSitSleepFlag;
 
 import java.util.List;
 import java.util.Set;
@@ -58,4 +60,8 @@ public interface IFlagsRepository
     AllowKickFlag getAllowKickFlag();
 
     InsomniaMilkFlag getInsomniaMilkFlag();
+
+    GSitHookFlag getGSitHookFlag();
+
+    GSitSleepFlag getGSitSleepFlag();
 }

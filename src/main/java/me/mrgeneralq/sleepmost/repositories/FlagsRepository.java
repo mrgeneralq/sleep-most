@@ -2,8 +2,11 @@ package me.mrgeneralq.sleepmost.repositories;
 
 import me.mrgeneralq.sleepmost.flags.*;
 import me.mrgeneralq.sleepmost.flags.controllers.ConfigFlagController;
+import me.mrgeneralq.sleepmost.flags.gsit.GSitHookFlag;
+import me.mrgeneralq.sleepmost.flags.gsit.GSitSleepFlag;
 import me.mrgeneralq.sleepmost.flags.types.AbstractFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.managers.HookManager;
 
 import java.util.*;
 
@@ -48,6 +51,10 @@ public class FlagsRepository implements IFlagsRepository {
     private final AllowKickFlag allowKickFlag;
     private final InsomniaMilkFlag insomniaMilkFlag;
 
+    //DEPENDING ON HOOK
+    private GSitHookFlag gSitHookFlag;
+    private GSitSleepFlag gSitSleepFlag;
+
     public FlagsRepository(IConfigRepository configRepository) {
         setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.mobNoTargetFlag = new MobNoTargetFlag(new ConfigFlagController<>(configRepository)));
@@ -83,6 +90,12 @@ public class FlagsRepository implements IFlagsRepository {
         setupFlag(this.phantomResetAudienceFlag = new PhantomResetAudienceFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.allowKickFlag = new AllowKickFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.insomniaMilkFlag = new InsomniaMilkFlag(new ConfigFlagController<>(configRepository)));
+
+        if(HookManager.isGSitInstalled()){
+            setupFlag(this.gSitHookFlag = new GSitHookFlag(new ConfigFlagController<>(configRepository)));
+            setupFlag(this.gSitSleepFlag = new GSitSleepFlag(new ConfigFlagController<>(configRepository)));
+        }
+
     }
 
     @Override
@@ -277,6 +290,16 @@ public class FlagsRepository implements IFlagsRepository {
     @Override
     public InsomniaMilkFlag getInsomniaMilkFlag() {
         return insomniaMilkFlag;
+    }
+
+    @Override
+    public GSitHookFlag getGSitHookFlag() {
+        return gSitHookFlag;
+    }
+
+    @Override
+    public GSitSleepFlag getGSitSleepFlag() {
+        return gSitSleepFlag;
     }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {

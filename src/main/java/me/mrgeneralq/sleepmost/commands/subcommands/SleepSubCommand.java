@@ -52,7 +52,7 @@ public class SleepSubCommand implements ISubCommand {
         }
 
         //check if reset is required
-        if (!this.sleepService.resetRequired(world)) {
+        if (!this.sleepService.isSleepingPossible(world)) {
             this.messageService.sendMessage(player, messageService.getMessagePrefixed(MessageKey.CANNOT_SLEEP_NOW)
                     .setWorld(world)
                     .build());

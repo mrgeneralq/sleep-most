@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.models;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 
@@ -9,7 +10,7 @@ import java.util.UUID;
 
 public class SleepMostPlayer {
 
-    private final OfflinePlayer player;
+    private final UUID playerUUID;
 
     private final Map<UUID, Boolean> worldInsomniaStatus = new HashMap<>();
 
@@ -18,11 +19,11 @@ public class SleepMostPlayer {
 
 
     public SleepMostPlayer(OfflinePlayer player) {
-        this.player = player;
+        this.playerUUID = player.getUniqueId();
     }
 
-    public OfflinePlayer getPlayer() {
-        return player;
+    public OfflinePlayer getPlayerUUID() {
+        return Bukkit.getOfflinePlayer(this.playerUUID);
     }
 
     public boolean isHasInsomnia() {

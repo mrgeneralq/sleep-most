@@ -22,7 +22,7 @@ public class SleepMostPlayerService implements ISleepMostPlayerService {
 
     @Override
     public void updatePlayer(SleepMostPlayer player) {
-        this.repository.set(player.getPlayer().getUniqueId(), player);
+        this.repository.set(player.getPlayerUUID().getUniqueId(), player);
     }
 
     @Override

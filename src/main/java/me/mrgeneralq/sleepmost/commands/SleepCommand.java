@@ -66,7 +66,7 @@ public class SleepCommand implements CommandExecutor {
             return true;
         }
 
-        if (!this.sleepService.resetRequired(world)) {
+        if (!this.sleepService.isSleepingPossible(world)) {
             this.messageService.sendMessage(player, messageService.getMessagePrefixed(MessageKey.CANNOT_SLEEP_NOW)
                     .setPlayer(player)
                     .setWorld(world)

@@ -6,7 +6,6 @@ import me.mrgeneralq.sleepmost.enums.SleepState;
 import me.mrgeneralq.sleepmost.events.PlayerSleepStateChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTask;
-import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
@@ -17,7 +16,6 @@ import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -229,7 +227,7 @@ public class SleepService implements ISleepService {
 
 
     @Override
-    public boolean resetRequired(World world) {
+    public boolean isSleepingPossible(World world) {
         return isNight(world) || world.isThundering();
     }
 
@@ -254,7 +252,7 @@ public class SleepService implements ISleepService {
     @Override
     public boolean shouldSkip(World world) {
         return isEnabledAt(world) &&
-                resetRequired(world) &&
+                isSleepingPossible(world) &&
                 isRequiredCountReached(world);
     }
 

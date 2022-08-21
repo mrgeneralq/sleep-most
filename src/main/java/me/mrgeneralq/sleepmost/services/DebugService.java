@@ -41,10 +41,10 @@ public class DebugService implements IDebugService {
         for(SleepMostPlayer p: this.sleepMostPlayerService.getAllPlayers()
                 .stream()
                 .filter(SleepMostPlayer::hasDebugMode)
-                .filter(p -> p.getPlayer().isOnline())
+                .filter(p -> p.getPlayerUUID().isOnline())
                 .collect(Collectors.toList())){
 
-            p.getPlayer().getPlayer().sendMessage(ChatColorUtils.colorize(logMsg));
+            p.getPlayerUUID().getPlayer().sendMessage(ChatColorUtils.colorize(logMsg));
 
         }
 

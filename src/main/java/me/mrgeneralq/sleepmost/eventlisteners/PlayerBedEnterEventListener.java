@@ -49,6 +49,12 @@ public class PlayerBedEnterEventListener implements Listener {
         if(e.isCancelled())
             return;
 
+        if(!this.sleepService.isEnabledAt(world))
+            return;
+
+        if(!this.sleepService.isSleepingPossible(world))
+            return;
+
         //check if sleeping during storms is allowed
         if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {
 
