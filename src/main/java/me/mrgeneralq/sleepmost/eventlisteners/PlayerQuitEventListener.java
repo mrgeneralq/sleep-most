@@ -29,7 +29,6 @@ public class PlayerQuitEventListener implements Listener {
     public void onPlayerLeave(PlayerQuitEvent e){
 
         Player player = e.getPlayer();
-        this.sleepMostPlayerService.unregisterPlayer(player);
 
         if(ServerVersion.CURRENT_VERSION.supportsBossBars())
         this.bossBarService.unregisterPlayer(player.getWorld(), player);

@@ -56,4 +56,6 @@ public interface IFlagsRepository
     PhantomResetAudienceFlag getPhantomResetAudienceFlag();
 
     AllowKickFlag getAllowKickFlag();
+
+    InsomniaMilkFlag getInsomniaMilkFlag();
 }

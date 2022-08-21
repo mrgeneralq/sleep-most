@@ -50,8 +50,12 @@ public class MessageMapper {
         this.messages.put(MessageKey.TARGET_NOT_SLEEPING, new ConfigMessage("admin.target-not-sleeping", "&cThe player is not sleeping"));
         this.messages.put(MessageKey.TARGET_NOT_ONLINE, new ConfigMessage("admin.target-not-online", "&cThe player is not online"));
         this.messages.put(MessageKey.INSOMNIA_NOT_SLEEPY, new ConfigMessage("user.insomnia-not-sleepy", "&cYou don`t feel sleepy at the moment"));
+        this.messages.put(MessageKey.INSOMNIA_FEELING_SLEEPY, new ConfigMessage("user.insomnia-feeling-sleepy", "&bYou start feeling sleepy ..."));
+
         this.messages.put(MessageKey.INSOMNIA_ALREADY_ENABLED, new ConfigMessage("admin.insomnia-already-enabled", "&cInsomnia is already enabled in this world"));
         this.messages.put(MessageKey.INSOMNIA_ENABLED, new ConfigMessage("admin.insomnia-enabled", "&bInsomnia is enabled"));
+
+
         this.messages.put(MessageKey.CMD_ONLY_DURING_NIGHT, new ConfigMessage("admin.only-during-night-command", "&cThis command can only be used during the night"));
         this.messages.put(MessageKey.KICK_OUT_BED, new ConfigMessage("admin.kick-out-bed", "&c&l[kick out]"));
         this.messages.put(MessageKey.KICKED_PLAYER_FROM_BED, new ConfigMessage("user.kicked-player-from-bed", "&bYou kicked &a%player% &bout of their bed"));
@@ -65,6 +69,7 @@ public class MessageMapper {
         this.messages.put(MessageKey.NIGHT_SKIPPED_SUBTITLE, new ConfigMessage("user.night-skipped-subtitle", "&bGood morning sunshine!"));
         this.messages.put(MessageKey.STORM_SKIPPED_TITLE, new ConfigMessage("user.storm-skipped-title", "&eStorm skipped"));
         this.messages.put(MessageKey.STORM_SKIPPED_SUBTITLE, new ConfigMessage("user.storm-skipped-subtitle", "&bWhat a weather..."));
+
 
 
     }
