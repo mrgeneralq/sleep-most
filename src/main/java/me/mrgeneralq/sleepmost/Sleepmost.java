@@ -81,10 +81,9 @@ public class Sleepmost extends JavaPlugin {
 		pm.registerEvents(new TimeCycleChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService(), bootstrapper.getFlagsRepository(), bootstrapper.getInsomniaService()),this );
 
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
-
+		runPlayerTasks();
 		runPreTimerTasks();
 		runTimers(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService(), bootstrapper.getInsomniaService());
-
 
 	}
 	
