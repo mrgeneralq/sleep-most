@@ -53,7 +53,7 @@ public class Sleepmost extends JavaPlugin {
 			this.registerBossBars();
 
 		//init commands
-		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagService(), bootstrapper.getFlagsRepository(), bootstrapper.getConfigRepository(), bootstrapper.getCooldownService(), bootstrapper.getBossBarService(), bootstrapper.getWorldPropertyService(), bootstrapper.getSleepMostPlayerService(), bootstrapper.getInsomniaService());
+		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagService(), bootstrapper.getFlagsRepository(), bootstrapper.getConfigRepository(), bootstrapper.getCooldownService(), bootstrapper.getBossBarService(), bootstrapper.getWorldPropertyService(), bootstrapper.getSleepMostPlayerService(), bootstrapper.getInsomniaService(), bootstrapper.getDebugService());
 		getCommand("sleepmost").setExecutor(sleepmostCommand);
 
 		PluginManager pm = Bukkit.getPluginManager();

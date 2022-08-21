@@ -27,6 +27,7 @@ public class Bootstrapper {
     private IPlayerService playerService;
     private ISleepMostPlayerService sleepMostPlayerService;
     private IInsomniaService insomniaService;
+    private IDebugService debugService;
 
     private WorldPropertyRepository worldPropertyRepository;
     private IWorldPropertyService worldPropertyService;
@@ -42,6 +43,10 @@ public class Bootstrapper {
 
 
         this.sleepMostPlayerService = new SleepMostPlayerService(new SleepMostPlayerRepository());
+
+        //do not move lower. Debugging required in several spots
+        this.debugService = new DebugService(this.sleepMostPlayerService);
+
         this.insomniaService = new InsomniaService(this.sleepMostPlayerService);
         this.configRepository = new ConfigRepository(main);
         this.configService = new ConfigService(main);
@@ -56,20 +61,16 @@ public class Bootstrapper {
         this.cooldownRepository = new CooldownRepository();
         this.cooldownService = new CooldownService(cooldownRepository, configRepository);
 
-
         this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService);
 
         this.playerService = new PlayerService();
-
-        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService);
+        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService, debugService);
 
         this.worldPropertyRepository = new WorldPropertyRepository();
         this.worldPropertyService = new WorldPropertyService(this.worldPropertyRepository);
 
         this.configMessageMapper = ConfigMessageMapper.getMapper();
         this.configMessageMapper.initialize(main);
-
-
 
         //check if boss bars are supported
         if(ServerVersion.CURRENT_VERSION.supportsBossBars()){
@@ -159,5 +160,9 @@ public class Bootstrapper {
 
     public IInsomniaService getInsomniaService() {
         return insomniaService;
+    }
+
+    public IDebugService getDebugService() {
+        return debugService;
     }
 }

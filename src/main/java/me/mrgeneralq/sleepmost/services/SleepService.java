@@ -6,19 +6,18 @@ import me.mrgeneralq.sleepmost.enums.SleepState;
 import me.mrgeneralq.sleepmost.events.PlayerSleepStateChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTask;
+import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,6 +29,7 @@ public class SleepService implements ISleepService {
     private final IFlagsRepository flagsRepository;
     private final IFlagService flagService;
     private final IPlayerService playerService;
+    private final IDebugService debugService;
     private final DataContainer dataContainer = DataContainer.getContainer();
 
     private static final int
@@ -42,7 +42,8 @@ public class SleepService implements ISleepService {
             IConfigRepository configRepository,
             IFlagsRepository flagsRepository,
             IFlagService flagService,
-            IPlayerService playerService
+            IPlayerService playerService,
+            IDebugService debugService
     ) {
 
         this.main = main;
@@ -51,6 +52,7 @@ public class SleepService implements ISleepService {
         this.flagsRepository = flagsRepository;
         this.flagService = flagService;
         this.playerService = playerService;
+        this.debugService = debugService;
     }
 
     @Override
@@ -86,36 +88,60 @@ public class SleepService implements ISleepService {
     @Override
     public int getPlayerCountInWorld(World world) {
 
-        Stream<Player> playersStream = world.getPlayers().stream();
+
+        List<Player> playersList = world.getPlayers();
+
+
+        this.debugService.print(String.format("&c[%s] &fTotal players[%s]: &e%s", world.getName(), playersList.size() , getJoinedStream(playersList)));
 
         //exclude fake players
-        playersStream = playersStream.filter(this.playerService::isRealPlayer);
+        playersList = playersList.stream().filter(this.playerService::isRealPlayer).collect(Collectors.toList());
+        this.debugService.print(String.format("&c[%s] &fReal players[%s]: &e%s", world.getName() , playersList.size() , getJoinedStream(playersList)));
+
 
         // If flag is active, ignore players in spectator mode from sleep count.
-        if (flagsRepository.getExemptSpectatorFlag().getValueAt(world))
-            playersStream = playersStream.filter(p -> p.getGameMode() != GameMode.SPECTATOR);
+        if (flagsRepository.getExemptSpectatorFlag().getValueAt(world)){
+            playersList = playersList.stream().filter(p -> p.getGameMode() != GameMode.SPECTATOR).collect(Collectors.toList());
+            this.debugService.print(String.format("&c[%s] &fNon-spectator players[%s]: &e%s", world.getName() , playersList.size() , getJoinedStream(playersList)));
+        }
+
 
         // If flag is active, ignore players in creative mode from sleep count.
-        if(flagsRepository.getExemptCreativeFlag().getValueAt(world))
-            playersStream = playersStream.filter(p -> p.getGameMode() != GameMode.CREATIVE);
+        if(flagsRepository.getExemptCreativeFlag().getValueAt(world)){
+            playersList = playersList.stream().filter(p -> p.getGameMode() != GameMode.CREATIVE).collect(Collectors.toList());
+            this.debugService.print(String.format("&c[%s] &fNon-creative players[%s]: &e%s", world.getName() , playersList.size() , getJoinedStream(playersList)));
+        }
 
-        if(flagsRepository.getUseExemptFlag().getValueAt(world))
-            playersStream = playersStream.filter(p -> !p.hasPermission("sleepmost.exempt"));
 
-        if(flagsRepository.getExemptFlyingFlag().getValueAt(world))
-            playersStream = playersStream.filter(p -> !p.isFlying());
+        if(flagsRepository.getUseExemptFlag().getValueAt(world)){
+            playersList = playersList.stream().filter(p -> !p.hasPermission("sleepmost.exempt")).collect(Collectors.toList());
+            this.debugService.print(String.format("&c[%s] &fBypass permission (sleepmost.exempt) players [%s]: &e%s", world.getName() , Stream.of(playersList.size()) , getJoinedStream(playersList)));
+        }
 
-         if (flagService.isAfkFlagUsable() && flagsRepository.getUseAfkFlag().getValueAt(world))
-            playersStream = playersStream.filter(p -> PlaceholderAPI.setPlaceholders(p, "%essentials_afk%").equalsIgnoreCase("no"));
+        if(flagsRepository.getExemptFlyingFlag().getValueAt(world)){
+            playersList = playersList.stream().filter(p -> !p.isFlying()).collect(Collectors.toList());
+            this.debugService.print(String.format("&c[%s] &fNon flying players [%s]: &e%s", world.getName() , playersList.size() , getJoinedStream(playersList)));
+        }
 
-         int belowYFlagValue = flagsRepository.getExemptBelowYFlag().getValueAt(world);
-         if(belowYFlagValue > -1)
-             playersStream = playersStream.filter(p -> p.getLocation().getY() > belowYFlagValue);
+         if (flagService.isAfkFlagUsable() && flagsRepository.getUseAfkFlag().getValueAt(world)){
+             playersList = playersList.stream().filter(p -> PlaceholderAPI.setPlaceholders(p, "%essentials_afk%").equalsIgnoreCase("no")).collect(Collectors.toList());
+             this.debugService.print(String.format("&c[%s] &fNon AFK players [%s]: &e%s", world.getName(), playersList.size() , getJoinedStream(playersList)));
+         }
 
-         int playerCount = (int) playersStream.count();
+        int belowYFlagValue = flagsRepository.getExemptBelowYFlag().getValueAt(world);
+         if(belowYFlagValue > -1){
+             playersList = playersList.stream().filter(p -> p.getLocation().getY() > belowYFlagValue).collect(Collectors.toList());
+             this.debugService.print(String.format("&c[%s] &fPlayers above %sY-coord [%s]: &e%s", world.getName() , belowYFlagValue, playersList.size() , getJoinedStream(playersList)));
+         }
 
-         return playerCount == 0? 1: playerCount;
+         int playerCount = (int) playersList.size();
+         int endResult = playerCount == 0? 1: playerCount;
+
+        this.debugService.print(String.format("&c[%s] &fCalculated end TOTAL: [%s]: &e%s",  world.getName() , endResult , getJoinedStream(playersList)));
+
+        return endResult;
     }
+
 
     @Override
     public double getSleepersPercentage(World world) {
@@ -239,5 +265,9 @@ public class SleepService implements ISleepService {
 
     private Stream<Player> getRealPlayers(World world){
         return world.getPlayers().stream().filter(p -> Bukkit.getPlayer(p.getUniqueId()) != null);
+    }
+
+    private String getJoinedStream(List<Player> list){
+        return list.stream().map(Player::getName).collect(Collectors.joining(","));
     }
 }

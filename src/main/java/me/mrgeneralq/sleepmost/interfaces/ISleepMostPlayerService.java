@@ -3,7 +3,8 @@ package me.mrgeneralq.sleepmost.interfaces;
 import me.mrgeneralq.sleepmost.models.SleepMostPlayer;
 import org.bukkit.OfflinePlayer;
 
-import java.util.UUID;
+import java.util.List;
+
 
 public interface ISleepMostPlayerService {
 
@@ -13,4 +14,6 @@ public interface ISleepMostPlayerService {
     void registerNewPlayer(OfflinePlayer offlinePlayer);
 
     boolean playerExists(OfflinePlayer offlinePlayer);
+
+    List<SleepMostPlayer> getAllPlayers();
 }

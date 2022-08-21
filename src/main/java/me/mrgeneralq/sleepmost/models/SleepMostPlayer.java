@@ -14,6 +14,8 @@ public class SleepMostPlayer {
     private final Map<UUID, Boolean> worldInsomniaStatus = new HashMap<>();
 
     private boolean hasInsomnia = false;
+    private boolean debugMode = false;
+
 
     public SleepMostPlayer(OfflinePlayer player) {
         this.player = player;
@@ -37,5 +39,13 @@ public class SleepMostPlayer {
 
     public boolean getInsomniaStatus(World world){
         return this.worldInsomniaStatus.getOrDefault(world.getUID(), false);
+    }
+
+    public boolean hasDebugMode() {
+        return debugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
     }
 }

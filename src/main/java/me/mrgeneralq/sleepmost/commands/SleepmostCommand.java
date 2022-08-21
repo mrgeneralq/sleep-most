@@ -28,8 +28,22 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	private final IWorldPropertyService worldPropertyService;
 	private final ISleepMostPlayerService sleepMostPlayerService;
 	private final IInsomniaService insomniaService;
+	private final IDebugService debugService;
 
-	public SleepmostCommand(ISleepService sleepService, IMessageService messageService, IUpdateService updateService, IFlagService flagService, IFlagsRepository flagsRepository, IConfigRepository configRepository, ICooldownService cooldownService, IBossBarService bossBarService, IWorldPropertyService worldPropertyService, ISleepMostPlayerService sleepMostPlayerService, IInsomniaService insomniaService){
+	public SleepmostCommand(
+			ISleepService sleepService,
+			IMessageService messageService,
+			IUpdateService updateService,
+			IFlagService flagService,
+			IFlagsRepository flagsRepository,
+			IConfigRepository configRepository,
+			ICooldownService cooldownService,
+			IBossBarService bossBarService,
+			IWorldPropertyService worldPropertyService,
+			ISleepMostPlayerService sleepMostPlayerService,
+			IInsomniaService insomniaService,
+			IDebugService debugService
+	){
 		this.sleepService = sleepService;
 		this.messageService = messageService;
 		this.updateService = updateService;
@@ -41,6 +55,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		this.worldPropertyService = worldPropertyService;
 		this.sleepMostPlayerService = sleepMostPlayerService;
 		this.insomniaService = insomniaService;
+		this.debugService = debugService;
 		this.registerSubCommands();
 	}
 
@@ -59,7 +74,8 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("insomnia", new InsomniaSubCommand(this.sleepService, this.flagsRepository, this.messageService, this.worldPropertyService, this.sleepMostPlayerService, this.insomniaService));
 		subCommands.put("getflag", new GetFlagSubCommand(this.messageService, this.flagsRepository));
 		subCommands.put("resetflag", new ResetFlagSubCommand(this.messageService, this.flagsRepository, this.flagService));
-		
+		subCommands.put("debug", new DebugSubCommand(this.debugService, this.messageService));
+
 		//enable when debugging
 		//subCommands.put("test", new TestCommand(this.messageService, this.flagsRepository, this.configRepository));
 	}
@@ -91,6 +107,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 			sender.sendMessage(colorize("&e/sm kick &fkick a player from the bed"));
 			sender.sendMessage(colorize("&e/sm insomnia &fBlock sleeping for the current night"));
 			sender.sendMessage(colorize("&e/sm getflag &fQuickly grab a flag's value in your world"));
+			sender.sendMessage(colorize("&e/sm debug &fToggle debugging mode for your player"));
 			return true;
 		}
 

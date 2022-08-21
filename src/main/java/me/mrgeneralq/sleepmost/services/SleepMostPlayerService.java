@@ -5,6 +5,8 @@ import me.mrgeneralq.sleepmost.models.SleepMostPlayer;
 import me.mrgeneralq.sleepmost.repositories.SleepMostPlayerRepository;
 import org.bukkit.OfflinePlayer;
 
+import java.util.List;
+
 public class SleepMostPlayerService implements ISleepMostPlayerService {
 
     SleepMostPlayerRepository repository;
@@ -37,5 +39,10 @@ public class SleepMostPlayerService implements ISleepMostPlayerService {
     @Override
     public boolean playerExists(OfflinePlayer offlinePlayer){
         return this.repository.exists(offlinePlayer.getUniqueId());
+    }
+
+    @Override
+    public List<SleepMostPlayer> getAllPlayers(){
+        return this.repository.getAll();
     }
 }
