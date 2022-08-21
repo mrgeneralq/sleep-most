@@ -41,15 +41,16 @@ public class Bootstrapper {
 
     public void initialize(Sleepmost main){
 
+        this.configRepository = new ConfigRepository(main);
+        this.configService = new ConfigService(main);
 
         this.sleepMostPlayerService = new SleepMostPlayerService(new SleepMostPlayerRepository());
 
         //do not move lower. Debugging required in several spots
-        this.debugService = new DebugService(this.sleepMostPlayerService);
+        this.debugService = new DebugService(this.sleepMostPlayerService, this.configService);
 
         this.insomniaService = new InsomniaService(this.sleepMostPlayerService);
-        this.configRepository = new ConfigRepository(main);
-        this.configService = new ConfigService(main);
+
         this.flagsRepository = new FlagsRepository(configRepository);
 
         this.messageRepository = new MessageRepository();

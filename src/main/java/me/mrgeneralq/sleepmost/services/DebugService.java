@@ -1,9 +1,11 @@
 package me.mrgeneralq.sleepmost.services;
 
+import me.mrgeneralq.sleepmost.interfaces.IConfigService;
 import me.mrgeneralq.sleepmost.interfaces.IDebugService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepMostPlayerService;
 import me.mrgeneralq.sleepmost.models.SleepMostPlayer;
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.stream.Collectors;
@@ -11,9 +13,11 @@ import java.util.stream.Collectors;
 public class DebugService implements IDebugService {
 
     private final ISleepMostPlayerService sleepMostPlayerService;
+    private final IConfigService configService;
 
-    public DebugService(ISleepMostPlayerService sleepMostPlayerService) {
+    public DebugService(ISleepMostPlayerService sleepMostPlayerService, IConfigService configService) {
         this.sleepMostPlayerService = sleepMostPlayerService;
+        this.configService = configService;
     }
 
     @Override
@@ -43,5 +47,8 @@ public class DebugService implements IDebugService {
             p.getPlayer().getPlayer().sendMessage(ChatColorUtils.colorize(logMsg));
 
         }
+
+        if(this.configService.debugModeEnabled())
+        Bukkit.getServer().getConsoleSender().sendMessage(ChatColorUtils.colorize(logMsg));
     }
 }

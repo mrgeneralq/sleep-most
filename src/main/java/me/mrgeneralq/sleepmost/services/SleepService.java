@@ -90,56 +90,68 @@ public class SleepService implements ISleepService {
 
 
         List<Player> playersList = world.getPlayers();
+        List<Player> newPlayerList = playersList;
 
-
-        this.debugService.print(String.format("&c[%s] &fTotal players[%s]: &e%s", world.getName(), playersList.size() , getJoinedStream(playersList)));
+        this.debugService.print("");
+        this.debugService.print("=============================");
+        this.debugService.print(String.format("&f[&b%s&f] &fTotal players [&e%s&f]: %s", world.getName(), playersList.size() , getJoinedStream(playersList, newPlayerList)));
 
         //exclude fake players
-        playersList = playersList.stream().filter(this.playerService::isRealPlayer).collect(Collectors.toList());
-        this.debugService.print(String.format("&c[%s] &fReal players[%s]: &e%s", world.getName() , playersList.size() , getJoinedStream(playersList)));
-
+        newPlayerList = playersList.stream().filter(this.playerService::isRealPlayer).collect(Collectors.toList());
+        this.debugService.print(String.format("&f[&b%s&f] &fReal players [&e%s&f]: %s", world.getName() , playersList.size() , getJoinedStream(playersList, newPlayerList)));
+        playersList = newPlayerList;
 
         // If flag is active, ignore players in spectator mode from sleep count.
         if (flagsRepository.getExemptSpectatorFlag().getValueAt(world)){
-            playersList = playersList.stream().filter(p -> p.getGameMode() != GameMode.SPECTATOR).collect(Collectors.toList());
-            this.debugService.print(String.format("&c[%s] &fNon-spectator players[%s]: &e%s", world.getName() , playersList.size() , getJoinedStream(playersList)));
+            newPlayerList = playersList.stream().filter(p -> p.getGameMode() != GameMode.SPECTATOR).collect(Collectors.toList());
+            this.debugService.print(String.format("&f[&b%s&f] &fNon-spectator players [&e%s&f]: %s", world.getName() , playersList.size() , getJoinedStream(playersList, newPlayerList)));
+            playersList = newPlayerList;
         }
 
 
         // If flag is active, ignore players in creative mode from sleep count.
         if(flagsRepository.getExemptCreativeFlag().getValueAt(world)){
-            playersList = playersList.stream().filter(p -> p.getGameMode() != GameMode.CREATIVE).collect(Collectors.toList());
-            this.debugService.print(String.format("&c[%s] &fNon-creative players[%s]: &e%s", world.getName() , playersList.size() , getJoinedStream(playersList)));
+            newPlayerList = playersList.stream().filter(p -> p.getGameMode() != GameMode.CREATIVE).collect(Collectors.toList());
+            this.debugService.print(String.format("&f[&b%s&f] &fNon-creative players [&e%s&f]: %s", world.getName() , playersList.size() , getJoinedStream(playersList, newPlayerList)));
+            playersList = newPlayerList;
         }
 
 
         if(flagsRepository.getUseExemptFlag().getValueAt(world)){
-            playersList = playersList.stream().filter(p -> !p.hasPermission("sleepmost.exempt")).collect(Collectors.toList());
-            this.debugService.print(String.format("&c[%s] &fBypass permission (sleepmost.exempt) players [%s]: &e%s", world.getName() , Stream.of(playersList.size()) , getJoinedStream(playersList)));
+            newPlayerList = playersList.stream().filter(p -> !p.hasPermission("sleepmost.exempt")).collect(Collectors.toList());
+            this.debugService.print(String.format("&f[&b%s&f] &fMissing bypass permission (sleepmost.exempt) players [&e%s&f]: %s", world.getName() , playersList.size() , getJoinedStream(playersList, newPlayerList)));
+            playersList = newPlayerList;
         }
 
         if(flagsRepository.getExemptFlyingFlag().getValueAt(world)){
-            playersList = playersList.stream().filter(p -> !p.isFlying()).collect(Collectors.toList());
-            this.debugService.print(String.format("&c[%s] &fNon flying players [%s]: &e%s", world.getName() , playersList.size() , getJoinedStream(playersList)));
+            newPlayerList = playersList.stream().filter(p -> !p.isFlying()).collect(Collectors.toList());
+            this.debugService.print(String.format("&f[&b%s&f] &fNon-flying players [&e%s&f]: %s", world.getName() , playersList.size() , getJoinedStream(playersList, newPlayerList)));
+            playersList = newPlayerList;
         }
 
          if (flagService.isAfkFlagUsable() && flagsRepository.getUseAfkFlag().getValueAt(world)){
-             playersList = playersList.stream().filter(p -> PlaceholderAPI.setPlaceholders(p, "%essentials_afk%").equalsIgnoreCase("no")).collect(Collectors.toList());
-             this.debugService.print(String.format("&c[%s] &fNon AFK players [%s]: &e%s", world.getName(), playersList.size() , getJoinedStream(playersList)));
+             newPlayerList = playersList.stream().filter(p -> PlaceholderAPI.setPlaceholders(p, "%essentials_afk%").equalsIgnoreCase("no")).collect(Collectors.toList());
+             this.debugService.print(String.format("&f[&b%s&f] &fNon-AFK players [&e%s&f]: %s", world.getName(), playersList.size() , getJoinedStream(playersList, newPlayerList)));
+             playersList = newPlayerList;
          }
 
         int belowYFlagValue = flagsRepository.getExemptBelowYFlag().getValueAt(world);
          if(belowYFlagValue > -1){
-             playersList = playersList.stream().filter(p -> p.getLocation().getY() > belowYFlagValue).collect(Collectors.toList());
-             this.debugService.print(String.format("&c[%s] &fPlayers above %sY-coord [%s]: &e%s", world.getName() , belowYFlagValue, playersList.size() , getJoinedStream(playersList)));
+             newPlayerList = playersList.stream().filter(p -> p.getLocation().getY() > belowYFlagValue).collect(Collectors.toList());
+             this.debugService.print(String.format("&f[&b%s&f] &fPlayers above &b%s&fY-coord [&e%s&f]: %s", world.getName() , belowYFlagValue, playersList.size() , getJoinedStream(playersList, newPlayerList)));
+             playersList = newPlayerList;
          }
 
          int playerCount = (int) playersList.size();
          int endResult = playerCount == 0? 1: playerCount;
 
-        this.debugService.print(String.format("&c[%s] &fCalculated end TOTAL: [%s]: &e%s",  world.getName() , endResult , getJoinedStream(playersList)));
+        this.debugService.print(String.format("&f[&b%s&f] &fCalculated end TOTAL [&e%s&f]: %s",  world.getName() , endResult , getJoinedStream(playersList, newPlayerList)));
+        this.debugService.print("=============================");
+        this.debugService.print("");
 
         return endResult;
+
+
     }
 
 
@@ -267,7 +279,18 @@ public class SleepService implements ISleepService {
         return world.getPlayers().stream().filter(p -> Bukkit.getPlayer(p.getUniqueId()) != null);
     }
 
-    private String getJoinedStream(List<Player> list){
-        return list.stream().map(Player::getName).collect(Collectors.joining(","));
+    private String getJoinedStream(List<Player> playersList, List<Player> newPlayersList){
+
+        List<String> names = new ArrayList<>();
+
+        for(Player previousPlayer: playersList){
+            if(newPlayersList.contains(previousPlayer))
+                names.add(ChatColor.GREEN + previousPlayer.getName() + ChatColor.RESET);
+            else
+                names.add(ChatColor.RED + previousPlayer.getName() + ChatColor.RESET);
+
+        }
+
+        return String.join(",", names);
     }
 }
