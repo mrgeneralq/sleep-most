@@ -1,7 +1,10 @@
 package me.mrgeneralq.sleepmost;
 
+import dev.geco.gsit.api.GSitAPI;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
+import me.mrgeneralq.sleepmost.eventlisteners.hooks.GSitEventListener;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.managers.HookManager;
 import me.mrgeneralq.sleepmost.mappers.MessageMapper;
 import me.mrgeneralq.sleepmost.runnables.Heartbeat;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
@@ -79,6 +82,13 @@ public class Sleepmost extends JavaPlugin {
 		pm.registerEvents(new PlayerSleepStateChangeEventListener(this, bootstrapper.getSleepService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService()), this);
 		pm.registerEvents(new TimeCycleChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getWorldPropertyService(), bootstrapper.getFlagsRepository(), bootstrapper.getInsomniaService()),this );
 		pm.registerEvents(new PlayerConsumeEventListener(bootstrapper.getSleepService(), bootstrapper.getInsomniaService(), bootstrapper.getMessageService(), bootstrapper.getFlagsRepository()), this);
+
+
+		if(HookManager.isGSitInstalled()){
+			getLogger().info("Hooked to GSit!");
+			pm.registerEvents(new GSitEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getWorldPropertyService(), bootstrapper.getInsomniaService()),this);
+		}
+
 
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
 		runPlayerTasks();

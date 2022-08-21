@@ -150,10 +150,7 @@ public class SleepService implements ISleepService {
         this.debugService.print("");
 
         return endResult;
-
-
     }
-
 
     @Override
     public double getSleepersPercentage(World world) {
