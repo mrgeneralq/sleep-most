@@ -81,6 +81,23 @@ public class NightcycleAnimationTask extends BukkitRunnable {
             }
         }
 
-        world.setTime(world.getTime() + 85);
+        int calculatedSpeed = 85;
+
+        //TODO check for flag
+        if(true){
+
+            int sleepingPlayers = this.sleepService.getSleepersAmount(world);
+            int totalPlayers = world.getPlayers().size();
+            double sleepRation = (double) sleepingPlayers/ (double)totalPlayers;
+
+            int maxSpeed = 150;
+            int minSpeed = 30;
+
+            calculatedSpeed = Math.min ((int) Math.round((sleepRation * (maxSpeed - minSpeed)) + minSpeed),maxSpeed);
+
+        }
+
+        //=MAX(minimum-speed;((sleeping count/required-count)*max-speed))
+        world.setTime(world.getTime() + calculatedSpeed);
     }
 }

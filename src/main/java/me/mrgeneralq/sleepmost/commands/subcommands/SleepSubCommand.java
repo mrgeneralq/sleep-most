@@ -43,12 +43,6 @@ public class SleepSubCommand implements ISubCommand {
                     .setWorld(world)
                     .setPlayer(player)
                     .build();
-
-            this.messageService.sendMessage(player, messageService.getMessagePrefixed(sleepPreventedConfigMessage)
-                    .setPlayer(player)
-                    .setWorld(world)
-                    .build());
-            return true;
         }
 
         //check if reset is required
@@ -58,7 +52,6 @@ public class SleepSubCommand implements ISubCommand {
                     .build());
             return true;
         }
-
 
         if(this.insomniaService.hasInsomniaEnabled(player)){
             String insomniaMessage = this.messageService.getMessagePrefixed(MessageKey.INSOMNIA_NOT_SLEEPY)

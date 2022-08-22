@@ -55,22 +55,6 @@ public class PlayerBedEnterEventListener implements Listener {
         if(!this.sleepService.isSleepingPossible(world))
             return;
 
-        //check if sleeping during storms is allowed
-        if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {
-
-            String preventSleepStormMessage = messageService.getMessagePrefixed(MessageKey.NO_SLEEP_THUNDERSTORM)
-                    .setPlayer(player)
-                    .setWorld(world)
-                    .build();
-
-            this.messageService.sendMessage(player, messageService.getMessagePrefixed(preventSleepStormMessage)
-                    .setPlayer(player)
-                    .setWorld(world)
-                    .build());
-
-            e.setCancelled(true);
-            return;
-        }
 
         //check if sleep is allowed in world
         if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
@@ -83,6 +67,16 @@ public class PlayerBedEnterEventListener implements Listener {
             return;
         }
 
+        if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {
+
+            this.messageService.sendMessage(player, messageService.getMessagePrefixed(MessageKey.NO_SLEEP_THUNDERSTORM)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .build());
+
+            e.setCancelled(true);
+            return;
+        }
 
         if(this.insomniaService.hasInsomniaEnabled(player)){
             String insomniaMessage = this.messageService.getMessagePrefixed(MessageKey.INSOMNIA_NOT_SLEEPY)
