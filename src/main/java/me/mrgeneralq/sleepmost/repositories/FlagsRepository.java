@@ -50,6 +50,7 @@ public class FlagsRepository implements IFlagsRepository {
     private final PhantomResetAudienceFlag phantomResetAudienceFlag;
     private final AllowKickFlag allowKickFlag;
     private final InsomniaMilkFlag insomniaMilkFlag;
+    private final DynamicAnimationSpeed dynamicAnimationSpeed;
 
     //DEPENDING ON HOOK
     private GSitHookFlag gSitHookFlag;
@@ -90,6 +91,7 @@ public class FlagsRepository implements IFlagsRepository {
         setupFlag(this.phantomResetAudienceFlag = new PhantomResetAudienceFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.allowKickFlag = new AllowKickFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.insomniaMilkFlag = new InsomniaMilkFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.dynamicAnimationSpeed = new DynamicAnimationSpeed(new ConfigFlagController<>(configRepository)));
 
         if(HookManager.isGSitInstalled()){
             setupFlag(this.gSitHookFlag = new GSitHookFlag(new ConfigFlagController<>(configRepository)));
@@ -300,6 +302,11 @@ public class FlagsRepository implements IFlagsRepository {
     @Override
     public GSitSleepFlag getGSitSleepFlag() {
         return gSitSleepFlag;
+    }
+
+    @Override
+    public DynamicAnimationSpeed getDynamicAnimationSpeed() {
+        return dynamicAnimationSpeed;
     }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {

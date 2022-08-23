@@ -64,9 +64,9 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
         }else{
 
-            /*
+            /* **************************************************
              *  All code in this block only runs during the night
-             */
+             ***************************************************/
 
             if(this.flagsRepository.getClockAnimationFlag().getValueAt(world) && ServerVersion.CURRENT_VERSION.supportsTitles()){
 
@@ -83,8 +83,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
         int calculatedSpeed = 85;
 
-        //TODO check for flag
-        if(true){
+        if(this.flagsRepository.getDynamicAnimationSpeed().getValueAt(world)){
 
             int sleepingPlayers = this.sleepService.getSleepersAmount(world);
             int totalPlayers = world.getPlayers().size();
@@ -96,8 +95,6 @@ public class NightcycleAnimationTask extends BukkitRunnable {
             calculatedSpeed = Math.min ((int) Math.round((sleepRation * (maxSpeed - minSpeed)) + minSpeed),maxSpeed);
 
         }
-
-        //=MAX(minimum-speed;((sleeping count/required-count)*max-speed))
         world.setTime(world.getTime() + calculatedSpeed);
     }
 }

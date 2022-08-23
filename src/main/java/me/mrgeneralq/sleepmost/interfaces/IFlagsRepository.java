@@ -64,4 +64,6 @@ public interface IFlagsRepository
     GSitHookFlag getGSitHookFlag();
 
     GSitSleepFlag getGSitSleepFlag();
+
+    DynamicAnimationSpeed getDynamicAnimationSpeed();
 }
