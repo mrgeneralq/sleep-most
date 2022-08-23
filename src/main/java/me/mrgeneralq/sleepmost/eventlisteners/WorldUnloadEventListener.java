@@ -8,33 +8,25 @@ import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.world.WorldUnloadEvent;
 
-public class WorldLoadEventListener implements Listener {
+public class WorldUnloadEventListener implements Listener {
 
     IBossBarService bossBarService;
     private final IWorldPropertyService worldPropertyService;
     private final ISleepMostWorldService sleepMostWorldService;
 
-    public WorldLoadEventListener(IBossBarService bossBarService, IWorldPropertyService worldPropertyService, ISleepMostWorldService sleepMostWorldService) {
+    public WorldUnloadEventListener(IBossBarService bossBarService, IWorldPropertyService worldPropertyService, ISleepMostWorldService sleepMostWorldService) {
         this.bossBarService = bossBarService;
         this.worldPropertyService = worldPropertyService;
         this.sleepMostWorldService = sleepMostWorldService;
     }
 
     @EventHandler
-    public void onWorldLoad(WorldLoadEvent e){
+    public void onWorldLoad(WorldUnloadEvent e) {
 
         World world = e.getWorld();
-        this.sleepMostWorldService.registerWorld(world);
-
-
-        if(ServerVersion.CURRENT_VERSION.supportsBossBars()){
-            this.bossBarService.registerBossBar(e.getWorld());
-        }
-
-        if(!this.worldPropertyService.propertyExists(e.getWorld())){
-            this.worldPropertyService.createNewWorldProperty(e.getWorld());
-        }
+        this.sleepMostWorldService.unregisterWorld(world);
 
     }
 }

@@ -2,13 +2,8 @@ package me.mrgeneralq.sleepmost.repositories;
 
 import me.mrgeneralq.sleepmost.interfaces.IRepository;
 import me.mrgeneralq.sleepmost.models.SleepMostPlayer;
-import org.bukkit.OfflinePlayer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class SleepMostPlayerRepository implements IRepository<UUID, SleepMostPlayer> {
 
@@ -30,7 +25,7 @@ public class SleepMostPlayerRepository implements IRepository<UUID, SleepMostPla
     }
 
     public List<SleepMostPlayer> getAll(){
-        return this.playerMap.values().stream().collect(Collectors.toList());
+        return new ArrayList<>(this.playerMap.values());
     }
 
     @Override

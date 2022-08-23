@@ -34,6 +34,8 @@ public class Bootstrapper {
 
     private MessageRepository messageRepository;
 
+    private ISleepMostWorldService sleepMostWorldService;
+
 
     private static Bootstrapper instance;
 
@@ -70,6 +72,8 @@ public class Bootstrapper {
         this.worldPropertyRepository = new WorldPropertyRepository();
         this.worldPropertyService = new WorldPropertyService(this.worldPropertyRepository);
 
+        this.sleepMostWorldService = new SleepMostWorldService(new SleepMostWorldRepository());
+
         this.configMessageMapper = ConfigMessageMapper.getMapper();
         this.configMessageMapper.initialize(main);
 
@@ -87,7 +91,6 @@ public class Bootstrapper {
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PapiExtension(main, flagsRepository,sleepService).register();
         }
-
     }
 
     public static Bootstrapper getBootstrapper(){
@@ -165,5 +168,9 @@ public class Bootstrapper {
 
     public IDebugService getDebugService() {
         return debugService;
+    }
+
+    public ISleepMostWorldService getSleepMostWorldService() {
+        return sleepMostWorldService;
     }
 }
