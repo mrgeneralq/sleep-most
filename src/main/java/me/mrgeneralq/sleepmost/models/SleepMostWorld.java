@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.models;
 
+import me.mrgeneralq.sleepmost.enums.TimeCycle;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -10,7 +11,11 @@ public class SleepMostWorld {
 
     private final UUID worldUUID;
     private boolean frozen = false;
-    private Calendar frozenSince = null;
+    private boolean timeCycleAnimationIsRunning = false;
+
+    private Calendar frozenUntil = null;
+    private boolean plannedFrozen = false;
+    private TimeCycle timeCycle = TimeCycle.UNKNOWN;
 
 
     public SleepMostWorld(World world){
@@ -25,16 +30,49 @@ public class SleepMostWorld {
         return frozen;
     }
 
-    public void setFrozen(boolean frozen) {
+    public void setFrozen(boolean frozen, Calendar until){
+        this.plannedFrozen = false;
         this.frozen = frozen;
-
-        if(frozen)
-            this.frozenSince = Calendar.getInstance();
-        else
-            this.frozenSince = null;
+        this.frozenUntil = until;
     }
 
-    public Calendar getFrozenSince() {
-        return this.frozenSince;
+    public TimeCycle getTimeCycle() {
+        return timeCycle;
+    }
+
+    public void setTimeCycle(TimeCycle timeCycle) {
+        this.timeCycle = timeCycle;
+    }
+
+    public boolean isTimeCycleAnimation() {
+        return timeCycleAnimationIsRunning;
+    }
+
+    public void setTimeCycleAnimation(boolean timeCycleAnimationIsRunning) {
+        this.timeCycleAnimationIsRunning = timeCycleAnimationIsRunning;
+    }
+
+    public boolean isTimeCycleAnimationIsRunning() {
+        return timeCycleAnimationIsRunning;
+    }
+
+    public void setTimeCycleAnimationIsRunning(boolean timeCycleAnimationIsRunning) {
+        this.timeCycleAnimationIsRunning = timeCycleAnimationIsRunning;
+    }
+
+    public Calendar getFrozenUntil() {
+        return frozenUntil;
+    }
+
+    public void setFrozenUntil(Calendar frozenUntil) {
+        this.frozenUntil = frozenUntil;
+    }
+
+    public boolean isPlannedFrozen() {
+        return plannedFrozen;
+    }
+
+    public void setPlannedFrozen(boolean plannedFrozen) {
+        this.plannedFrozen = plannedFrozen;
     }
 }

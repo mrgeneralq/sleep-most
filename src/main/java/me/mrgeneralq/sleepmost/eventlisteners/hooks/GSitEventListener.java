@@ -19,7 +19,7 @@ public class GSitEventListener implements Listener {
     private final DataContainer dataContainer;
     private final IFlagsRepository flagsRepository;
     private final IBossBarService bossBarService;
-    private final IWorldPropertyService worldPropertyService;
+    private final ISleepMostWorldService sleepMostWorldService;
     private final IInsomniaService insomniaService;
 
     public GSitEventListener(ISleepService sleepService,
@@ -27,7 +27,7 @@ public class GSitEventListener implements Listener {
                                        ICooldownService cooldownService,
                                        IFlagsRepository flagsRepository,
                                        IBossBarService bossBarService,
-                                       IWorldPropertyService worldPropertyService,
+                                       ISleepMostWorldService sleepMostWorldService,
                                        IInsomniaService insomniaService
     ) {
         this.sleepService = sleepService;
@@ -35,7 +35,7 @@ public class GSitEventListener implements Listener {
         this.cooldownService = cooldownService;
         this.flagsRepository = flagsRepository;
         this.bossBarService = bossBarService;
-        this.worldPropertyService = worldPropertyService;
+        this.sleepMostWorldService = sleepMostWorldService;
         this.insomniaService = insomniaService;
         this.dataContainer = DataContainer.getContainer();
     }

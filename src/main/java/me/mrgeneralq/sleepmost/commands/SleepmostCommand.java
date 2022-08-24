@@ -25,7 +25,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 	private final IConfigRepository configRepository;
 	private final ICooldownService cooldownService;
 	private final IBossBarService bossBarService;
-	private final IWorldPropertyService worldPropertyService;
+	private final ISleepMostWorldService sleepMostWorldService;
 	private final ISleepMostPlayerService sleepMostPlayerService;
 	private final IInsomniaService insomniaService;
 	private final IDebugService debugService;
@@ -39,7 +39,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 			IConfigRepository configRepository,
 			ICooldownService cooldownService,
 			IBossBarService bossBarService,
-			IWorldPropertyService worldPropertyService,
+			ISleepMostWorldService sleepMostWorldService,
 			ISleepMostPlayerService sleepMostPlayerService,
 			IInsomniaService insomniaService,
 			IDebugService debugService
@@ -52,7 +52,7 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		this.configRepository = configRepository;
 		this.cooldownService = cooldownService;
 		this.bossBarService = bossBarService;
-		this.worldPropertyService = worldPropertyService;
+		this.sleepMostWorldService = sleepMostWorldService;
 		this.sleepMostPlayerService = sleepMostPlayerService;
 		this.insomniaService = insomniaService;
 		this.debugService = debugService;
@@ -69,9 +69,9 @@ public class SleepmostCommand implements CommandExecutor, TabCompleter {
 		subCommands.put("reset", new ResetSubCommand(this.messageService, this.flagService));
 		subCommands.put("setops", new SetOnePlayerSleepCommand(this.sleepService, this.messageService,this.flagService, this.flagsRepository));
 		subCommands.put("bed", new BedSubCommand(this.sleepService,this.messageService));
-		subCommands.put("sleep", new SleepSubCommand(this.sleepService,this.flagsRepository,this.messageService,this.cooldownService, this.bossBarService, this.worldPropertyService, this.insomniaService));
+		subCommands.put("sleep", new SleepSubCommand(this.sleepService,this.flagsRepository,this.messageService,this.cooldownService, this.bossBarService, this.sleepMostWorldService, this.insomniaService));
 		subCommands.put("kick", new KickSubCommand(this.sleepService,this.messageService, this.flagsRepository));
-		subCommands.put("insomnia", new InsomniaSubCommand(this.sleepService, this.flagsRepository, this.messageService, this.worldPropertyService, this.sleepMostPlayerService, this.insomniaService));
+		subCommands.put("insomnia", new InsomniaSubCommand(this.sleepService, this.flagsRepository, this.messageService, this.sleepMostWorldService, this.sleepMostPlayerService, this.insomniaService));
 		subCommands.put("getflag", new GetFlagSubCommand(this.messageService, this.flagsRepository));
 		subCommands.put("resetflag", new ResetFlagSubCommand(this.messageService, this.flagsRepository, this.flagService));
 		subCommands.put("debug", new DebugSubCommand(this.debugService, this.messageService));

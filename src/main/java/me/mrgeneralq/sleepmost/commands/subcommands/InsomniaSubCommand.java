@@ -2,7 +2,6 @@ package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.models.WorldProperty;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,21 +16,21 @@ public class InsomniaSubCommand implements ISubCommand {
     private final ISleepService sleepService;
     private final IFlagsRepository flagsRepository;
     private final IMessageService messageService;
-    private final IWorldPropertyService worldPropertyService;
+    private final ISleepMostWorldService sleepMostWorldService;
     private final ISleepMostPlayerService sleepMostPlayerService;
     private final IInsomniaService insomniaService;
 
     public InsomniaSubCommand(ISleepService sleepService,
                               IFlagsRepository flagsRepository,
                               IMessageService messageService,
-                              IWorldPropertyService worldPropertyService,
+                              ISleepMostWorldService sleepMostWorldService,
                               ISleepMostPlayerService sleepMostPlayerService,
                               IInsomniaService insomniaService
     ) {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.messageService = messageService;
-        this.worldPropertyService = worldPropertyService;
+        this.sleepMostWorldService = sleepMostWorldService;
         this.sleepMostPlayerService = sleepMostPlayerService;
         this.insomniaService = insomniaService;
     }

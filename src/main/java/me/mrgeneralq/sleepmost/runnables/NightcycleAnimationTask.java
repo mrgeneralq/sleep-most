@@ -1,6 +1,8 @@
 package me.mrgeneralq.sleepmost.runnables;
 
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
+import me.mrgeneralq.sleepmost.interfaces.ISleepMostWorldService;
+import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
@@ -20,6 +22,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
     private final ISleepService sleepService;
     private final DataContainer dataContainer = DataContainer.getContainer();
+    private final ISleepMostWorldService sleepMostWorldService;
     private final IFlagsRepository flagsRepository;
     private final World world;
     private final String lastSleeperName;
@@ -28,7 +31,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
     private final List<OfflinePlayer> peopleWhoSlept;
     private int iterationCount = 1;
 
-    public NightcycleAnimationTask(ISleepService sleepService, IFlagsRepository flagsRepository, World world, Player lastSleeper, List<OfflinePlayer> peopleWhoSlept, SleepSkipCause sleepSkipCause) {
+    public NightcycleAnimationTask(ISleepService sleepService, IFlagsRepository flagsRepository, World world, Player lastSleeper, List<OfflinePlayer> peopleWhoSlept, SleepSkipCause sleepSkipCause, ISleepMostWorldService sleepMostWorldService) {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.world = world;
@@ -37,6 +40,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
         this.skipCause = sleepSkipCause;
         this.peopleWhoSlept = peopleWhoSlept;
 
+        this.sleepMostWorldService = sleepMostWorldService;
     }
 
     @Override
@@ -44,8 +48,8 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
         if(!sleepService.isNight(world)){
 
-            //remove animation checker
-            this.dataContainer.setAnimationRunning(world, false);
+            SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
+            sleepMostWorld.setTimeCycleAnimationIsRunning(false);
 
             this.sleepService.executeSleepReset(world, this.lastSleeperName, this.lastSLeeperDisplayName ,  this.peopleWhoSlept , this.skipCause);
             this.cancel();

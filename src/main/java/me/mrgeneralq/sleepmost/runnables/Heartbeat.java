@@ -4,26 +4,28 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.enums.TimeCycle;
 import me.mrgeneralq.sleepmost.events.TimeCycleChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.IInsomniaService;
+import me.mrgeneralq.sleepmost.interfaces.ISleepMostWorldService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
-import me.mrgeneralq.sleepmost.interfaces.IWorldPropertyService;
-import me.mrgeneralq.sleepmost.models.WorldProperty;
+import me.mrgeneralq.sleepmost.models.SleepMostWorld;
+import me.mrgeneralq.sleepmost.statics.Time;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Calendar;
 import java.util.stream.Collectors;
 
 public class Heartbeat extends BukkitRunnable {
 
 
     private final ISleepService sleepService;
-    private final IWorldPropertyService worldPropertyService;
     private final IInsomniaService insomniaService;
+    private final ISleepMostWorldService sleepMostWorldService;
 
-    public Heartbeat(ISleepService sleepService, IWorldPropertyService worldPropertyService, IInsomniaService insomniaService) {
+    public Heartbeat(ISleepService sleepService, ISleepMostWorldService sleepMostWorldService, IInsomniaService insomniaService) {
         this.sleepService = sleepService;
-        this.worldPropertyService = worldPropertyService;
+        this.sleepMostWorldService = sleepMostWorldService;
         this.insomniaService = insomniaService;
     }
 
@@ -32,9 +34,9 @@ public class Heartbeat extends BukkitRunnable {
 
         for(World world: Bukkit.getWorlds().stream().filter(this.sleepService::isEnabledAt).collect(Collectors.toList()))
         {
-
             updateTimeCycle(world);
             checkInsomniaResetRequired(world);
+            checkFreezeRequired(world);
 
             SleepSkipCause cause = this.sleepService.getCurrentSkipCause(world);
             if(cause == SleepSkipCause.UNKNOWN|| cause == null){
@@ -47,7 +49,7 @@ public class Heartbeat extends BukkitRunnable {
 
     private void checkInsomniaResetRequired(World world){
 
-        WorldProperty properties = this.worldPropertyService.getWorldProperties(world);
+        SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
 
         if(!sleepService.isNight(world)) {
             this.insomniaService.disableInsomnia(world);
@@ -57,21 +59,39 @@ public class Heartbeat extends BukkitRunnable {
     private void updateTimeCycle(World world){
 
         TimeCycle newTimeCycle = this.sleepService.isNight(world) ? TimeCycle.NIGHT : TimeCycle.DAY;
-        WorldProperty properties = this.worldPropertyService.getWorldProperties(world);
+        SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
 
         //prevent event from being fired unless TimeCycle is not unknown
-        if(properties.getTimeCycle() == TimeCycle.UNKNOWN){
-            properties.setTimeCycle(newTimeCycle);
-            this.worldPropertyService.setWorldProperty(world, properties);
+        if(sleepMostWorld.getTimeCycle() == TimeCycle.UNKNOWN){
+            sleepMostWorld.setTimeCycle(newTimeCycle);
+            this.sleepMostWorldService.updateWorld(sleepMostWorld);
             return;
         }
 
         //only run if time cycle changes
-        if(properties.getTimeCycle() == newTimeCycle)
+        if(sleepMostWorld.getTimeCycle() == newTimeCycle)
             return;
 
-            properties.setTimeCycle(newTimeCycle);
-            this.worldPropertyService.setWorldProperty(world, properties);
+        sleepMostWorld.setTimeCycle(newTimeCycle);
+            this.sleepMostWorldService.updateWorld(sleepMostWorld);
             Bukkit.getPluginManager().callEvent(new TimeCycleChangeEvent(world, newTimeCycle));
     }
-}
+
+    private void checkFreezeRequired(World world){
+
+        SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
+        double time = sleepMostWorld.getWorld().getTime();
+
+        if(!sleepMostWorld.isPlannedFrozen())
+            return;
+
+        if(time != Time.MID_NIGHT && time != Time.NOON)
+            return;
+
+            int secondsToAdd = 20;
+
+            Calendar timeToResume = Calendar.getInstance();
+            timeToResume.add(Calendar.SECOND, secondsToAdd);
+            this.sleepMostWorldService.freezeTime(world, timeToResume);
+        }
+    }

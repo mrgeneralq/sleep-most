@@ -5,6 +5,7 @@ import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.enums.SleepState;
 import me.mrgeneralq.sleepmost.events.PlayerSleepStateChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTask;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
@@ -29,6 +30,7 @@ public class SleepService implements ISleepService {
     private final IPlayerService playerService;
     private final IDebugService debugService;
     private final DataContainer dataContainer = DataContainer.getContainer();
+    private final ISleepMostWorldService sleepMostWorldService;
 
     private static final int
             NIGHT_START_TIME = 12541,
@@ -41,7 +43,8 @@ public class SleepService implements ISleepService {
             IFlagsRepository flagsRepository,
             IFlagService flagService,
             IPlayerService playerService,
-            IDebugService debugService
+            IDebugService debugService,
+            ISleepMostWorldService sleepMostWorldService
     ) {
 
         this.main = main;
@@ -51,6 +54,7 @@ public class SleepService implements ISleepService {
         this.flagService = flagService;
         this.playerService = playerService;
         this.debugService = debugService;
+        this.sleepMostWorldService = sleepMostWorldService;
     }
 
     @Override
@@ -265,8 +269,10 @@ public class SleepService implements ISleepService {
 
         List<OfflinePlayer> sleepingPlayers = this.getSleepers(world).stream().map(p -> Bukkit.getOfflinePlayer(p.getUniqueId())).collect(Collectors.toList());
 
-        dataContainer.setAnimationRunning(world, true);
-        new NightcycleAnimationTask(this, this.flagsRepository , world, player, sleepingPlayers , sleepSkipCause).runTaskTimer(this.main, 0, 1);
+        SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
+        sleepMostWorld.setTimeCycleAnimationIsRunning(true);
+
+        new NightcycleAnimationTask(this, this.flagsRepository , world, player, sleepingPlayers , sleepSkipCause, sleepMostWorldService).runTaskTimer(this.main, 0, 1);
     }
 
 

@@ -13,14 +13,14 @@ public class SleepSubCommand implements ISubCommand {
     private final ISleepService sleepService;
     private final IFlagsRepository flagsRepository;
     private final IMessageService messageService;
-    private final IWorldPropertyService worldPropertyService;
+    private final ISleepMostWorldService sleepMostWorldService;
     private final IInsomniaService insomniaService;
 
-    public SleepSubCommand(ISleepService sleepService, IFlagsRepository flagsRepository, IMessageService messageService, ICooldownService cooldownService, IBossBarService bossBarService, IWorldPropertyService worldPropertyService, IInsomniaService insomniaService) {
+    public SleepSubCommand(ISleepService sleepService, IFlagsRepository flagsRepository, IMessageService messageService, ICooldownService cooldownService, IBossBarService bossBarService, ISleepMostWorldService sleepMostWorldService, IInsomniaService insomniaService) {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.messageService = messageService;
-        this.worldPropertyService = worldPropertyService;
+        this.sleepMostWorldService = sleepMostWorldService;
         this.insomniaService = insomniaService;
     }
 

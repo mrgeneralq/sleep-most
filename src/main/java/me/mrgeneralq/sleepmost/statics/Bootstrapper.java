@@ -29,13 +29,9 @@ public class Bootstrapper {
     private IInsomniaService insomniaService;
     private IDebugService debugService;
 
-    private WorldPropertyRepository worldPropertyRepository;
-    private IWorldPropertyService worldPropertyService;
 
     private MessageRepository messageRepository;
-
     private ISleepMostWorldService sleepMostWorldService;
-
 
     private static Bootstrapper instance;
 
@@ -45,6 +41,8 @@ public class Bootstrapper {
 
         this.configRepository = new ConfigRepository(main);
         this.configService = new ConfigService(main);
+        this.sleepMostWorldService = new SleepMostWorldService(new SleepMostWorldRepository());
+
 
         this.sleepMostPlayerService = new SleepMostPlayerService(new SleepMostPlayerRepository());
 
@@ -67,12 +65,7 @@ public class Bootstrapper {
         this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService);
 
         this.playerService = new PlayerService();
-        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService, debugService);
-
-        this.worldPropertyRepository = new WorldPropertyRepository();
-        this.worldPropertyService = new WorldPropertyService(this.worldPropertyRepository);
-
-        this.sleepMostWorldService = new SleepMostWorldService(new SleepMostWorldRepository());
+        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService, debugService, sleepMostWorldService);
 
         this.configMessageMapper = ConfigMessageMapper.getMapper();
         this.configMessageMapper.initialize(main);
@@ -150,10 +143,6 @@ public class Bootstrapper {
         return bossBarService;
     }
 
-    public IWorldPropertyService getWorldPropertyService() {
-        return worldPropertyService;
-    }
-
     public IPlayerService getPlayerService() {
         return playerService;
     }
@@ -173,4 +162,6 @@ public class Bootstrapper {
     public ISleepMostWorldService getSleepMostWorldService() {
         return sleepMostWorldService;
     }
+
+
 }

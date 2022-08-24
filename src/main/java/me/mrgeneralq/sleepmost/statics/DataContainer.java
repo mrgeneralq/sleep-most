@@ -27,13 +27,6 @@ public class DataContainer {
         return this.runningWorldsAnimation.contains(world.getUID());
     }
 
-    public void setAnimationRunning(World world, boolean running) {
-
-        if (running)
-            this.runningWorldsAnimation.add(world.getUID());
-        else
-            this.runningWorldsAnimation.remove(world.getUID());
-    }
 
     public void setPlayerSleeping(Player player, boolean sleeping) {
 
