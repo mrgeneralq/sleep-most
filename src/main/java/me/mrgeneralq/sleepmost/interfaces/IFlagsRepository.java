@@ -65,5 +65,7 @@ public interface IFlagsRepository
 
     GSitSleepFlag getGSitSleepFlag();
 
-    DynamicAnimationSpeed getDynamicAnimationSpeed();
+    DynamicAnimationSpeedFlag getDynamicAnimationSpeedFlag();
+
+    LongerNightDurationFlag getLongerNightDurationFlag();
 }

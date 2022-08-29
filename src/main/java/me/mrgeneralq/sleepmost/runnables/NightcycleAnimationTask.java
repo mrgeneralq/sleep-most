@@ -8,7 +8,6 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import me.mrgeneralq.sleepmost.utils.TimeUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -87,7 +86,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
         int calculatedSpeed = 85;
 
-        if(this.flagsRepository.getDynamicAnimationSpeed().getValueAt(world)){
+        if(this.flagsRepository.getDynamicAnimationSpeedFlag().getValueAt(world)){
 
             int sleepingPlayers = this.sleepService.getSleepersAmount(world);
             int totalPlayers = world.getPlayers().size();

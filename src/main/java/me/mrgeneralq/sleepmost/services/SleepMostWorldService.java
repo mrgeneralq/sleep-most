@@ -39,6 +39,8 @@ public class SleepMostWorldService implements ISleepMostWorldService {
         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         SleepMostWorld sleepMostWorld = this.repository.get(world.getUID());
         sleepMostWorld.setFrozen(false, null);
+        sleepMostWorld.setPlannedFrozen(false);
+        this.repository.set(world.getUID(), sleepMostWorld);
     }
 
     @Override

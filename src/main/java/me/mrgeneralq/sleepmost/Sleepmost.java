@@ -10,6 +10,7 @@ import me.mrgeneralq.sleepmost.runnables.Heartbeat;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -96,6 +97,7 @@ public class Sleepmost extends JavaPlugin {
 	private void runPreTimerTasks(){
 		for(World world: Bukkit.getWorlds()){
 			this.bootstrapper.getSleepMostWorldService().registerWorld(world);
+			world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
 		}
 	}
 
@@ -106,7 +108,7 @@ public class Sleepmost extends JavaPlugin {
 	}
 
 	private void runTimers(ISleepService sleepService, ISleepMostWorldService sleepMostWorldService, IInsomniaService insomniaService){
-		new Heartbeat(sleepService, sleepMostWorldService, insomniaService).runTaskTimer(this, 20,20);
+		new Heartbeat(sleepService, sleepMostWorldService, insomniaService, bootstrapper.getFlagsRepository()).runTaskTimer(this, 20,20);
 	}
 
 	private void notifyIfNewUpdateExists(IUpdateService updateService) 

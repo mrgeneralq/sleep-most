@@ -44,13 +44,6 @@ public class SleepMostWorld {
         this.timeCycle = timeCycle;
     }
 
-    public boolean isTimeCycleAnimation() {
-        return timeCycleAnimationIsRunning;
-    }
-
-    public void setTimeCycleAnimation(boolean timeCycleAnimationIsRunning) {
-        this.timeCycleAnimationIsRunning = timeCycleAnimationIsRunning;
-    }
 
     public boolean isTimeCycleAnimationIsRunning() {
         return timeCycleAnimationIsRunning;
