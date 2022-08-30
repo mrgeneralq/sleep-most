@@ -19,6 +19,7 @@ public enum ServerVersion
     private boolean supportsBossBars;
     private boolean hasTimeSkipEvent;
     private boolean supportsClickableText;
+    private boolean supportsGameRules;
 
     public static final ServerVersion CURRENT_VERSION;
 
@@ -36,6 +37,8 @@ public enum ServerVersion
         forVersionsFrom(V1_9, version -> version.maxHPHealer = MaxHPHealer.UPDATED_HEALER);
         forVersionsFrom(V1_15, version -> version.hasTimeSkipEvent = true);
         forVersionsFrom(V1_12, version -> version.supportsBossBars = true);
+        forVersionsFrom(V1_13, version -> version.supportsGameRules = true);
+
     }
     ServerVersion() {
         this.name = WordUtils.capitalizeFully(name().substring(1).toLowerCase().replace('_', '.'));
@@ -67,6 +70,10 @@ public enum ServerVersion
 
     public boolean supportsClickableText() {
         return supportsClickableText;
+    }
+
+    public boolean supportsGameRules() {
+        return supportsGameRules;
     }
 
     //Setup methods

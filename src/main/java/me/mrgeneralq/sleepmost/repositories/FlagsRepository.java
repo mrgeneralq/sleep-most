@@ -7,6 +7,7 @@ import me.mrgeneralq.sleepmost.flags.gsit.GSitSleepFlag;
 import me.mrgeneralq.sleepmost.flags.types.AbstractFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.managers.HookManager;
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 
 import java.util.*;
 
@@ -51,7 +52,7 @@ public class FlagsRepository implements IFlagsRepository {
     private final AllowKickFlag allowKickFlag;
     private final InsomniaMilkFlag insomniaMilkFlag;
     private final DynamicAnimationSpeedFlag dynamicAnimationSpeedFlag;
-    private final LongerNightDurationFlag longerNightDurationFlag;
+    private LongerNightDurationFlag longerNightDurationFlag;
 
     //DEPENDING ON HOOK
     private GSitHookFlag gSitHookFlag;
@@ -93,8 +94,9 @@ public class FlagsRepository implements IFlagsRepository {
         setupFlag(this.allowKickFlag = new AllowKickFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.insomniaMilkFlag = new InsomniaMilkFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.dynamicAnimationSpeedFlag = new DynamicAnimationSpeedFlag(new ConfigFlagController<>(configRepository)));
-        setupFlag(this.longerNightDurationFlag = new LongerNightDurationFlag(new ConfigFlagController<>(configRepository)));
 
+        if(ServerVersion.CURRENT_VERSION.supportsGameRules())
+            setupFlag(this.longerNightDurationFlag = new LongerNightDurationFlag(new ConfigFlagController<>(configRepository)));
 
         if(HookManager.isGSitInstalled()){
             setupFlag(this.gSitHookFlag = new GSitHookFlag(new ConfigFlagController<>(configRepository)));

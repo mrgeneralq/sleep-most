@@ -9,6 +9,7 @@ import me.mrgeneralq.sleepmost.interfaces.IInsomniaService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepMostWorldService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.models.SleepMostWorld;
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import me.mrgeneralq.sleepmost.statics.Time;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -39,10 +40,13 @@ public class Heartbeat extends BukkitRunnable {
         for(World world: Bukkit.getWorlds().stream().filter(this.sleepService::isEnabledAt).collect(Collectors.toList()))
         {
             updateTimeCycle(world);
+
+            if(ServerVersion.CURRENT_VERSION.supportsGameRules()){
             checkPlannedFreezeRequired(world);
             checkInsomniaResetRequired(world);
             checkFreezeRequired(world);
             checkUnfreezeRequired(world);
+            }
 
             SleepSkipCause cause = this.sleepService.getCurrentSkipCause(world);
             if(cause == SleepSkipCause.UNKNOWN|| cause == null){
