@@ -71,7 +71,7 @@ public class MessageMapper {
         this.messages.put(MessageKey.STORM_SKIPPED_TITLE, new ConfigMessage("user.storm-skipped-title", "&eStorm skipped"));
         this.messages.put(MessageKey.STORM_SKIPPED_SUBTITLE, new ConfigMessage("user.storm-skipped-subtitle", "&bWhat a weather..."));
 
-
+        this.messages.put(MessageKey.SLEEP_PREVENTED_LONGER_NIGHT, new ConfigMessage("user.longer-night.sleep-prevented", "&cThe night is longer than usual, you don't feel sleepy yet"));
     }
 
     public ConfigMessage getMessage(MessageKey message){

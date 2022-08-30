@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -61,6 +62,18 @@ public class SleepSubCommand implements ISubCommand {
             return true;
         }
 
+
+        SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
+
+        if(sleepMostWorld.isFrozen()){
+
+           String longerNightsSleepPreventedMsg = this.messageService.getMessagePrefixed(MessageKey.SLEEP_PREVENTED_LONGER_NIGHT)
+                    .setWorld(world)
+                    .setPlayer(player)
+                    .build();
+           this.messageService.sendMessage(player, longerNightsSleepPreventedMsg);
+            return true;
+        }
 
         boolean updatedSleepStatus = !this.sleepService.isPlayerAsleep(player);
 

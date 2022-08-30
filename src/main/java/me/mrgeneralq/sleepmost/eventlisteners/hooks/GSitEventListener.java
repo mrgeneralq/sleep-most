@@ -4,6 +4,7 @@ import dev.geco.gsit.api.event.PlayerGetUpPoseEvent;
 import dev.geco.gsit.api.event.PlayerPoseEvent;
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -47,14 +48,13 @@ public class GSitEventListener implements Listener {
         World world = player.getWorld();
         Pose pose = e.getPoseSeat().getPose();
 
+        if(!this.flagsRepository.getGSitHookFlag().getValueAt(world))
+            return;
 
         if(!this.sleepService.isEnabledAt(world))
             return;
 
         if(!this.sleepService.isSleepingPossible(world))
-            return;
-
-        if(!this.flagsRepository.getGSitHookFlag().getValueAt(world))
             return;
 
         if(!this.flagsRepository.getGSitSleepFlag().getValueAt(world))
@@ -66,6 +66,7 @@ public class GSitEventListener implements Listener {
 
         if(!this.sleepService.isSleepingPossible(world))
             return;
+
 
 
         //check if sleeping during storms is allowed
@@ -101,6 +102,17 @@ public class GSitEventListener implements Listener {
                     .setPlayer(player)
                     .build();
             this.messageService.sendMessage(player,insomniaMessage);
+            return;
+        }
+
+        SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
+        if(sleepMostWorld.isFrozen()){
+
+            String longerNightsSleepPreventedMsg = this.messageService.getMessagePrefixed(MessageKey.SLEEP_PREVENTED_LONGER_NIGHT)
+                    .setWorld(world)
+                    .setPlayer(player)
+                    .build();
+            this.messageService.sendMessage(player, longerNightsSleepPreventedMsg);
             return;
         }
 

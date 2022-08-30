@@ -1,10 +1,8 @@
 package me.mrgeneralq.sleepmost.commands;
 
 import me.mrgeneralq.sleepmost.enums.MessageKey;
-import me.mrgeneralq.sleepmost.interfaces.ICooldownService;
-import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
-import me.mrgeneralq.sleepmost.interfaces.IMessageService;
-import me.mrgeneralq.sleepmost.interfaces.ISleepService;
+import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,12 +14,14 @@ public class SleepCommand implements CommandExecutor {
     private final IMessageService messageService;
     private final ICooldownService cooldownService;
     private final IFlagsRepository flagsRepository;
+    private final ISleepMostWorldService sleepMostWorldService;
 
-    public SleepCommand(ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService, IFlagsRepository flagsRepository) {
+    public SleepCommand(ISleepService sleepService, IMessageService messageService, ICooldownService cooldownService, IFlagsRepository flagsRepository, ISleepMostWorldService sleepMostWorldService) {
         this.sleepService = sleepService;
         this.messageService = messageService;
         this.cooldownService = cooldownService;
         this.flagsRepository = flagsRepository;
+        this.sleepMostWorldService = sleepMostWorldService;
     }
 
     @Override
@@ -73,6 +73,18 @@ public class SleepCommand implements CommandExecutor {
                     .build());
             return true;
         }
+
+        SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
+
+        if(sleepMostWorld.isFrozen()){
+            this.messageService.getMessagePrefixed(MessageKey.SLEEP_PREVENTED_LONGER_NIGHT)
+                    .setWorld(world)
+                    .setPlayer(player)
+                    .build();
+            return true;
+        }
+
+
         boolean updatedSleepStatus = !this.sleepService.isPlayerAsleep(player);
 
         //update the sleeping status

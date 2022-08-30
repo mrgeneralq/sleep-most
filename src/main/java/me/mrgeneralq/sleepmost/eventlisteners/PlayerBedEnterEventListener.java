@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.services.InsomniaService;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import org.bukkit.World;
@@ -88,8 +89,20 @@ public class PlayerBedEnterEventListener implements Listener {
             return;
         }
 
+        SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
+
+        if(sleepMostWorld.isFrozen()){
+
+            String longerNightsSleepPreventedMsg = this.messageService.getMessagePrefixed(MessageKey.SLEEP_PREVENTED_LONGER_NIGHT)
+                    .setWorld(world)
+                    .setPlayer(player)
+                    .build();
+            this.messageService.sendMessage(player, longerNightsSleepPreventedMsg);
+            e.setCancelled(true);
+            return;
+        }
+
         if(!this.sleepService.isPlayerAsleep(player))
         this.sleepService.setSleeping(player , true);
-
     }
 }
