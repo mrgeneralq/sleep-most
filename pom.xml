@@ -35,16 +35,39 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.3.0</version>
-                <!-- Do not include the <configuration>...</configuration> part if you are using Sponge! -->
+                Do not include the <configuration>...</configuration> part if you are using Sponge!
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats.bukkit</pattern>
+                            <shadedPattern>${shade.base}.bstats</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin> -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <!-- Replace this with your package! -->
                             <shadedPattern>${shade.base}.bstats</shadedPattern>
                         </relocation>
                     </relocations>
@@ -122,7 +145,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.8</version>
+            <version>3.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
