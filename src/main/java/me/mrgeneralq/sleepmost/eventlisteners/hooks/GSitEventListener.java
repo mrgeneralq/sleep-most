@@ -1,18 +1,18 @@
-package me.mrgeneralq.sleepmost.eventlisteners;
+package me.mrgeneralq.sleepmost.eventlisteners.hooks;
 
+import dev.geco.gsit.api.event.PlayerGetUpPoseEvent;
+import dev.geco.gsit.api.event.PlayerPoseEvent;
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.models.SleepMostWorld;
-import me.mrgeneralq.sleepmost.services.InsomniaService;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Pose;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerBedEnterEvent;
 
-public class PlayerBedEnterEventListener implements Listener {
+public class GSitEventListener implements Listener {
 
     private final ISleepService sleepService;
     private final IMessageService messageService;
@@ -23,7 +23,7 @@ public class PlayerBedEnterEventListener implements Listener {
     private final ISleepMostWorldService sleepMostWorldService;
     private final IInsomniaService insomniaService;
 
-    public PlayerBedEnterEventListener(ISleepService sleepService,
+    public GSitEventListener(ISleepService sleepService,
                                        IMessageService messageService,
                                        ICooldownService cooldownService,
                                        IFlagsRepository flagsRepository,
@@ -41,13 +41,14 @@ public class PlayerBedEnterEventListener implements Listener {
         this.dataContainer = DataContainer.getContainer();
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerBedEnter(PlayerBedEnterEvent e) {
+    @EventHandler
+    public void onPlayerPose(PlayerPoseEvent e){
 
         Player player = e.getPlayer();
         World world = player.getWorld();
+        Pose pose = e.getPoseSeat().getPose();
 
-        if(e.isCancelled())
+        if(!this.flagsRepository.getGSitHookFlag().getValueAt(world))
             return;
 
         if(!this.sleepService.isEnabledAt(world))
@@ -56,41 +57,55 @@ public class PlayerBedEnterEventListener implements Listener {
         if(!this.sleepService.isSleepingPossible(world))
             return;
 
+        if(!this.flagsRepository.getGSitSleepFlag().getValueAt(world))
+            return;
+
+        if(pose != Pose.SLEEPING)
+            return;
+
+
+        if(!this.sleepService.isSleepingPossible(world))
+            return;
+
+
+
+        //check if sleeping during storms is allowed
+        if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {
+
+            String preventSleepStormMessage = messageService.getMessagePrefixed(MessageKey.NO_SLEEP_THUNDERSTORM)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .build();
+
+            this.messageService.sendMessage(player, messageService.getMessagePrefixed(preventSleepStormMessage)
+                    .setPlayer(player)
+                    .setWorld(world)
+                    .build());
+            return;
+        }
 
         //check if sleep is allowed in world
         if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
+
             String sleepPreventedConfigMessage = messageService.getMessagePrefixed(MessageKey.SLEEP_PREVENTED).build();
             this.messageService.sendMessage(player, messageService.getMessagePrefixed(sleepPreventedConfigMessage)
                     .setPlayer(player)
                     .setWorld(world)
                     .build());
-            e.setCancelled(true);
-            return;
-        }
-
-        if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {
-
-            this.messageService.sendMessage(player, messageService.getMessagePrefixed(MessageKey.NO_SLEEP_THUNDERSTORM)
-                    .setPlayer(player)
-                    .setWorld(world)
-                    .build());
-
-            e.setCancelled(true);
             return;
         }
 
         if(this.insomniaService.hasInsomniaEnabled(player)){
+
             String insomniaMessage = this.messageService.getMessagePrefixed(MessageKey.INSOMNIA_NOT_SLEEPY)
                     .setWorld(world)
                     .setPlayer(player)
                     .build();
             this.messageService.sendMessage(player,insomniaMessage);
-            e.setCancelled(true);
             return;
         }
 
         SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
-
         if(sleepMostWorld.isFrozen()){
 
             String longerNightsSleepPreventedMsg = this.messageService.getMessagePrefixed(MessageKey.SLEEP_PREVENTED_LONGER_NIGHT)
@@ -98,11 +113,16 @@ public class PlayerBedEnterEventListener implements Listener {
                     .setPlayer(player)
                     .build();
             this.messageService.sendMessage(player, longerNightsSleepPreventedMsg);
-            e.setCancelled(true);
             return;
         }
 
         if(!this.sleepService.isPlayerAsleep(player))
-        this.sleepService.setSleeping(player , true);
+            this.sleepService.setSleeping(player , true);
+    }
+
+    @EventHandler
+    public void onGetUpPose(PlayerGetUpPoseEvent e){
+        Player player = e.getPlayer();
+        this.sleepService.setSleeping(player, false);
     }
 }

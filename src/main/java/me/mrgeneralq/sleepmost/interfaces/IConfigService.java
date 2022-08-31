@@ -9,5 +9,6 @@ public interface IConfigService {
     int getResetTime();
     boolean updateCheckerEnabled();
     Set<World> getEnabledWorlds();
+    boolean debugModeEnabled();
 
 }

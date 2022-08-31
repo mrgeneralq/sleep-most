@@ -21,8 +21,9 @@ public class MessageMapper {
     public void loadMessages(){
 
         this.messages.put(MessageKey.PREFIX, new ConfigMessage("prefix", "&7[&bSleep-Most&7]"));
-        this.messages.put(MessageKey.NIGHT_SKIPPED, new ConfigMessage("user.night-skipped", "&aNight skipped"));
-        this.messages.put(MessageKey.STORM_SKIPPED, new ConfigMessage("user.storm-skipped", "&eStorm skipped"));
+        this.messages.put(MessageKey.NIGHT_SKIPPED, new ConfigMessage("user.night-skipped-chat", "&aGood morning, %player%!"));
+        this.messages.put(MessageKey.STORM_SKIPPED, new ConfigMessage("user.storm-skipped-chat", "&aThe sky is clearing!"));
+
         this.messages.put(MessageKey.PLAYERS_LEFT_TO_SKIP_NIGHT, new ConfigMessage("user.players-left-night", "&bSleeping to skip night &f[&c%sleeping%/%required%&f]&b!"));
         this.messages.put(MessageKey.PLAYERS_LEFT_TO_SKIP_STORM, new ConfigMessage("user.players-left-storm", "&bSleeping to skip the storm &f[&c%sleeping%/%required%&f]&b!"));
         this.messages.put(MessageKey.SLEEP_PREVENTED, new ConfigMessage("user.sleep-prevented", "&cYou cannot sleep in this world!"));
@@ -50,8 +51,12 @@ public class MessageMapper {
         this.messages.put(MessageKey.TARGET_NOT_SLEEPING, new ConfigMessage("admin.target-not-sleeping", "&cThe player is not sleeping"));
         this.messages.put(MessageKey.TARGET_NOT_ONLINE, new ConfigMessage("admin.target-not-online", "&cThe player is not online"));
         this.messages.put(MessageKey.INSOMNIA_NOT_SLEEPY, new ConfigMessage("user.insomnia-not-sleepy", "&cYou don`t feel sleepy at the moment"));
+        this.messages.put(MessageKey.INSOMNIA_FEELING_SLEEPY, new ConfigMessage("user.insomnia-feeling-sleepy", "&bYou start feeling sleepy ..."));
+
         this.messages.put(MessageKey.INSOMNIA_ALREADY_ENABLED, new ConfigMessage("admin.insomnia-already-enabled", "&cInsomnia is already enabled in this world"));
         this.messages.put(MessageKey.INSOMNIA_ENABLED, new ConfigMessage("admin.insomnia-enabled", "&bInsomnia is enabled"));
+
+
         this.messages.put(MessageKey.CMD_ONLY_DURING_NIGHT, new ConfigMessage("admin.only-during-night-command", "&cThis command can only be used during the night"));
         this.messages.put(MessageKey.KICK_OUT_BED, new ConfigMessage("admin.kick-out-bed", "&c&l[kick out]"));
         this.messages.put(MessageKey.KICKED_PLAYER_FROM_BED, new ConfigMessage("user.kicked-player-from-bed", "&bYou kicked &a%player% &bout of their bed"));
@@ -61,11 +66,12 @@ public class MessageMapper {
         this.messages.put(MessageKey.FLAG_RESET_IN_WORLD, new ConfigMessage("flag.reset-in-world", "&bThe &e%flag% &bflag has been reset to &e%default-value%"));
         this.messages.put(MessageKey.FLAG_DOES_NOT_EXIST, new ConfigMessage("flag.not-exist", "&cThis flag does not exist"));
         //TITLES
-        this.messages.put(MessageKey.NIGHT_SKIPPED_TITLE, new ConfigMessage("user.night-skipped.title", "&aNight skipped"));
-        this.messages.put(MessageKey.NIGHT_SKIPPED_SUBTITLE, new ConfigMessage("user.night-skipped.subtitle", "&bGood morning sunshine!"));
-        this.messages.put(MessageKey.STORM_SKIPPED_TITLE, new ConfigMessage("user.storm-skipped.title", "&eStorm skipped"));
-        this.messages.put(MessageKey.STORM_SKIPPED_SUBTITLE, new ConfigMessage("user.storm-skipped.subtitle", "&bWhat a weather..."));
+        this.messages.put(MessageKey.NIGHT_SKIPPED_TITLE, new ConfigMessage("user.night-skipped-title", "&aNight skipped"));
+        this.messages.put(MessageKey.NIGHT_SKIPPED_SUBTITLE, new ConfigMessage("user.night-skipped-subtitle", "&bGood morning sunshine!"));
+        this.messages.put(MessageKey.STORM_SKIPPED_TITLE, new ConfigMessage("user.storm-skipped-title", "&eStorm skipped"));
+        this.messages.put(MessageKey.STORM_SKIPPED_SUBTITLE, new ConfigMessage("user.storm-skipped-subtitle", "&bWhat a weather..."));
 
+        this.messages.put(MessageKey.SLEEP_PREVENTED_LONGER_NIGHT, new ConfigMessage("user.longer-night.sleep-prevented", "&cThe night is longer than usual, you don't feel sleepy yet"));
     }
 
     public ConfigMessage getMessage(MessageKey message){

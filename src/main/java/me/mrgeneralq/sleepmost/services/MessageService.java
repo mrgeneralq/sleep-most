@@ -135,14 +135,15 @@ public class MessageService implements IMessageService {
 		for(Player p: world.getPlayers()){
 
 			String skipMessage = this.getMessage(message)
-					.setPlayer(lastSleeperName)
+					.setPlayer(p)
+					.setPlaceHolder("%last-sleeper%", lastSleeperName)
+					.setPlaceHolder("%dlast-sleeper%", lastSleeperDisplayName)
 					.setWorld(world)
 					.build();
 
 			this.sendMessage(p , skipMessage);
 
 		}
-
 	}
 
 	@Override

@@ -31,6 +31,8 @@ public class SleepServiceTest {
     private IFlagsRepository mockFlagRepository;
     private IFlagService mockFlagService;
     private IPlayerService playerService;
+    private IDebugService debugService;
+    private ISleepMostWorldService sleepMostWorldService;
 
     @BeforeEach
     public void setUp() {
@@ -41,7 +43,7 @@ public class SleepServiceTest {
         this.mockFlagRepository = mock(IFlagsRepository.class);
         this.mockFlagService = mock(IFlagService.class);
         this.playerService = mock(IPlayerService.class);
-        this.sleepService = new SleepService(this.mockSleepmost, this.mockConfigService, this.mockConfigRepository,this.mockFlagRepository,this.mockFlagService, this.playerService);
+        this.sleepService = new SleepService(this.mockSleepmost, this.mockConfigService, this.mockConfigRepository,this.mockFlagRepository,this.mockFlagService, this.playerService, this.debugService, this.sleepMostWorldService);
     }
 
     @Test

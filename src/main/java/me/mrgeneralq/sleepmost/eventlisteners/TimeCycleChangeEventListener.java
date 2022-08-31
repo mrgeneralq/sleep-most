@@ -3,11 +3,10 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 import me.mrgeneralq.sleepmost.enums.TimeCycle;
 import me.mrgeneralq.sleepmost.events.TimeCycleChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
+import me.mrgeneralq.sleepmost.interfaces.IInsomniaService;
+import me.mrgeneralq.sleepmost.interfaces.ISleepMostWorldService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
-import me.mrgeneralq.sleepmost.interfaces.IWorldPropertyService;
-import me.mrgeneralq.sleepmost.models.WorldProperty;
-import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
-import org.bukkit.Bukkit;
+import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,14 +17,16 @@ public class TimeCycleChangeEventListener implements Listener {
 
 
     private final ISleepService sleepService;
-    private final IWorldPropertyService worldPropertyService;
+    private final ISleepMostWorldService sleepMostWorldService;
     private final IFlagsRepository flagsRepository;
+    private final IInsomniaService insomniaService;
 
-    public TimeCycleChangeEventListener(ISleepService sleepService, IWorldPropertyService worldPropertyService, IFlagsRepository flagsRepository) {
+    public TimeCycleChangeEventListener(ISleepService sleepService, ISleepMostWorldService sleepMostWorldService, IFlagsRepository flagsRepository, IInsomniaService insomniaService) {
 
         this.sleepService = sleepService;
-        this.worldPropertyService = worldPropertyService;
+        this.sleepMostWorldService = sleepMostWorldService;
         this.flagsRepository = flagsRepository;
+        this.insomniaService = insomniaService;
     }
 
     @EventHandler
@@ -53,8 +54,7 @@ public class TimeCycleChangeEventListener implements Listener {
 
     private void checkInsomnia(World world){
 
-        WorldProperty properties = this.worldPropertyService.getWorldProperties(world);
-
+        SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
         double insomniaChance = this.flagsRepository.getInsomniaChanceFlag().getValueAt(world);
 
         if(insomniaChance <= 0)
@@ -65,8 +65,6 @@ public class TimeCycleChangeEventListener implements Listener {
         if(!randomInsomnia)
             return;
 
-            properties.setInsomniaEnabled(true);
-            this.worldPropertyService.setWorldProperty(world, properties);
+            this.insomniaService.enableInsomnia(world);
     }
-
 }

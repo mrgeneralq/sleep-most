@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.mrgeneralq</groupId>
     <artifactId>sleep-most</artifactId>
-    <version>5.0.4</version>
+    <version>5.1.0</version>
     <name>SleepMost</name>
 
     <properties>
@@ -35,16 +35,39 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <!-- Do not include the <configuration>...</configuration> part if you are using Sponge! -->
+                <version>3.3.0</version>
+                Do not include the <configuration>...</configuration> part if you are using Sponge!
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats.bukkit</pattern>
+                            <shadedPattern>${shade.base}.bstats</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin> -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <!-- Replace this with your package! -->
                             <shadedPattern>${shade.base}.bstats</shadedPattern>
                         </relocation>
                     </relocations>
@@ -80,6 +103,11 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository>
+            <id>reposilite-repository-releases</id>
+            <name>Reposilite Repository</name>
+            <url>https://repo.mineinabyss.com/releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -102,7 +130,6 @@
             <version>4.4.0</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -118,7 +145,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.8</version>
+            <version>3.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -131,6 +158,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gecolay</groupId>
+            <artifactId>gsit</artifactId>
+            <version>1.2.2</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

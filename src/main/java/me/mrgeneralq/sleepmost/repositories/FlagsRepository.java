@@ -2,8 +2,12 @@ package me.mrgeneralq.sleepmost.repositories;
 
 import me.mrgeneralq.sleepmost.flags.*;
 import me.mrgeneralq.sleepmost.flags.controllers.ConfigFlagController;
+import me.mrgeneralq.sleepmost.flags.gsit.GSitHookFlag;
+import me.mrgeneralq.sleepmost.flags.gsit.GSitSleepFlag;
 import me.mrgeneralq.sleepmost.flags.types.AbstractFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.managers.HookManager;
+import me.mrgeneralq.sleepmost.statics.ServerVersion;
 
 import java.util.*;
 
@@ -46,6 +50,13 @@ public class FlagsRepository implements IFlagsRepository {
     private final InsomniaChanceFlag insomniaChanceFlag;
     private final PhantomResetAudienceFlag phantomResetAudienceFlag;
     private final AllowKickFlag allowKickFlag;
+    private final InsomniaMilkFlag insomniaMilkFlag;
+    private final DynamicAnimationSpeedFlag dynamicAnimationSpeedFlag;
+    private LongerNightDurationFlag longerNightDurationFlag;
+
+    //DEPENDING ON HOOK
+    private GSitHookFlag gSitHookFlag;
+    private GSitSleepFlag gSitSleepFlag;
 
     public FlagsRepository(IConfigRepository configRepository) {
         setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));
@@ -81,6 +92,17 @@ public class FlagsRepository implements IFlagsRepository {
         setupFlag(this.insomniaChanceFlag = new InsomniaChanceFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.phantomResetAudienceFlag = new PhantomResetAudienceFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.allowKickFlag = new AllowKickFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.insomniaMilkFlag = new InsomniaMilkFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.dynamicAnimationSpeedFlag = new DynamicAnimationSpeedFlag(new ConfigFlagController<>(configRepository)));
+
+        if(ServerVersion.CURRENT_VERSION.supportsGameRules())
+            setupFlag(this.longerNightDurationFlag = new LongerNightDurationFlag(new ConfigFlagController<>(configRepository)));
+
+        if(HookManager.isGSitInstalled()){
+            setupFlag(this.gSitHookFlag = new GSitHookFlag(new ConfigFlagController<>(configRepository)));
+            setupFlag(this.gSitSleepFlag = new GSitSleepFlag(new ConfigFlagController<>(configRepository)));
+        }
+
     }
 
     @Override
@@ -270,6 +292,31 @@ public class FlagsRepository implements IFlagsRepository {
     @Override
     public AllowKickFlag getAllowKickFlag() {
         return allowKickFlag;
+    }
+
+    @Override
+    public InsomniaMilkFlag getInsomniaMilkFlag() {
+        return insomniaMilkFlag;
+    }
+
+    @Override
+    public GSitHookFlag getGSitHookFlag() {
+        return gSitHookFlag;
+    }
+
+    @Override
+    public GSitSleepFlag getGSitSleepFlag() {
+        return gSitSleepFlag;
+    }
+
+    @Override
+    public DynamicAnimationSpeedFlag getDynamicAnimationSpeedFlag() {
+        return dynamicAnimationSpeedFlag;
+    }
+
+    @Override
+    public LongerNightDurationFlag getLongerNightDurationFlag() {
+        return longerNightDurationFlag;
     }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {

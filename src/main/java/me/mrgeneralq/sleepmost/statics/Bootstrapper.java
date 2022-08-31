@@ -25,12 +25,13 @@ public class Bootstrapper {
     private BossBarRepository bossBarRepository;
     private IBossBarService bossBarService;
     private IPlayerService playerService;
+    private ISleepMostPlayerService sleepMostPlayerService;
+    private IInsomniaService insomniaService;
+    private IDebugService debugService;
 
-    private WorldPropertyRepository worldPropertyRepository;
-    private IWorldPropertyService worldPropertyService;
 
     private MessageRepository messageRepository;
-
+    private ISleepMostWorldService sleepMostWorldService;
 
     private static Bootstrapper instance;
 
@@ -38,9 +39,18 @@ public class Bootstrapper {
 
     public void initialize(Sleepmost main){
 
-
         this.configRepository = new ConfigRepository(main);
         this.configService = new ConfigService(main);
+        this.sleepMostWorldService = new SleepMostWorldService(new SleepMostWorldRepository());
+
+
+        this.sleepMostPlayerService = new SleepMostPlayerService(new SleepMostPlayerRepository());
+
+        //do not move lower. Debugging required in several spots
+        this.debugService = new DebugService(this.sleepMostPlayerService, this.configService);
+
+        this.insomniaService = new InsomniaService(this.sleepMostPlayerService);
+
         this.flagsRepository = new FlagsRepository(configRepository);
 
         this.messageRepository = new MessageRepository();
@@ -52,15 +62,10 @@ public class Bootstrapper {
         this.cooldownRepository = new CooldownRepository();
         this.cooldownService = new CooldownService(cooldownRepository, configRepository);
 
-
         this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService);
 
         this.playerService = new PlayerService();
-
-        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService);
-
-        this.worldPropertyRepository = new WorldPropertyRepository();
-        this.worldPropertyService = new WorldPropertyService(this.worldPropertyRepository);
+        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService, debugService, sleepMostWorldService);
 
         this.configMessageMapper = ConfigMessageMapper.getMapper();
         this.configMessageMapper.initialize(main);
@@ -79,7 +84,6 @@ public class Bootstrapper {
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PapiExtension(main, flagsRepository,sleepService).register();
         }
-
     }
 
     public static Bootstrapper getBootstrapper(){
@@ -139,11 +143,25 @@ public class Bootstrapper {
         return bossBarService;
     }
 
-    public IWorldPropertyService getWorldPropertyService() {
-        return worldPropertyService;
-    }
-
     public IPlayerService getPlayerService() {
         return playerService;
     }
+
+    public ISleepMostPlayerService getSleepMostPlayerService() {
+        return sleepMostPlayerService;
+    }
+
+    public IInsomniaService getInsomniaService() {
+        return insomniaService;
+    }
+
+    public IDebugService getDebugService() {
+        return debugService;
+    }
+
+    public ISleepMostWorldService getSleepMostWorldService() {
+        return sleepMostWorldService;
+    }
+
+
 }

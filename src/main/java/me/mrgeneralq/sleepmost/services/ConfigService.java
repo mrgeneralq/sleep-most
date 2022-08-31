@@ -39,4 +39,9 @@ public class ConfigService implements IConfigService {
                 .filter(Objects::nonNull)
                 .collect(toSet());
     }
+
+    @Override
+    public boolean debugModeEnabled() {
+        return main.getConfig().getBoolean("debug-mode");
+    }
 }

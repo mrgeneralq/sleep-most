@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -13,13 +14,15 @@ public class SleepSubCommand implements ISubCommand {
     private final ISleepService sleepService;
     private final IFlagsRepository flagsRepository;
     private final IMessageService messageService;
-    private final IWorldPropertyService worldPropertyService;
+    private final ISleepMostWorldService sleepMostWorldService;
+    private final IInsomniaService insomniaService;
 
-    public SleepSubCommand(ISleepService sleepService, IFlagsRepository flagsRepository, IMessageService messageService, ICooldownService cooldownService, IBossBarService bossBarService, IWorldPropertyService worldPropertyService) {
+    public SleepSubCommand(ISleepService sleepService, IFlagsRepository flagsRepository, IMessageService messageService, ICooldownService cooldownService, IBossBarService bossBarService, ISleepMostWorldService sleepMostWorldService, IInsomniaService insomniaService) {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.messageService = messageService;
-        this.worldPropertyService = worldPropertyService;
+        this.sleepMostWorldService = sleepMostWorldService;
+        this.insomniaService = insomniaService;
     }
 
 
@@ -41,24 +44,17 @@ public class SleepSubCommand implements ISubCommand {
                     .setWorld(world)
                     .setPlayer(player)
                     .build();
-
-            this.messageService.sendMessage(player, messageService.getMessagePrefixed(sleepPreventedConfigMessage)
-                    .setPlayer(player)
-                    .setWorld(world)
-                    .build());
-            return true;
         }
 
         //check if reset is required
-        if (!this.sleepService.resetRequired(world)) {
+        if (!this.sleepService.isSleepingPossible(world)) {
             this.messageService.sendMessage(player, messageService.getMessagePrefixed(MessageKey.CANNOT_SLEEP_NOW)
                     .setWorld(world)
                     .build());
             return true;
         }
 
-
-        if(this.worldPropertyService.getWorldProperties(world).isInsomniaEnabled()){
+        if(this.insomniaService.hasInsomniaEnabled(player)){
             String insomniaMessage = this.messageService.getMessagePrefixed(MessageKey.INSOMNIA_NOT_SLEEPY)
                     .setWorld(world)
                     .build();
@@ -66,6 +62,18 @@ public class SleepSubCommand implements ISubCommand {
             return true;
         }
 
+
+        SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
+
+        if(sleepMostWorld.isFrozen()){
+
+           String longerNightsSleepPreventedMsg = this.messageService.getMessagePrefixed(MessageKey.SLEEP_PREVENTED_LONGER_NIGHT)
+                    .setWorld(world)
+                    .setPlayer(player)
+                    .build();
+           this.messageService.sendMessage(player, longerNightsSleepPreventedMsg);
+            return true;
+        }
 
         boolean updatedSleepStatus = !this.sleepService.isPlayerAsleep(player);
 

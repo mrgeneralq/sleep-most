@@ -66,3 +66,6 @@ time-after-reset: 0
 
 messages:
   cooldown: 10
+
+#debug mode
+debug-mode: false

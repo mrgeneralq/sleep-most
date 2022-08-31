@@ -1,12 +1,13 @@
 package me.mrgeneralq.sleepmost.runnables;
 
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
+import me.mrgeneralq.sleepmost.interfaces.ISleepMostWorldService;
+import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import me.mrgeneralq.sleepmost.utils.TimeUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -20,6 +21,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
     private final ISleepService sleepService;
     private final DataContainer dataContainer = DataContainer.getContainer();
+    private final ISleepMostWorldService sleepMostWorldService;
     private final IFlagsRepository flagsRepository;
     private final World world;
     private final String lastSleeperName;
@@ -28,7 +30,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
     private final List<OfflinePlayer> peopleWhoSlept;
     private int iterationCount = 1;
 
-    public NightcycleAnimationTask(ISleepService sleepService, IFlagsRepository flagsRepository, World world, Player lastSleeper, List<OfflinePlayer> peopleWhoSlept, SleepSkipCause sleepSkipCause) {
+    public NightcycleAnimationTask(ISleepService sleepService, IFlagsRepository flagsRepository, World world, Player lastSleeper, List<OfflinePlayer> peopleWhoSlept, SleepSkipCause sleepSkipCause, ISleepMostWorldService sleepMostWorldService) {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.world = world;
@@ -37,6 +39,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
         this.skipCause = sleepSkipCause;
         this.peopleWhoSlept = peopleWhoSlept;
 
+        this.sleepMostWorldService = sleepMostWorldService;
     }
 
     @Override
@@ -44,8 +47,8 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
         if(!sleepService.isNight(world)){
 
-            //remove animation checker
-            this.dataContainer.setAnimationRunning(world, false);
+            SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
+            sleepMostWorld.setTimeCycleAnimationIsRunning(false);
 
             this.sleepService.executeSleepReset(world, this.lastSleeperName, this.lastSLeeperDisplayName ,  this.peopleWhoSlept , this.skipCause);
             this.cancel();
@@ -64,9 +67,9 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
         }else{
 
-            /*
+            /* **************************************************
              *  All code in this block only runs during the night
-             */
+             ***************************************************/
 
             if(this.flagsRepository.getClockAnimationFlag().getValueAt(world) && ServerVersion.CURRENT_VERSION.supportsTitles()){
 
@@ -81,6 +84,20 @@ public class NightcycleAnimationTask extends BukkitRunnable {
             }
         }
 
-        world.setTime(world.getTime() + 85);
+        int calculatedSpeed = 85;
+
+        if(this.flagsRepository.getDynamicAnimationSpeedFlag().getValueAt(world)){
+
+            int sleepingPlayers = this.sleepService.getSleepersAmount(world);
+            int totalPlayers = world.getPlayers().size();
+            double sleepRation = (double) sleepingPlayers/ (double)totalPlayers;
+
+            int maxSpeed = 150;
+            int minSpeed = 30;
+
+            calculatedSpeed = Math.min ((int) Math.round((sleepRation * (maxSpeed - minSpeed)) + minSpeed),maxSpeed);
+
+        }
+        world.setTime(world.getTime() + calculatedSpeed);
     }
 }

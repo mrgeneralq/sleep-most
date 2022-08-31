@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 
 import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
+import me.mrgeneralq.sleepmost.interfaces.ISleepMostPlayerService;
 import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Bukkit;
@@ -19,22 +20,29 @@ public class PlayerJoinEventListener implements Listener {
 
     private final IMessageService messageService;
     private final IBossBarService bossBarService;
+    private final ISleepMostPlayerService sleepMostPlayerService;
     private final IUpdateService updateService;
     private final Plugin plugin;
 
     private static final String UPDATE_PERMISSION = "sleepmost.alerts.update";
 
-    public PlayerJoinEventListener(Plugin plugin, IUpdateService updateService, IMessageService messageService, IBossBarService bossBarService) {
+    public PlayerJoinEventListener(Plugin plugin, IUpdateService updateService, IMessageService messageService, IBossBarService bossBarService, ISleepMostPlayerService sleepMostPlayerService) {
         this.plugin = plugin;
         this.updateService = updateService;
         this.messageService = messageService;
         this.bossBarService = bossBarService;
+        this.sleepMostPlayerService = sleepMostPlayerService;
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
 
         Player player = e.getPlayer();
+
+        //if player does not exist yet, register. Avoid players disconnecting and reconnecting to reset their profile
+        if(!this.sleepMostPlayerService.playerExists(player))
+        this.sleepMostPlayerService.registerNewPlayer(player);
+
 
         if(ServerVersion.CURRENT_VERSION.supportsBossBars())
         this.bossBarService.registerPlayer(player.getWorld(), player);

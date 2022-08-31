@@ -35,7 +35,7 @@ public interface ISleepService
     boolean isPlayerAsleep(Player player);
 
     //Skip Status
-    boolean resetRequired(World world);
+    boolean isSleepingPossible(World world);
     boolean isNight(World world);
 
     boolean shouldSkip(World world);

@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.builders;
 
 import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -81,6 +82,13 @@ public class MessageBuilder {
 
     public MessageBuilder setPlayer(String playerName){
         this.message = message.replaceAll("%player%", playerName);
+        return this;
+    }
+
+    public MessageBuilder setEnabledStatus(boolean  enabledStatus){
+
+        String status = (enabledStatus) ? ChatColor.GREEN + "enabled" : ChatColor.RED + "disabled";
+        this.message = message.replaceAll("%status%", status);
         return this;
     }
 }

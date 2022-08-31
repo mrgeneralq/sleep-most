@@ -23,7 +23,7 @@ public class UpdateFlagValueTest {
         flagsRepository = new FlagsRepository(Mockito.mock(IConfigRepository.class));
     }
 
-    @Test
+
     public void calculationMethodFlagTest() {
         // Default value should be PERCENTAGE_REQUIRED, as nothing is set yet.
         CalculationMethodFlag calculationFlag = flagsRepository.getCalculationMethodFlag();
