@@ -7,6 +7,7 @@ import me.mrgeneralq.sleepmost.enums.SleepState;
 import me.mrgeneralq.sleepmost.events.PlayerSleepStateChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
+import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Bukkit;
@@ -28,6 +29,7 @@ public class PlayerSleepStateChangeEventListener implements Listener {
     private final IBossBarService bossBarService;
     private final IMessageService messageService;
     private final ICooldownService cooldownService;
+    private final ISleepMostWorldService sleepMostWorldService;
 
     public PlayerSleepStateChangeEventListener(
             Sleepmost sleepmost,
@@ -35,7 +37,8 @@ public class PlayerSleepStateChangeEventListener implements Listener {
             IFlagsRepository flagsRepository,
             IBossBarService bossBarService,
             IMessageService messageService,
-            ICooldownService cooldownService
+            ICooldownService cooldownService,
+            ISleepMostWorldService sleepMostWorldService
     ) {
         this.sleepmost = sleepmost;
         this.sleepService = sleepService;
@@ -43,6 +46,7 @@ public class PlayerSleepStateChangeEventListener implements Listener {
         this.bossBarService = bossBarService;
         this.messageService = messageService;
         this.cooldownService = cooldownService;
+        this.sleepMostWorldService = sleepMostWorldService;
     }
 
     @EventHandler
@@ -92,9 +96,18 @@ public class PlayerSleepStateChangeEventListener implements Listener {
             this.cooldownService.startCooldown(player);
         }
 
-        //duration check before executing any skip methods
+        if(this.sleepService.getSleepersAmount(world) > this.sleepService.getRequiredSleepersCount(world))
+            return;
+
         Bukkit.getScheduler().runTaskLater(sleepmost, () ->
         {
+
+            SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
+
+            //if animation is already running, cancel
+            if(sleepMostWorld.isTimeCycleAnimationIsRunning())
+                return;
+
             //final check before night skip is required
             if(!this.sleepService.shouldSkip(world)){
                 return;
