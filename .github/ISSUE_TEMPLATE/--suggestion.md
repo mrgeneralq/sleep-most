@@ -13,8 +13,9 @@ A clear and concise description of what the problem is. Ex. I'm always frustrate
 **Describe the solution you'd like**
 A clear and concise description of what you want to happen.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+**Do you have a suggestion for a new flag? Include all details below.**
+If the suggestion you have does not relate to a new flag, you may delete this section.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+**Do you have a suggestion for a new command? Include all details below.**
+Please include the potential usage of the command, and how it's beneficial for Sleep Most.
+ If the suggestion you have does not relate to a new flag, you may delete this section.
