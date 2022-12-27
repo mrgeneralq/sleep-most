@@ -67,7 +67,7 @@ public class Bootstrapper {
         this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService, hookService);
 
         this.playerService = new PlayerService();
-        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService, debugService, sleepMostWorldService, hookService);
+        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService, debugService, sleepMostWorldService, hookService, messageService);
 
         this.configMessageMapper = ConfigMessageMapper.getMapper();
         this.configMessageMapper.initialize(main);

@@ -37,6 +37,7 @@ public class SleepService implements ISleepService {
     private final DataContainer dataContainer = DataContainer.getContainer();
     private final ISleepMostWorldService sleepMostWorldService;
     private final IHookService hookService;
+    private final IMessageService messageService;
 
     private static final int
             NIGHT_START_TIME = 12541,
@@ -51,7 +52,8 @@ public class SleepService implements ISleepService {
             IPlayerService playerService,
             IDebugService debugService,
             ISleepMostWorldService sleepMostWorldService,
-            IHookService hookService
+            IHookService hookService,
+            IMessageService messageService
     ) {
 
         this.main = main;
@@ -63,6 +65,7 @@ public class SleepService implements ISleepService {
         this.debugService = debugService;
         this.sleepMostWorldService = sleepMostWorldService;
         this.hookService = hookService;
+        this.messageService = messageService;
     }
 
     @Override
@@ -307,7 +310,7 @@ public class SleepService implements ISleepService {
         SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
         sleepMostWorld.setTimeCycleAnimationIsRunning(true);
 
-        new NightcycleAnimationTask(this, this.flagsRepository , world, player, sleepingPlayers , sleepSkipCause, sleepMostWorldService).runTaskTimer(this.main, 0, 1);
+        new NightcycleAnimationTask(this, this.flagsRepository , world, player, sleepingPlayers , sleepSkipCause, sleepMostWorldService, messageService).runTaskTimer(this.main, 0, 1);
     }
 
 

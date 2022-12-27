@@ -2,6 +2,7 @@ package me.mrgeneralq.sleepmost.mappers;
 
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.models.ConfigMessage;
+import org.bukkit.ChatColor;
 
 import java.util.*;
 
@@ -72,6 +73,9 @@ public class MessageMapper {
         this.messages.put(MessageKey.STORM_SKIPPED_SUBTITLE, new ConfigMessage("user.storm-skipped-subtitle", "&bWhat a weather..."));
 
         this.messages.put(MessageKey.SLEEP_PREVENTED_LONGER_NIGHT, new ConfigMessage("user.longer-night.sleep-prevented", "&cThe night is longer than usual, you don't feel sleepy yet"));
+
+        this.messages.put(MessageKey.CLOCK_TITLE, new ConfigMessage("clock.title",  "&b%time%"));
+        this.messages.put(MessageKey.CLOCK_SUBTITLE, new ConfigMessage("clock.subtitle",  "&a>>>"));
     }
 
     public ConfigMessage getMessage(MessageKey message){
