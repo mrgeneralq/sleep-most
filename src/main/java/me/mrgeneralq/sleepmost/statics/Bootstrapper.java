@@ -64,7 +64,7 @@ public class Bootstrapper {
         this.cooldownRepository = new CooldownRepository();
         this.cooldownService = new CooldownService(cooldownRepository, configRepository);
 
-        this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService);
+        this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService, hookService);
 
         this.playerService = new PlayerService();
         this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService, debugService, sleepMostWorldService, hookService);

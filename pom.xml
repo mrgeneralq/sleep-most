@@ -86,7 +86,6 @@
     </repositories>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

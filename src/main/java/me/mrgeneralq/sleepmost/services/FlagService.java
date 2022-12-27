@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.services;
 
+import me.mrgeneralq.sleepmost.enums.HookType;
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import org.bukkit.Bukkit;
@@ -18,21 +19,24 @@ public class FlagService implements IFlagService {
     private final IConfigRepository configRepository;
     private final IConfigService configService;
     private final IMessageService messageService;
+    private final IHookService hookService;
 
-    private static final boolean
+    /*private static final boolean
             PLACEHOLDER_API_ENABLED = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null,
             ESSENTIALS_ENABLED = Bukkit.getPluginManager().getPlugin("Essentials") != null;
-
-    public FlagService(IFlagsRepository flagsRepository, IConfigRepository configRepository, IConfigService configService, IMessageService messageService) {
+*/
+    public FlagService(IFlagsRepository flagsRepository, IConfigRepository configRepository, IConfigService configService, IMessageService messageService, IHookService hookService) {
         this.flagsRepository = flagsRepository;
         this.configRepository = configRepository;
         this.configService = configService;
         this.messageService = messageService;
+        this.hookService = hookService;
     }
 
     @Override
     public boolean isAfkFlagUsable() {
-        return PLACEHOLDER_API_ENABLED && ESSENTIALS_ENABLED;
+        return this.hookService.isRegistered(HookType.PLACEHOLDER_API) && this.hookService.isRegistered(HookType.ESSENTIALS);
+      //  return PLACEHOLDER_API_ENABLED && ESSENTIALS_ENABLED;
     }
 
     @Override

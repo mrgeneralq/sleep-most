@@ -21,10 +21,7 @@ public class HookService implements IHookService {
     @Override
     public void attemptRegister(Hook hook)  {
 
-        Bukkit.getLogger().info(String.format("Hooking to %s" , hook.getName()));
-
         if(!this.pluginManager.isPluginEnabled(hook.getName())){
-            Bukkit.getLogger().info(hook.getName() + " NOT registered");
             return;
         }
 
@@ -34,7 +31,6 @@ public class HookService implements IHookService {
                 return;
             }
         }
-
         this.hookRepository.addOrUpdate(hook);
         Bukkit.getLogger().info(String.format("Hooked to %s" , hook.getName()));
     }

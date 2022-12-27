@@ -3,6 +3,7 @@ package me.mrgeneralq.sleepmost;
 import me.mrgeneralq.sleepmost.enums.HookType;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
 import me.mrgeneralq.sleepmost.eventlisteners.hooks.GSitEventListener;
+import me.mrgeneralq.sleepmost.hooks.EssentialsHook;
 import me.mrgeneralq.sleepmost.hooks.GsitHook;
 import me.mrgeneralq.sleepmost.hooks.PlaceholderAPIHook;
 import me.mrgeneralq.sleepmost.hooks.SuperVanishHook;
@@ -137,13 +138,13 @@ public class Sleepmost extends JavaPlugin {
 
 		Hook superVanishHook = new SuperVanishHook();
 		superVanishHook.addAlias("PremiumVanish");
-		Hook placeholderAPIHook = new PlaceholderAPIHook();
-		Hook gsitHook = new GsitHook();
 
 		IHookService hookService = bootstrapper.getHookService();
 		hookService.attemptRegister(superVanishHook);
-		hookService.attemptRegister(placeholderAPIHook);
-		hookService.attemptRegister(gsitHook);
+		hookService.attemptRegister(new PlaceholderAPIHook());
+		hookService.attemptRegister(new GsitHook());
+		hookService.attemptRegister(new EssentialsHook());
+
 
 	}
 }

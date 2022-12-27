@@ -14,9 +14,12 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+//import org.bukkit.entity.Player;
 
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.*;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -104,6 +107,25 @@ public class SleepService implements ISleepService {
         this.debugService.print(String.format("&f[&b%s&f] &fTotal players [&e%s&f]: %s", world.getName(), playersList.size() , getJoinedStream(playersList, newPlayerList)));
 
 
+        //AFK DETECTION (reflection)
+        if(this.flagsRepository.getUseAfkFlag().getValueAt(world)){
+
+        try{
+            Method isAfkMethod = Player.class.getMethod("isAfk");
+
+            newPlayerList = playersList.stream().filter(p -> {
+                try {
+                    return (!(boolean) p.getClass().getMethod("isAfk").invoke(p));
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
+                    throw new RuntimeException(ignored);
+                }
+            }).collect(Collectors.toList());
+            this.debugService.print(String.format("&f[&b%s&f] &fNon AFK (server) [&e%s&f]: %s", world.getName() , playersList.size() , getJoinedStream(playersList, newPlayerList)));
+            playersList = newPlayerList;
+        } catch (NoSuchMethodException ignored) {}
+
+        }
+        
 
         if(hookService.isRegistered(HookType.SUPER_VANISH)){
             newPlayerList = playersList.stream().filter(p -> !VanishAPI.isInvisible(p)).collect(Collectors.toList());
