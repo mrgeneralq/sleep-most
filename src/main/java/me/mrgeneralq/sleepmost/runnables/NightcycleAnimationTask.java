@@ -1,6 +1,8 @@
 package me.mrgeneralq.sleepmost.runnables;
 
+import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
+import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepMostWorldService;
 import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
@@ -22,6 +24,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
     private final ISleepService sleepService;
     private final DataContainer dataContainer = DataContainer.getContainer();
     private final ISleepMostWorldService sleepMostWorldService;
+    private final IMessageService messageService;
     private final IFlagsRepository flagsRepository;
     private final World world;
     private final String lastSleeperName;
@@ -30,7 +33,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
     private final List<OfflinePlayer> peopleWhoSlept;
     private int iterationCount = 1;
 
-    public NightcycleAnimationTask(ISleepService sleepService, IFlagsRepository flagsRepository, World world, Player lastSleeper, List<OfflinePlayer> peopleWhoSlept, SleepSkipCause sleepSkipCause, ISleepMostWorldService sleepMostWorldService) {
+    public NightcycleAnimationTask(ISleepService sleepService, IFlagsRepository flagsRepository, World world, Player lastSleeper, List<OfflinePlayer> peopleWhoSlept, SleepSkipCause sleepSkipCause, ISleepMostWorldService sleepMostWorldService, IMessageService messageService) {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.world = world;
@@ -40,6 +43,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
         this.peopleWhoSlept = peopleWhoSlept;
 
         this.sleepMostWorldService = sleepMostWorldService;
+        this.messageService = messageService;
     }
 
     @Override
@@ -60,8 +64,16 @@ public class NightcycleAnimationTask extends BukkitRunnable {
                         peopleWhoSlept.stream().filter(OfflinePlayer::isOnline).map(OfflinePlayer::getPlayer).collect(Collectors.toList()));
 
                 for(Player p: playerList){
-                    String timeString = TimeUtils.getTimeStringByTicks(0);
-                    p.sendTitle(ChatColor.AQUA + timeString ,ChatColor.GREEN + ">>>", 0,70,20);
+
+                    String clockTitle = this.messageService.getMessage(MessageKey.CLOCK_TITLE)
+                            .setTime(0)
+                            .build();
+
+                    String clockSubTitle = this.messageService.getMessage(MessageKey.CLOCK_SUBTITLE)
+                                    .build();
+
+
+                    p.sendTitle( clockTitle ,clockSubTitle, 0,70,20);
                 }
             }
 
@@ -78,8 +90,16 @@ public class NightcycleAnimationTask extends BukkitRunnable {
                         peopleWhoSlept.stream().filter(OfflinePlayer::isOnline).map(OfflinePlayer::getPlayer).collect(Collectors.toList()));
 
                 for(Player p: playerList){
-                    String timeString = TimeUtils.getTimeStringByTicks(world.getTime());
-                    p.sendTitle(ChatColor.AQUA + timeString ,ChatColor.GREEN + ">>>", 0,70,20);
+
+                    String clockTitle = this.messageService.getMessage(MessageKey.CLOCK_TITLE)
+                            .setTime((int) world.getTime())
+                            .build();
+
+                    String clockSubTitle = this.messageService.getMessage(MessageKey.CLOCK_SUBTITLE)
+                            .build();
+
+
+                    p.sendTitle( clockTitle ,clockSubTitle, 0,70,20);
                 }
             }
         }

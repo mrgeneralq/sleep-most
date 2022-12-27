@@ -36,6 +36,7 @@ public class SleepServiceTest {
     private IDebugService debugService;
     private ISleepMostWorldService sleepMostWorldService;
     private IHookService hookService;
+    private IMessageService messageService;
 
     @BeforeEach
     public void setUp() {
@@ -48,7 +49,8 @@ public class SleepServiceTest {
         this.mockFlagRepository = mock(IFlagsRepository.class);
         this.mockFlagService = mock(IFlagService.class);
         this.playerService = mock(IPlayerService.class);
-        this.sleepService = new SleepService(this.mockSleepmost, this.mockConfigService, this.mockConfigRepository,this.mockFlagRepository,this.mockFlagService, this.playerService, this.debugService, this.sleepMostWorldService, this.hookService);
+        this.messageService = mock(IMessageService.class);
+        this.sleepService = new SleepService(this.mockSleepmost, this.mockConfigService, this.mockConfigRepository,this.mockFlagRepository,this.mockFlagService, this.playerService, this.debugService, this.sleepMostWorldService, this.hookService, this.messageService);
     }
 
     @Test
