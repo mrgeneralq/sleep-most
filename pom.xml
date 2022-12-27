@@ -35,34 +35,10 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0</version>
-                Do not include the <configuration>...</configuration> part if you are using Sponge!
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.bstats.bukkit</pattern>
-                            <shadedPattern>${shade.base}.bstats</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin> -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.4</version>
                 <configuration>
                     <relocations>
                         <relocation>
@@ -104,9 +80,8 @@
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <repository>
-            <id>reposilite-repository-releases</id>
-            <name>Reposilite Repository</name>
-            <url>https://repo.mineinabyss.com/releases</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -157,12 +132,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.1</version>
+            <version>3.12.0</version>
         </dependency>
         <dependency>
-            <groupId>com.gecolay</groupId>
-            <artifactId>gsit</artifactId>
-            <version>1.2.2</version>
+            <groupId>com.github.Gecolay.GSit</groupId>
+            <artifactId>core</artifactId>
+            <version>1.3.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
