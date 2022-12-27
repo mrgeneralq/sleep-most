@@ -8,6 +8,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,7 @@ public class SleepServiceTest {
     private ISleepService sleepService;
 
     private Sleepmost mockSleepmost;
+    private PluginManager pluginManager;
     private IConfigService mockConfigService;
     private IConfigRepository mockConfigRepository;
     private IFlagsRepository mockFlagRepository;
@@ -33,17 +35,20 @@ public class SleepServiceTest {
     private IPlayerService playerService;
     private IDebugService debugService;
     private ISleepMostWorldService sleepMostWorldService;
+    private IHookService hookService;
 
     @BeforeEach
     public void setUp() {
 
+        this.hookService = mock(IHookService.class);
         this.mockSleepmost = mock(Sleepmost.class);
+
         this.mockConfigService = mock(IConfigService.class);
         this.mockConfigRepository = mock(IConfigRepository.class);
         this.mockFlagRepository = mock(IFlagsRepository.class);
         this.mockFlagService = mock(IFlagService.class);
         this.playerService = mock(IPlayerService.class);
-        this.sleepService = new SleepService(this.mockSleepmost, this.mockConfigService, this.mockConfigRepository,this.mockFlagRepository,this.mockFlagService, this.playerService, this.debugService, this.sleepMostWorldService);
+        this.sleepService = new SleepService(this.mockSleepmost, this.mockConfigService, this.mockConfigRepository,this.mockFlagRepository,this.mockFlagService, this.playerService, this.debugService, this.sleepMostWorldService, this.hookService);
     }
 
     @Test

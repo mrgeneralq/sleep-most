@@ -1,12 +1,12 @@
 package me.mrgeneralq.sleepmost.repositories;
 
+import me.mrgeneralq.sleepmost.enums.HookType;
 import me.mrgeneralq.sleepmost.flags.*;
 import me.mrgeneralq.sleepmost.flags.controllers.ConfigFlagController;
-import me.mrgeneralq.sleepmost.flags.gsit.GSitHookFlag;
-import me.mrgeneralq.sleepmost.flags.gsit.GSitSleepFlag;
+import me.mrgeneralq.sleepmost.flags.hooks.gsit.GSitHookFlag;
+import me.mrgeneralq.sleepmost.flags.hooks.gsit.GSitSleepFlag;
 import me.mrgeneralq.sleepmost.flags.types.AbstractFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.managers.HookManager;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 
 import java.util.*;
@@ -14,6 +14,8 @@ import java.util.*;
 import static java.util.stream.Collectors.toList;
 
 public class FlagsRepository implements IFlagsRepository {
+
+
     private final Map<String, ISleepFlag<?>> flagByName = new HashMap<>();
 
     //all flags objects(for type safety)
@@ -52,13 +54,18 @@ public class FlagsRepository implements IFlagsRepository {
     private final AllowKickFlag allowKickFlag;
     private final InsomniaMilkFlag insomniaMilkFlag;
     private final DynamicAnimationSpeedFlag dynamicAnimationSpeedFlag;
+    private final IHookService hookService;
     private LongerNightDurationFlag longerNightDurationFlag;
+
 
     //DEPENDING ON HOOK
     private GSitHookFlag gSitHookFlag;
     private GSitSleepFlag gSitSleepFlag;
 
-    public FlagsRepository(IConfigRepository configRepository) {
+
+    public FlagsRepository(IHookService hookService ,IConfigRepository configRepository) {
+        this.hookService = hookService;
+
         setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.mobNoTargetFlag = new MobNoTargetFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.useExemptFlag = new UseExemptFlag(new ConfigFlagController<>(configRepository)));
@@ -98,10 +105,8 @@ public class FlagsRepository implements IFlagsRepository {
         if(ServerVersion.CURRENT_VERSION.supportsGameRules())
             setupFlag(this.longerNightDurationFlag = new LongerNightDurationFlag(new ConfigFlagController<>(configRepository)));
 
-        if(HookManager.isGSitInstalled()){
-            setupFlag(this.gSitHookFlag = new GSitHookFlag(new ConfigFlagController<>(configRepository)));
-            setupFlag(this.gSitSleepFlag = new GSitSleepFlag(new ConfigFlagController<>(configRepository)));
-        }
+        setupFlag(this.gSitHookFlag = new GSitHookFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.gSitSleepFlag = new GSitSleepFlag(new ConfigFlagController<>(configRepository)));
 
     }
 

@@ -1,7 +1,9 @@
 package me.mrgeneralq.sleepmost.services;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.mrgeneralq.sleepmost.Sleepmost;
+import me.mrgeneralq.sleepmost.enums.HookType;
 import me.mrgeneralq.sleepmost.enums.SleepState;
 import me.mrgeneralq.sleepmost.events.PlayerSleepStateChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.*;
@@ -31,6 +33,7 @@ public class SleepService implements ISleepService {
     private final IDebugService debugService;
     private final DataContainer dataContainer = DataContainer.getContainer();
     private final ISleepMostWorldService sleepMostWorldService;
+    private final IHookService hookService;
 
     private static final int
             NIGHT_START_TIME = 12541,
@@ -44,7 +47,8 @@ public class SleepService implements ISleepService {
             IFlagService flagService,
             IPlayerService playerService,
             IDebugService debugService,
-            ISleepMostWorldService sleepMostWorldService
+            ISleepMostWorldService sleepMostWorldService,
+            IHookService hookService
     ) {
 
         this.main = main;
@@ -55,6 +59,7 @@ public class SleepService implements ISleepService {
         this.playerService = playerService;
         this.debugService = debugService;
         this.sleepMostWorldService = sleepMostWorldService;
+        this.hookService = hookService;
     }
 
     @Override
@@ -97,6 +102,14 @@ public class SleepService implements ISleepService {
         this.debugService.print("");
         this.debugService.print("=============================");
         this.debugService.print(String.format("&f[&b%s&f] &fTotal players [&e%s&f]: %s", world.getName(), playersList.size() , getJoinedStream(playersList, newPlayerList)));
+
+
+
+        if(hookService.isRegistered(HookType.SUPER_VANISH)){
+            newPlayerList = playersList.stream().filter(p -> !VanishAPI.isInvisible(p)).collect(Collectors.toList());
+            this.debugService.print(String.format("&f[&b%s&f] &fVisible players (super vanish) [&e%s&f]: %s", world.getName() , playersList.size() , getJoinedStream(playersList, newPlayerList)));
+            playersList = newPlayerList;
+        }
 
         //exclude fake players
         newPlayerList = playersList.stream().filter(this.playerService::isRealPlayer).collect(Collectors.toList());

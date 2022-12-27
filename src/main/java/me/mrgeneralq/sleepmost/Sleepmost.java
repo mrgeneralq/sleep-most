@@ -1,11 +1,14 @@
 package me.mrgeneralq.sleepmost;
 
-import dev.geco.gsit.api.GSitAPI;
+import me.mrgeneralq.sleepmost.enums.HookType;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
 import me.mrgeneralq.sleepmost.eventlisteners.hooks.GSitEventListener;
+import me.mrgeneralq.sleepmost.hooks.GsitHook;
+import me.mrgeneralq.sleepmost.hooks.PlaceholderAPIHook;
+import me.mrgeneralq.sleepmost.hooks.SuperVanishHook;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.managers.HookManager;
 import me.mrgeneralq.sleepmost.mappers.MessageMapper;
+import me.mrgeneralq.sleepmost.models.Hook;
 import me.mrgeneralq.sleepmost.runnables.Heartbeat;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bstats.bukkit.Metrics;
@@ -41,7 +44,7 @@ public class Sleepmost extends JavaPlugin {
 		
 		//init bootstrapper
 		this.bootstrapper = Bootstrapper.getBootstrapper();
-		bootstrapper.initialize(this);
+		bootstrapper.initialize(this, Bukkit.getPluginManager());
 
 		this.messageService = bootstrapper.getMessageService();
 
@@ -78,7 +81,10 @@ public class Sleepmost extends JavaPlugin {
 		pm.registerEvents(new TimeCycleChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getSleepMostWorldService(), bootstrapper.getFlagsRepository(), bootstrapper.getInsomniaService()),this );
 		pm.registerEvents(new PlayerConsumeEventListener(bootstrapper.getSleepService(), bootstrapper.getInsomniaService(), bootstrapper.getMessageService(), bootstrapper.getFlagsRepository()), this);
 
-		if(HookManager.isGSitInstalled()){
+		//REGISTER HOOKS
+		registerHooks();
+
+		if(bootstrapper.getHookService().isRegistered(HookType.GSIT)){
 			getLogger().info("Hooked to GSit!");
 			pm.registerEvents(new GSitEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getSleepMostWorldService(), bootstrapper.getInsomniaService()),this);
 		}
@@ -125,5 +131,19 @@ public class Sleepmost extends JavaPlugin {
 			bossBarService.registerBossBar(world);
 			bossBarService.setVisible(world, false);
 		}
+	}
+
+	void registerHooks(){
+
+		Hook superVanishHook = new SuperVanishHook();
+		superVanishHook.addAlias("PremiumVanish");
+		Hook placeholderAPIHook = new PlaceholderAPIHook();
+		Hook gsitHook = new GsitHook();
+
+		IHookService hookService = bootstrapper.getHookService();
+		hookService.attemptRegister(superVanishHook);
+		hookService.attemptRegister(placeholderAPIHook);
+		hookService.attemptRegister(gsitHook);
+
 	}
 }

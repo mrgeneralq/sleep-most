@@ -1,8 +1,8 @@
 package me.mrgeneralq.sleepmost.interfaces;
 
 import me.mrgeneralq.sleepmost.flags.*;
-import me.mrgeneralq.sleepmost.flags.gsit.GSitHookFlag;
-import me.mrgeneralq.sleepmost.flags.gsit.GSitSleepFlag;
+import me.mrgeneralq.sleepmost.flags.hooks.gsit.GSitHookFlag;
+import me.mrgeneralq.sleepmost.flags.hooks.gsit.GSitSleepFlag;
 
 import java.util.List;
 import java.util.Set;
