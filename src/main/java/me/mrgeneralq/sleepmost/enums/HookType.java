@@ -4,6 +4,7 @@ public enum HookType {
 
     PLACEHOLDER_API,
     SUPER_VANISH,
-    GSIT
+    GSIT,
+    ESSENTIALS
 
 }
