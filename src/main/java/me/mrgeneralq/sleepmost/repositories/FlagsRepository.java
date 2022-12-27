@@ -105,10 +105,8 @@ public class FlagsRepository implements IFlagsRepository {
         if(ServerVersion.CURRENT_VERSION.supportsGameRules())
             setupFlag(this.longerNightDurationFlag = new LongerNightDurationFlag(new ConfigFlagController<>(configRepository)));
 
-        if(hookService.isRegistered(HookType.GSIT)){
         setupFlag(this.gSitHookFlag = new GSitHookFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.gSitSleepFlag = new GSitSleepFlag(new ConfigFlagController<>(configRepository)));
-        }
 
     }
 
