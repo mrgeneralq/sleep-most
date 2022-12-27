@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.statics;
 
+import me.mrgeneralq.sleepmost.enums.HookType;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.mappers.ConfigMessageMapper;
 import me.mrgeneralq.sleepmost.services.MessageService;
@@ -7,7 +8,7 @@ import me.mrgeneralq.sleepmost.placeholderapi.PapiExtension;
 import me.mrgeneralq.sleepmost.repositories.*;
 import me.mrgeneralq.sleepmost.services.*;
 import me.mrgeneralq.sleepmost.Sleepmost;
-import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 
 public class Bootstrapper {
 
@@ -29,15 +30,17 @@ public class Bootstrapper {
     private IInsomniaService insomniaService;
     private IDebugService debugService;
 
-
-    private MessageRepository messageRepository;
     private ISleepMostWorldService sleepMostWorldService;
+    private IHookService hookService;
 
     private static Bootstrapper instance;
 
     private Bootstrapper(){ }
 
-    public void initialize(Sleepmost main){
+    public void initialize(Sleepmost main, PluginManager pluginManager){
+
+        this.hookService = new HookService(pluginManager ,new HookRepository());
+
 
         this.configRepository = new ConfigRepository(main);
         this.configService = new ConfigService(main);
@@ -51,10 +54,9 @@ public class Bootstrapper {
 
         this.insomniaService = new InsomniaService(this.sleepMostPlayerService);
 
-        this.flagsRepository = new FlagsRepository(configRepository);
+        this.flagsRepository = new FlagsRepository(hookService ,configRepository);
 
-        this.messageRepository = new MessageRepository();
-        this.messageService = new MessageService(configRepository, messageRepository, flagsRepository);
+        this.messageService = new MessageService(configRepository, new MessageRepository(), flagsRepository);
 
         this.updateRepository = new UpdateRepository("60623");
         this.updateService = new UpdateService(updateRepository, main, configService);
@@ -65,7 +67,7 @@ public class Bootstrapper {
         this.flagService = new FlagService(flagsRepository, configRepository, configService, messageService);
 
         this.playerService = new PlayerService();
-        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService, debugService, sleepMostWorldService);
+        this.sleepService = new SleepService(main, configService, configRepository, flagsRepository, flagService, playerService, debugService, sleepMostWorldService, hookService);
 
         this.configMessageMapper = ConfigMessageMapper.getMapper();
         this.configMessageMapper.initialize(main);
@@ -76,13 +78,14 @@ public class Bootstrapper {
         this.bossBarService = new BossBarService(this.bossBarRepository);
         }
 
+
         //setups
         this.flagService.handleProblematicFlags();
 
         //setup PAPI
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new PapiExtension(main, flagsRepository,sleepService).register();
+        if(hookService.isRegistered(HookType.PLACEHOLDER_API)) {
+            new PapiExtension(main, flagsRepository, sleepService).register();
         }
     }
 
@@ -163,5 +166,7 @@ public class Bootstrapper {
         return sleepMostWorldService;
     }
 
-
+    public IHookService getHookService() {
+        return hookService;
+    }
 }

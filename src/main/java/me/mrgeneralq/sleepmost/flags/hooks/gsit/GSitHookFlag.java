@@ -1,4 +1,4 @@
-package me.mrgeneralq.sleepmost.flags.gsit;
+package me.mrgeneralq.sleepmost.flags.hooks.gsit;
 
 import me.mrgeneralq.sleepmost.flags.controllers.AbstractFlagController;
 import me.mrgeneralq.sleepmost.flags.types.BooleanFlag;

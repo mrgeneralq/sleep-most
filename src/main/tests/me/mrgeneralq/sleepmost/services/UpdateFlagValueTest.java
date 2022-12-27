@@ -4,6 +4,7 @@ import me.mrgeneralq.sleepmost.enums.SleepCalculationType;
 import me.mrgeneralq.sleepmost.flags.CalculationMethodFlag;
 import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
+import me.mrgeneralq.sleepmost.interfaces.IHookService;
 import me.mrgeneralq.sleepmost.repositories.FlagsRepository;
 import org.bukkit.World;
 import org.junit.Before;
@@ -20,7 +21,7 @@ public class UpdateFlagValueTest {
     @Before
     public void setup() {
         world = Mockito.mock(World.class);
-        flagsRepository = new FlagsRepository(Mockito.mock(IConfigRepository.class));
+        flagsRepository = new FlagsRepository(Mockito.mock(IHookService.class) ,Mockito.mock(IConfigRepository.class));
     }
 
 
