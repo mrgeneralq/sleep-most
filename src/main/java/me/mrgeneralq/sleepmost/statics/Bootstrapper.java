@@ -8,6 +8,7 @@ import me.mrgeneralq.sleepmost.placeholderapi.PapiExtension;
 import me.mrgeneralq.sleepmost.repositories.*;
 import me.mrgeneralq.sleepmost.services.*;
 import me.mrgeneralq.sleepmost.Sleepmost;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 
 public class Bootstrapper {
@@ -81,12 +82,6 @@ public class Bootstrapper {
 
         //setups
         this.flagService.handleProblematicFlags();
-
-        //setup PAPI
-
-        if(hookService.isRegistered(HookType.PLACEHOLDER_API)) {
-            new PapiExtension(main, flagsRepository, sleepService).register();
-        }
     }
 
     public static Bootstrapper getBootstrapper(){

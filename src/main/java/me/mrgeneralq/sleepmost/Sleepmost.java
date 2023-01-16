@@ -10,6 +10,7 @@ import me.mrgeneralq.sleepmost.hooks.SuperVanishHook;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.mappers.MessageMapper;
 import me.mrgeneralq.sleepmost.models.Hook;
+import me.mrgeneralq.sleepmost.placeholderapi.PapiExtension;
 import me.mrgeneralq.sleepmost.runnables.Heartbeat;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bstats.bukkit.Metrics;
@@ -88,6 +89,11 @@ public class Sleepmost extends JavaPlugin {
 		if(bootstrapper.getHookService().isRegistered(HookType.GSIT)){
 			getLogger().info("Hooked to GSit!");
 			pm.registerEvents(new GSitEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getSleepMostWorldService(), bootstrapper.getInsomniaService()),this);
+		}
+
+		if(bootstrapper.getHookService().isRegistered(HookType.PLACEHOLDER_API)){
+			getLogger().info("Hooked to PAPI!");
+				new PapiExtension(this, bootstrapper.getFlagsRepository(), bootstrapper.getSleepService()).register();
 		}
 
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
