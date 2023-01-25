@@ -59,11 +59,12 @@ public class PlayerBedEnterEventListener implements Listener {
 
         //check if sleep is allowed in world
         if(this.flagsRepository.getPreventSleepFlag().getValueAt(world)) {
-            String sleepPreventedConfigMessage = messageService.getMessagePrefixed(MessageKey.SLEEP_PREVENTED).build();
-            this.messageService.sendMessage(player, messageService.getMessagePrefixed(sleepPreventedConfigMessage)
+            String sleepPreventedConfigMessage = messageService.getMessage(MessageKey.SLEEP_PREVENTED)
                     .setPlayer(player)
                     .setWorld(world)
-                    .build());
+                    .build();
+
+            this.messageService.sendMessage(player,sleepPreventedConfigMessage);
             e.setCancelled(true);
             return;
         }
