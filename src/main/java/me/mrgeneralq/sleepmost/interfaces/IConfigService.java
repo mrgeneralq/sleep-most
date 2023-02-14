@@ -11,4 +11,7 @@ public interface IConfigService {
     Set<World> getEnabledWorlds();
     boolean debugModeEnabled();
 
+    int getNightcycleAnimationSpeed();
+    int getNightStartTime();
+    int getNightStopTime();
 }
