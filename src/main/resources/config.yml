@@ -9,6 +9,11 @@
 # WARNING: SUPPORT IS ONLY GIVEN TO THE LATEST VERSION
 update-checker-enabled: true
 
+# specify the speed/ticks for the animation
+# DEFAULT: 85 (recommended)
+nightcycle-animation-speed: 85
+
+
 sleep:
   # for each world, you can create different configurations
   world:
@@ -63,6 +68,11 @@ sleep:
 
 # specify the time which the world will be set after reset
 time-after-reset: 0
+
+# configure when players can and cannot
+time:
+  night-start: 12542
+  night-end: 23850
 
 messages:
   cooldown: 10

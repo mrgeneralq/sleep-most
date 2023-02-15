@@ -44,4 +44,19 @@ public class ConfigService implements IConfigService {
     public boolean debugModeEnabled() {
         return main.getConfig().getBoolean("debug-mode");
     }
+
+    @Override
+    public int getNightcycleAnimationSpeed() {
+        return main.getConfig().getInt("nightcycle-animation-speed");
+    }
+
+    @Override
+    public int getNightStartTime() {
+        return main.getConfig().getInt("time.start-time");
+    }
+
+    @Override
+    public int getNightStopTime() {
+        return main.getConfig().getInt("time.end-time");
+    }
 }

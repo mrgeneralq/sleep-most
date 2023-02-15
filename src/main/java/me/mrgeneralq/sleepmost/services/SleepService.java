@@ -310,7 +310,7 @@ public class SleepService implements ISleepService {
         SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
         sleepMostWorld.setTimeCycleAnimationIsRunning(true);
 
-        new NightcycleAnimationTask(this, this.flagsRepository , world, player, sleepingPlayers , sleepSkipCause, sleepMostWorldService, messageService).runTaskTimer(this.main, 0, 1);
+        new NightcycleAnimationTask(this, this.flagsRepository , world, player, sleepingPlayers , sleepSkipCause, sleepMostWorldService, messageService, configService).runTaskTimer(this.main, 0, 1);
     }
 
 
