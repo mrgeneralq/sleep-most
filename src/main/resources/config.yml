@@ -69,7 +69,9 @@ sleep:
 # specify the time which the world will be set after reset
 time-after-reset: 0
 
-# configure when players can and cannot
+# configure when players can and cannot sleep
+# this also controls when the animation will stop
+# please note that this does not
 time:
   night-start: 12542
   night-end: 23850

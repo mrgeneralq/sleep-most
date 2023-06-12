@@ -8,4 +8,4 @@ commands:
     usage: /sleepmost
     description: open the sleepmost help menu
     aliases: [sm]
-softdepend: [PlaceholderAPI, GSit, SuperVanish, PremiumVanish]
+softdepend: [PlaceholderAPI, GSit, SuperVanish, PremiumVanish, Essentials]
