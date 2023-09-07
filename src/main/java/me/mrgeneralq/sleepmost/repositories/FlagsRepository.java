@@ -56,6 +56,8 @@ public class FlagsRepository implements IFlagsRepository {
     private final DynamicAnimationSpeedFlag dynamicAnimationSpeedFlag;
     private final IHookService hookService;
     private LongerNightDurationFlag longerNightDurationFlag;
+    private final ResetTimeSinceRestFlag resetTimeSinceRestFlag;
+    private DisableDaylightcycleGamerule disableDaylightcycleGamerule;
 
 
     //DEPENDING ON HOOK
@@ -100,13 +102,18 @@ public class FlagsRepository implements IFlagsRepository {
         setupFlag(this.phantomResetAudienceFlag = new PhantomResetAudienceFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.allowKickFlag = new AllowKickFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.insomniaMilkFlag = new InsomniaMilkFlag(new ConfigFlagController<>(configRepository)));
-        setupFlag(this.dynamicAnimationSpeedFlag = new DynamicAnimationSpeedFlag(new ConfigFlagController<>(configRepository)));
 
-        if(ServerVersion.CURRENT_VERSION.supportsGameRules())
+        setupFlag(this.dynamicAnimationSpeedFlag = new DynamicAnimationSpeedFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.disableDaylightcycleGamerule = new DisableDaylightcycleGamerule(new ConfigFlagController<>(configRepository)));
+
+        if(ServerVersion.CURRENT_VERSION.supportsGameRules()){
             setupFlag(this.longerNightDurationFlag = new LongerNightDurationFlag(new ConfigFlagController<>(configRepository)));
+            setupFlag(this.disableDaylightcycleGamerule = new DisableDaylightcycleGamerule(new ConfigFlagController<>(configRepository)));
+        }
 
         setupFlag(this.gSitHookFlag = new GSitHookFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.gSitSleepFlag = new GSitSleepFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.resetTimeSinceRestFlag = new ResetTimeSinceRestFlag(new ConfigFlagController<>(configRepository)));
 
     }
 
@@ -322,6 +329,16 @@ public class FlagsRepository implements IFlagsRepository {
     @Override
     public LongerNightDurationFlag getLongerNightDurationFlag() {
         return longerNightDurationFlag;
+    }
+
+    @Override
+    public ResetTimeSinceRestFlag getResetTimeSinceRestFlag() {
+        return resetTimeSinceRestFlag;
+    }
+
+    @Override
+    public DisableDaylightcycleGamerule getDisableDaylightcycleGamerule() {
+        return disableDaylightcycleGamerule;
     }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {

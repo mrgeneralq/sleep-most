@@ -111,8 +111,11 @@ public class Sleepmost extends JavaPlugin {
 		for(World world: Bukkit.getWorlds()){
 			this.bootstrapper.getSleepMostWorldService().registerWorld(world);
 
-			if(ServerVersion.CURRENT_VERSION.supportsGameRules() && this.bootstrapper.getSleepService().isEnabledAt(world))
-			world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+			if(ServerVersion.CURRENT_VERSION.supportsGameRules() && this.bootstrapper.getSleepService().isEnabledAt(world)){
+				if(this.bootstrapper.getFlagsRepository().getDisableDaylightcycleGamerule().getValueAt(world)){
+					world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+				}
+			}
 		}
 	}
 

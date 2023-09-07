@@ -68,4 +68,8 @@ public interface IFlagsRepository
     DynamicAnimationSpeedFlag getDynamicAnimationSpeedFlag();
 
     LongerNightDurationFlag getLongerNightDurationFlag();
+
+    ResetTimeSinceRestFlag getResetTimeSinceRestFlag();
+
+    DisableDaylightcycleGamerule getDisableDaylightcycleGamerule();
 }

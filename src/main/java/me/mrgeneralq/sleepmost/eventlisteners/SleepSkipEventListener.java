@@ -71,9 +71,12 @@ public class SleepSkipEventListener implements Listener {
         else
             playersToResetPhantom = e.getWorld().getPlayers().stream().map(p -> Bukkit.getOfflinePlayer(p.getUniqueId())).collect(Collectors.toList());
 
-        resetPhantomCounter(world, playersToResetPhantom);
-        sendSkipSound(world, e);
 
+        if(this.flagsRepository.getResetTimeSinceRestFlag().getValueAt(world)){
+            resetPhantomCounter(world, playersToResetPhantom);
+        }
+
+        sendSkipSound(world, e);
 
         if (ServerVersion.CURRENT_VERSION.supportsTitles()) {
             new BukkitRunnable() {
@@ -110,9 +113,7 @@ public class SleepSkipEventListener implements Listener {
          * DISCLAIMER: Statistic and TIME_SINCE_REST Does not exist
          * in older versions of Minecraft
          */
-
         try {
-
             for (Player p : playersWhoSlept.stream().filter(OfflinePlayer::isOnline).map(OfflinePlayer::getPlayer).collect(Collectors.toList()))
                 p.setStatistic(Statistic.TIME_SINCE_REST, 0);
         } catch (NoSuchFieldError error) {

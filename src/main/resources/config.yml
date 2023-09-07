@@ -40,6 +40,7 @@ sleep:
     feed: false
     skip-night-sound: ui.toast.challenge_complete
     skip-storm-sound: entity.wither.spawn
+    reset-time-since-rest: true
 
   world2:
     enabled: false
@@ -65,6 +66,7 @@ sleep:
     feed: false
     skip-night-sound: ui.toast.challenge_complete
     skip-storm-sound: entity.wither.spawn
+    reset-time-since-rest: true
 
 # specify the time which the world will be set after reset
 time-after-reset: 0
