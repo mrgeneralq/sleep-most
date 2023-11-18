@@ -96,7 +96,7 @@ public class PlayerSleepStateChangeEventListener implements Listener {
             this.cooldownService.startCooldown(player);
         }
 
-        if(this.sleepService.getSleepersAmount(world) > this.sleepService.getRequiredSleepersCount(world))
+        if(this.sleepService.getSleepersAmount(world) < this.sleepService.getRequiredSleepersCount(world))
             return;
 
         Bukkit.getScheduler().runTaskLater(sleepmost, () ->
