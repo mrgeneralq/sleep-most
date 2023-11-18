@@ -32,6 +32,11 @@ public class SleepMostPlayerService implements ISleepMostPlayerService {
 
     @Override
     public void registerNewPlayer(OfflinePlayer offlinePlayer) {
+
+        if(offlinePlayer == null || !offlinePlayer.isOnline()){
+            //detect NPC
+            return;
+        }
         SleepMostPlayer player = new SleepMostPlayer(offlinePlayer);
         this.repository.set(offlinePlayer.getUniqueId(), player);
     }

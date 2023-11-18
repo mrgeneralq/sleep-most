@@ -96,6 +96,7 @@ public class Sleepmost extends JavaPlugin {
 				new PapiExtension(this, bootstrapper.getFlagsRepository(), bootstrapper.getSleepService()).register();
 		}
 
+
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
 		runPlayerTasks();
 		runPreTimerTasks();
