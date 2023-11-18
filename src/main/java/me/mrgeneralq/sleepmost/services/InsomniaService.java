@@ -49,7 +49,7 @@ public class InsomniaService implements IInsomniaService {
 
     @Override
     public void disableInsomnia(World world) {
-        for(Player p: world.getPlayers().stream().filter(OfflinePlayer::isOnline).collect(Collectors.toList())){
+        for(Player p: world.getPlayers().stream().filter(p -> p != null && p.isOnline()).collect(Collectors.toList())){
             if(!PlayerUtils.isRealPlayer(p)){
                 continue;
             }
