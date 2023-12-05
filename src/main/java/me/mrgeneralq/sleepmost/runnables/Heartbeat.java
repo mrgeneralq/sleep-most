@@ -14,12 +14,11 @@ import me.mrgeneralq.sleepmost.statics.Time;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Calendar;
 import java.util.stream.Collectors;
 
-public class Heartbeat extends BukkitRunnable {
+public class Heartbeat implements Runnable {
 
 
     private final ISleepService sleepService;

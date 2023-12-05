@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
+import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepMostPlayerService;
@@ -50,7 +51,7 @@ public class PlayerJoinEventListener implements Listener {
         if (!player.hasPermission(UPDATE_PERMISSION))
             return;
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
+        Sleepmost.getInstance().foliaLib.getImpl().runAsync(task ->
         {
             if(updateService.hasUpdate())
                 notifyNewUpdate(player);
