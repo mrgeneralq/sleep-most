@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost.services;
 
+import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.interfaces.IInsomniaService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepMostPlayerService;
 import me.mrgeneralq.sleepmost.utils.PlayerUtils;
@@ -53,7 +54,7 @@ public class InsomniaService implements IInsomniaService {
             if(!PlayerUtils.isRealPlayer(p)){
                 continue;
             }
-            this.disableInsomnia(p, world);
+            Sleepmost.getInstance().foliaLib.getImpl().runAtLocation(p.getLocation(), task -> this.disableInsomnia(p, world));
         }
     }
 

@@ -1,5 +1,7 @@
 package me.mrgeneralq.sleepmost.runnables;
 
+import com.tcoded.folialib.wrapper.task.WrappedTask;
+import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.models.SleepMostWorld;
@@ -9,12 +11,11 @@ import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class NightcycleAnimationTask extends BukkitRunnable {
+public class NightcycleAnimationTask implements Runnable {
 
     private final ISleepService sleepService;
     private final DataContainer dataContainer = DataContainer.getContainer();
@@ -52,7 +53,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
             sleepMostWorld.setTimeCycleAnimationIsRunning(false);
 
             this.sleepService.executeSleepReset(world, this.lastSleeperName, this.lastSLeeperDisplayName ,  this.peopleWhoSlept , this.skipCause);
-            this.cancel();
+            Sleepmost.getInstance().foliaLib.getImpl().cancelTask((WrappedTask) this);
 
             if(this.flagsRepository.getClockAnimationFlag().getValueAt(world) && ServerVersion.CURRENT_VERSION.supportsTitles() && skipCause == SleepSkipCause.NIGHT_TIME){
 

@@ -79,12 +79,7 @@ public class SleepSkipEventListener implements Listener {
         sendSkipSound(world, e);
 
         if (ServerVersion.CURRENT_VERSION.supportsTitles()) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    sendSkipTitle(world, e);
-                }
-            }.runTaskLater(Sleepmost.getInstance(), 5);
+            Sleepmost.getInstance().foliaLib.getImpl().runLater(() -> sendSkipTitle(world, e), 5);
         }
         
         boolean shouldHeal = flagsRepository.getHealFlag().getValueAt(world);

@@ -1,5 +1,6 @@
 package me.mrgeneralq.sleepmost;
 
+import com.tcoded.folialib.FoliaLib;
 import me.mrgeneralq.sleepmost.enums.HookType;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
 import me.mrgeneralq.sleepmost.eventlisteners.hooks.GSitEventListener;
@@ -28,6 +29,7 @@ public class Sleepmost extends JavaPlugin {
 
 	private static Sleepmost instance;
 	private Bootstrapper bootstrapper;
+	public final FoliaLib foliaLib = new FoliaLib(this);
 
 	private IMessageService messageService;
 
@@ -97,7 +99,7 @@ public class Sleepmost extends JavaPlugin {
 		}
 
 
-		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
+		foliaLib.getImpl().runAsync(task -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
 		runPlayerTasks();
 		runPreTimerTasks();
 		runTimers(bootstrapper.getSleepService(), bootstrapper.getSleepMostWorldService(), bootstrapper.getInsomniaService());
@@ -114,7 +116,7 @@ public class Sleepmost extends JavaPlugin {
 
 			if(ServerVersion.CURRENT_VERSION.supportsGameRules() && this.bootstrapper.getSleepService().isEnabledAt(world)){
 				if(this.bootstrapper.getFlagsRepository().getDisableDaylightcycleGamerule().getValueAt(world)){
-					world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+					foliaLib.getImpl().runNextTick(task -> world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true));
 				}
 			}
 		}
@@ -127,7 +129,7 @@ public class Sleepmost extends JavaPlugin {
 	}
 
 	private void runTimers(ISleepService sleepService, ISleepMostWorldService sleepMostWorldService, IInsomniaService insomniaService){
-		new Heartbeat(sleepService, sleepMostWorldService, insomniaService, bootstrapper.getFlagsRepository()).runTaskTimer(this, 20,20);
+		foliaLib.getImpl().runTimer(() -> new Heartbeat(sleepService, sleepMostWorldService, insomniaService, bootstrapper.getFlagsRepository()), 20, 20);
 	}
 
 	private void notifyIfNewUpdateExists(IUpdateService updateService) 
