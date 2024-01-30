@@ -59,6 +59,7 @@ public class FlagsRepository implements IFlagsRepository {
     private final ResetTimeSinceRestFlag resetTimeSinceRestFlag;
     private DisableDaylightcycleGamerule disableDaylightcycleGamerule;
     private ForceNightcycleAnimationFlag forceNightcycleAnimationFlag;
+    private SkipMsgAudienceFlag skipMsgAudienceFlag;
 
 
     //DEPENDING ON HOOK
@@ -116,6 +117,7 @@ public class FlagsRepository implements IFlagsRepository {
         setupFlag(this.gSitSleepFlag = new GSitSleepFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.resetTimeSinceRestFlag = new ResetTimeSinceRestFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.forceNightcycleAnimationFlag = new ForceNightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.skipMsgAudienceFlag = new SkipMsgAudienceFlag(new ConfigFlagController<>(configRepository)));
 
     }
 
@@ -346,6 +348,11 @@ public class FlagsRepository implements IFlagsRepository {
     @Override
     public ForceNightcycleAnimationFlag getForceNightcycleAnimationFlag() {
         return forceNightcycleAnimationFlag;
+    }
+
+    @Override
+    public SkipMsgAudienceFlag getSkipMsgAudienceFlag() {
+        return skipMsgAudienceFlag;
     }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {

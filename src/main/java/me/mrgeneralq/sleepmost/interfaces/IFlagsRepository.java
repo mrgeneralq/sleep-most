@@ -74,4 +74,6 @@ public interface IFlagsRepository
     DisableDaylightcycleGamerule getDisableDaylightcycleGamerule();
 
     ForceNightcycleAnimationFlag getForceNightcycleAnimationFlag();
+
+    SkipMsgAudienceFlag getSkipMsgAudienceFlag();
 }
