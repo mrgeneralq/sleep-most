@@ -22,7 +22,7 @@ public interface IMessageService
 	void sendOPMessage(String message);
 	void sendPlayerLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount);
 	void sendNightSkippedMessage(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause);
-	void sendNightSkippedMessage(List<OfflinePlayer> offlinePlayers, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause);
+	void sendNightSkippedMessage(List<OfflinePlayer> offlinePlayers, World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause);
     MessageBuilder getMessage(MessageKey configMessage);
 
 	MessageBuilder getMessage(String message);

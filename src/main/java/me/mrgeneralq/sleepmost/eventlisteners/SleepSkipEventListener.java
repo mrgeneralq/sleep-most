@@ -108,7 +108,7 @@ public class SleepSkipEventListener implements Listener {
 
         //if the flag is set to "sleepers" only, we only send the message to the players who slept
         if(this.flagsRepository.getSkipMsgAudienceFlag().getValueAt(world) == SleepersOrAllType.SLEEPERS){
-            this.messageService.sendNightSkippedMessage(playersWhoSlept, e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
+            this.messageService.sendNightSkippedMessage(playersWhoSlept, world, e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
         }else{
             this.messageService.sendNightSkippedMessage(world, e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
         }
