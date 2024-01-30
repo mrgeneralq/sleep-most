@@ -72,4 +72,6 @@ public interface IFlagsRepository
     ResetTimeSinceRestFlag getResetTimeSinceRestFlag();
 
     DisableDaylightcycleGamerule getDisableDaylightcycleGamerule();
+
+    ForceNightcycleAnimationFlag getForceNightcycleAnimationFlag();
 }

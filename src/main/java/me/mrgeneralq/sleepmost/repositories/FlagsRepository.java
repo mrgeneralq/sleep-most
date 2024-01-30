@@ -58,6 +58,7 @@ public class FlagsRepository implements IFlagsRepository {
     private LongerNightDurationFlag longerNightDurationFlag;
     private final ResetTimeSinceRestFlag resetTimeSinceRestFlag;
     private DisableDaylightcycleGamerule disableDaylightcycleGamerule;
+    private ForceNightcycleAnimationFlag forceNightcycleAnimationFlag;
 
 
     //DEPENDING ON HOOK
@@ -114,6 +115,7 @@ public class FlagsRepository implements IFlagsRepository {
         setupFlag(this.gSitHookFlag = new GSitHookFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.gSitSleepFlag = new GSitSleepFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.resetTimeSinceRestFlag = new ResetTimeSinceRestFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.forceNightcycleAnimationFlag = new ForceNightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));
 
     }
 
@@ -339,6 +341,11 @@ public class FlagsRepository implements IFlagsRepository {
     @Override
     public DisableDaylightcycleGamerule getDisableDaylightcycleGamerule() {
         return disableDaylightcycleGamerule;
+    }
+
+    @Override
+    public ForceNightcycleAnimationFlag getForceNightcycleAnimationFlag() {
+        return forceNightcycleAnimationFlag;
     }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {
