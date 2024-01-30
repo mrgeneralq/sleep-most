@@ -105,7 +105,10 @@ public class SleepSkipEventListener implements Listener {
         });
         this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
         this.sleepService.clearSleepersAt(world);
-        this.bossBarService.setVisible(world, false);
+
+        if(ServerVersion.CURRENT_VERSION.supportsBossBars()){
+            this.bossBarService.setVisible(world, false);
+        }
     }
 
     private void resetPhantomCounter(World world, List<OfflinePlayer> playersWhoSlept) {
