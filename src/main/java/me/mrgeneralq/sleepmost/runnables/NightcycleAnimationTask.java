@@ -118,5 +118,14 @@ public class NightcycleAnimationTask extends BukkitRunnable {
 
         }
         world.setTime(world.getTime() + calculatedSpeed);
+
+
+        //CANCEL iF animation is no longer supposed to run
+        SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
+        if(!this.flagsRepository.getForceNightcycleAnimationFlag().getValueAt(world) && !sleepService.isRequiredCountReached(world)){
+            sleepMostWorld.setTimeCycleAnimationIsRunning(false);
+            this.cancel();
+        }
+
     }
 }
