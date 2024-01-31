@@ -41,7 +41,7 @@ public class SleepService implements ISleepService {
 
     private static final int
             NIGHT_START_TIME = 12541,
-            NIGHT_END_TIME = 23850;
+            NIGHT_END_TIME = 23460;
 
     public SleepService(
             Sleepmost main,
@@ -284,8 +284,8 @@ public class SleepService implements ISleepService {
             world.setTime(configService.getResetTime());
 
         if(this.flagsRepository.getSkipStormFlag().getValueAt(world) || skipCause == SleepSkipCause.STORM){
-        world.setThundering(false);
-        world.setStorm(false);
+            world.setThundering(false);
+            world.setStorm(false);
         }
 
         Bukkit.getServer().getPluginManager().callEvent(new SleepSkipEvent(world,peopleWhoSlept ,skipCause, lastSleeperName, lastSleeperDisplayName));
@@ -310,7 +310,7 @@ public class SleepService implements ISleepService {
         SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
         sleepMostWorld.setTimeCycleAnimationIsRunning(true);
 
-        new NightcycleAnimationTask(this, this.flagsRepository , world, player, sleepingPlayers , sleepSkipCause, sleepMostWorldService, messageService, configService).runTaskTimer(this.main, 0, 1);
+        new NightcycleAnimationTask(this, this.flagsRepository, world, player, sleepingPlayers , sleepSkipCause, sleepMostWorldService, messageService, configService).runTaskTimer(this.main, 0, 1);
     }
 
 

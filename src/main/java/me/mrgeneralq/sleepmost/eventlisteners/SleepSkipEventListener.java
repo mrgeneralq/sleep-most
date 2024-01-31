@@ -51,14 +51,11 @@ public class SleepSkipEventListener implements Listener {
 
     @EventHandler
     public void onSleepSkip(SleepSkipEvent e) throws InvalidSleepSkipCauseOccurredException {
-
         World world = e.getWorld();
         List<OfflinePlayer> sleepers = e.getPeopleWhoSlept();
 
-
         if (dataContainer.isAnimationRunningAt(world))
             return;
-
 
         /*
         * Decide which players should be phantom reset when the night skips
@@ -103,9 +100,21 @@ public class SleepSkipEventListener implements Listener {
             }
 
         });
-        this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
+
+        List<OfflinePlayer> playersWhoSlept = e.getPeopleWhoSlept();
+
+        //if the flag is set to "sleepers" only, we only send the message to the players who slept
+        if(this.flagsRepository.getSkipMsgAudienceFlag().getValueAt(world) == SleepersOrAllType.SLEEPERS){
+            this.messageService.sendNightSkippedMessage(playersWhoSlept, world, e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
+        }else{
+            this.messageService.sendNightSkippedMessage(world, e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
+        }
+
         this.sleepService.clearSleepersAt(world);
-        this.bossBarService.setVisible(world, false);
+
+        if(ServerVersion.CURRENT_VERSION.supportsBossBars()){
+            this.bossBarService.setVisible(world, false);
+        }
     }
 
     private void resetPhantomCounter(World world, List<OfflinePlayer> playersWhoSlept) {

@@ -3,6 +3,7 @@ package me.mrgeneralq.sleepmost.interfaces;
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.models.ConfigMessage;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ public interface IMessageService
 	void sendOPMessage(String message);
 	void sendPlayerLeftMessage(Player player, SleepSkipCause cause, int sleepingPlayersAmount, int requiredPlayersAmount);
 	void sendNightSkippedMessage(World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause);
+	void sendNightSkippedMessage(List<OfflinePlayer> offlinePlayers, World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause);
     MessageBuilder getMessage(MessageKey configMessage);
 
 	MessageBuilder getMessage(String message);

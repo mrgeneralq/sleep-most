@@ -115,7 +115,7 @@ public class MessageService implements IMessageService {
 					TextComponent component = new TextComponent(kickMessage.build() + " ");
 					component.setColor(ChatColor.RED);
 					component.setBold(true);
-					component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/sm kick %s", player.getName())));
+					component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/sleepmost kick %s", player.getName())));
 					playersLeftMessageComponent.addExtra(component);
 				}
 				p.spigot().sendMessage(playersLeftMessageComponent);
@@ -142,6 +142,24 @@ public class MessageService implements IMessageService {
 					.build();
 
 			this.sendMessage(p , skipMessage);
+
+		}
+	}
+
+	@Override
+	public void sendNightSkippedMessage(List<OfflinePlayer> offlinePlayers,World world, String lastSleeperName, String lastSleeperDisplayName, SleepSkipCause cause) {
+		MessageKey message = (cause == SleepSkipCause.STORM ? MessageKey.STORM_SKIPPED : MessageKey.NIGHT_SKIPPED);
+
+		for(OfflinePlayer p: offlinePlayers.stream().filter(OfflinePlayer::isOnline).collect(Collectors.toList())){
+
+			String skipMessage = this.getMessage(message)
+					.setPlayer(p.getPlayer())
+					.setPlaceHolder("%last-sleeper%", lastSleeperName)
+					.setPlaceHolder("%dlast-sleeper%", lastSleeperDisplayName)
+					.setWorld(world)
+					.build();
+
+			this.sendMessage(p.getPlayer() , skipMessage);
 
 		}
 	}

@@ -50,26 +50,26 @@ public class PlayerSleepStateChangeEventListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerSleepStateChange(PlayerSleepStateChangeEvent e){
+    public void onPlayerSleepStateChange(PlayerSleepStateChangeEvent e) {
 
         SleepState sleepState = e.getSleepState();
         Player player = e.getPlayer();
         World world = player.getWorld();
 
         /*
-        * Handle some simple logic when players wake up
-        */
+         * Handle some simple logic when players wake up
+         */
 
         //do nothing if there is already running an animation
-        if(DataContainer.getContainer().isAnimationRunningAt(world))
+        if (DataContainer.getContainer().isAnimationRunningAt(world))
             return;
 
 
         /*
          * When the player is waking up, we always want to update the bossbar. Also if the world is getting disabled!
          */
-        if(sleepState == SleepState.AWAKE){
-            if(ServerVersion.CURRENT_VERSION.supportsBossBars() && this.flagsRepository.getUseBossBarFlag().getValueAt(world))
+        if (sleepState == SleepState.AWAKE) {
+            if (ServerVersion.CURRENT_VERSION.supportsBossBars() && this.flagsRepository.getUseBossBarFlag().getValueAt(world))
                 this.updateBossBar(world);
             return;
         }
@@ -81,7 +81,7 @@ public class PlayerSleepStateChangeEventListener implements Listener {
             return;
         }
 
-        if(ServerVersion.CURRENT_VERSION.supportsBossBars() && this.flagsRepository.getUseBossBarFlag().getValueAt(world))
+        if (ServerVersion.CURRENT_VERSION.supportsBossBars() && this.flagsRepository.getUseBossBarFlag().getValueAt(world))
             this.updateBossBar(world);
 
         SleepSkipCause skipCause = this.sleepService.getCurrentSkipCause(world);
@@ -91,12 +91,12 @@ public class PlayerSleepStateChangeEventListener implements Listener {
         int playersRequiredAmount = this.sleepService.getRequiredSleepersCount(world);
         SleepSkipCause cause = this.sleepService.getCurrentSkipCause(world);
 
-        if(!this.cooldownService.cooldownEnabled() || !this.cooldownService.isCoolingDown(player)){
-            this.messageService.sendPlayerLeftMessage(player, cause, playersSleepingAmount , playersRequiredAmount);
+        if (!this.cooldownService.cooldownEnabled() || !this.cooldownService.isCoolingDown(player)) {
+            this.messageService.sendPlayerLeftMessage(player, cause, playersSleepingAmount, playersRequiredAmount);
             this.cooldownService.startCooldown(player);
         }
 
-        if(this.sleepService.getSleepersAmount(world) < this.sleepService.getRequiredSleepersCount(world))
+        if (this.sleepService.getSleepersAmount(world) < this.sleepService.getRequiredSleepersCount(world))
             return;
 
         Bukkit.getScheduler().runTaskLater(sleepmost, () ->
@@ -105,25 +105,27 @@ public class PlayerSleepStateChangeEventListener implements Listener {
             SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
 
             //if animation is already running, cancel
-            if(sleepMostWorld.isTimeCycleAnimationIsRunning())
+            if (sleepMostWorld.isTimeCycleAnimationIsRunning())
                 return;
 
             //final check before night skip is required
-            if(!this.sleepService.shouldSkip(world)){
+            if (!this.sleepService.shouldSkip(world)) {
                 return;
             }
             //if animation is enabled, run animation instead
-            if(this.flagsRepository.getNightcycleAnimationFlag().getValueAt(world)){
+            if (this.flagsRepository.getNightcycleAnimationFlag().getValueAt(world)) {
                 this.sleepService.runSkipAnimation(player, skipCause);
                 return;
-        }
+            }
+
             //retrieve a list of all players currently asleep and send them to the SleepSkipEvent (in service)
             List<OfflinePlayer> peopleWhoSlept = this.sleepService.getSleepers(world).stream().map(p -> Bukkit.getOfflinePlayer(p.getUniqueId())).collect(Collectors.toList());
             this.sleepService.executeSleepReset(world, player.getName(), player.getDisplayName(), peopleWhoSlept, skipCause);
         }, skipDelay * 20L);
+
     }
 
-    private void updateBossBar(World world){
+    private void updateBossBar(World world) {
 
         BossBar bossBar = this.bossBarService.getBossBar(world);
         SleepSkipCause cause = this.sleepService.getCurrentSkipCause(world);

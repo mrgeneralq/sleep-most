@@ -25,7 +25,7 @@ public class MessageMapper {
         this.messages.put(MessageKey.NIGHT_SKIPPED, new ConfigMessage("user.night-skipped-chat", "&aGood morning, %player%!"));
         this.messages.put(MessageKey.STORM_SKIPPED, new ConfigMessage("user.storm-skipped-chat", "&aThe sky is clearing!"));
 
-        this.messages.put(MessageKey.PLAYERS_LEFT_TO_SKIP_NIGHT, new ConfigMessage("user.players-left-night", "&bSleeping to skip night &f[&c%sleeping%/%required%&f]&b!"));
+        this.messages.put(MessageKey.PLAYERS_LEFT_TO_SKIP_NIGHT, new ConfigMessage("user.players-left-night", "&bSleeping to skip the night &f[&c%sleeping%/%required%&f]&b!"));
         this.messages.put(MessageKey.PLAYERS_LEFT_TO_SKIP_STORM, new ConfigMessage("user.players-left-storm", "&bSleeping to skip the storm &f[&c%sleeping%/%required%&f]&b!"));
         this.messages.put(MessageKey.SLEEP_PREVENTED, new ConfigMessage("user.sleep-prevented", "&cYou cannot sleep in this world!"));
         this.messages.put(MessageKey.NO_SLEEP_THUNDERSTORM, new ConfigMessage("user.no-sleep-storm", "&cYou cannot sleep during a thunderstorm"));
