@@ -9,7 +9,7 @@ import java.util.List;
 public interface ISleepService
 {
     //General
-    void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName, List<OfflinePlayer> peopleWhoSlept , SleepSkipCause skipCause);
+    void executeSleepReset(World world, String lastSleeperName, String lastSleeperDisplayName, List<OfflinePlayer> peopleWhoSlept, SleepSkipCause skipCause);
     void reloadConfig();
 
     //Worlds

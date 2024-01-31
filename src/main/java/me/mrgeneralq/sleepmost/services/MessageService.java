@@ -115,7 +115,7 @@ public class MessageService implements IMessageService {
 					TextComponent component = new TextComponent(kickMessage.build() + " ");
 					component.setColor(ChatColor.RED);
 					component.setBold(true);
-					component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/sm kick %s", player.getName())));
+					component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/sleepmost kick %s", player.getName())));
 					playersLeftMessageComponent.addExtra(component);
 				}
 				p.spigot().sendMessage(playersLeftMessageComponent);

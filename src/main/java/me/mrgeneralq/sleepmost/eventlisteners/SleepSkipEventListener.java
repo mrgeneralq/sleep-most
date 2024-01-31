@@ -51,14 +51,11 @@ public class SleepSkipEventListener implements Listener {
 
     @EventHandler
     public void onSleepSkip(SleepSkipEvent e) throws InvalidSleepSkipCauseOccurredException {
-
         World world = e.getWorld();
         List<OfflinePlayer> sleepers = e.getPeopleWhoSlept();
 
-
         if (dataContainer.isAnimationRunningAt(world))
             return;
-
 
         /*
         * Decide which players should be phantom reset when the night skips
@@ -113,7 +110,6 @@ public class SleepSkipEventListener implements Listener {
             this.messageService.sendNightSkippedMessage(world, e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
         }
 
-        this.messageService.sendNightSkippedMessage(e.getWorld(), e.getLastSleeperName(), e.getLastSleeperDisplayName(), e.getCause());
         this.sleepService.clearSleepersAt(world);
 
         if(ServerVersion.CURRENT_VERSION.supportsBossBars()){

@@ -87,14 +87,13 @@ public class MessageBuilder {
     }
 
     public MessageBuilder setEnabledStatus(boolean  enabledStatus){
-
         String status = (enabledStatus) ? ChatColor.GREEN + "enabled" : ChatColor.RED + "disabled";
         this.message = message.replaceAll("%status%", status);
         return this;
     }
 
     public MessageBuilder setTime(int time){
-        this.message = message.replaceAll("%time%", TimeUtils.getTimeStringByTicks( time));
+        this.message = message.replaceAll("%time%", TimeUtils.getTimeStringByTicks(time));
         return this;
     }
 }
