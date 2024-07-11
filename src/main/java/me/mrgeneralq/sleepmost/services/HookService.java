@@ -1,11 +1,13 @@
 package me.mrgeneralq.sleepmost.services;
 
-import me.mrgeneralq.sleepmost.enums.HookType;
+import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 import me.mrgeneralq.sleepmost.interfaces.IHookRepository;
 import me.mrgeneralq.sleepmost.interfaces.IHookService;
 import me.mrgeneralq.sleepmost.models.Hook;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
+
+import java.util.Optional;
 
 public class HookService implements IHookService {
 
@@ -17,7 +19,6 @@ public class HookService implements IHookService {
         this.hookRepository = hookRepository;
     }
 
-
     @Override
     public void attemptRegister(Hook hook)  {
 
@@ -27,17 +28,26 @@ public class HookService implements IHookService {
 
         for(Hook dependency: hook.getDependencies()){
             if(!this.pluginManager.isPluginEnabled(hook.getName())){
-                Bukkit.getLogger().severe(String.format("Missing required dependency {%s} for {%s}", dependency.getName(), hook.getName()));
+                Bukkit.getLogger().severe(String.format("[sleep-most] Missing required dependency {%s} for {%s}", dependency.getName(), hook.getName()));
                 return;
             }
         }
+        hook.setEnabled(true);
         this.hookRepository.addOrUpdate(hook);
-        Bukkit.getLogger().info(String.format("Hooked to %s" , hook.getName()));
+        Bukkit.getLogger().info(String.format("[sleep-most] Hooked to %s" , hook.getName()));
     }
 
     @Override
-    public boolean isRegistered(HookType hookType) {
-        return this.hookRepository.exists(hookType);
-    }
+    public Optional<Hook> getHook(SleepMostHook sleepMostHook) {
 
+        Optional<Hook> hook = Optional.ofNullable(this.hookRepository.get(sleepMostHook));
+        if(hook.isEmpty()){
+            return Optional.empty();
+        }
+
+        if(!hook.get().isEnabled()){
+            return Optional.empty();
+        }
+        return hook;
+    }
 }

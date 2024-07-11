@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost;
 
-import me.mrgeneralq.sleepmost.enums.HookType;
+import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
 import me.mrgeneralq.sleepmost.eventlisteners.hooks.GSitEventListener;
 import me.mrgeneralq.sleepmost.hooks.EssentialsHook;
@@ -23,6 +23,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.mrgeneralq.sleepmost.commands.SleepmostCommand;
 import me.mrgeneralq.sleepmost.statics.Bootstrapper;
+
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 public class Sleepmost extends JavaPlugin {
 
@@ -58,7 +61,7 @@ public class Sleepmost extends JavaPlugin {
 			this.registerBossBars();
 
 		//init commands
-		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagService(), bootstrapper.getFlagsRepository(), bootstrapper.getConfigRepository(), bootstrapper.getCooldownService(), bootstrapper.getBossBarService(), bootstrapper.getSleepMostWorldService(), bootstrapper.getSleepMostPlayerService(), bootstrapper.getInsomniaService(), bootstrapper.getDebugService());
+		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagService(), bootstrapper.getFlagsRepository(), bootstrapper.getConfigRepository(), bootstrapper.getCooldownService(), bootstrapper.getBossBarService(), bootstrapper.getSleepMostWorldService(), bootstrapper.getSleepMostPlayerService(), bootstrapper.getInsomniaService(), bootstrapper.getDebugService(), bootstrapper.getHookService());
 		getCommand("sleepmost").setExecutor(sleepmostCommand);
 
 		PluginManager pm = Bukkit.getPluginManager();
@@ -74,7 +77,7 @@ public class Sleepmost extends JavaPlugin {
 			pm.registerEvents(new TimeSkipEventListener(bootstrapper.getSleepService()), this);
 		}
 
-		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getMessageService(), bootstrapper.getConfigService(), bootstrapper.getSleepService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService()), this);
+		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getMessageService(), bootstrapper.getConfigService(), bootstrapper.getSleepService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getHookService()), this);
 		pm.registerEvents(new WorldChangeEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new PlayerBedLeaveEventListener(bootstrapper.getSleepService()), this);
 		pm.registerEvents(new WorldLoadEventListener(bootstrapper.getBossBarService(), bootstrapper.getSleepMostWorldService()),this);
@@ -86,16 +89,16 @@ public class Sleepmost extends JavaPlugin {
 		//REGISTER HOOKS
 		registerHooks();
 
-		if(bootstrapper.getHookService().isRegistered(HookType.GSIT)){
-			getLogger().info("Hooked to GSit!");
+		Optional<Hook> gsitHook = bootstrapper.getHookService().getHook(SleepMostHook.GSIT);
+		if(gsitHook.isPresent()){
 			pm.registerEvents(new GSitEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getSleepMostWorldService(), bootstrapper.getInsomniaService()),this);
+			Bukkit.getLogger().info("[sleep-most] GSit hook detected and registered GSit event listener");
 		}
 
-		if(bootstrapper.getHookService().isRegistered(HookType.PLACEHOLDER_API)){
-			getLogger().info("Hooked to PAPI!");
-				new PapiExtension(this, bootstrapper.getFlagsRepository(), bootstrapper.getSleepService()).register();
+		Optional<Hook> superVanishHook = bootstrapper.getHookService().getHook(SleepMostHook.SUPER_VANISH);
+		if(superVanishHook.isPresent()){
+			new PapiExtension(this, bootstrapper.getFlagsRepository(), bootstrapper.getSleepService()).register();
 		}
-
 
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
 		runPlayerTasks();

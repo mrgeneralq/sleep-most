@@ -3,14 +3,16 @@ package me.mrgeneralq.sleepmost.eventlisteners;
 import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
 
 import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 import me.mrgeneralq.sleepmost.enums.SleepersOrAllType;
 import me.mrgeneralq.sleepmost.exceptions.InvalidSleepSkipCauseOccurredException;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.flags.SkipSoundFlag;
 import me.mrgeneralq.sleepmost.flags.UseSkipSoundFlag;
+import me.mrgeneralq.sleepmost.hooks.GsitHook;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
-import me.mrgeneralq.sleepmost.models.ConfigMessage;
+import me.mrgeneralq.sleepmost.models.Hook;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -22,7 +24,9 @@ import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SleepSkipEventListener implements Listener {
@@ -32,13 +36,15 @@ public class SleepSkipEventListener implements Listener {
     private final ISleepService sleepService;
     private final IFlagsRepository flagsRepository;
     private final IBossBarService bossBarService;
+    private final IHookService hookService;
     private final DataContainer dataContainer = DataContainer.getContainer();
 
     public SleepSkipEventListener(IMessageService messageService,
                                   IConfigService configService,
                                   ISleepService sleepService,
                                   IFlagsRepository flagsRepository,
-                                  IBossBarService bossBarService
+                                  IBossBarService bossBarService,
+                                  IHookService hooksService
     ) {
 
         this.messageService = messageService;
@@ -46,7 +52,7 @@ public class SleepSkipEventListener implements Listener {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.bossBarService = bossBarService;
-
+        this.hookService = hooksService;
     }
 
     @EventHandler
@@ -114,6 +120,19 @@ public class SleepSkipEventListener implements Listener {
 
         if(ServerVersion.CURRENT_VERSION.supportsBossBars()){
             this.bossBarService.setVisible(world, false);
+        }
+
+
+        Optional<Hook> optionalGsitHook = this.hookService.getHook(SleepMostHook.GSIT);
+        //GSit, disble sleep
+        if (optionalGsitHook.isPresent() &&  this.flagsRepository.getGSitHookFlag().getValueAt(world) && this.flagsRepository.getGSitSleepFlag().getValueAt(world)) {
+            GsitHook gsitHook = (GsitHook) optionalGsitHook.get();
+
+            for (OfflinePlayer player : playersWhoSlept) {
+                if (player.isOnline()) {
+                    gsitHook.setSleepingPose(player.getPlayer(), false);
+                }
+            }
         }
     }
 

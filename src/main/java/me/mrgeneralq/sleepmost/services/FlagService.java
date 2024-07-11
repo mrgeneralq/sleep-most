@@ -1,9 +1,9 @@
 package me.mrgeneralq.sleepmost.services;
 
-import me.mrgeneralq.sleepmost.enums.HookType;
+import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 import me.mrgeneralq.sleepmost.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import org.bukkit.Bukkit;
+import me.mrgeneralq.sleepmost.models.Hook;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 
@@ -35,8 +35,10 @@ public class FlagService implements IFlagService {
 
     @Override
     public boolean isAfkFlagUsable() {
-        return this.hookService.isRegistered(HookType.PLACEHOLDER_API) && this.hookService.isRegistered(HookType.ESSENTIALS);
-      //  return PLACEHOLDER_API_ENABLED && ESSENTIALS_ENABLED;
+
+        Optional<Hook> placeholderHook = this.hookService.getHook(SleepMostHook.PLACEHOLDER_API);
+        Optional<Hook> essentialsHook = this.hookService.getHook(SleepMostHook.ESSENTIALS);
+        return (placeholderHook.isPresent() && essentialsHook.isPresent());
     }
 
     @Override

@@ -1,13 +1,18 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.enums.SleepMostHook;
+import me.mrgeneralq.sleepmost.hooks.GsitHook;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.models.Hook;
 import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.templates.MessageTemplate;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Optional;
 
 public class SleepSubCommand implements ISubCommand {
 
@@ -16,13 +21,15 @@ public class SleepSubCommand implements ISubCommand {
     private final IMessageService messageService;
     private final ISleepMostWorldService sleepMostWorldService;
     private final IInsomniaService insomniaService;
+    private final IHookService hookService;
 
-    public SleepSubCommand(ISleepService sleepService, IFlagsRepository flagsRepository, IMessageService messageService, ICooldownService cooldownService, IBossBarService bossBarService, ISleepMostWorldService sleepMostWorldService, IInsomniaService insomniaService) {
+    public SleepSubCommand(ISleepService sleepService, IFlagsRepository flagsRepository, IMessageService messageService, ICooldownService cooldownService, IBossBarService bossBarService, ISleepMostWorldService sleepMostWorldService, IInsomniaService insomniaService, IHookService hookService) {
         this.sleepService = sleepService;
         this.flagsRepository = flagsRepository;
         this.messageService = messageService;
         this.sleepMostWorldService = sleepMostWorldService;
         this.insomniaService = insomniaService;
+        this.hookService = hookService;
     }
 
 
@@ -62,11 +69,8 @@ public class SleepSubCommand implements ISubCommand {
             return true;
         }
 
-
         SleepMostWorld sleepMostWorld = this.sleepMostWorldService.getWorld(world);
-
         if(sleepMostWorld.isFrozen()){
-
            String longerNightsSleepPreventedMsg = this.messageService.getMessagePrefixed(MessageKey.SLEEP_PREVENTED_LONGER_NIGHT)
                     .setWorld(world)
                     .setPlayer(player)
@@ -77,10 +81,15 @@ public class SleepSubCommand implements ISubCommand {
 
         boolean updatedSleepStatus = !this.sleepService.isPlayerAsleep(player);
 
-        //TODO check this what the original getStatusTemplate is
-      //  this.messageService.sendMessage(player, this.messageService.getMessage(getStatusTemplate(updatedSleepStatus)).build());
-
-        this.sleepService.setSleeping(player, updatedSleepStatus);
+        //If Gsit is enabled and the player is sleeping, we will use the GsitHook to set the sleeping pose.
+        //GSit event listener will handle the setSleeping method.
+        Optional<Hook> optionalGsitHook = this.hookService.getHook(SleepMostHook.GSIT);
+        if(optionalGsitHook.isPresent() && this.flagsRepository.getGSitHookFlag().getValueAt(world) && this.flagsRepository.getGsitSleepCmdFlag().getValueAt(world)){
+            GsitHook gsitHook = (GsitHook) optionalGsitHook.get();
+            gsitHook.setSleepingPose(player, true);
+        }else{
+            this.sleepService.setSleeping(player, updatedSleepStatus);
+        }
         return true;
     }
     private MessageTemplate getStatusTemplate(boolean sleepingStatus){

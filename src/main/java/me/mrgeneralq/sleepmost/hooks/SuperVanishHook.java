@@ -1,12 +1,12 @@
 package me.mrgeneralq.sleepmost.hooks;
 
-import me.mrgeneralq.sleepmost.enums.HookType;
+import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 import me.mrgeneralq.sleepmost.models.Hook;
 
 public class SuperVanishHook extends Hook {
 
     public SuperVanishHook() {
-        super(HookType.SUPER_VANISH, "SuperVanish");
+        super(SleepMostHook.SUPER_VANISH, "SuperVanish");
     }
 
 }

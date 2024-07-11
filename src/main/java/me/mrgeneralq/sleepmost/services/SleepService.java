@@ -3,10 +3,11 @@ package me.mrgeneralq.sleepmost.services;
 import de.myzelyam.api.vanish.VanishAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.mrgeneralq.sleepmost.Sleepmost;
-import me.mrgeneralq.sleepmost.enums.HookType;
+import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 import me.mrgeneralq.sleepmost.enums.SleepState;
 import me.mrgeneralq.sleepmost.events.PlayerSleepStateChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.models.Hook;
 import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTask;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
@@ -22,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -128,9 +130,9 @@ public class SleepService implements ISleepService {
         } catch (NoSuchMethodException ignored) {}
 
         }
-        
 
-        if(hookService.isRegistered(HookType.SUPER_VANISH)){
+        Optional<Hook> superVanishHook = hookService.getHook(SleepMostHook.SUPER_VANISH);
+        if(superVanishHook.isPresent()){
             newPlayerList = playersList.stream().filter(p -> !VanishAPI.isInvisible(p)).collect(Collectors.toList());
             this.debugService.print(String.format("&f[&b%s&f] &fVisible players (super vanish) [&e%s&f]: %s", world.getName() , playersList.size() , getJoinedStream(playersList, newPlayerList)));
             playersList = newPlayerList;

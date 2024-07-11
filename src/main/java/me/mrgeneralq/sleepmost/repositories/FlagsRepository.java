@@ -1,6 +1,5 @@
 package me.mrgeneralq.sleepmost.repositories;
 
-import me.mrgeneralq.sleepmost.enums.HookType;
 import me.mrgeneralq.sleepmost.flags.*;
 import me.mrgeneralq.sleepmost.flags.controllers.ConfigFlagController;
 import me.mrgeneralq.sleepmost.flags.hooks.gsit.GSitHookFlag;
@@ -62,9 +61,11 @@ public class FlagsRepository implements IFlagsRepository {
     private SkipMsgAudienceFlag skipMsgAudienceFlag;
 
 
+
     //DEPENDING ON HOOK
     private GSitHookFlag gSitHookFlag;
     private GSitSleepFlag gSitSleepFlag;
+    private GsitSleepCmdFlag gsitSleepCmdFlag;
 
 
     public FlagsRepository(IHookService hookService ,IConfigRepository configRepository) {
@@ -113,8 +114,12 @@ public class FlagsRepository implements IFlagsRepository {
             setupFlag(this.disableDaylightcycleGamerule = new DisableDaylightcycleGamerule(new ConfigFlagController<>(configRepository)));
         }
 
+        //GSIT
         setupFlag(this.gSitHookFlag = new GSitHookFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.gSitSleepFlag = new GSitSleepFlag(new ConfigFlagController<>(configRepository)));
+        setupFlag(this.gsitSleepCmdFlag = new GsitSleepCmdFlag(new ConfigFlagController<>(configRepository)));
+
+
         setupFlag(this.resetTimeSinceRestFlag = new ResetTimeSinceRestFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.forceNightcycleAnimationFlag = new ForceNightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));
         setupFlag(this.skipMsgAudienceFlag = new SkipMsgAudienceFlag(new ConfigFlagController<>(configRepository)));
@@ -353,6 +358,11 @@ public class FlagsRepository implements IFlagsRepository {
     @Override
     public SkipMsgAudienceFlag getSkipMsgAudienceFlag() {
         return skipMsgAudienceFlag;
+    }
+
+    @Override
+    public GsitSleepCmdFlag getGsitSleepCmdFlag() {
+        return gsitSleepCmdFlag;
     }
 
     private <V> void setupFlag(ISleepFlag<V> flag) {

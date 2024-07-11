@@ -1,14 +1,11 @@
 package me.mrgeneralq.sleepmost.statics;
 
-import me.mrgeneralq.sleepmost.enums.HookType;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.mappers.ConfigMessageMapper;
 import me.mrgeneralq.sleepmost.services.MessageService;
-import me.mrgeneralq.sleepmost.placeholderapi.PapiExtension;
 import me.mrgeneralq.sleepmost.repositories.*;
 import me.mrgeneralq.sleepmost.services.*;
 import me.mrgeneralq.sleepmost.Sleepmost;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 
 public class Bootstrapper {

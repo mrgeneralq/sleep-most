@@ -76,4 +76,6 @@ public interface IFlagsRepository
     ForceNightcycleAnimationFlag getForceNightcycleAnimationFlag();
 
     SkipMsgAudienceFlag getSkipMsgAudienceFlag();
+
+    GsitSleepCmdFlag getGsitSleepCmdFlag();
 }

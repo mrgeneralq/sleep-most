@@ -1,20 +1,21 @@
 package me.mrgeneralq.sleepmost.models;
 
-import me.mrgeneralq.sleepmost.enums.HookType;
+import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Hook {
 
-    private final HookType hookType;
+    private final SleepMostHook sleepMostHook;
    private final List<Hook> dependencies = new ArrayList<>();
    private final List<String> aliases = new ArrayList<>();
+   private boolean enabled = false;
 
    private final String name;
 
-    public Hook(HookType hookType ,String name) {
-        this.hookType = hookType;
+    public Hook(SleepMostHook sleepMostHook, String name) {
+        this.sleepMostHook = sleepMostHook;
         this.name = name;
     }
 
@@ -34,8 +35,15 @@ public abstract class Hook {
         return this.dependencies;
     }
 
-    public HookType getType(){
-        return this.hookType;
+    public SleepMostHook getType(){
+        return this.sleepMostHook;
     }
 
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }
