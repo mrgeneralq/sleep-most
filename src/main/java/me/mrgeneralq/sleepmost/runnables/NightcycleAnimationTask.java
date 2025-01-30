@@ -47,6 +47,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
     public void run() {
         //85 by default
         final int baseSpeed = configService.getNightcycleAnimationSpeed();
+        final int maxSpeed = configService.getNightcycleAnimationSpeedMax();
         int calculatedSpeed = baseSpeed;
 
         if(this.flagsRepository.getDynamicAnimationSpeedFlag().getValueAt(world)){
@@ -59,7 +60,6 @@ public class NightcycleAnimationTask extends BukkitRunnable {
             int denominator = Math.max(totalPlayers - minSleepingPlayers, 1);
             double additionalPlayersRatio = (double)numerator / (double)denominator;
 
-            int maxSpeed = baseSpeed * 2;
             int minSpeed = baseSpeed;
 
             calculatedSpeed = Math.min((int) Math.round((additionalPlayersRatio * (maxSpeed - minSpeed)) + minSpeed), maxSpeed);
