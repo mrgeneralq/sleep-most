@@ -51,6 +51,11 @@ public class ConfigService implements IConfigService {
     }
 
     @Override
+    public int getNightcycleAnimationSpeedMax() {
+        return main.getConfig().getInt("nightcycle-animation-speed-max");
+    }
+
+    @Override
     public int getNightStartTime() {
         return main.getConfig().getInt("time.start-time");
     }

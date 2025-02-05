@@ -12,6 +12,7 @@ public interface IConfigService {
     boolean debugModeEnabled();
 
     int getNightcycleAnimationSpeed();
+    int getNightcycleAnimationSpeedMax();
     int getNightStartTime();
     int getNightStopTime();
 }
