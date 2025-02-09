@@ -23,8 +23,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.mrgeneralq.sleepmost.commands.SleepmostCommand;
 import me.mrgeneralq.sleepmost.statics.Bootstrapper;
-
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public class Sleepmost extends JavaPlugin {
@@ -95,8 +93,8 @@ public class Sleepmost extends JavaPlugin {
 			Bukkit.getLogger().info("[sleep-most] GSit hook detected and registered GSit event listener");
 		}
 
-		Optional<Hook> superVanishHook = bootstrapper.getHookService().getHook(SleepMostHook.SUPER_VANISH);
-		if(superVanishHook.isPresent()){
+		Optional<Hook> placeholderAPIHook = bootstrapper.getHookService().getHook(SleepMostHook.PLACEHOLDER_API);
+		if(placeholderAPIHook.isPresent()){
 			new PapiExtension(this, bootstrapper.getFlagsRepository(), bootstrapper.getSleepService()).register();
 		}
 

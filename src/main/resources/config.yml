@@ -12,6 +12,7 @@ update-checker-enabled: true
 # specify the speed/ticks for the animation
 # DEFAULT: 85 (recommended)
 nightcycle-animation-speed: 85
+nightcycle-animation-speed-max: 170
 
 
 sleep:
