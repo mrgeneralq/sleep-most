@@ -15,4 +15,8 @@ public interface IConfigService {
     int getNightcycleAnimationSpeedMax();
     int getNightStartTime();
     int getNightStopTime();
+
+    String getAFKPlaceholder();
+
+    String getAFKPositiveResult();
 }

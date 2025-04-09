@@ -3,14 +3,12 @@ package me.mrgeneralq.sleepmost.services;
 import me.mrgeneralq.sleepmost.interfaces.IConfigService;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.World;
 
 import java.util.Objects;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
-import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
 
 public class ConfigService implements IConfigService {
 
@@ -64,4 +62,15 @@ public class ConfigService implements IConfigService {
     public int getNightStopTime() {
         return main.getConfig().getInt("time.end-time");
     }
+
+    @Override
+    public String getAFKPlaceholder() {
+        return main.getConfig().getString("afk-handling.placeholder");
+    }
+
+    @Override
+    public String getAFKPositiveResult() {
+        return main.getConfig().getString("afk-handling.positive-result");
+    }
+
 }

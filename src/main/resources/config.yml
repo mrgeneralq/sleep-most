@@ -15,6 +15,12 @@ nightcycle-animation-speed: 85
 nightcycle-animation-speed-max: 170
 
 
+# AFK handling controls which placeholder is used to determine if a player is afk
+# This requires PlaceholderAPI to be installed and the use-afk flag to be enabled
+afk-handling:
+  placeholder: "%essentials_afk%"
+  positive-result: "yes"
+
 sleep:
   # for each world, you can create different configurations
   world:

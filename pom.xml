@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.mrgeneralq</groupId>
     <artifactId>sleep-most</artifactId>
-    <version>5.5.3</version>
+    <version>5.6.0</version>
     <name>SleepMost</name>
 
     <properties>
