@@ -172,7 +172,13 @@ public class SleepService implements ISleepService {
         }
 
          if (flagService.isAfkFlagUsable() && flagsRepository.getUseAfkFlag().getValueAt(world)){
-             newPlayerList = playersList.stream().filter(p -> PlaceholderAPI.setPlaceholders(p, "%essentials_afk%").equalsIgnoreCase("no")).collect(Collectors.toList());
+
+             String afkPlaceholder = this.configService.getAFKPlaceholder();
+             String afkPositiveResult = this.configService.getAFKPositiveResult();
+
+             newPlayerList = playersList.stream()
+                     .filter(p -> !PlaceholderAPI.setPlaceholders(p, afkPlaceholder).equalsIgnoreCase(afkPositiveResult))
+                     .collect(Collectors.toList());
              this.debugService.print(String.format("&f[&b%s&f] &fNon-AFK players [&e%s&f]: %s", world.getName(), playersList.size() , getJoinedStream(playersList, newPlayerList)));
              playersList = newPlayerList;
          }
