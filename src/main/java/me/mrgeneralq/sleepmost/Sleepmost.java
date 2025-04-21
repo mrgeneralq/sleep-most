@@ -1,5 +1,8 @@
 package me.mrgeneralq.sleepmost;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import me.mrgeneralq.sleepmost.bootstrapper.Bootstrapper;
 import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
 import me.mrgeneralq.sleepmost.eventlisteners.hooks.GSitEventListener;
@@ -10,6 +13,7 @@ import me.mrgeneralq.sleepmost.hooks.SuperVanishHook;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.mappers.MessageMapper;
 import me.mrgeneralq.sleepmost.models.Hook;
+import me.mrgeneralq.sleepmost.modules.PluginModule;
 import me.mrgeneralq.sleepmost.placeholderapi.PapiExtension;
 import me.mrgeneralq.sleepmost.runnables.Heartbeat;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
@@ -22,18 +26,22 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.mrgeneralq.sleepmost.commands.SleepmostCommand;
-import me.mrgeneralq.sleepmost.statics.Bootstrapper;
+import me.mrgeneralq.sleepmost.statics.Moodtrapper;
 import java.util.Optional;
 
 public class Sleepmost extends JavaPlugin {
 
 	private static Sleepmost instance;
-	private Bootstrapper bootstrapper;
+	private Moodtrapper moodTrapper;
 
 	private IMessageService messageService;
 
 	@Override
 	public void onEnable() {
+
+		Injector injector = Guice.createInjector(new PluginModule(this));
+		Bootstrapper bootstrapper = injector.getInstance(Bootstrapper.class);
+		bootstrapper.bootstrap();
 
 		instance = this;
 		saveDefaultConfig();
@@ -46,10 +54,10 @@ public class Sleepmost extends JavaPlugin {
 		MessageMapper.getMapper().loadMessages();
 		
 		//init bootstrapper
-		this.bootstrapper = Bootstrapper.getBootstrapper();
-		bootstrapper.initialize(this, Bukkit.getPluginManager());
+		this.moodTrapper = Moodtrapper.getBootstrapper();
+		moodTrapper.initialize(this, Bukkit.getPluginManager());
 
-		this.messageService = bootstrapper.getMessageService();
+		this.messageService = moodTrapper.getMessageService();
 
 		//creating missing messages
 		this.messageService.createMissingMessages();
@@ -59,49 +67,49 @@ public class Sleepmost extends JavaPlugin {
 			this.registerBossBars();
 
 		//init commands
-		SleepmostCommand sleepmostCommand = new SleepmostCommand(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getUpdateService(), bootstrapper.getFlagService(), bootstrapper.getFlagsRepository(), bootstrapper.getConfigRepository(), bootstrapper.getCooldownService(), bootstrapper.getBossBarService(), bootstrapper.getSleepMostWorldService(), bootstrapper.getSleepMostPlayerService(), bootstrapper.getInsomniaService(), bootstrapper.getDebugService(), bootstrapper.getHookService());
+		SleepmostCommand sleepmostCommand = new SleepmostCommand(moodTrapper.getSleepService(), moodTrapper.getMessageService(), moodTrapper.getUpdateService(), moodTrapper.getFlagService(), moodTrapper.getFlagsRepository(), moodTrapper.getConfigRepository(), moodTrapper.getCooldownService(), moodTrapper.getBossBarService(), moodTrapper.getSleepMostWorldService(), moodTrapper.getSleepMostPlayerService(), moodTrapper.getInsomniaService(), moodTrapper.getDebugService(), moodTrapper.getHookService());
 		getCommand("sleepmost").setExecutor(sleepmostCommand);
 
 		PluginManager pm = Bukkit.getPluginManager();
 
-		pm.registerEvents(new PlayerBedEnterEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getSleepMostWorldService(), bootstrapper.getInsomniaService()), this);
-		pm.registerEvents(new PlayerQuitEventListener(bootstrapper.getCooldownService(), bootstrapper.getSleepService(), bootstrapper.getBossBarService(), bootstrapper.getSleepMostPlayerService()), this);
-		pm.registerEvents(new EntityTargetLivingEntityEventListener(bootstrapper.getFlagsRepository()), this);
-		pm.registerEvents(new PlayerWorldChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getBossBarService()), this);
-		pm.registerEvents(new PlayerJoinEventListener(this, bootstrapper.getUpdateService(), bootstrapper.getMessageService(), bootstrapper.getBossBarService(), bootstrapper.getSleepMostPlayerService()), this);
-		pm.registerEvents(new EntitySpawnEventListener(bootstrapper.getFlagsRepository()), this);
+		pm.registerEvents(new PlayerBedEnterEventListener(moodTrapper.getSleepService(), moodTrapper.getMessageService(), moodTrapper.getCooldownService(), moodTrapper.getFlagsRepository(), moodTrapper.getBossBarService(), moodTrapper.getSleepMostWorldService(), moodTrapper.getInsomniaService()), this);
+		pm.registerEvents(new PlayerQuitEventListener(moodTrapper.getCooldownService(), moodTrapper.getSleepService(), moodTrapper.getBossBarService(), moodTrapper.getSleepMostPlayerService()), this);
+		pm.registerEvents(new EntityTargetLivingEntityEventListener(moodTrapper.getFlagsRepository()), this);
+		pm.registerEvents(new PlayerWorldChangeEventListener(moodTrapper.getSleepService(), moodTrapper.getMessageService(), moodTrapper.getBossBarService()), this);
+		pm.registerEvents(new PlayerJoinEventListener(this, moodTrapper.getUpdateService(), moodTrapper.getMessageService(), moodTrapper.getBossBarService(), moodTrapper.getSleepMostPlayerService()), this);
+		pm.registerEvents(new EntitySpawnEventListener(moodTrapper.getFlagsRepository()), this);
 
 		if(ServerVersion.CURRENT_VERSION.hasTimeSkipEvent()){
-			pm.registerEvents(new TimeSkipEventListener(bootstrapper.getSleepService()), this);
+			pm.registerEvents(new TimeSkipEventListener(moodTrapper.getSleepService()), this);
 		}
 
-		pm.registerEvents(new SleepSkipEventListener(bootstrapper.getMessageService(), bootstrapper.getConfigService(), bootstrapper.getSleepService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getHookService()), this);
-		pm.registerEvents(new WorldChangeEventListener(bootstrapper.getSleepService()), this);
-		pm.registerEvents(new PlayerBedLeaveEventListener(bootstrapper.getSleepService()), this);
-		pm.registerEvents(new WorldLoadEventListener(bootstrapper.getBossBarService(), bootstrapper.getSleepMostWorldService()),this);
-		pm.registerEvents(new WorldUnloadEventListener(bootstrapper.getBossBarService(), bootstrapper.getSleepMostWorldService()),this);
-		pm.registerEvents(new PlayerSleepStateChangeEventListener(this, bootstrapper.getSleepService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getSleepMostWorldService()), this);
-		pm.registerEvents(new TimeCycleChangeEventListener(bootstrapper.getSleepService(), bootstrapper.getSleepMostWorldService(), bootstrapper.getFlagsRepository(), bootstrapper.getInsomniaService()),this );
-		pm.registerEvents(new PlayerConsumeEventListener(bootstrapper.getSleepService(), bootstrapper.getInsomniaService(), bootstrapper.getMessageService(), bootstrapper.getFlagsRepository()), this);
+		pm.registerEvents(new SleepSkipEventListener(moodTrapper.getMessageService(), moodTrapper.getConfigService(), moodTrapper.getSleepService(), moodTrapper.getFlagsRepository(), moodTrapper.getBossBarService(), moodTrapper.getHookService()), this);
+		pm.registerEvents(new WorldChangeEventListener(moodTrapper.getSleepService()), this);
+		pm.registerEvents(new PlayerBedLeaveEventListener(moodTrapper.getSleepService()), this);
+		pm.registerEvents(new WorldLoadEventListener(moodTrapper.getBossBarService(), moodTrapper.getSleepMostWorldService()),this);
+		pm.registerEvents(new WorldUnloadEventListener(moodTrapper.getBossBarService(), moodTrapper.getSleepMostWorldService()),this);
+		pm.registerEvents(new PlayerSleepStateChangeEventListener(this, moodTrapper.getSleepService(), moodTrapper.getFlagsRepository(), moodTrapper.getBossBarService(), moodTrapper.getMessageService(), moodTrapper.getCooldownService(), moodTrapper.getSleepMostWorldService()), this);
+		pm.registerEvents(new TimeCycleChangeEventListener(moodTrapper.getSleepService(), moodTrapper.getSleepMostWorldService(), moodTrapper.getFlagsRepository(), moodTrapper.getInsomniaService()),this );
+		pm.registerEvents(new PlayerConsumeEventListener(moodTrapper.getSleepService(), moodTrapper.getInsomniaService(), moodTrapper.getMessageService(), moodTrapper.getFlagsRepository()), this);
 
 		//REGISTER HOOKS
 		registerHooks();
 
-		Optional<Hook> gsitHook = bootstrapper.getHookService().getHook(SleepMostHook.GSIT);
+		Optional<Hook> gsitHook = moodTrapper.getHookService().getHook(SleepMostHook.GSIT);
 		if(gsitHook.isPresent()){
-			pm.registerEvents(new GSitEventListener(bootstrapper.getSleepService(), bootstrapper.getMessageService(), bootstrapper.getCooldownService(), bootstrapper.getFlagsRepository(), bootstrapper.getBossBarService(), bootstrapper.getSleepMostWorldService(), bootstrapper.getInsomniaService()),this);
+			pm.registerEvents(new GSitEventListener(moodTrapper.getSleepService(), moodTrapper.getMessageService(), moodTrapper.getCooldownService(), moodTrapper.getFlagsRepository(), moodTrapper.getBossBarService(), moodTrapper.getSleepMostWorldService(), moodTrapper.getInsomniaService()),this);
 			Bukkit.getLogger().info("[sleep-most] GSit hook detected and registered GSit event listener");
 		}
 
-		Optional<Hook> placeholderAPIHook = bootstrapper.getHookService().getHook(SleepMostHook.PLACEHOLDER_API);
+		Optional<Hook> placeholderAPIHook = moodTrapper.getHookService().getHook(SleepMostHook.PLACEHOLDER_API);
 		if(placeholderAPIHook.isPresent()){
-			new PapiExtension(this, bootstrapper.getFlagsRepository(), bootstrapper.getSleepService()).register();
+			new PapiExtension(this, moodTrapper.getFlagsRepository(), moodTrapper.getSleepService()).register();
 		}
 
-		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(bootstrapper.getUpdateService()));
+		Bukkit.getScheduler().runTaskAsynchronously(this, () -> notifyIfNewUpdateExists(moodTrapper.getUpdateService()));
 		runPlayerTasks();
 		runPreTimerTasks();
-		runTimers(bootstrapper.getSleepService(), bootstrapper.getSleepMostWorldService(), bootstrapper.getInsomniaService());
+		runTimers(moodTrapper.getSleepService(), moodTrapper.getSleepMostWorldService(), moodTrapper.getInsomniaService());
 
 	}
 	
@@ -111,10 +119,10 @@ public class Sleepmost extends JavaPlugin {
 
 	private void runPreTimerTasks(){
 		for(World world: Bukkit.getWorlds()){
-			this.bootstrapper.getSleepMostWorldService().registerWorld(world);
+			this.moodTrapper.getSleepMostWorldService().registerWorld(world);
 
-			if(ServerVersion.CURRENT_VERSION.supportsGameRules() && this.bootstrapper.getSleepService().isEnabledAt(world)){
-				if(this.bootstrapper.getFlagsRepository().getDisableDaylightcycleGamerule().getValueAt(world)){
+			if(ServerVersion.CURRENT_VERSION.supportsGameRules() && this.moodTrapper.getSleepService().isEnabledAt(world)){
+				if(this.moodTrapper.getFlagsRepository().getDisableDaylightcycleGamerule().getValueAt(world)){
 					world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
 				}
 			}
@@ -123,12 +131,12 @@ public class Sleepmost extends JavaPlugin {
 
 	private void runPlayerTasks(){
 		for(Player p: Bukkit.getOnlinePlayers()){
-			this.bootstrapper.getSleepMostPlayerService().registerNewPlayer(p);
+			this.moodTrapper.getSleepMostPlayerService().registerNewPlayer(p);
 		}
 	}
 
 	private void runTimers(ISleepService sleepService, ISleepMostWorldService sleepMostWorldService, IInsomniaService insomniaService){
-		new Heartbeat(sleepService, sleepMostWorldService, insomniaService, bootstrapper.getFlagsRepository()).runTaskTimer(this, 20,20);
+		new Heartbeat(sleepService, sleepMostWorldService, insomniaService, moodTrapper.getFlagsRepository()).runTaskTimer(this, 20,20);
 	}
 
 	private void notifyIfNewUpdateExists(IUpdateService updateService) 
@@ -139,7 +147,7 @@ public class Sleepmost extends JavaPlugin {
 
 	void registerBossBars(){
 		for(World world: Bukkit.getWorlds()){
-			IBossBarService bossBarService = this.bootstrapper.getBossBarService();
+			IBossBarService bossBarService = this.moodTrapper.getBossBarService();
 			bossBarService.registerBossBar(world);
 			bossBarService.setVisible(world, false);
 		}
@@ -150,7 +158,7 @@ public class Sleepmost extends JavaPlugin {
 		Hook superVanishHook = new SuperVanishHook();
 		superVanishHook.addAlias("PremiumVanish");
 
-		IHookService hookService = bootstrapper.getHookService();
+		IHookService hookService = moodTrapper.getHookService();
 		hookService.attemptRegister(superVanishHook);
 		hookService.attemptRegister(new PlaceholderAPIHook());
 		hookService.attemptRegister(new GsitHook());

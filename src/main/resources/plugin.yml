@@ -9,3 +9,5 @@ commands:
     description: open the sleepmost help menu
     aliases: [sm]
 softdepend: [PlaceholderAPI, GSit, SuperVanish, PremiumVanish, Essentials]
+libraries:
+  - com.google.inject:guice:7.0.0.0
