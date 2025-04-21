@@ -1,9 +1,9 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
-import me.mrgeneralq.sleepmost.interfaces.IMessageService;
-import me.mrgeneralq.sleepmost.interfaces.ISleepMostPlayerService;
-import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
+import me.mrgeneralq.sleepmost.services.IBossBarService;
+import me.mrgeneralq.sleepmost.services.IMessageService;
+import me.mrgeneralq.sleepmost.services.ISleepMostPlayerService;
+import me.mrgeneralq.sleepmost.services.IUpdateService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -42,7 +42,6 @@ public class PlayerJoinEventListener implements Listener {
         //if player does not exist yet, register. Avoid players disconnecting and reconnecting to reset their profile
         if(!this.sleepMostPlayerService.playerExists(player))
         this.sleepMostPlayerService.registerNewPlayer(player);
-
 
         if(ServerVersion.CURRENT_VERSION.supportsBossBars())
         this.bossBarService.registerPlayer(player.getWorld(), player);

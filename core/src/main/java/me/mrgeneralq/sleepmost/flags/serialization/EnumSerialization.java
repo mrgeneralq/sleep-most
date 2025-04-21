@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.flags.serialization;
 
-import me.mrgeneralq.sleepmost.enums.FriendlyNamed;
+import me.mrgeneralq.sleepmost.models.enums.FriendlyNamed;
 
 import java.util.Arrays;
 import java.util.stream.Stream;

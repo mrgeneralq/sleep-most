@@ -3,7 +3,7 @@ package me.mrgeneralq.sleepmost.services.concretes;
 import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 import me.mrgeneralq.sleepmost.interfaces.IHookRepository;
 import me.mrgeneralq.sleepmost.interfaces.IHookService;
-import me.mrgeneralq.sleepmost.models.Hook;
+import me.mrgeneralq.sleepmost.models.hooks.Hook;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 

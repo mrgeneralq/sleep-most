@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.models.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;
@@ -8,7 +8,6 @@ import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class DisableSubCommand implements ISubCommand {
 

@@ -1,6 +1,4 @@
-package me.mrgeneralq.sleepmost.enums;
-
-import me.mrgeneralq.sleepmost.enums.FriendlyNamed;
+package me.mrgeneralq.sleepmost.models.enums;
 
 public enum SleepersOrAllType implements FriendlyNamed {
     SLEEPERS("sleepers"),

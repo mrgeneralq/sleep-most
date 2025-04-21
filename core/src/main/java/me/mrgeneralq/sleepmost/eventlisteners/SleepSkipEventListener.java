@@ -1,10 +1,10 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
-import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.NIGHT_TIME;
+import static me.mrgeneralq.sleepmost.models.enums.SleepSkipCause.NIGHT_TIME;
 
-import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.models.enums.MessageKey;
 import me.mrgeneralq.sleepmost.enums.SleepMostHook;
-import me.mrgeneralq.sleepmost.enums.SleepersOrAllType;
+import me.mrgeneralq.sleepmost.models.enums.SleepersOrAllType;
 import me.mrgeneralq.sleepmost.exceptions.InvalidSleepSkipCauseOccurredException;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.flags.SkipSoundFlag;
@@ -20,11 +20,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
+import me.mrgeneralq.sleepmost.models.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.builders;
 
-import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
+import me.mrgeneralq.sleepmost.models.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 import me.mrgeneralq.sleepmost.utils.TimeUtils;
 import org.bukkit.ChatColor;

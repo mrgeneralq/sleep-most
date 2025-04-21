@@ -3,7 +3,7 @@ package me.mrgeneralq.sleepmost.commands;
 import java.util.*;
 
 import me.mrgeneralq.sleepmost.commands.subcommands.*;
-import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.models.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

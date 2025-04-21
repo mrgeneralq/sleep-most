@@ -1,9 +1,14 @@
 package me.mrgeneralq.sleepmost.services.concretes;
 
-import me.mrgeneralq.sleepmost.enums.SleepMostHook;
-import me.mrgeneralq.sleepmost.flags.ISleepFlag;
-import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.models.Hook;
+
+import me.mrgeneralq.sleepmost.models.hooks.Hook;
+import me.mrgeneralq.sleepmost.models.hooks.SleepMostHook;
+import me.mrgeneralq.sleepmost.repositories.IConfigRepository;
+import me.mrgeneralq.sleepmost.repositories.IFlagsRepository;
+import me.mrgeneralq.sleepmost.services.IConfigService;
+import me.mrgeneralq.sleepmost.services.IFlagService;
+import me.mrgeneralq.sleepmost.services.IHookService;
+import me.mrgeneralq.sleepmost.services.IMessageService;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 

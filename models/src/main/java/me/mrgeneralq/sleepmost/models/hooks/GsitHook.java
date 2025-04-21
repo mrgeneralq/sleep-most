@@ -1,10 +1,8 @@
-package me.mrgeneralq.sleepmost.hooks;
+package me.mrgeneralq.sleepmost.models.hooks;
 
 import dev.geco.gsit.api.GSitAPI;
 import dev.geco.gsit.object.GStopReason;
 import dev.geco.gsit.object.IGPose;
-import me.mrgeneralq.sleepmost.enums.SleepMostHook;
-import me.mrgeneralq.sleepmost.models.Hook;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;

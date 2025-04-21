@@ -1,10 +1,10 @@
 package me.mrgeneralq.sleepmost.runnables;
 
-import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.models.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
-import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
+import me.mrgeneralq.sleepmost.models.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;

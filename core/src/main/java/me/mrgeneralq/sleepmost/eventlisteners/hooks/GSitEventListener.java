@@ -2,7 +2,7 @@ package me.mrgeneralq.sleepmost.eventlisteners.hooks;
 
 import dev.geco.gsit.api.event.PlayerPoseEvent;
 import dev.geco.gsit.object.IGPose;
-import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.models.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.statics.DataContainer;

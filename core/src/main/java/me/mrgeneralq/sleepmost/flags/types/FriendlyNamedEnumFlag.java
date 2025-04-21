@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.flags.types;
 
-import me.mrgeneralq.sleepmost.enums.FriendlyNamed;
+import me.mrgeneralq.sleepmost.models.enums.FriendlyNamed;
 import me.mrgeneralq.sleepmost.flags.controllers.AbstractFlagController;
 import me.mrgeneralq.sleepmost.flags.serialization.IValueSerialization;
 import org.bukkit.command.Command;

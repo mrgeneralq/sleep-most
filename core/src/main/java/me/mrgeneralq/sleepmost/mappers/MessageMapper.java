@@ -1,8 +1,7 @@
 package me.mrgeneralq.sleepmost.mappers;
 
-import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.models.enums.MessageKey;
 import me.mrgeneralq.sleepmost.models.ConfigMessage;
-import org.bukkit.ChatColor;
 
 import java.util.*;
 

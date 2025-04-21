@@ -1,7 +1,6 @@
-package me.mrgeneralq.sleepmost.hooks;
+package me.mrgeneralq.sleepmost.models.hooks;
 
 import me.mrgeneralq.sleepmost.enums.SleepMostHook;
-import me.mrgeneralq.sleepmost.models.Hook;
 
 public class EssentialsHook extends Hook {
     public EssentialsHook() {

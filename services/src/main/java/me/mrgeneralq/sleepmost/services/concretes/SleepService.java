@@ -7,7 +7,7 @@ import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 import me.mrgeneralq.sleepmost.enums.SleepState;
 import me.mrgeneralq.sleepmost.events.PlayerSleepStateChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.models.Hook;
+import me.mrgeneralq.sleepmost.models.hooks.Hook;
 import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTask;
 import me.mrgeneralq.sleepmost.statics.DataContainer;

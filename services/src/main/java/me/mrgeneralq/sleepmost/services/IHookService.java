@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.services;
-import me.mrgeneralq.sleepmost.enums.SleepMostHook;
-import me.mrgeneralq.sleepmost.models.Hook;
+import me.mrgeneralq.sleepmost.models.hooks.Hook;
+import me.mrgeneralq.sleepmost.models.hooks.SleepMostHook;
 
 import java.util.Optional;
 

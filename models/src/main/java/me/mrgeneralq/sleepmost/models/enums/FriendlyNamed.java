@@ -1,4 +1,4 @@
-package me.mrgeneralq.sleepmost.enums;
+package me.mrgeneralq.sleepmost.models.enums;
 
 /**
  * Enum that is used for flags, this is then used to show the friendly name of the enum.

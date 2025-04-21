@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.models.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IInsomniaService;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;

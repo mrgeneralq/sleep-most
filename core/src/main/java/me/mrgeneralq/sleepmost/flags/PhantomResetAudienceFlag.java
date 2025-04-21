@@ -1,7 +1,6 @@
 package me.mrgeneralq.sleepmost.flags;
 
-import me.mrgeneralq.sleepmost.enums.SleepCalculationType;
-import me.mrgeneralq.sleepmost.enums.SleepersOrAllType;
+import me.mrgeneralq.sleepmost.models.enums.SleepersOrAllType;
 import me.mrgeneralq.sleepmost.flags.controllers.AbstractFlagController;
 import me.mrgeneralq.sleepmost.flags.serialization.EnumSerialization;
 import me.mrgeneralq.sleepmost.flags.types.FriendlyNamedEnumFlag;

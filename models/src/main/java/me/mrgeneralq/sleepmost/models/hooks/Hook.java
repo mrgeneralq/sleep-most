@@ -1,6 +1,5 @@
-package me.mrgeneralq.sleepmost.models;
+package me.mrgeneralq.sleepmost.models.hooks;
 
-import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 
 import java.util.ArrayList;
 import java.util.List;

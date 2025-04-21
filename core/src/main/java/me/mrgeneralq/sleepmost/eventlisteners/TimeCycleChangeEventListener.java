@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
-import me.mrgeneralq.sleepmost.enums.TimeCycle;
+import me.mrgeneralq.sleepmost.models.enums.TimeCycle;
 import me.mrgeneralq.sleepmost.events.TimeCycleChangeEvent;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IInsomniaService;

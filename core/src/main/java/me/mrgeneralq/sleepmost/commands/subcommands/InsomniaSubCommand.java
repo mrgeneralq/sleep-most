@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
-import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.models.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import org.bukkit.World;
 import org.bukkit.command.Command;

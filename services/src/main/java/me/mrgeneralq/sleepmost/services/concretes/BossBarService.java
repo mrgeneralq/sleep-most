@@ -1,7 +1,7 @@
 package me.mrgeneralq.sleepmost.services.concretes;
 
-import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
-import me.mrgeneralq.sleepmost.repositories.BossBarRepository;
+import me.mrgeneralq.sleepmost.repositories.concretes.BossBarRepository;
+import me.mrgeneralq.sleepmost.services.IBossBarService;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;

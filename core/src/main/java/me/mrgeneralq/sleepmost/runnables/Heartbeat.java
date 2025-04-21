@@ -1,9 +1,8 @@
 package me.mrgeneralq.sleepmost.runnables;
 
-import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
-import me.mrgeneralq.sleepmost.enums.TimeCycle;
+import me.mrgeneralq.sleepmost.models.enums.SleepSkipCause;
+import me.mrgeneralq.sleepmost.models.enums.TimeCycle;
 import me.mrgeneralq.sleepmost.events.TimeCycleChangeEvent;
-import me.mrgeneralq.sleepmost.flags.LongerNightDurationFlag;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IInsomniaService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepMostWorldService;

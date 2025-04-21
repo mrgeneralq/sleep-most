@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.mrgeneralq.sleepmost.Sleepmost;
-import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.sleepmost.models.enums.MessageKey;
 import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
 
 public class ConfigMessageMapper {

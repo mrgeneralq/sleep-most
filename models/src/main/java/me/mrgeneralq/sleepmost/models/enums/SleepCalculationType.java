@@ -1,4 +1,4 @@
-package me.mrgeneralq.sleepmost.enums;
+package me.mrgeneralq.sleepmost.models.enums;
 
 public enum SleepCalculationType implements FriendlyNamed {
     PERCENTAGE_REQUIRED("percentage"),

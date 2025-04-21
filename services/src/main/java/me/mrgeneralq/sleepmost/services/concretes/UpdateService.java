@@ -1,26 +1,26 @@
 package me.mrgeneralq.sleepmost.services.concretes;
 
-import me.mrgeneralq.sleepmost.interfaces.IConfigService;
-import me.mrgeneralq.sleepmost.Sleepmost;
-import me.mrgeneralq.sleepmost.interfaces.IUpdateRepository;
-import me.mrgeneralq.sleepmost.interfaces.IUpdateService;
-import me.mrgeneralq.sleepmost.utils.Version;
+
+import me.mrgeneralq.sleepmost.repositories.IUpdateRepository;
+import me.mrgeneralq.sleepmost.services.IConfigService;
+import me.mrgeneralq.sleepmost.services.IUpdateService;
+import org.bukkit.plugin.Plugin;
 
 public class UpdateService implements IUpdateService {
 
-    private final Sleepmost main;
+    private final Plugin plugin;
     private final IConfigService configService;
     private final IUpdateRepository updateRepository;
 
-    public UpdateService(IUpdateRepository updateRepository, Sleepmost main, IConfigService configService) {
-        this.main = main;
+    public UpdateService(IUpdateRepository updateRepository, Plugin plugin, IConfigService configService) {
+        this.plugin = plugin;
         this.configService = configService;
         this.updateRepository = updateRepository;
     }
 
     @Override
     public boolean hasUpdate() {
-        return hasUpdate(main.getDescription().getVersion());
+        return hasUpdate(plugin.getDescription().getVersion());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class UpdateService implements IUpdateService {
 
     @Override
     public String getCurrentVersion() {
-        return main.getDescription().getVersion();
+        return plugin.getDescription().getVersion();
     }
 
     @Override
