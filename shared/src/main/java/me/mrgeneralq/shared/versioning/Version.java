@@ -1,4 +1,4 @@
-package me.mrgeneralq.sleepmost.utils;
+package me.mrgeneralq.shared.versioning;
 
 import org.jetbrains.annotations.NotNull;
 

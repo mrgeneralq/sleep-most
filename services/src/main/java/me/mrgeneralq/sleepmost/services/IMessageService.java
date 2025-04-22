@@ -1,17 +1,16 @@
 package me.mrgeneralq.sleepmost.services;
 
-import me.mrgeneralq.sleepmost.builders.MessageBuilder;
-import me.mrgeneralq.sleepmost.enums.MessageKey;
+import me.mrgeneralq.shared.messaging.MessageBuilder;
 import me.mrgeneralq.sleepmost.models.ConfigMessage;
+import me.mrgeneralq.sleepmost.models.enums.MessageKey;
+import me.mrgeneralq.sleepmost.models.enums.SleepSkipCause;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
 
 import java.util.List;
-import java.util.TreeSet;
 
 public interface IMessageService 
 {

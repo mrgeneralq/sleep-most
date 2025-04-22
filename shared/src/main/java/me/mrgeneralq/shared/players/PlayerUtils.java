@@ -1,4 +1,4 @@
-package me.mrgeneralq.sleepmost.utils;
+package me.mrgeneralq.shared.players;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

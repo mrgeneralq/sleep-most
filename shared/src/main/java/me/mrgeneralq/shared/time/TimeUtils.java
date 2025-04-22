@@ -1,4 +1,4 @@
-package me.mrgeneralq.sleepmost.utils;
+package me.mrgeneralq.shared.time;
 
 public class TimeUtils {
     public static String getTimeStringByTicks(double timeInTicks){

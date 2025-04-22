@@ -1,10 +1,10 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
+import me.mrgeneralq.shared.versioning.ServerVersion;
 import me.mrgeneralq.sleepmost.services.IBossBarService;
 import me.mrgeneralq.sleepmost.services.IMessageService;
 import me.mrgeneralq.sleepmost.services.ISleepMostPlayerService;
 import me.mrgeneralq.sleepmost.services.IUpdateService;
-import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 
-import static me.mrgeneralq.sleepmost.statics.ChatColorUtils.colorize;
+import static me.mrgeneralq.shared.messaging.ChatColorUtils.colorize;
 
 public class PlayerJoinEventListener implements Listener {
 

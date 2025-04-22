@@ -1,11 +1,11 @@
 package me.mrgeneralq.sleepmost.bootstrapper;
 
 import com.google.inject.Inject;
+import me.mrgeneralq.shared.messaging.MessageMapper;
+import me.mrgeneralq.shared.versioning.ServerVersion;
 import me.mrgeneralq.sleepmost.Sleepmost;
-import me.mrgeneralq.sleepmost.mappers.MessageMapper;
 import me.mrgeneralq.sleepmost.runnables.Heartbeat;
 import me.mrgeneralq.sleepmost.services.*;
-import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
@@ -93,6 +93,8 @@ public class Bootstrapper {
         for(World world: Bukkit.getWorlds()){
             this.sleepMostWorldService.registerWorld(world);
 
+
+            //TODO GET RID OF MOODTRAPPER AND MOVE TO SERVICE
             if(ServerVersion.CURRENT_VERSION.supportsGameRules() && this.sleepService.isEnabledAt(world)){
                 if(this.moodTrapper.getFlagsRepository().getDisableDaylightcycleGamerule().getValueAt(world)){
                     world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);

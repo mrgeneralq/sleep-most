@@ -14,6 +14,7 @@
         <module>repositories</module>
         <module>models</module>
         <module>api</module>
+        <module>shared</module>
     </modules>
 
     <properties>

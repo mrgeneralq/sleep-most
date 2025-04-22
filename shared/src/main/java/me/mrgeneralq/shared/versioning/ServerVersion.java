@@ -1,4 +1,4 @@
-package me.mrgeneralq.sleepmost.statics;
+package me.mrgeneralq.shared.versioning;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Bukkit;

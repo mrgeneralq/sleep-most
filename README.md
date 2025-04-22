@@ -68,7 +68,7 @@ public class MessageMapper {
 To fetch the message, you can use the `IMessageService.getMessage(ConfigMessage message)`.
 
 ```java
-import me.mrgeneralq.sleepmost.builders.MessageBuilder;
+import me.mrgeneralq.shared.messaging.MessageBuilder;
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 

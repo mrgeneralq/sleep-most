@@ -1,8 +1,7 @@
-package me.mrgeneralq.sleepmost.builders;
+package me.mrgeneralq.shared.messaging;
 
+import me.mrgeneralq.shared.time.TimeUtils;
 import me.mrgeneralq.sleepmost.models.enums.SleepSkipCause;
-import me.mrgeneralq.sleepmost.statics.ChatColorUtils;
-import me.mrgeneralq.sleepmost.utils.TimeUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

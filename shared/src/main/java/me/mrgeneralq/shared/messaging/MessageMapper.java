@@ -1,4 +1,4 @@
-package me.mrgeneralq.sleepmost.mappers;
+package me.mrgeneralq.shared.messaging;
 
 import me.mrgeneralq.sleepmost.models.enums.MessageKey;
 import me.mrgeneralq.sleepmost.models.ConfigMessage;

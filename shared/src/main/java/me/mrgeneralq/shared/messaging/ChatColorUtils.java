@@ -1,5 +1,6 @@
-package me.mrgeneralq.sleepmost.statics;
+package me.mrgeneralq.shared.messaging;
 
+import me.mrgeneralq.shared.versioning.ServerVersion;
 import org.bukkit.ChatColor;
 
 import java.util.regex.Matcher;

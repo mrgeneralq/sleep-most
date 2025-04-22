@@ -5,7 +5,6 @@ import me.mrgeneralq.sleepmost.interfaces.ICooldownService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepMostPlayerService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

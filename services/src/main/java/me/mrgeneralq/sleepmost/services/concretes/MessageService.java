@@ -1,16 +1,15 @@
 package me.mrgeneralq.sleepmost.services.concretes;
 
-import me.mrgeneralq.sleepmost.enums.MessageKey;
-import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
-import me.mrgeneralq.sleepmost.interfaces.IConfigRepository;
-import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
-import me.mrgeneralq.sleepmost.interfaces.IMessageService;
-import me.mrgeneralq.sleepmost.builders.MessageBuilder;
-import me.mrgeneralq.sleepmost.mappers.MessageMapper;
+import me.mrgeneralq.shared.messaging.MessageBuilder;
+import me.mrgeneralq.shared.messaging.MessageMapper;
+import me.mrgeneralq.shared.versioning.ServerVersion;
 import me.mrgeneralq.sleepmost.models.ConfigMessage;
-import me.mrgeneralq.sleepmost.repositories.MessageRepository;
-import me.mrgeneralq.sleepmost.mappers.ConfigMessageMapper;
-import me.mrgeneralq.sleepmost.statics.ServerVersion;
+import me.mrgeneralq.sleepmost.models.enums.MessageKey;
+import me.mrgeneralq.sleepmost.models.enums.SleepSkipCause;
+import me.mrgeneralq.sleepmost.repositories.IConfigRepository;
+import me.mrgeneralq.sleepmost.repositories.IFlagsRepository;
+import me.mrgeneralq.sleepmost.repositories.concretes.MessageRepository;
+import me.mrgeneralq.sleepmost.services.IMessageService;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;

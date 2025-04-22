@@ -1,11 +1,10 @@
 package me.mrgeneralq.sleepmost.statics;
-
-import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.mappers.ConfigMessageMapper;
-import me.mrgeneralq.sleepmost.services.MessageService;
+import me.mrgeneralq.sleepmost.repositories.concretes.*;
 import me.mrgeneralq.sleepmost.repositories.*;
 import me.mrgeneralq.sleepmost.services.*;
 import me.mrgeneralq.sleepmost.Sleepmost;
+import me.mrgeneralq.sleepmost.services.concretes.*;
 import org.bukkit.plugin.PluginManager;
 
 public class Moodtrapper {
