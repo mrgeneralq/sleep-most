@@ -1,14 +1,14 @@
 package me.mrgeneralq.sleepmost.bootstrapper;
 
 import com.google.inject.Inject;
+import me.mrgeneralq.shared.versioning.ServerVersion;
 import me.mrgeneralq.sleepmost.Sleepmost;
-import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 import me.mrgeneralq.sleepmost.eventlisteners.*;
 import me.mrgeneralq.sleepmost.eventlisteners.hooks.GSitEventListener;
-import me.mrgeneralq.sleepmost.interfaces.IHookService;
-import me.mrgeneralq.sleepmost.models.Hook;
+import me.mrgeneralq.sleepmost.models.hooks.Hook;
+import me.mrgeneralq.sleepmost.models.hooks.SleepMostHook;
 import me.mrgeneralq.sleepmost.placeholderapi.PapiExtension;
-import me.mrgeneralq.sleepmost.statics.ServerVersion;
+import me.mrgeneralq.sleepmost.services.IHookService;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 

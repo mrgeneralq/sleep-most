@@ -51,7 +51,7 @@ public class Moodtrapper {
 
         this.insomniaService = new InsomniaService(this.sleepMostPlayerService);
 
-        this.flagsRepository = new FlagsRepository(hookService ,configRepository);
+        this.flagsRepository = new FlagRepository(hookService ,configRepository);
 
         this.messageService = new MessageService(configRepository, new MessageRepository(), flagsRepository);
 

@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.models;
 
-import me.mrgeneralq.sleepmost.enums.TimeCycle;
+import me.mrgeneralq.sleepmost.models.enums.TimeCycle;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 

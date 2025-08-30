@@ -1,6 +1,6 @@
 package me.mrgeneralq.sleepmost.api.events;
 
-import me.mrgeneralq.sleepmost.enums.SleepState;
+import me.mrgeneralq.sleepmost.models.enums.SleepState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

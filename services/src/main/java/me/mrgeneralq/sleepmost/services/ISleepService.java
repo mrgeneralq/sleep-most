@@ -1,5 +1,5 @@
 package me.mrgeneralq.sleepmost.services;
-import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
+import me.mrgeneralq.sleepmost.models.enums.SleepSkipCause;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

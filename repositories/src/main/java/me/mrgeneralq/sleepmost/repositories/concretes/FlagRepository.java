@@ -1,10 +1,12 @@
 package me.mrgeneralq.sleepmost.repositories.concretes;
 
+import me.mrgeneralq.sleepmost.repositories.IFlagsRepository;
+
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
-public class FlagsRepository implements IFlagsRepository {
+public class FlagRepository implements IFlagsRepository {
 
 
     private final Map<String, ISleepFlag<?>> flagByName = new HashMap<>();
@@ -60,7 +62,7 @@ public class FlagsRepository implements IFlagsRepository {
     private GsitSleepCmdFlag gsitSleepCmdFlag;
 
 
-    public FlagsRepository(IHookService hookService ,IConfigRepository configRepository) {
+    public FlagRepository(IHookService hookService , IConfigRepository configRepository) {
         this.hookService = hookService;
 
         setupFlag(this.nightcycleAnimationFlag = new NightcycleAnimationFlag(new ConfigFlagController<>(configRepository)));

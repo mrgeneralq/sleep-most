@@ -2,22 +2,18 @@ package me.mrgeneralq.sleepmost.services.concretes;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.mrgeneralq.sleepmost.Sleepmost;
-import me.mrgeneralq.sleepmost.enums.SleepMostHook;
-import me.mrgeneralq.sleepmost.enums.SleepState;
-import me.mrgeneralq.sleepmost.events.PlayerSleepStateChangeEvent;
-import me.mrgeneralq.sleepmost.interfaces.*;
+import me.mrgeneralq.sleepmost.api.events.PlayerSleepStateChangeEvent;
+import me.mrgeneralq.sleepmost.models.enums.SleepSkipCause;
+import me.mrgeneralq.sleepmost.models.enums.SleepState;
 import me.mrgeneralq.sleepmost.models.hooks.Hook;
-import me.mrgeneralq.sleepmost.models.SleepMostWorld;
-import me.mrgeneralq.sleepmost.runnables.NightcycleAnimationTask;
-import me.mrgeneralq.sleepmost.statics.DataContainer;
-import me.mrgeneralq.sleepmost.enums.SleepSkipCause;
-import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
+import me.mrgeneralq.sleepmost.models.hooks.SleepMostHook;
+import me.mrgeneralq.sleepmost.repositories.IConfigRepository;
+import me.mrgeneralq.sleepmost.repositories.IFlagsRepository;
+import me.mrgeneralq.sleepmost.services.*;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 //import org.bukkit.entity.Player;
-
-import static me.mrgeneralq.sleepmost.enums.SleepSkipCause.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -27,9 +23,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static me.mrgeneralq.sleepmost.models.enums.SleepCalculationType.PERCENTAGE_REQUIRED;
+import static me.mrgeneralq.sleepmost.models.enums.SleepCalculationType.PLAYERS_REQUIRED;
+import static me.mrgeneralq.sleepmost.models.enums.SleepSkipCause.*;
+
 public class SleepService implements ISleepService {
 
-    private final Sleepmost main;
+    private final Plugin main;
     private final IConfigRepository configRepository;
     private final IConfigService configService;
     private final IFlagsRepository flagsRepository;
@@ -46,7 +46,7 @@ public class SleepService implements ISleepService {
             NIGHT_END_TIME = 23460;
 
     public SleepService(
-            Sleepmost main,
+            Plugin main,
             IConfigService configService,
             IConfigRepository configRepository,
             IFlagsRepository flagsRepository,
@@ -291,7 +291,7 @@ public class SleepService implements ISleepService {
         if(isNight(world))
             world.setTime(configService.getResetTime());
 
-        if(this.flagsRepository.getSkipStormFlag().getValueAt(world) || skipCause == SleepSkipCause.STORM){
+        if(this.flagsRepository.getSkipStormFlag().getValueAt(world) || skipCause == STORM){
             world.setThundering(false);
             world.setStorm(false);
         }

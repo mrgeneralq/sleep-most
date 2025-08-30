@@ -1,16 +1,15 @@
 package me.mrgeneralq.sleepmost.eventlisteners;
 
+import me.mrgeneralq.shared.versioning.ServerVersion;
 import me.mrgeneralq.sleepmost.Sleepmost;
 import me.mrgeneralq.sleepmost.api.events.PlayerSleepStateChangeEvent;
 import me.mrgeneralq.sleepmost.models.enums.MessageKey;
+import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.models.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.models.enums.SleepState;
-import me.mrgeneralq.sleepmost.builders.MessageBuilder;
-import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.repositories.IFlagsRepository;
 import me.mrgeneralq.sleepmost.services.*;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
-import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -64,7 +63,6 @@ public class PlayerSleepStateChangeEventListener implements Listener {
         //do nothing if there is already running an animation
         if (DataContainer.getContainer().isAnimationRunningAt(world))
             return;
-
 
         /*
          * When the player is waking up, we always want to update the bossbar. Also if the world is getting disabled!
