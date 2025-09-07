@@ -4,7 +4,7 @@ import me.mrgeneralq.sleepmost.models.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.IBossBarService;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepService;
-import me.mrgeneralq.sleepmost.statics.DataContainer;
+import me.mrgeneralq.sleepmost.repositories.containers.DataContainer;
 import me.mrgeneralq.sleepmost.statics.ServerVersion;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

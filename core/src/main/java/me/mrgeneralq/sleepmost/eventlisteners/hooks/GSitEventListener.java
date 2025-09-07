@@ -5,7 +5,7 @@ import dev.geco.gsit.object.IGPose;
 import me.mrgeneralq.sleepmost.models.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.models.SleepMostWorld;
-import me.mrgeneralq.sleepmost.statics.DataContainer;
+import me.mrgeneralq.sleepmost.repositories.containers.DataContainer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;

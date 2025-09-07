@@ -1,8 +1,8 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.models.enums.MessageKey;
-import me.mrgeneralq.sleepmost.flags.CalculationMethodFlag;
-import me.mrgeneralq.sleepmost.flags.PlayersRequiredFlag;
+import me.mrgeneralq.sleepmost.models.flags.CalculationMethodFlag;
+import me.mrgeneralq.sleepmost.models.flags.PlayersRequiredFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.bukkit.World;

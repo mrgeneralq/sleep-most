@@ -9,7 +9,7 @@ import me.mrgeneralq.sleepmost.models.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.models.enums.SleepState;
 import me.mrgeneralq.sleepmost.repositories.IFlagsRepository;
 import me.mrgeneralq.sleepmost.services.*;
-import me.mrgeneralq.sleepmost.statics.DataContainer;
+import me.mrgeneralq.sleepmost.repositories.containers.DataContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;

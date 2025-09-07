@@ -6,7 +6,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import me.mrgeneralq.sleepmost.flags.ISleepFlag;
+import me.mrgeneralq.sleepmost.models.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.interfaces.IFlagsRepository;
 import me.mrgeneralq.sleepmost.interfaces.IMessageService;
 import me.mrgeneralq.sleepmost.interfaces.ISubCommand;

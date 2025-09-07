@@ -7,8 +7,8 @@ import me.mrgeneralq.sleepmost.enums.SleepMostHook;
 import me.mrgeneralq.sleepmost.models.enums.SleepersOrAllType;
 import me.mrgeneralq.sleepmost.exceptions.InvalidSleepSkipCauseOccurredException;
 import me.mrgeneralq.sleepmost.Sleepmost;
-import me.mrgeneralq.sleepmost.flags.SkipSoundFlag;
-import me.mrgeneralq.sleepmost.flags.UseSkipSoundFlag;
+import me.mrgeneralq.sleepmost.models.flags.SkipSoundFlag;
+import me.mrgeneralq.sleepmost.models.flags.UseSkipSoundFlag;
 import me.mrgeneralq.sleepmost.hooks.GsitHook;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.builders.MessageBuilder;
@@ -22,7 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import me.mrgeneralq.sleepmost.models.enums.SleepSkipCause;
 import me.mrgeneralq.sleepmost.events.SleepSkipEvent;
-import me.mrgeneralq.sleepmost.statics.DataContainer;
+import me.mrgeneralq.sleepmost.repositories.containers.DataContainer;
 
 import java.util.List;
 import java.util.Optional;

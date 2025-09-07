@@ -1,9 +1,9 @@
 package me.mrgeneralq.sleepmost.commands.subcommands;
 
 import me.mrgeneralq.sleepmost.models.enums.MessageKey;
-import me.mrgeneralq.sleepmost.flags.types.TabCompletedFlag;
+import me.mrgeneralq.sleepmost.models.flags.types.TabCompletedFlag;
 import me.mrgeneralq.sleepmost.interfaces.*;
-import me.mrgeneralq.sleepmost.flags.ISleepFlag;
+import me.mrgeneralq.sleepmost.models.flags.ISleepFlag;
 import me.mrgeneralq.sleepmost.statics.CommandSenderUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.World;

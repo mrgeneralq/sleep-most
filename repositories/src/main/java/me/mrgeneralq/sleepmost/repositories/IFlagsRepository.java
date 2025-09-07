@@ -1,11 +1,6 @@
 package me.mrgeneralq.sleepmost.repositories;
 
-import me.mrgeneralq.sleepmost.flags.*;
-import me.mrgeneralq.sleepmost.flags.hooks.gsit.GSitHookFlag;
-import me.mrgeneralq.sleepmost.flags.hooks.gsit.GSitSleepFlag;
-
 import java.util.List;
-import java.util.Set;
 
 public interface IFlagsRepository
 {

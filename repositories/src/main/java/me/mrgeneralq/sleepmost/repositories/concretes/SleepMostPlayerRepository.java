@@ -1,7 +1,6 @@
 package me.mrgeneralq.sleepmost.repositories.concretes;
-
-import me.mrgeneralq.sleepmost.interfaces.IRepository;
 import me.mrgeneralq.sleepmost.models.SleepMostPlayer;
+import me.mrgeneralq.sleepmost.repositories.IRepository;
 
 import java.util.*;
 
