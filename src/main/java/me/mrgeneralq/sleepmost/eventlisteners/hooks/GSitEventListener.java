@@ -1,14 +1,15 @@
 package me.mrgeneralq.sleepmost.eventlisteners.hooks;
 
 import dev.geco.gsit.api.event.PlayerPoseEvent;
-import dev.geco.gsit.object.IGPose;
+import dev.geco.gsit.api.event.PlayerStopPoseEvent;
+import dev.geco.gsit.model.Pose;
+import dev.geco.gsit.model.PoseType;
 import me.mrgeneralq.sleepmost.enums.MessageKey;
 import me.mrgeneralq.sleepmost.interfaces.*;
 import me.mrgeneralq.sleepmost.models.SleepMostWorld;
 import me.mrgeneralq.sleepmost.statics.DataContainer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Pose;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -16,10 +17,7 @@ public class GSitEventListener implements Listener {
 
     private final ISleepService sleepService;
     private final IMessageService messageService;
-    private final ICooldownService cooldownService;
-    private final DataContainer dataContainer;
     private final IFlagsRepository flagsRepository;
-    private final IBossBarService bossBarService;
     private final ISleepMostWorldService sleepMostWorldService;
     private final IInsomniaService insomniaService;
 
@@ -33,12 +31,9 @@ public class GSitEventListener implements Listener {
     ) {
         this.sleepService = sleepService;
         this.messageService = messageService;
-        this.cooldownService = cooldownService;
         this.flagsRepository = flagsRepository;
-        this.bossBarService = bossBarService;
         this.sleepMostWorldService = sleepMostWorldService;
         this.insomniaService = insomniaService;
-        this.dataContainer = DataContainer.getContainer();
     }
 
     @EventHandler
@@ -46,7 +41,7 @@ public class GSitEventListener implements Listener {
 
         Player player = e.getPlayer();
         World world = player.getWorld();
-        IGPose pose = e.getPose();
+        Pose pose = e.getPose();
 
         if(!this.flagsRepository.getGSitHookFlag().getValueAt(world))
             return;
@@ -60,13 +55,11 @@ public class GSitEventListener implements Listener {
         if(!this.flagsRepository.getGSitSleepFlag().getValueAt(world))
             return;
 
-        if(pose.getPose() != Pose.SLEEPING)
+        if(pose.getPoseType() != PoseType.LAY && pose.getPoseType() != PoseType.LAY_BACK)
             return;
-
 
         if(!this.sleepService.isSleepingPossible(world))
             return;
-
 
         //check if sleeping during storms is allowed
         if (world.isThundering() && !this.flagsRepository.getStormSleepFlag().getValueAt(world)) {
@@ -120,12 +113,10 @@ public class GSitEventListener implements Listener {
     }
 
     @EventHandler
-    public void onGetUpPose(PlayerPoseEvent e){
-
-        if(e.getPose().getPose() != Pose.STANDING)
-            return;
+    public void onGetUpPose(PlayerStopPoseEvent e){
 
         Player player = e.getPlayer();
         this.sleepService.setSleeping(player, false);
     }
+
 }
