@@ -105,6 +105,7 @@ public class NightcycleAnimationTask extends BukkitRunnable {
              ***************************************************/
 
             if(this.flagsRepository.getClockAnimationFlag().getValueAt(world) && ServerVersion.CURRENT_VERSION.supportsTitles()){
+
                 List<Player> playerList = (flagsRepository.getNonSleepingClockAnimationFlag().getValueAt(world) ?
                         world.getPlayers():
                         peopleWhoSlept.stream().filter(OfflinePlayer::isOnline).map(OfflinePlayer::getPlayer).collect(Collectors.toList()));

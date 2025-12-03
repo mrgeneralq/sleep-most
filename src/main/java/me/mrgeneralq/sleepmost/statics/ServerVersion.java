@@ -77,8 +77,18 @@ public enum ServerVersion
     }
 
     //Setup methods
+
+    /*private static ServerVersion computeServerVersion() {
+        return Arrays.stream(VALUES)
+                .filter(version -> Bukkit.getVersion().contains(version.getName()))
+                .findFirst()
+                .orElse(UNKNOWN);
+    }
+    */
+
     private static ServerVersion computeServerVersion() {
         return Arrays.stream(VALUES)
+                .sorted((v1, v2) -> Integer.compare(v2.ordinal(), v1.ordinal()))
                 .filter(version -> Bukkit.getVersion().contains(version.getName()))
                 .findFirst()
                 .orElse(UNKNOWN);

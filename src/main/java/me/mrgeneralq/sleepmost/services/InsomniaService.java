@@ -3,7 +3,6 @@ package me.mrgeneralq.sleepmost.services;
 import me.mrgeneralq.sleepmost.interfaces.IInsomniaService;
 import me.mrgeneralq.sleepmost.interfaces.ISleepMostPlayerService;
 import me.mrgeneralq.sleepmost.utils.PlayerUtils;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
