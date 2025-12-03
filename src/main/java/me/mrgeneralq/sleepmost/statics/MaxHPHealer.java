@@ -8,5 +8,5 @@ public interface MaxHPHealer {
 
     MaxHPHealer
             LEGACY_HEALER = player -> player.setHealth(20),
-            UPDATED_HEALER = player ->  player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+            UPDATED_HEALER = player ->  player.setHealth(player.getAttribute(Attribute.MAX_HEALTH).getBaseValue());
 }

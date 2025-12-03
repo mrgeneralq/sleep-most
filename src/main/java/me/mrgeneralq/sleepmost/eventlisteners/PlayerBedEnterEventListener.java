@@ -80,7 +80,7 @@ public class PlayerBedEnterEventListener implements Listener {
             return;
         }
 
-        if(this.insomniaService.hasInsomniaEnabled(player)){
+        if(this.insomniaService.hasInsomniaEnabled(player) && this.flagsRepository.getInsomniaChanceFlag().getValueAt(world) > 0){
             String insomniaMessage = this.messageService.getMessagePrefixed(MessageKey.INSOMNIA_NOT_SLEEPY)
                     .setWorld(world)
                     .setPlayer(player)

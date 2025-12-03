@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.mrgeneralq</groupId>
     <artifactId>sleep-most</artifactId>
-    <version>5.6.1</version>
+    <version>5.6.2</version>
     <name>SleepMost</name>
 
     <properties>
@@ -113,7 +113,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.21.5-R0.1-SNAPSHOT</version>
+            <version>1.21.10-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
