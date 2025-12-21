@@ -20,7 +20,7 @@ public enum ServerVersion
     private boolean hasTimeSkipEvent;
     private boolean supportsClickableText;
     private boolean supportsGameRules;
-
+gi
     public static final ServerVersion CURRENT_VERSION;
 
     public static final String UPDATE_URL = "https://www.spigotmc.org/resources/60623/";
