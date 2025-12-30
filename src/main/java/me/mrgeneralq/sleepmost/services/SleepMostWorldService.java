@@ -31,7 +31,7 @@ public class SleepMostWorldService implements ISleepMostWorldService {
     public void freezeTime(World world, Calendar calendar) {
 
         if(ServerVersion.CURRENT_VERSION.supportsGameRules())
-        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        world.setGameRule(GameRule.ADVANCE_TIME, false);
 
         SleepMostWorld sleepMostWorld = this.repository.get(world.getUID());
         sleepMostWorld.setFrozen(true, calendar);
@@ -42,7 +42,7 @@ public class SleepMostWorldService implements ISleepMostWorldService {
     public void unfreezeTime(World world) {
 
         if(ServerVersion.CURRENT_VERSION.supportsGameRules())
-            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+            world.setGameRule(GameRule.ADVANCE_TIME, true);
 
         SleepMostWorld sleepMostWorld = this.repository.get(world.getUID());
         sleepMostWorld.setFrozen(false, null);
