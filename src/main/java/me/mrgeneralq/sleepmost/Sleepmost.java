@@ -115,7 +115,7 @@ public class Sleepmost extends JavaPlugin {
 
 			if(ServerVersion.CURRENT_VERSION.supportsGameRules() && this.bootstrapper.getSleepService().isEnabledAt(world)){
 				if(this.bootstrapper.getFlagsRepository().getDisableDaylightcycleGamerule().getValueAt(world)){
-					world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+					world.setGameRule(GameRule.ADVANCE_TIME, true);
 				}
 			}
 		}
