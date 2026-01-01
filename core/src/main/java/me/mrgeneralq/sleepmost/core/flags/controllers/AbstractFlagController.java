@@ -1,0 +1,17 @@
+package me.mrgeneralq.sleepmost.core.flags.controllers;
+
+import me.mrgeneralq.sleepmost.core.flags.ISleepFlag;
+import org.bukkit.World;
+
+public abstract class AbstractFlagController<V>
+{
+    protected ISleepFlag<V> flag;
+
+    //Internal use only, to avoid circular dependency
+    public void setFlag(ISleepFlag<V> flag)
+    {
+        this.flag = flag;
+    }
+    public abstract V getValueAt(World world);
+    public abstract void setValueAt(World world, V value);
+}

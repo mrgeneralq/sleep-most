@@ -30,8 +30,9 @@ Every message being sent to a player MUST use the IMessageService.sendMessage()
 This is done so that we can control when a message should and should not be sent. If the message in the config is empty, it will not be sent. This can only be done if the message service is used.
 
 *Example*
+
 ```java
-import me.mrgeneralq.sleepmost.interfaces.IMessageService;
+import me.mrgeneralq.core.interfaces.IMessageService;
 import org.bukkit.command.CommandSender;
 
 public class A() {
@@ -68,9 +69,9 @@ public class MessageMapper {
 To fetch the message, you can use the `IMessageService.getMessage(ConfigMessage message)`.
 
 ```java
-import me.mrgeneralq.sleepmost.builders.MessageBuilder;
-import me.mrgeneralq.sleepmost.enums.MessageKey;
-import me.mrgeneralq.sleepmost.interfaces.IMessageService;
+import me.mrgeneralq.core.builders.MessageBuilder;
+import me.mrgeneralq.core.enums.MessageKey;
+import me.mrgeneralq.core.interfaces.IMessageService;
 
 public class A {
 

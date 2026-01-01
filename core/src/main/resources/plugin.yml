@@ -1,0 +1,11 @@
+name: sleep-most
+api-version: 1.13
+version: ${project.version}
+main: me.mrgeneralq.sleepmost.core.Sleepmost
+authors: [MrGeneralQ, LesleyXYZ, HorrendousEntity]
+commands:
+  sleepmost:
+    usage: /sleepmost
+    description: open the sleepmost help menu
+    aliases: [sm]
+softdepend: [PlaceholderAPI, GSit, SuperVanish, PremiumVanish, Essentials]

@@ -1,0 +1,92 @@
+# WELCOME TO THE OFFICIAL SLEEP-MOST PLUGIN
+# AUTHORS: MrGeneralQ
+# CONTRIBUTORS: Malin, Nozemi, HorrendousEntity
+# VERSION: ${project.version}
+# SUPPORT NEEDED? Join our discord at --> https://discord.pseudonova.com/ WE ARE HAPPY TO HELP YOU FURTHER!
+# YOU CAN FIND THE DOCS FOR THIS PLUGIN HERE --> https://mrgeneralq.gitbook.io/sleepmost/
+
+
+# WARNING: SUPPORT IS ONLY GIVEN TO THE LATEST VERSION
+update-checker-enabled: true
+
+# specify the speed/ticks for the animation
+# DEFAULT: 85 (recommended)
+nightcycle-animation-speed: 85
+nightcycle-animation-speed-max: 170
+
+
+# AFK handling controls which placeholder is used to determine if a player is afk
+# This requires PlaceholderAPI to be installed and the use-afk flag to be enabled
+afk-handling:
+  placeholder: "%essentials_afk%"
+  positive-result: "yes"
+
+sleep:
+  # for each world, you can create different configurations
+  world:
+    enabled: true
+    calculation-method: percentage
+    percentage-required: 0.5
+    players-required: 5
+    mob-no-target: true
+    use-exempt: false
+    use-afk: false
+    use-bossbar: false
+    use-sound-night-skipped: false
+    use-sound-storm-skipped: false
+    use-title-night-skipped: false
+    use-title-storm-skipped: false
+    exempt-creative: false
+    exempt-spectator: false
+    prevent-sleep: false
+    prevent-phantom: false
+    nightcycle-animation: false
+    storm-sleep: true
+    skip-delay: 0
+    heal: false
+    feed: false
+    skip-night-sound: ui.toast.challenge_complete
+    skip-storm-sound: entity.wither.spawn
+    reset-time-since-rest: true
+
+  world2:
+    enabled: false
+    calculation-method: percentage
+    percentage-required: 0.5
+    players-required: 5
+    mob-no-target: true
+    use-exempt: false
+    use-afk: false
+    use-bossbar: false
+    use-sound-night-skipped: false
+    use-sound-storm-skipped: false
+    use-title-night-skipped: false
+    use-title-storm-skipped: false
+    exempt-creative: false
+    exempt-spectator: false
+    prevent-sleep: false
+    prevent-phantom: false
+    nightcycle-animation: false
+    storm-sleep: true
+    skip-delay: 0
+    heal: false
+    feed: false
+    skip-night-sound: ui.toast.challenge_complete
+    skip-storm-sound: entity.wither.spawn
+    reset-time-since-rest: true
+
+# specify the time which the world will be set after reset
+time-after-reset: 0
+
+# configure when players can and cannot sleep
+# this also controls when the animation will stop
+# please note that this does not
+time:
+  night-start: 12542
+  night-end: 23850
+
+messages:
+  cooldown: 10
+
+#debug mode
+debug-mode: false
