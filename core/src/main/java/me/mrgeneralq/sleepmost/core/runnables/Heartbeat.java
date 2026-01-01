@@ -123,7 +123,6 @@ public class Heartbeat extends BukkitRunnable {
             this.sleepMostWorldService.unfreezeTime(world);
         }
 
-
         /*
         * Check if the freeze needs to be scheduled
          */
@@ -138,7 +137,6 @@ public class Heartbeat extends BukkitRunnable {
 
             if(duration <= 0)
                 return;
-
             sleepMostWorld.setPlannedFrozen(true);
         }
 

@@ -37,9 +37,11 @@ public class Sleepmost extends JavaPlugin {
 	public void onEnable() {
 
 		//used to load all modules
-		ServiceLoader<IPlatformModule> platformModules = ServiceLoader.load(IPlatformModule.class);
+		ServiceLoader<IPlatformModule> platformModules = ServiceLoader.load(IPlatformModule.class, this.getClass().getClassLoader());
+
 		for(IPlatformModule module : platformModules){
 			module.setup();
+			Bukkit.getLogger().info("SleepMost Loaded module: " + module.getClass().getName());
 		}
 
 		instance = this;
