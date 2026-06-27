@@ -9,7 +9,7 @@ public class PaperModule implements IPlatformModule {
     @Override
     public void setup(){
         try {
-            Class.forName("com.destroystokyo.paper.PaperConfig");
+            Class.forName("io.papermc.paper.configuration.GlobalConfiguration");
             GameRuleProvider.registerGameRuleService(new PaperGameRuleService());
         } catch (ClassNotFoundException ignored) {}
     }
