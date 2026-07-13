@@ -1,0 +1,20 @@
+version: 2
+
+# Keeps dependencies and GitHub Actions current so the build doesn't rot the
+# way it did when PlaceholderAPI/SuperVanish versions disappeared upstream.
+updates:
+  - package-ecosystem: maven
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    labels: ["dependencies"]
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "ci"]
