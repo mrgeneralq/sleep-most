@@ -1,8 +1,8 @@
-name: Build & Test
+name: CI
 
-# Compiles the plugin and runs the unit tests on every push and pull request.
-# This lets you confirm the code compiles and the tests pass without ever
-# starting a Minecraft server.
+# Compiles the plugin and runs the unit tests on every push, pull request and
+# release — no Minecraft server required. On a published Release it also builds
+# the distributable jar and attaches it to the release (CD).
 
 on:
   push:
@@ -11,12 +11,28 @@ on:
     branches: ["**"]
   release:
     types: [published]
+  schedule:
+    # Weekly clean build to catch upstream dependency / repository drift early,
+    # before it breaks a release (this is what a fresh CI run exposed once).
+    - cron: "0 6 * * 1"
   workflow_dispatch: {}
+
+# Principle of least privilege: read-only by default. The release job opts in
+# to write access explicitly.
+permissions:
+  contents: read
+
+# Cancel superseded runs for the same ref to save runner minutes. Release runs
+# use their tag ref, so branch pushes never cancel a release build.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
+    name: Build & Test
     runs-on: ubuntu-latest
-
+    timeout-minutes: 20
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -31,7 +47,16 @@ jobs:
           cache: maven
 
       - name: Build and run tests
-        run: mvn -B -ntp clean verify
+        run: mvn -B -ntp -e clean verify
+
+      - name: Upload plugin JAR
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: SleepMost-plugin
+          path: target/SleepMost-*.jar
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Upload test reports
         if: always()
@@ -40,3 +65,37 @@ jobs:
           name: surefire-reports
           path: "**/target/surefire-reports/**"
           if-no-files-found: ignore
+          retention-days: 7
+
+  release:
+    name: Attach plugin JAR to release
+    needs: build
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write # required to upload assets to the release
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      # Tests already passed in the "build" job (this job needs it), so skip
+      # them here and just produce the distributable jar.
+      - name: Build plugin JAR
+        run: mvn -B -ntp -DskipTests clean package
+
+      - name: Attach JAR to the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          jar=$(ls target/SleepMost-*.jar)
+          echo "Uploading $jar to release ${{ github.event.release.tag_name }}"
+          gh release upload "${{ github.event.release.tag_name }}" "$jar" --clobber

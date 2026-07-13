@@ -29,7 +29,8 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.1</version>
                 <configuration>
-                    <outputDirectory>${dir}\server\plugins</outputDirectory>
+                    <!-- Forward slash works on both Windows and Linux (CI) -->
+                    <outputDirectory>${dir}/server/plugins</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
