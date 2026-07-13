@@ -93,15 +93,83 @@ public enum ServerVersion
     */
 
     private static ServerVersion computeServerVersion() {
-        OptionalInt majorVersion = extractMajorVersion();
+        return resolve(Bukkit.getBukkitVersion(), Bukkit.getVersion());
+    }
 
-        /*
-         * Since 2026 Minecraft uses a calendar-year based versioning scheme
-         * (e.g. "26.1.2") instead of the historic "1.x" scheme. Any such
-         * release is newer than every "1.x" version we explicitly know about,
-         * so map it to the latest known version to inherit its capabilities
-         * rather than degrading to UNKNOWN (which previously left maxHPHealer
-         * null and caused a NullPointerException in healToMaxHP()).
-         */
+    /**
+     * Resolves the {@link ServerVersion} for the given raw version strings.
+     * Kept package-private and free of any {@link Bukkit} calls so the version
+     * detection can be unit tested without a running server.
+     *
+     * <p>Since 2026 Minecraft uses a calendar-year based versioning scheme
+     * (e.g. "26.1.2") instead of the historic "1.x" scheme. Any such release is
+     * newer than every "1.x" version we explicitly know about, so it is mapped
+     * to the latest known version to inherit its capabilities rather than
+     * degrading to {@link #UNKNOWN} (which previously left maxHPHealer null and
+     * caused a NullPointerException in {@link #healToMaxHP(Player)}).
+     *
+     * @param bukkitVersion value of {@link Bukkit#getBukkitVersion()}, e.g. "26.1.2-R0.1-SNAPSHOT"
+     * @param serverVersion value of {@link Bukkit#getVersion()}, e.g. "git-Paper (MC: 1.21.4)"
+     * @return the resolved version, never {@code null}
+     */
+    static ServerVersion resolve(String bukkitVersion, String serverVersion) {
+        OptionalInt majorVersion = extractMajorVersion(bukkitVersion);
+
         if (majorVersion.isPresent() && majorVersion.getAsInt() >= 2)
- 
+            return getLatestKnownVersion();
+
+        // Legacy "1.x" servers: match the version by its name.
+        return matchByLegacyName(serverVersion);
+    }
+
+    private static ServerVersion matchByLegacyName(String serverVersion) {
+        if (serverVersion == null)
+            return UNKNOWN;
+
+        return Arrays.stream(VALUES)
+                .filter(version -> version != UNKNOWN)
+                .sorted((v1, v2) -> Integer.compare(v2.ordinal(), v1.ordinal()))
+                .filter(version -> serverVersion.contains(version.getName()))
+                .findFirst()
+                .orElse(UNKNOWN);
+    }
+
+    /**
+     * Extracts the leading (major) number of the given server version string.
+     * For legacy releases this is always 1 (e.g. "1.21.4"); for the calendar
+     * year based scheme it is the year (e.g. 26 for "26.1.2").
+     */
+    private static OptionalInt extractMajorVersion(String bukkitVersion) {
+        if (bukkitVersion == null)
+            return OptionalInt.empty();
+
+        Matcher matcher = Pattern.compile("(\\d+)").matcher(bukkitVersion);
+        if (matcher.find())
+            return OptionalInt.of(Integer.parseInt(matcher.group(1)));
+        return OptionalInt.empty();
+    }
+
+    private static ServerVersion getLatestKnownVersion() {
+        ServerVersion latest = UNKNOWN;
+        for (ServerVersion version : VALUES) {
+            if (version != UNKNOWN && version.ordinal() > latest.ordinal())
+                latest = version;
+        }
+        return latest;
+    }
+    private static void forVersionsFrom(ServerVersion minimum, Consumer<ServerVersion> action) {
+        versionsStream()
+                .filter(version -> version.ordinal() >= minimum.ordinal())
+                .forEach(action);
+    }
+    private static void forVersionsUntil(ServerVersion maximum, Consumer<ServerVersion> action) {
+        versionsStream()
+                .filter(version -> version.ordinal() < maximum.ordinal())
+                .forEach(action);
+    }
+    private static Stream<ServerVersion> versionsStream() {
+        return Arrays.stream(VALUES)
+                .filter(version -> version != UNKNOWN);
+    }
+  
+}
