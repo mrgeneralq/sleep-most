@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.mrgeneralq</groupId>
     <artifactId>sleep-most</artifactId>
-    <version>5.8.0</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <name>SleepMost</name>
     <modules>
@@ -14,6 +14,8 @@
         <module>spigot</module>
     </modules>
     <properties>
+        <!-- Single source of truth for the plugin version; bump this to release. -->
+        <revision>5.8.0</revision>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
