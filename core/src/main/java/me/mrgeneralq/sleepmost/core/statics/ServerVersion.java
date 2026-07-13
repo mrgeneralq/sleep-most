@@ -5,7 +5,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.OptionalInt;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public enum ServerVersion
@@ -42,6 +45,9 @@ public enum ServerVersion
     }
     ServerVersion() {
         this.name = WordUtils.capitalizeFully(name().substring(1).toLowerCase().replace('_', '.'));
+        // Sensible default so healToMaxHP() never NPEs, even for UNKNOWN or an
+        // unmatched version. Legacy (< 1.9) versions override this below.
+        this.maxHPHealer = MaxHPHealer.UPDATED_HEALER;
     }
 
     public String getName() {
@@ -87,25 +93,15 @@ public enum ServerVersion
     */
 
     private static ServerVersion computeServerVersion() {
-        return Arrays.stream(VALUES)
-                .sorted((v1, v2) -> Integer.compare(v2.ordinal(), v1.ordinal()))
-                .filter(version -> Bukkit.getVersion().contains(version.getName()))
-                .findFirst()
-                .orElse(UNKNOWN);
-    }
-    private static void forVersionsFrom(ServerVersion minimum, Consumer<ServerVersion> action) {
-        versionsStream()
-                .filter(version -> version.ordinal() >= minimum.ordinal())
-                .forEach(action);
-    }
-    private static void forVersionsUntil(ServerVersion maximum, Consumer<ServerVersion> action) {
-        versionsStream()
-                .filter(version -> version.ordinal() < maximum.ordinal())
-                .forEach(action);
-    }
-    private static Stream<ServerVersion> versionsStream() {
-        return Arrays.stream(VALUES)
-                .filter(version -> version != UNKNOWN);
-    }
-  
-}
+        OptionalInt majorVersion = extractMajorVersion();
+
+        /*
+         * Since 2026 Minecraft uses a calendar-year based versioning scheme
+         * (e.g. "26.1.2") instead of the historic "1.x" scheme. Any such
+         * release is newer than every "1.x" version we explicitly know about,
+         * so map it to the latest known version to inherit its capabilities
+         * rather than degrading to UNKNOWN (which previously left maxHPHealer
+         * null and caused a NullPointerException in healToMaxHP()).
+         */
+        if (majorVersion.isPresent() && majorVersion.getAsInt() >= 2)
+ 
