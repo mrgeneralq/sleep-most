@@ -1,24 +1,25 @@
 ![sleep most banner](https://i.imgur.com/6ffpDeD.png)
 
-# Before you start ...
-1. Clone the repo to your local computer.
-2. Check on the Project Board if there is already an issue. If not, create an issue first.
-3. Don't start working on Issues that are already in progress
+# Before you start
+
+1. **Fork** the repository to your own GitHub account, then clone your fork locally.
+2. Check the [issues](https://github.com/mrgeneralq/sleep-most/issues) to see whether the work is already tracked. If not, open an issue first so it can be discussed.
+3. Don't start working on issues that are already in progress.
 
 # Good to know
-Although all contributions to sleep-most are much appreciated, we will only merge features if they are of benefit to the community.
-If you ask to implement something that is only of added value to your server, the Pull request will be rejected.
+
+Although all contributions to sleep-most are much appreciated, we will only merge features if they are of benefit to the community. If you ask to implement something that is only of added value to your own server, the pull request will be rejected.
 
 # Contributing
 
-## Creating a feature-branch
-We make use of the `Git flow` approach. Therefore, always create a branch based on `develop` branch. Whenever you are done, you may submit a PR to merge it with the open release branch. After that, we will merge your changes back into the `develop` branch. Do NOT submit a PR to merge with master. We will not accept that.
+We use a simple **fork and pull request** workflow — there is no `develop` branch.
 
-## Hotfixes
-Hotfixes are issues that could or will have an impact on the existing plugin. We consider hotfixes **Major issues** that need instant resolution. Whenever you have a major issue, you create a feature-branch based on the `hotfix` branch. Submit a Pull request to merge into `hotfix` to collect all hotfixes.
-Once all of it is done, we will merge the hotfix branch with a priority into the `master` branch.
-
-> ⚠️Only major issues are accepted for hotfixes. If there are small bugs, please use the `develop` branch instead.
+1. **Fork** this repository and clone your fork.
+2. Create a branch off `master`, e.g. `git checkout -b fix/short-description`.
+3. Make your change, keeping it focused on a single issue or feature.
+4. Build and run the tests before opening a PR — `./verify.sh` (Linux/macOS) or `verify.bat` (Windows), or `mvn -B clean verify`. This requires Maven and JDK 21.
+5. Push the branch to your fork and open a **pull request against `master`** of this repository.
+6. The CI pipeline (build + tests) runs automatically on your PR — please make sure it passes. A maintainer will then review and merge.
 
 # Architecture Guidelines
 *Below you can find a list of some specific architecture related guidelines you have to respect.*
