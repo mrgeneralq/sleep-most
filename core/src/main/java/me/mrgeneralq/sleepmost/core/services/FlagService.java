@@ -38,7 +38,13 @@ public class FlagService implements IFlagService {
 
         Optional<Hook> placeholderHook = this.hookService.getHook(SleepMostHook.PLACEHOLDER_API);
         Optional<Hook> essentialsHook = this.hookService.getHook(SleepMostHook.ESSENTIALS);
-        return (placeholderHook.isPresent() && essentialsHook.isPresent());
+
+        // Warn the player if essentials not present the player should provide his own placeholder value
+        if (!essentialsHook.isPresent()) {
+            this.messageService.sendOPMessage(this.messageService.getMessagePrefixed("&fThe &cEssentials &fplugin is &cunavailable, set your own placeholder value in the config!").build());
+        }
+
+        return (placeholderHook.isPresent());
     }
 
     @Override
