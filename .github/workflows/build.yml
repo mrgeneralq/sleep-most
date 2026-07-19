@@ -3,6 +3,7 @@ name: Build
 on:
   push:
     branches: ["feature/**", "dubsector/**"]
+    tags: ["v*"]
   pull_request:
   workflow_dispatch:
 
@@ -29,12 +30,25 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
 
+      # On tag pushes (v*) the tag defines the build version: v5.8.1 builds
+      # SleepMost-5.8.1.jar by overriding the pom's revision property.
+      - name: Derive version from tag
+        id: tagver
+        run: |
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            echo "revision=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build
-        run: mvn clean package -pl paper -am -B
+        env:
+          REVISION: ${{ steps.tagver.outputs.revision }}
+        run: mvn clean package -pl paper -am -B ${REVISION:+-Drevision=$REVISION}
 
       - name: Get version
         id: ver
-        run: echo "version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+        env:
+          REVISION: ${{ steps.tagver.outputs.revision }}
+        run: echo "version=${REVISION:-$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)}" >> "$GITHUB_OUTPUT"
 
       - name: Extract target Paper version
         id: mcver
